@@ -36,3 +36,4 @@ This can be done in the docker container:
     ::
 
         docker run --rm docs make apidocs
+

@@ -13,8 +13,7 @@ Welcome to My Flashcards's documentation!
    howto
    pycharm/configuration
    users
-   users
-   howto
+   myrst
 
 
 

@@ -337,6 +337,7 @@ my_flashcards/media/
 #########################VITE
 !**/glob-import/dir/node_modules
 .DS_Store
+./my_flashcards_frontend/.idea
 .idea
 .pnpm-store
 *.cpuprofile
