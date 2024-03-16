@@ -8,6 +8,7 @@ nav {
   padding-top: 1rem;
   padding-bottom: 0.4rem;
   border-bottom: 2px solid white;
+  text-decoration: none;
 }
 
 .navbar {
@@ -18,6 +19,9 @@ nav {
     @include breakpoint(tablet) {
       display: flex;
     }
+  }
+  &__select{
+    cursor: pointer;
   }
   &__mobile{
     position: sticky;

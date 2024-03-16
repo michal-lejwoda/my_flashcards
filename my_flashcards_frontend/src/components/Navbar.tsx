@@ -20,29 +20,29 @@ const Navbar = () => {
         <nav>
             <div className="navbar__desktop desktop">
                 <ul className="desktop__menu menu">
-                    <li className="menu__element navbar__item"><NavLink to="/">{t("decks")}</NavLink></li>
-                    <li className="menu__element navbar__item"><NavLink to="/search">{t("search")}</NavLink></li>
-                    <li className="menu__element navbar__item"><NavLink to="/create">{t("create")}</NavLink></li>
-                    <li className="menu__element navbar__item"><NavLink to="/add_file">{t("add_file")}</NavLink></li>
+                    <NavLink to="/" className="navbar__item"><li className="menu__element">{t("decks")}</li></NavLink>
+                    <NavLink to="/search" className="navbar__item"><li className="menu__element">{t("search")}</li></NavLink>
+                    <NavLink to="/create" className="navbar__item"><li className="menu__element">{t("create")}</li></NavLink>
+                    <NavLink to="/add_file" className="navbar__item"><li className="menu__element">{t("add_file")}</li></NavLink>
                 </ul>
                 <ul className="desktop__menu">
-                    <select className="menu__language--select" value={language} onChange={onChangeLanguage}>
+                    <select className="menu__language--select navbar__select" value={language} onChange={onChangeLanguage}>
                         {LANGUAGES.map(({code, label}) => (
                             <option key={code} value={code}>
                                 {label}
                             </option>
                         ))}
                     </select>
-                    <li className="menu__element navbar__item"><NavLink to="/account">{t("account")}</NavLink></li>
-                    <li className="menu__element navbar__item"><NavLink to="/logout">{t("logout")}</NavLink></li>
-                    <li className="menu__element navbar__item"><NavLink to="/login">{t("login")}</NavLink></li>
-                    <li className="menu__element navbar__item"><NavLink to="/register">{t("register")}</NavLink></li>
+                    <NavLink to="/account" className="navbar__item"><li className="menu__element ">{t("account")}</li></NavLink>
+                    <NavLink to="/logout" className="navbar__item"><li className="menu__element">{t("logout")}</li></NavLink>
+                    <NavLink to="/login" className="navbar__item"><li className="menu__element">{t("login")}</li></NavLink>
+                    <NavLink to="/register" className="navbar__item"><li className="menu__element">{t("register")}</li></NavLink>
                 </ul>
             </div>
             <div className="navbar__mobile mobile">
                 <div className="mobile__toggle" onClick={() => setIsMobileNavOpen(!isMobileNavOpen)}><FontAwesomeIcon
                     size="2x" icon={faBars}/></div>
-                <select className="mobile__language--select" value={language} onChange={onChangeLanguage}>
+                <select className="mobile__language--select navbar__select" value={language} onChange={onChangeLanguage}>
                     {LANGUAGES.map(({code, label}) => (
                         <option key={code} value={code}>
                             {label}
