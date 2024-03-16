@@ -50,10 +50,10 @@ const Navbar = () => {
                     ))}
                 </select>
                 <ul className="mobile__menu" style={{display: isMobileNavOpen ? 'flex' : 'none'}}>
-                    <li className="mobile__menu__element navbar__item"><NavLink onClick={()=>setIsMobileNavOpen(false)} to="/">{t("decks")}</NavLink></li>
-                    <li className="mobile__menu__element navbar__item"><NavLink onClick={()=>setIsMobileNavOpen(false)} to="/search">{t("search")}</NavLink></li>
-                    <li className="mobile__menu__element navbar__item"><NavLink onClick={()=>setIsMobileNavOpen(false)} to="/create">{t("create")}</NavLink></li>
-                    <li className="mobile__menu__element navbar__item"><NavLink onClick={()=>setIsMobileNavOpen(false)} to="/add_file">{t("add_file")}</NavLink></li>
+                    <NavLink className="navbar__item" onClick={()=>setIsMobileNavOpen(false)} to="/"><li className="mobile__menu__element ">{t("decks")}</li></NavLink>
+                    <NavLink className="navbar__item" onClick={()=>setIsMobileNavOpen(false)} to="/search"><li className="mobile__menu__element">{t("search")}</li></NavLink>
+                    <NavLink className="navbar__item" onClick={()=>setIsMobileNavOpen(false)} to="/create"><li className="mobile__menu__element">{t("create")}</li></NavLink>
+                    <NavLink className="navbar__item" onClick={()=>setIsMobileNavOpen(false)} to="/add_file"><li className="mobile__menu__element">{t("add_file")}</li></NavLink>
                 </ul>
 
 
