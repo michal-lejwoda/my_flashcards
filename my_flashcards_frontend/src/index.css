@@ -9,11 +9,9 @@
 #root {
   width: 100%;
   background-color: #1c1c1a;
-  min-height: 100vh;
+  min-height: 102vh;
   display: flex;
   flex-direction: column;
 
 }
-body {
 
-}
