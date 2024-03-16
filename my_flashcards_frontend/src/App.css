@@ -1,11 +1,1 @@
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box; /* Upewnij się, że box-sizing jest ustawiony na border-box */
-    color:white;
-}
 
-#root {
-  width: 100%;
-  background-color: #1c1c1a;
-}
