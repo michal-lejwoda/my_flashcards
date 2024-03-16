@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {Suspense} from 'react'
 import ReactDOM from 'react-dom/client'
 import {BrowserRouter, Route, Routes,} from "react-router-dom";
 import './index.css'
@@ -11,22 +11,28 @@ import CreateComponent from "./components/CreateComponent.tsx";
 import Register from "./components/Register.tsx";
 import Login from "./components/Login.tsx";
 import AddFile from "./components/AddFile.tsx";
+import "../i18n.tsx"
+import Account from "./components/Account.tsx";
+// import {i18n} from "../i18n.tsx";
 
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
     <React.StrictMode>
-        <BrowserRouter>
-            <Navbar/>
-            <Routes>
-                <Route path="/" element={<Decks/>}/>
-                <Route path="/search" element={<Search/>}/>
-                <Route path="/create" element={<CreateComponent/>}/>
-                <Route path="/learn/:slug" element={<LearnFlashcards/>}/>
-                <Route path="/add_file" element={<AddFile/>}/>
-                <Route path="login" element={<Login/>}/>
-                <Route path="register" element={<Register/>}/>
-            </Routes>
-            <Footer/>
-        </BrowserRouter>
+        <Suspense fallback="loading">
+            <BrowserRouter>
+                <Navbar/>
+                <Routes>
+                    <Route path="/" element={<Decks/>}/>
+                    <Route path="/search" element={<Search/>}/>
+                    <Route path="/create" element={<CreateComponent/>}/>
+                    <Route path="/learn/:slug" element={<LearnFlashcards/>}/>
+                    <Route path="/add_file" element={<AddFile/>}/>
+                    <Route path="/login" element={<Login/>}/>
+                    <Route path="/register" element={<Register/>}/>
+                    <Route path="/account" element={<Account/>}></Route>
+                </Routes>
+                <Footer/>
+            </BrowserRouter>
+        </Suspense>
     </React.StrictMode>,
 )
