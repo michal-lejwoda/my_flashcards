@@ -1,28 +1,91 @@
+@import "settings.scss";
+
 nav {
   position: sticky;
   top: 0;
   width: 100%;
   background-color: #1c1c1a;
-  padding-top: 10px;
+  padding-top: 1rem;
+  padding-bottom: 0.4rem;
+  border-bottom: 2px solid white;
 }
-.navbar__desktop{
-  display: flex;
-  flex-direction: row;
-  justify-content: space-around;
+
+.navbar {
+  &__desktop {
+    display: none;
+    flex-direction: row;
+    justify-content: space-around;
+    @include breakpoint(tablet) {
+      display: flex;
+    }
+  }
+  &__mobile{
+    position: sticky;
+    z-index: 99;
+    display:flex;
+    justify-content: space-between;
+
+    //padding: 0 2rem 0;
+  }
+  &__item{
+    text-decoration: none;
+    :hover{
+      cursor: pointer;
+      color: yellow;
+    }
+  }
 }
-.desktop{
+
+.mobile{
+  &__toggle{
+    padding-left: 2rem;
+    :hover{
+      cursor: pointer;
+    }
+  }
   &__menu{
+    margin-top:2rem;
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    list-style-type: none;
+    z-index: 40;
+    width:100%;
+    &__element{
+      border-bottom: 2px solid white;
+      padding: 1rem;
+
+    }
+  }
+  &__language {
+    &--select {
+      border: none;
+      font-size: 1.2rem;
+      //padding: 5px;
+      margin-right: 2rem;
+    }
+
+  }
+  @include breakpoint(tablet) {
+      display: none;
+    }
+}
+
+.desktop {
+  &__menu {
     display: flex;
     flex-direction: row;
     list-style-type: none
   }
 }
-.menu{
-  &__element{
+
+.menu {
+  &__element {
     padding: 15px 15px 15px;
   }
-  &__language{
-    &--select{
+
+  &__language {
+    &--select {
       border: none;
       font-size: 1.2rem;
       padding: 5px;
