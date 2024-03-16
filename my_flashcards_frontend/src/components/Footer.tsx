@@ -1,7 +1,8 @@
+import "../sass/footer.css"
 const Footer = () => {
     return (
-        <footer>
-            <h1>Footer</h1>
+        <footer className="footer">
+            <p className="footer__copyright">Copyright © Michał Lejwoda 2024</p>
         </footer>
     );
 };
