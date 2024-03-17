@@ -21,16 +21,20 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
         <Suspense fallback="loading">
             <BrowserRouter>
                 <Navbar/>
-                <Routes>
-                    <Route path="/" element={<Decks/>}/>
-                    <Route path="/search" element={<Search/>}/>
-                    <Route path="/create" element={<CreateComponent/>}/>
-                    <Route path="/learn/:slug" element={<LearnFlashcards/>}/>
-                    <Route path="/add_file" element={<AddFile/>}/>
-                    <Route path="/login" element={<Login/>}/>
-                    <Route path="/register" element={<Register/>}/>
-                    <Route path="/account" element={<Account/>}></Route>
-                </Routes>
+                <div className="main">
+                    <Routes>
+
+                        <Route path="/" element={<Decks/>}/>
+                        <Route path="/search" element={<Search/>}/>
+                        <Route path="/create" element={<CreateComponent/>}/>
+                        <Route path="/learn/:slug" element={<LearnFlashcards/>}/>
+                        <Route path="/add_file" element={<AddFile/>}/>
+                        <Route path="/login" element={<Login/>}/>
+                        <Route path="/register" element={<Register/>}/>
+                        <Route path="/account" element={<Account/>}></Route>
+
+                    </Routes>
+                </div>
                 <Footer/>
             </BrowserRouter>
         </Suspense>

@@ -43,6 +43,7 @@ nav {
 .mobile{
   &__toggle{
     padding-left: 2rem;
+    cursor: pointer;
     :hover{
       cursor: pointer;
     }
