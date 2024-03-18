@@ -15,6 +15,7 @@ import "../i18n.tsx"
 import Account from "./components/Account.tsx";
 import Preview from "./components/Preview.tsx";
 // import {i18n} from "../i18n.tsx";
+import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
 
 
 ReactDOM.createRoot(document.getElementById('root')!).render(

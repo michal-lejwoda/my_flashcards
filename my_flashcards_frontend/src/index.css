@@ -26,5 +26,20 @@
   margin-bottom: 0.5rem;
 
 }
+.textfield__label{
+  color:white !important;
+}
+.textfield__input{
+  margin-bottom: 2rem !important;
+  width: 100%;
+  color: white !important;
 
+  fieldset{
+    border-color: white !important;
+    color: white !important;
 
+  }
+  fieldset:hover{
+    border-color: white !important;
+  }
+}
