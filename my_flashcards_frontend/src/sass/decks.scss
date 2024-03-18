@@ -1,0 +1,68 @@
+.words {
+  &__learn {
+    color: lightblue;
+  }
+
+  &__wrong {
+    color: red;
+  }
+
+  &__correct {
+    color: green;
+  }
+
+  &__all {
+    color: white;
+  }
+}
+
+.decks {
+  text-align: center;
+  &__searchcontainer{
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 1rem;
+    input{
+      padding: 5px;
+      border: 2px solid white;
+      font-size: 1rem;
+    }
+  }
+  &__table {
+    width: 100%;
+    border-collapse: collapse;
+    table, th, td {
+      border: 1px solid white;
+      border-collapse: collapse;
+    }
+  }
+}
+
+
+.dropdown button {
+  //background-color: red;
+  color: white;
+  padding: 10px 15px;
+  border: none;
+  cursor: pointer;
+}
+
+.dropdown a {
+  display: block;
+  color: white;
+  text-decoration: none;
+  padding: 10px 15px;
+}
+
+.dropdown .content {
+  display: none;
+  position: absolute;
+  background-color: hsl(0, 0%, 95%);
+  min-width: 100px;
+  box-shadow: 2px 2px 5px black;
+}
+
+.dropdown:hover .content {
+  display: block;
+}
+

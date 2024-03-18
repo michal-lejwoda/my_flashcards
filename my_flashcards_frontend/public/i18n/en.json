@@ -6,5 +6,18 @@
   "account": "Account",
   "logout": "Log out",
   "login": "Log in",
-  "register": "Register"
+  "register": "Register",
+  "words": "Words",
+  "actions": "Akcje",
+  "learn": "Learn",
+  "again": "Repeat",
+  "easy": "Easy",
+  "medium": "Medium",
+  "hard": "Hard",
+  "translation": "Translation",
+  "preview": "Preview",
+  "filter": "Filter",
+  "front_page" : "Front page",
+  "reverse_page": "Reverse page",
+  "preview_deck": "Preview deck"
 }

@@ -1,0 +1,32 @@
+.preview{
+  text-align: center;
+  &__middle{
+    margin-top: 2rem;
+  }
+  &__search{
+    padding: 0.4rem;
+
+  }
+  &__buttons{
+    display:flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: flex-end;
+    margin-top: 2rem;
+  }
+  &__table{
+    display:flex;
+    justify-content: center;
+    margin-top: 2rem;
+    width: 100%;
+    border-collapse: collapse;
+    td{
+      padding: 10px 5px 10px;
+    }
+    table, th, td {
+      width: 100%;
+      border: 1px solid white;
+      border-collapse: collapse;
+    }
+  }
+}

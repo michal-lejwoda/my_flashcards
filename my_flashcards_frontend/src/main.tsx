@@ -13,6 +13,7 @@ import Login from "./components/Login.tsx";
 import AddFile from "./components/AddFile.tsx";
 import "../i18n.tsx"
 import Account from "./components/Account.tsx";
+import Preview from "./components/Preview.tsx";
 // import {i18n} from "../i18n.tsx";
 
 
@@ -32,6 +33,7 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
                         <Route path="/login" element={<Login/>}/>
                         <Route path="/register" element={<Register/>}/>
                         <Route path="/account" element={<Account/>}></Route>
+                        <Route path="/preview" element={<Preview/>}></Route>
 
                     </Routes>
                 </div>

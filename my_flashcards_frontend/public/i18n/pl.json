@@ -6,5 +6,19 @@
   "account": "Konto",
   "logout": "Wyloguj się",
   "login": "Zaloguj się",
-  "register": "Zarejestruj się"
+  "register": "Zarejestruj się",
+  "words": "Słowa",
+  "actions": "Akcje",
+  "learn": "Nauka",
+  "again": "Powtórz",
+  "easy": "Łatwe",
+  "medium": "Średnie",
+  "hard": "Ciężkie",
+  "translation": "Tłumaczenie",
+  "preview": "Podgląd",
+  "filter": "Filtrowanie",
+  "front_page" : "Przód",
+  "reverse_page": "Odwrót",
+  "preview_deck": "Podgląd talii"
+
 }

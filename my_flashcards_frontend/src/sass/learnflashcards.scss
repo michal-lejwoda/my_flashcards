@@ -1,0 +1,29 @@
+.learnflashcards {
+  text-align: center;
+  &__buttons{
+    margin-top: 1rem;
+  }
+  &__translation{
+    margin-top: 4rem;
+  }
+  &__container {
+    border-radius: 20px;
+    min-height: 300px;
+    border: 2px solid white;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    word-break: break-word;
+    text-align: center;
+
+  }
+}
+.translation{
+  &__title{
+    padding-bottom: 1rem;
+  }
+
+}
