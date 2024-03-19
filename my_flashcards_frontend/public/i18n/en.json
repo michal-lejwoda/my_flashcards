@@ -19,5 +19,17 @@
   "filter": "Filter",
   "front_page" : "Front page",
   "reverse_page": "Reverse page",
-  "preview_deck": "Preview deck"
+  "preview_deck": "Preview deck",
+  "username": "Username",
+  "password": "Password",
+  "submit": "Submit",
+  "enter_username": "Enter username",
+  "enter_email": "Enter email",
+  "repeat_password": "Repeat password",
+  "email": "Email",
+  "learn_single_deck": "Learn single deck",
+  "add_to_list": "Add to list",
+  "deck": "Deck",
+  "number_of_words": "Number of words",
+  "learn_more": "Learn more"
 }

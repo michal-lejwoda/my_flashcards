@@ -1,0 +1,16 @@
+.choose_and_learn{
+  &__table {
+    width: 100%;
+    border-collapse: collapse;
+    table, th, td {
+      border: 1px solid white;
+      border-collapse: collapse;
+    }
+  }
+  &__submit{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    margin-bottom: 1rem;
+  }
+}

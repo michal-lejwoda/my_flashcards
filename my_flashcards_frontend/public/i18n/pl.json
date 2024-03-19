@@ -19,6 +19,19 @@
   "filter": "Filtrowanie",
   "front_page" : "Przód",
   "reverse_page": "Odwrót",
-  "preview_deck": "Podgląd talii"
+  "preview_deck": "Podgląd talii",
+  "username": "Nazwa użytkownika",
+  "password": "Hasło",
+  "submit": "Zatwierdź",
+  "enter_username": "Wprowadź nazwę użytkownika",
+  "enter_email": "Wprowadź email",
+  "repeat_password": "Powtórz hasło",
+  "email": "Email",
+  "add_to_list": "Dodaj do listy",
+  "learn_single_deck": "Ucz się pojedyńczej talii",
+  "deck": "Talia",
+  "number_of_words": "Liczba słów",
+  "learn_more": "Ucz się wielu"
+
 
 }
