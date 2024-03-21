@@ -91,6 +91,8 @@ services:
     ports:
       - '5555:5555'
     command: /start-flower
+    environment:
+      - FLOWER_BASIC_AUTH=username:password
 
   react:
     image: vite-react

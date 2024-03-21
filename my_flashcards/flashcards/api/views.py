@@ -48,7 +48,8 @@ class FileUploadViewSet(ViewSet):
         if file_obj:
             try:
                 # Odczytanie zawartości pliku do ciągu bajtów
-                file_data = file_obj.read().decode('utf-8')
+                file_data = file_obj.read()
+                             # .read().decode('utf-8'))
 
                 # Przekazanie danych pliku jako argument do apply_async()
                 id = get_words_from_file.apply_async(args=[file_data]).id
