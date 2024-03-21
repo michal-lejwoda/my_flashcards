@@ -1,7 +1,10 @@
 from django.contrib.auth.models import AbstractUser
 from django.db.models import CharField
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
+from rest_framework.authtoken.models import Token
 
 
 class User(AbstractUser):
@@ -24,3 +27,14 @@ class User(AbstractUser):
 
         """
         return reverse("users:detail", kwargs={"username": self.username})
+
+    @property
+    def return_dict_data_with_token(self):
+        token = Token.objects.get(user=self).key
+        return {'response': "Poprawnie zarejestrowano użytkownika", 'email': self.email, 'username': self.username,
+                'token': token}
+
+@receiver(post_save, sender=User)
+def create_auth_token(sender, instance=None, created=False, **kwargs):
+    if created:
+        Token.objects.create(user=instance)

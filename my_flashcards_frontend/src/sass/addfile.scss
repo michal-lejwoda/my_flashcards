@@ -1,0 +1,9 @@
+.addfile{
+  text-align: center;
+  &__dropzone{
+    padding: 1rem;
+    border: 1px solid white;
+    cursor: pointer;
+
+  }
+}

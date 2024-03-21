@@ -31,7 +31,8 @@
   "learn_single_deck": "Ucz się pojedyńczej talii",
   "deck": "Talia",
   "number_of_words": "Liczba słów",
-  "learn_more": "Ucz się wielu"
-
+  "learn_more": "Ucz się wielu",
+  "max_size_file": "Maksymalny rozmiar pliku",
+  "drag_and_drop_file": "Przeciągnij i upuść plik"
 
 }

@@ -31,5 +31,8 @@
   "add_to_list": "Add to list",
   "deck": "Deck",
   "number_of_words": "Number of words",
-  "learn_more": "Learn more"
+  "learn_more": "Learn more",
+  "max_size_file": "Max file size",
+  "drag_and_drop_file": "Drag and Drop file"
+
 }
