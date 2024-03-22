@@ -1,5 +1,6 @@
 from celery.result import AsyncResult
 from django.db import IntegrityError
+from django.db.models import Q
 from rest_framework import status
 from rest_framework.decorators import action
 from rest_framework.mixins import CreateModelMixin, ListModelMixin, RetrieveModelMixin, DestroyModelMixin
@@ -20,6 +21,11 @@ from my_flashcards.flashcards.tasks import get_words_from_file
 #     page_size_query_param = 'page_size'
 #     max_page_size = 1000  # Maksymalna ilość elementów na stronie
 # Create your views here.
+#TODO REmove This custom
+class CustomPagination(PageNumberPagination):
+    page_size = 3
+    page_size_query_param = 'page_size'
+
 class DeckViewSet(CreateModelMixin, ListModelMixin, GenericViewSet):
     permission_classes = [IsAuthenticated]
     serializer_class = DeckSerializer
@@ -122,7 +128,11 @@ class CreateDeckFromMultipleDecksViewSet(ViewSet):
 class WordViewSet(ListModelMixin, DestroyModelMixin, GenericViewSet):
     permission_classes = [IsAuthenticated]
     serializer_class = WordSerializer
-    pagination_class = PageNumberPagination
+    pagination_class = CustomPagination
 
     def get_queryset(self):
-        return Word.objects.filter(user=self.request.user)
+        queryset = Word.objects.filter(user=self.request.user)
+        search_query = self.request.query_params.get('search', None)
+        if search_query:
+            queryset = queryset.filter(Q(front_side__icontains=search_query) | Q(back_side__icontains=search_query))  # nazwa to pole, po którym chcesz wyszukiwać
+        return queryset
