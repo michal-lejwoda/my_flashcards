@@ -103,3 +103,12 @@ msgstr "Problemy z plikiem"
 
 msgid "Missing task_id parameter"
 msgstr "Brakuje parametru task_id"
+
+msgid "The field is required"
+msgstr "Pole jest wymagane"
+
+msgid "Both sites are the same"
+msgstr "Obie strony są takie same"
+
+msgid "Polish"
+msgstr "Polski"
