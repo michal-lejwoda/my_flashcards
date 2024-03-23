@@ -41,11 +41,11 @@ class SingleDeckViewSet(ErrorHandlingMixin, RetrieveModelMixin, GenericViewSet):
             deck = Deck.objects.get(pk=pk, user=self.request.user)
             word = Word.objects.get(pk=word_id, user=self.request.user)
             deck.words.remove(word)
-            return self.handle_word_has_been_removed_from_deck()
+            return self.handle_response(_("The word has been removed from the deck"), status.HTTP_200_OK)
         except Deck.DoesNotExist:
-            return self.handle_deck_not_found()
+            return self.handle_response(_("Deck does not exist"), status.HTTP_404_NOT_FOUND)
         except Word.DoesNotExist:
-            return self.handle_word_not_found()
+            return self.handle_response(_("Word does not exist"), status.HTTP_404_NOT_FOUND)
 
     @action(detail=True, methods=['POST'], permission_classes=[IsAuthenticated])
     def create_word_for_deck(self, request, pk=None):
@@ -56,44 +56,17 @@ class SingleDeckViewSet(ErrorHandlingMixin, RetrieveModelMixin, GenericViewSet):
                 word = Word.objects.create(front_side=serializer.validated_data['front_side'],
                                            back_side=serializer.validated_data['back_side'], user=self.request.user)
                 deck.words.add(word)
-                return self.handle_created_data()
+                return self.handle_response(_("Word created"), status.HTTP_201_CREATED)
             else:
-                return self.handle_display_errors(serializer.errors)
+                # TODO Back here
+                return self.handle_response(serializer.errors, status.HTTP_400_BAD_REQUEST)
         except Deck.DoesNotExist:
-            return self.handle_deck_not_found()
+            return self.handle_response(_("Deck does not exist"), status.HTTP_404_NOT_FOUND)
         except IntegrityError:
-            return self.handle_integrity_error()
-
-    def handle_created_data(self):
-        return Response(status=status.HTTP_201_CREATED)
-
-    def handle_display_errors(self, errors):
-        return Response(errors, status=status.HTTP_400_BAD_REQUEST)
-
-    def handle_word_has_been_removed_from_deck(self):
-        return Response({"message": _("The word has been removed from the deck")},
-                        status=status.HTTP_200_OK)
-
-    def handle_deck_not_found(self):
-        return Response(
-            {"message": _("Deck does not exist")},
-            status=status.HTTP_404_NOT_FOUND
-        )
-
-    def handle_word_not_found(self):
-        return Response(
-            {"message": _("Word does not exist")},
-            status=status.HTTP_404_NOT_FOUND
-        )
-
-    def handle_integrity_error(self):
-        return Response(
-            {"message": _("Incorrect data")},
-            status=status.HTTP_400_BAD_REQUEST
-        )
+            return self.handle_response(_("Incorrect data"), status.HTTP_400_BAD_REQUEST)
 
 
-class FileUploadViewSet(ViewSet):
+class FileUploadViewSet(ErrorHandlingMixin, ViewSet):
     parser_classes = [MultiPartParser]
 
     def create(self, request):
@@ -102,11 +75,11 @@ class FileUploadViewSet(ViewSet):
             try:
                 file_data = file_obj.read()
                 task_id = get_words_from_file.apply_async(args=[file_data]).id
-                return self.handle_file_was_uploaded(task_id)
-            except Exception:
-                return self.handle_error_while_reading_file()
+                return self .handle_response({"message": _("The file was successfully uploaded"), "task_id": task_id}, status.HTTP_200_OK)
+            except:
+                return self.handle_response(_("Error while reading a file"), status.HTTP_500_INTERNAL_SERVER_ERROR)
         else:
-            self.handle_file_not_found()
+            return self.handle_response(_("File not found"), status.HTTP_400_BAD_REQUEST)
 
     @action(detail=False, methods=['GET'], permission_classes=[IsAuthenticated])
     def get_task(self, request):
@@ -115,28 +88,15 @@ class FileUploadViewSet(ViewSet):
             try:
                 result = AsyncResult(task_id)
                 if result.successful():
-                    return Response({"status": "SUCCESS", "result": result.get()}, status=status.HTTP_200_OK)
+                    return self.handle_response({"status": _("SUCCESS"), "result": result.get()}, status=status.HTTP_200_OK)
                 elif result.failed():
-                    return Response({"status": "FAILED", "error": str(result.result)},
-                                    status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+                    return self.handle_response({"status": _("FAILED"), "error": str(result.result)}, status.HTTP_500_INTERNAL_SERVER_ERROR)
                 else:
-                    return Response({"status": "PENDING", "message": "Task is still pending."},
-                                    status=status.HTTP_202_ACCEPTED)
-            except Exception as e:
-                return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+                    return self.handle_response({"status": _("PENDING"), "error": "Task is still pending."}, status.HTTP_202_ACCEPTED)
+            except :
+                return Response({"status": _("ERROR"), "error": _("File problems")}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         else:
-            return Response({"error": "Missing task_id parameter."}, status=status.HTTP_400_BAD_REQUEST)
-
-    def handle_file_was_uploaded(self, task_id: str):
-        return Response({"status": "SUCCESS", "message": _("The file was successfully uploaded"), "task_id": task_id},
-                        status=status.HTTP_200_OK)
-
-    def handle_error_while_reading_file(self):
-        return Response({"status": "FAILED", "message": _("Error while reading a file")},
-                        status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-
-    def handle_file_not_found(self):
-        return Response({"status": "FAILED", "message": _("File not found")}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({"status": _("ERROR"), "error": _("Missing task_id parameter")}, status=status.HTTP_400_BAD_REQUEST)
 
 
 class CreateDeckFromMultipleDecksViewSet(ViewSet):

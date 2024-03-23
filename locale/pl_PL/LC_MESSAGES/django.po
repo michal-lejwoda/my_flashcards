@@ -82,3 +82,24 @@ msgstr "Błąd podczas odczytu pliku"
 
 msgid "File not found"
 msgstr "Nie znaleziono pliku"
+
+msgid "Word created"
+msgstr "Słowo zostało stworzono"
+
+msgid "SUCCESS"
+msgstr "SUKCES"
+
+msgid "FAILED"
+msgstr "NIE POWIODŁO SIĘ"
+
+msgid "PENDING"
+msgstr "OCZEKIWANIE"
+
+msgid "ERROR"
+msgstr "BŁĄD"
+
+msgid "File problems"
+msgstr "Problemy z plikiem"
+
+msgid "Missing task_id parameter"
+msgstr "Brakuje parametru task_id"
