@@ -23,6 +23,14 @@ from django.utils.translation import gettext_lazy as _
 #     max_page_size = 1000  # Maksymalna ilość elementów na stronie
 # Create your views here.
 # TODO REmove This custom
+class ErrorHandlingMixin:
+    def handle_response(self, message, status_code):
+        return Response(
+            {"message": message},
+            status=status_code
+        )
+
+
 class CustomPagination(PageNumberPagination):
     page_size = 3
     page_size_query_param = 'page_size'
