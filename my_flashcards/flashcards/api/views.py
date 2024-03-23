@@ -1,6 +1,7 @@
 from celery.result import AsyncResult
 from django.db import IntegrityError
 from django.db.models import Q
+from django.utils.translation import gettext_lazy as _
 from rest_framework import status
 from rest_framework.decorators import action
 from rest_framework.mixins import CreateModelMixin, ListModelMixin, RetrieveModelMixin, DestroyModelMixin
@@ -11,29 +12,10 @@ from rest_framework.response import Response
 from rest_framework.viewsets import GenericViewSet, ViewSet
 
 from my_flashcards.flashcards.api.serializers import DeckSerializer, SingleDeckSerializer, WordSerializer
+from my_flashcards.flashcards.errors import ErrorHandlingMixin
 from my_flashcards.flashcards.models import Deck, Word
+from my_flashcards.flashcards.pagination import CustomPagination
 from my_flashcards.flashcards.tasks import get_words_from_file
-from django.utils.translation import gettext_lazy as _
-
-
-# TODO REmove maybe later
-# class DeckPagination(PageNumberPagination):
-#     page_size = 10  # Ustaw ilość elementów na stronie
-#     page_size_query_param = 'page_size'
-#     max_page_size = 1000  # Maksymalna ilość elementów na stronie
-# Create your views here.
-# TODO REmove This custom
-class ErrorHandlingMixin:
-    def handle_response(self, message, status_code):
-        return Response(
-            {"message": message},
-            status=status_code
-        )
-
-
-class CustomPagination(PageNumberPagination):
-    page_size = 3
-    page_size_query_param = 'page_size'
 
 
 class DeckViewSet(CreateModelMixin, ListModelMixin, GenericViewSet):
@@ -45,7 +27,7 @@ class DeckViewSet(CreateModelMixin, ListModelMixin, GenericViewSet):
         return Deck.objects.filter(user=self.request.user)
 
 
-class SingleDeckViewSet(RetrieveModelMixin, GenericViewSet):
+class SingleDeckViewSet(ErrorHandlingMixin, RetrieveModelMixin, GenericViewSet):
     permission_classes = [IsAuthenticated]
     serializer_class = SingleDeckSerializer
 
@@ -84,8 +66,10 @@ class SingleDeckViewSet(RetrieveModelMixin, GenericViewSet):
 
     def handle_created_data(self):
         return Response(status=status.HTTP_201_CREATED)
+
     def handle_display_errors(self, errors):
         return Response(errors, status=status.HTTP_400_BAD_REQUEST)
+
     def handle_word_has_been_removed_from_deck(self):
         return Response({"message": _("The word has been removed from the deck")},
                         status=status.HTTP_200_OK)
@@ -153,6 +137,8 @@ class FileUploadViewSet(ViewSet):
 
     def handle_file_not_found(self):
         return Response({"status": "FAILED", "message": _("File not found")}, status=status.HTTP_400_BAD_REQUEST)
+
+
 class CreateDeckFromMultipleDecksViewSet(ViewSet):
     permission_classes = [IsAuthenticated]
     serializer_class = SingleDeckSerializer
@@ -179,5 +165,5 @@ class WordViewSet(ListModelMixin, DestroyModelMixin, GenericViewSet):
         search_query = self.request.query_params.get('search', None)
         if search_query:
             queryset = queryset.filter(Q(front_side__icontains=search_query) | Q(
-                back_side__icontains=search_query))  # nazwa to pole, po którym chcesz wyszukiwać
+                back_side__icontains=search_query))
         return queryset
