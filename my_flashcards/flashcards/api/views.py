@@ -13,6 +13,7 @@ from rest_framework.viewsets import GenericViewSet, ViewSet
 from my_flashcards.flashcards.api.serializers import DeckSerializer, SingleDeckSerializer, WordSerializer
 from my_flashcards.flashcards.models import Deck, Word
 from my_flashcards.flashcards.tasks import get_words_from_file
+from django.utils.translation import gettext_lazy as _
 
 
 # TODO REmove maybe later
@@ -21,10 +22,11 @@ from my_flashcards.flashcards.tasks import get_words_from_file
 #     page_size_query_param = 'page_size'
 #     max_page_size = 1000  # Maksymalna ilość elementów na stronie
 # Create your views here.
-#TODO REmove This custom
+# TODO REmove This custom
 class CustomPagination(PageNumberPagination):
     page_size = 3
     page_size_query_param = 'page_size'
+
 
 class DeckViewSet(CreateModelMixin, ListModelMixin, GenericViewSet):
     permission_classes = [IsAuthenticated]
@@ -42,17 +44,18 @@ class SingleDeckViewSet(RetrieveModelMixin, GenericViewSet):
     def get_queryset(self):
         return Deck.objects.filter(user=self.request.user)
 
-    @action(detail=True, methods=['DELETE'], permission_classes=[IsAuthenticated], url_path='delete_word_from_deck/(?P<word_id>[^/.]+)')
+    @action(detail=True, methods=['DELETE'], permission_classes=[IsAuthenticated],
+            url_path='delete_word_from_deck/(?P<word_id>[^/.]+)')
     def delete_word_from_deck(self, request, pk=None, word_id=None):
         try:
             deck = Deck.objects.get(pk=pk, user=self.request.user)
             word = Word.objects.get(pk=word_id, user=self.request.user)
             deck.words.remove(word)
-            return Response({"message": "Słowo zostało usunięte z talii."}, status=status.HTTP_200_OK)
+            return self.handle_word_has_been_removed_from_deck()
         except Deck.DoesNotExist:
-            return Response({"message": "Talia nie istnieje."}, status=status.HTTP_404_NOT_FOUND)
+            return self.handle_deck_not_found()
         except Word.DoesNotExist:
-            return Response({"message": "Słowo nie istnieje."}, status=status.HTTP_404_NOT_FOUND)
+            return self.handle_word_not_found()
 
     @action(detail=True, methods=['POST'], permission_classes=[IsAuthenticated])
     def create_word_for_deck(self, request, pk=None):
@@ -63,13 +66,39 @@ class SingleDeckViewSet(RetrieveModelMixin, GenericViewSet):
                 word = Word.objects.create(front_side=serializer.validated_data['front_side'],
                                            back_side=serializer.validated_data['back_side'], user=self.request.user)
                 deck.words.add(word)
-                return Response(status=status.HTTP_201_CREATED)
+                return self.handle_created_data()
             else:
-                return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+                return self.handle_display_errors(serializer.errors)
         except Deck.DoesNotExist:
-            return Response({"message": "Nie ma takiej talii"}, status=status.HTTP_201_CREATED)
+            return self.handle_deck_not_found()
         except IntegrityError:
-            return Response({"message": "Niepoprawne dane"}, status=status.HTTP_400_BAD_REQUEST)
+            return self.handle_integrity_error()
+
+    def handle_created_data(self):
+        return Response(status=status.HTTP_201_CREATED)
+    def handle_display_errors(self, errors):
+        return Response(errors, status=status.HTTP_400_BAD_REQUEST)
+    def handle_word_has_been_removed_from_deck(self):
+        return Response({"message": _("The word has been removed from the deck")},
+                        status=status.HTTP_200_OK)
+
+    def handle_deck_not_found(self):
+        return Response(
+            {"message": _("Deck does not exist")},
+            status=status.HTTP_404_NOT_FOUND
+        )
+
+    def handle_word_not_found(self):
+        return Response(
+            {"message": _("Word does not exist")},
+            status=status.HTTP_404_NOT_FOUND
+        )
+
+    def handle_integrity_error(self):
+        return Response(
+            {"message": _("Incorrect data")},
+            status=status.HTTP_400_BAD_REQUEST
+        )
 
 
 class FileUploadViewSet(ViewSet):
@@ -81,13 +110,11 @@ class FileUploadViewSet(ViewSet):
             try:
                 file_data = file_obj.read()
                 task_id = get_words_from_file.apply_async(args=[file_data]).id
-                return Response({"status": "SUCCESS", "message": "Plik został pomyślnie przesłany", "task_id": task_id},
-                                status=status.HTTP_200_OK)
+                return self.handle_file_was_uploaded(task_id)
             except Exception:
-                return Response({"status": "FAILED", "message": "Błąd podczas odczytu pliku"},
-                                status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+                return self.handle_error_while_reading_file()
         else:
-            return Response({"status": "FAILED", "message": "Nie znaleziono pliku"}, status=status.HTTP_400_BAD_REQUEST)
+            self.handle_file_not_found()
 
     @action(detail=False, methods=['GET'], permission_classes=[IsAuthenticated])
     def get_task(self, request):
@@ -108,7 +135,16 @@ class FileUploadViewSet(ViewSet):
         else:
             return Response({"error": "Missing task_id parameter."}, status=status.HTTP_400_BAD_REQUEST)
 
+    def handle_file_was_uploaded(self, task_id: str):
+        return Response({"status": "SUCCESS", "message": _("The file was successfully uploaded"), "task_id": task_id},
+                        status=status.HTTP_200_OK)
 
+    def handle_error_while_reading_file(self):
+        return Response({"status": "FAILED", "message": _("Error while reading a file")},
+                        status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+    def handle_file_not_found(self):
+        return Response({"status": "FAILED", "message": _("File not found")}, status=status.HTTP_400_BAD_REQUEST)
 class CreateDeckFromMultipleDecksViewSet(ViewSet):
     permission_classes = [IsAuthenticated]
     serializer_class = SingleDeckSerializer
@@ -134,5 +170,6 @@ class WordViewSet(ListModelMixin, DestroyModelMixin, GenericViewSet):
         queryset = Word.objects.filter(user=self.request.user)
         search_query = self.request.query_params.get('search', None)
         if search_query:
-            queryset = queryset.filter(Q(front_side__icontains=search_query) | Q(back_side__icontains=search_query))  # nazwa to pole, po którym chcesz wyszukiwać
+            queryset = queryset.filter(Q(front_side__icontains=search_query) | Q(
+                back_side__icontains=search_query))  # nazwa to pole, po którym chcesz wyszukiwać
         return queryset

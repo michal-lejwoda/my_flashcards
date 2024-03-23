@@ -61,3 +61,24 @@ msgstr "Czy jest publiczne"
 
 msgid "Words"
 msgstr "Słowa"
+
+msgid "Deck does not exist"
+msgstr "Taka talia nie istnieje"
+
+msgid "Word does not exist"
+msgstr "Takie słowo nie istnieje"
+
+msgid "Incorrect data"
+msgstr "Niepoprawne dane"
+
+msgid "The word has been removed from the deck"
+msgstr "Słowo zostało usunięte z talii"
+
+msgid "The file was successfully uploaded"
+msgstr "Plik został pomyślnie przesłany"
+
+msgid "Error while reading a file"
+msgstr "Błąd podczas odczytu pliku"
+
+msgid "File not found"
+msgstr "Nie znaleziono pliku"
