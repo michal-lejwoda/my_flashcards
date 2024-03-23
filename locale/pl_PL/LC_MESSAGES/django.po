@@ -14,29 +14,50 @@ msgstr ""
 
 #: my_flashcards/users/admin.py:17
 msgid "Personal info"
-msgstr "Personal info"
+msgstr "Informacje osobiste"
 
 #: my_flashcards/users/admin.py:19
 msgid "Permissions"
-msgstr "Permissions"
+msgstr "Uprawnienia"
 
 #: my_flashcards/users/admin.py:30
 msgid "Important dates"
-msgstr "Dates importantes"
+msgstr "Ważne daty"
 
 #: my_flashcards/users/apps.py:7
 msgid "Users"
-msgstr "Utilisateurs"
+msgstr "Użytkownicy"
 
 #: my_flashcards/users/forms.py:24
 #: my_flashcards/users/tests/test_forms.py:36
 msgid "This username has already been taken."
-msgstr "Ce nom d'utilisateur est déjà pris."
+msgstr "Nazwa użytkownika jest w tej chwili zajęta"
 
 #: my_flashcards/users/models.py:15
 msgid "Name of User"
-msgstr "Nom de l'utilisateur"
+msgstr "Nazwa użytkownika"
 
 #: my_flashcards/users/views.py:23
 msgid "Information successfully updated"
-msgstr "Informations mises à jour avec succès"
+msgstr "Informacje zostały zaktualizowane"
+
+msgid "The field must contain at least 2 characters"
+msgstr "Pole musi zawierać co najmniej 2 znaki"
+
+msgid "Slug"
+msgstr "Slug"
+
+msgid "Name"
+msgstr "Nazwa"
+
+msgid "Front side"
+msgstr "Strona przednia"
+
+msgid "Back side"
+msgstr "Strona tylnia"
+
+msgid "Is public"
+msgstr "Czy jest publiczne"
+
+msgid "Words"
+msgstr "Słowa"
