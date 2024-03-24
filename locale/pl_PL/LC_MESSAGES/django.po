@@ -112,3 +112,6 @@ msgstr "Obie strony są takie same"
 
 msgid "Polish"
 msgstr "Polski"
+
+msgid "Correctly registered user"
+msgstr "Poprawnie zarejestrowano użytkownika"
