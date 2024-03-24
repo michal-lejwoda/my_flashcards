@@ -115,3 +115,6 @@ msgstr "Polski"
 
 msgid "Correctly registered user"
 msgstr "Poprawnie zarejestrowano użytkownika"
+
+msgid "Field 'deck is required"
+msgstr "Pole talia jest wymagane"

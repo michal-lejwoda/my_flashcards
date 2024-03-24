@@ -9,9 +9,10 @@ from rest_framework.pagination import PageNumberPagination
 from rest_framework.parsers import MultiPartParser
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
-from rest_framework.viewsets import GenericViewSet, ViewSet
+from rest_framework.viewsets import GenericViewSet, ViewSet, ModelViewSet
 
-from my_flashcards.flashcards.api.serializers import DeckSerializer, SingleDeckSerializer, WordSerializer
+from my_flashcards.flashcards.api.serializers import DeckSerializer, SingleDeckSerializer, WordSerializer, \
+    UserHistorySerializer
 from my_flashcards.flashcards.errors import ErrorHandlingMixin
 from my_flashcards.flashcards.models import Deck, Word
 from my_flashcards.flashcards.pagination import CustomPagination
@@ -75,7 +76,8 @@ class FileUploadViewSet(ErrorHandlingMixin, ViewSet):
             try:
                 file_data = file_obj.read()
                 task_id = get_words_from_file.apply_async(args=[file_data]).id
-                return self .handle_response({"message": _("The file was successfully uploaded"), "task_id": task_id}, status.HTTP_200_OK)
+                return self.handle_response({"message": _("The file was successfully uploaded"), "task_id": task_id},
+                                            status.HTTP_200_OK)
             except:
                 return self.handle_response(_("Error while reading a file"), status.HTTP_500_INTERNAL_SERVER_ERROR)
         else:
@@ -88,15 +90,20 @@ class FileUploadViewSet(ErrorHandlingMixin, ViewSet):
             try:
                 result = AsyncResult(task_id)
                 if result.successful():
-                    return self.handle_response({"status": _("SUCCESS"), "result": result.get()}, status=status.HTTP_200_OK)
+                    return self.handle_response({"status": _("SUCCESS"), "result": result.get()},
+                                                status=status.HTTP_200_OK)
                 elif result.failed():
-                    return self.handle_response({"status": _("FAILED"), "error": str(result.result)}, status.HTTP_500_INTERNAL_SERVER_ERROR)
+                    return self.handle_response({"status": _("FAILED"), "error": str(result.result)},
+                                                status.HTTP_500_INTERNAL_SERVER_ERROR)
                 else:
-                    return self.handle_response({"status": _("PENDING"), "error": "Task is still pending."}, status.HTTP_202_ACCEPTED)
-            except :
-                return Response({"status": _("ERROR"), "error": _("File problems")}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+                    return self.handle_response({"status": _("PENDING"), "error": "Task is still pending."},
+                                                status.HTTP_202_ACCEPTED)
+            except:
+                return Response({"status": _("ERROR"), "error": _("File problems")},
+                                status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         else:
-            return Response({"status": _("ERROR"), "error": _("Missing task_id parameter")}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({"status": _("ERROR"), "error": _("Missing task_id parameter")},
+                            status=status.HTTP_400_BAD_REQUEST)
 
 
 class CreateDeckFromMultipleDecksViewSet(ViewSet):
@@ -127,3 +134,39 @@ class WordViewSet(ListModelMixin, DestroyModelMixin, GenericViewSet):
             queryset = queryset.filter(Q(front_side__icontains=search_query) | Q(
                 back_side__icontains=search_query))
         return queryset
+
+
+class LearnViewSet(CreateModelMixin, GenericViewSet):
+    permission_classes = [IsAuthenticated]
+    serializer_class = UserHistorySerializer
+    def create(self, request, *args, **kwargs):
+        data = request.data.copy()
+        data['user'] = self.request.user.id
+        if data['type'] == 'LEARN':
+            result = self.get_learn_data()
+        elif data['type'] == 'BROWSE':
+            result = self.get_browse_data()
+        elif data['type'] == 'BROWSE_AND_LEARN':
+            result = self.get_browse_and_learn_data()
+        else:
+            return Response(status=status.HTTP_400_BAD_REQUEST)
+        serializer = self.get_serializer(data=data)
+        serializer.is_valid(raise_exception=True)
+        self.perform_create(serializer)
+        user_history_instance = serializer.instance
+        #TODO Back here
+        headers = self.get_success_headers(serializer.data)
+        print(headers)
+        return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
+
+    def get_learn_data(self):
+        print('get_learn_data')
+        return 'get_learn_data'
+
+    def get_browse_data(self):
+        print('get_browse_data')
+        return 'get_browse_data'
+
+    def get_browse_and_learn_data(self):
+        print('get_browse_and_learn_data')
+        return 'get_browse_and_learn_data'

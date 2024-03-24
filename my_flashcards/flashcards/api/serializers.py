@@ -1,6 +1,7 @@
-from rest_framework import serializers
 from django.utils.translation import gettext_lazy as _
-from my_flashcards.flashcards.models import Deck, Word
+from rest_framework import serializers
+
+from my_flashcards.flashcards.models import Deck, Word, UserHistory
 
 
 class WordSerializer(serializers.ModelSerializer):
@@ -19,21 +20,34 @@ class WordSerializer(serializers.ModelSerializer):
         if len(value) < 2:
             raise serializers.ValidationError(_("The field must contain at least 2 characters"))
         return value
+
     def validate(self, data):
         # Dodatkowe niestandardowe walidacje można tutaj umieścić
         if data.get('front_side') == data.get('back_side'):
             raise serializers.ValidationError(_("Both sites are the same"))
         return data
 
-class DeckSerializer(serializers.ModelSerializer):
 
+class DeckSerializer(serializers.ModelSerializer):
     class Meta:
         model = Deck
         exclude = ['words']
 
+
 class SingleDeckSerializer(serializers.ModelSerializer):
     words = WordSerializer(many=True, read_only=True)
+
     class Meta:
         model = Deck
         fields = '__all__'
 
+
+class UserHistorySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = UserHistory
+        fields = '__all__'
+
+    def validate_deck(self, value):
+        if not value:
+            raise serializers.ValidationError(_("Field 'deck is required"))
+        return value
