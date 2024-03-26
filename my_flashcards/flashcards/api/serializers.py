@@ -4,6 +4,7 @@ from rest_framework import serializers
 from my_flashcards.flashcards.models import Deck, Word, UserHistory
 
 
+
 class WordSerializer(serializers.ModelSerializer):
     class Meta:
         model = Word
@@ -27,7 +28,11 @@ class WordSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError(_("Both sites are the same"))
         return data
 
-
+class DeckSerializerWithAllFields(serializers.ModelSerializer):
+    words = WordSerializer(many=True)
+    class Meta:
+        model = Deck
+        fields = '__all__'
 class DeckSerializer(serializers.ModelSerializer):
     class Meta:
         model = Deck
@@ -51,3 +56,7 @@ class UserHistorySerializer(serializers.ModelSerializer):
         if not value:
             raise serializers.ValidationError(_("Field 'deck is required"))
         return value
+
+class CreateUserHistorySerializer(serializers.Serializer):
+    words = WordSerializer(many=True)
+    user_history = UserHistorySerializer()

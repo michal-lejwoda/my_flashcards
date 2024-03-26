@@ -1,5 +1,8 @@
+
+
 from django.core.validators import MinLengthValidator, MaxValueValidator
 from django.db import models
+from django.utils import timezone
 from django_extensions.db.models import TimeStampedModel
 from django.utils.translation import gettext_lazy as _
 
@@ -29,7 +32,8 @@ class Word(TimeStampedModel):
     back_side = models.CharField(max_length=200,
                                  validators=[MinLengthValidator(2, message=_('The field must contain at least 2 characters'))],
                                  verbose_name=_('Back side'))
-    next_learn = models.DateTimeField(null=True, blank=True)
+    is_correct = models.BooleanField(default=False)
+    next_learn = models.DateTimeField(default=timezone.now)
     user = models.ForeignKey(User, on_delete=models.CASCADE, default=None, null=True)
     level = models.IntegerField(default=1, validators=[MaxValueValidator(6)])
 

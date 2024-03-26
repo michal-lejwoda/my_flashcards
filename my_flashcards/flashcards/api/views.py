@@ -1,6 +1,7 @@
 from celery.result import AsyncResult
 from django.db import IntegrityError
 from django.db.models import Q
+from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 from rest_framework import status
 from rest_framework.decorators import action
@@ -12,9 +13,9 @@ from rest_framework.response import Response
 from rest_framework.viewsets import GenericViewSet, ViewSet, ModelViewSet
 
 from my_flashcards.flashcards.api.serializers import DeckSerializer, SingleDeckSerializer, WordSerializer, \
-    UserHistorySerializer
+    UserHistorySerializer, DeckSerializerWithAllFields, CreateUserHistorySerializer
 from my_flashcards.flashcards.errors import ErrorHandlingMixin
-from my_flashcards.flashcards.models import Deck, Word
+from my_flashcards.flashcards.models import Deck, Word, UserHistory
 from my_flashcards.flashcards.pagination import CustomPagination
 from my_flashcards.flashcards.tasks import get_words_from_file
 
@@ -139,29 +140,58 @@ class WordViewSet(ListModelMixin, DestroyModelMixin, GenericViewSet):
 class LearnViewSet(CreateModelMixin, GenericViewSet):
     permission_classes = [IsAuthenticated]
     serializer_class = UserHistorySerializer
+
+    def get(self, request, *args, **kwargs):
+        pass
     def create(self, request, *args, **kwargs):
         data = request.data.copy()
         data['user'] = self.request.user.id
-        if data['type'] == 'LEARN':
-            result = self.get_learn_data()
-        elif data['type'] == 'BROWSE':
-            result = self.get_browse_data()
-        elif data['type'] == 'BROWSE_AND_LEARN':
-            result = self.get_browse_and_learn_data()
-        else:
-            return Response(status=status.HTTP_400_BAD_REQUEST)
+        deck = Deck.objects.get(id=data.get('deck'))
         serializer = self.get_serializer(data=data)
         serializer.is_valid(raise_exception=True)
         self.perform_create(serializer)
         user_history_instance = serializer.instance
+        if data['type'] == 'LEARN':
+            result = self.get_learned_data(deck, user_history_instance)
+            create_user_history = CreateUserHistorySerializer(result)
+            # words = WordSerializer(result, many=True)
+            return Response(create_user_history.data, status=status.HTTP_200_OK)
+        elif data['type'] == 'BROWSE':
+            result = self.get_browse_data()
+            deck_serializer = DeckSerializer(result)
+        elif data['type'] == 'BROWSE_AND_LEARN':
+            result = self.get_browse_and_learn_data()
+            deck_serializer = DeckSerializer(result)
+        else:
+            return Response(status=status.HTTP_400_BAD_REQUEST)
+
+        # if deck_serializer.is_valid():
+        #     # Jeśli dane są poprawne, uzyskaj zserializowane dane
+        #     serialized_data = deck_serializer.data
+        #
+        #     # Zwróć zserializowane dane jako odpowiedź
+        #     return Response(serialized_data, status=status.HTTP_200_OK)
+        # else:
+        #     # Jeśli dane są niepoprawne, obsłuż błąd
+        #     errors = deck_serializer.errors
+        #     return Response(errors, status=status.HTTP_400_BAD_REQUEST)
+
+        # print("type(user_history_instance)")
+        # print(type(user_history_instance))
+        # user_history_instance.correct_flashcards.add(*learned_data)
         #TODO Back here
         headers = self.get_success_headers(serializer.data)
-        print(headers)
         return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
 
-    def get_learn_data(self):
-        print('get_learn_data')
-        return 'get_learn_data'
+    def get_learned_data(self, deck: Deck, user_history_instance: UserHistory) -> UserHistory:
+        words = Word.objects.filter(deck=deck).filter(Q(next_learn__gt=timezone.now()) & Q(is_correct=True))
+        user_history_instance.correct_flashcards.add(*words)
+        correct_data = deck.words.exclude(id__in=user_history_instance.correct_flashcards.values_list('id', flat=True))
+        return {"user_history": user_history_instance.id, "words": correct_data}
+    def get_learn_data(self, deck: Deck):
+        # words = Word.objects.filter(deck=deck, next_learn__lte =timezone.now())
+        words = Word.objects.filter(deck=deck).filter(Q(next_learn__lte=timezone.now()) | Q(is_correct=False))
+        return words
 
     def get_browse_data(self):
         print('get_browse_data')
