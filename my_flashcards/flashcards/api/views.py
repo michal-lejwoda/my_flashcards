@@ -113,12 +113,10 @@ class CreateDeckFromMultipleDecksViewSet(ViewSet):
 
     def create(self, request):
         data = request.data
-        decks_ids = data.get('decks')
+        decks_ids = data.getlist('decks')
         words = Deck.objects.filter(id__in=decks_ids, user=request.user).distinct().values_list('words', flat=True)
         new_deck = Deck.objects.create(user=request.user, name=data.get('name'))
         new_deck.words.add(*words)
-        # TODO Don't have to use it if blank
-        # new_deck.save()
         serializer = self.serializer_class(new_deck)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
@@ -194,9 +192,7 @@ class LearnViewSet(CreateModelMixin, GenericViewSet):
         return words
 
     def get_browse_data(self):
-        print('get_browse_data')
         return 'get_browse_data'
 
     def get_browse_and_learn_data(self):
-        print('get_browse_and_learn_data')
         return 'get_browse_and_learn_data'

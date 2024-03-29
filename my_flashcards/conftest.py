@@ -25,10 +25,16 @@ def users():
 
 
 @pytest.fixture()
-def decks():
-    user = User.objects.create_user(username='test_user', email='test@example.com', password='test_password')
-    Deck.objects.create(username='test_user', email='test@example.com', password='test_password')
-
+def decks(user):
+    # user = User.objects.create_user(username='test_user', email='test@example.com', password='test_password')
+    for i in range(10):
+        deck = Deck.objects.create(name="example_deck{}".format(i), user=user)
+        words =[]
+        for j in range(10):
+            word = Word.objects.create(front_side=f"front_side{i}{j}", back_side=f"back_side{i}{j}", user=user, level=1)
+            words.append(word)
+        deck.words.add(*words)
+    return Deck.objects.all()
 @pytest.fixture()
 def test_user():
     # Utwórz użytkownika
@@ -37,9 +43,7 @@ def test_user():
 
 @pytest.fixture
 def words(user):
-    # Tworzymy 10 obiektów Word
     words_list = []
-    print("user", user)
     for i in range(1, 11):
         word = Word.objects.create(front_side=f"front{i}", back_side=f"Definition{i}", user=user, level=1)
         words_list.append(word)
@@ -47,7 +51,6 @@ def words(user):
 
 @pytest.fixture
 def deck(words, user):
-    print("user", user)
     deck = Deck.objects.create(name="example_deck", user=user)
     deck.words.add(*words)
     return deck
