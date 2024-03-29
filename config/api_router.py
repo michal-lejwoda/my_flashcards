@@ -16,7 +16,7 @@ router.register("multiple_decks", CreateDeckFromMultipleDecksViewSet, basename="
 router.register("word", WordViewSet, basename="word")
 router.register("learn", LearnViewSet, basename="learn")
 router.register(r'register', RegistrationViewSet, basename='register')
-router.register(r'login', CustomAuthToken, basename='login')
+# router.register(r'login', CustomAuthToken, basename='login')
 
 
 app_name = "api"

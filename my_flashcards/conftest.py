@@ -1,6 +1,6 @@
 import pytest
 
-from my_flashcards.flashcards.models import Deck, Word
+from my_flashcards.flashcards.models import Deck, Word, UserHistory
 from my_flashcards.users.models import User
 from my_flashcards.users.tests.factories import UserFactory
 
@@ -54,3 +54,9 @@ def deck(words, user):
     deck = Deck.objects.create(name="example_deck", user=user)
     deck.words.add(*words)
     return deck
+
+@pytest.fixture
+def user_history(user,deck, words):
+    user_history = UserHistory.objects.create(user=user, deck=deck, type='LEARN')
+    user_history.correct_flashcards.add(*words)
+    return user_history
