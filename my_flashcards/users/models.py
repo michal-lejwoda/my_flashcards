@@ -6,7 +6,6 @@ from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
 from rest_framework.authtoken.models import Token
 
-
 class User(AbstractUser):
     """
     Default custom user model for My Flashcards.
@@ -31,7 +30,7 @@ class User(AbstractUser):
     @property
     def return_dict_data_with_token(self):
         token = Token.objects.get(user=self).key
-        return {'response': "Poprawnie zarejestrowano użytkownika", 'email': self.email, 'username': self.username,
+        return {'response': _("Poprawnie zarejestrowano użytkownika"), 'email': self.email, 'username': self.username,
                 'token': token}
 
 @receiver(post_save, sender=User)

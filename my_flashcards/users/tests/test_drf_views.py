@@ -10,6 +10,7 @@ class TestUserViewSet:
     def api_rf(self) -> APIRequestFactory:
         return APIRequestFactory()
 
+
     def test_get_queryset(self, user: User, api_rf: APIRequestFactory):
         view = UserViewSet()
         request = api_rf.get("/fake-url/")

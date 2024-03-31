@@ -91,11 +91,13 @@ services:
     ports:
       - '5555:5555'
     command: /start-flower
+    environment:
+      - FLOWER_BASIC_AUTH=username:password
 
   react:
     image: vite-react
     stdin_open: true
-    container_name: react
+    container_name: my_flashcards_local_react
     build:
       context: .
       dockerfile: ./compose/local/react/Dockerfile
