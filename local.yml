@@ -97,7 +97,7 @@ services:
   react:
     image: vite-react
     stdin_open: true
-    container_name: react
+    container_name: my_flashcards_local_react
     build:
       context: .
       dockerfile: ./compose/local/react/Dockerfile
