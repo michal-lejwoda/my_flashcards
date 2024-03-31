@@ -42,7 +42,7 @@ http:
         certResolver: letsencrypt
 
     flower-secure-router:
-      rule: 'Host(`reapm.pl`)'
+      rule: 'Host(`reapm.pl`) && PathPrefix(`/flower`)'
       entryPoints:
         - flower
       service: flower
