@@ -53,6 +53,9 @@
   text-decoration: none;
   padding: 10px 15px;
 }
+.container {
+  position: relative;
+}
 
 .dropdown .content {
   display: none;
@@ -60,9 +63,14 @@
   background-color: hsl(0, 0%, 95%);
   min-width: 100px;
   box-shadow: 2px 2px 5px black;
+  top: 100%;
+}
+.content.open{
+  display:block;
+  z-index: 99;
 }
 
-.dropdown:hover .content {
-  display: block;
+.content{
+  right: 0%;
 }
 

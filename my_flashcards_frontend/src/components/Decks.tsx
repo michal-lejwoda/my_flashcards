@@ -5,7 +5,7 @@ import {
     getCoreRowModel,
     useReactTable,
 } from '@tanstack/react-table'
-import React from "react";
+import React, {useState} from "react";
 import {DecksTable} from "../interfaces.tsx";
 import "../sass/decks.css"
 import {NavLink} from "react-router-dom";
@@ -47,7 +47,12 @@ const columnHelper = createColumnHelper<DecksTable>()
 const Decks = () => {
     const [data,] = React.useState(() => [...defaultData])
     const [globalFilter, setGlobalFilter] = React.useState('')
+    const [openDropdownId, setOpenDropdownId] = useState<number | null>(null);
     const {t} = useTranslation();
+
+    const toggleDropdown = (id: number) => {
+        setOpenDropdownId(openDropdownId === id ? null : id); // Zmienia stan otwarcia dropdowna
+    };
 
     const columns = [
         columnHelper.accessor('name', {
@@ -73,18 +78,20 @@ const Decks = () => {
             cell: (props) => {
                 return (
                     <div className="dropdown">
-                        <button>{t("actions")}</button>
-                        <div className="content">
-                            <NavLink to="/preview" state={{id: props.row.original.id}}>{t("preview")}</NavLink>
-                            <NavLink to={`/learn/${props.row.original.slug}`}
-                                     state={{id: props.row.original.id, reverse: false}}>{t("learn")}</NavLink>
-                            <NavLink to={`/learn/${props.row.original.slug}`} state={{
-                                id: props.row.original.id,
-                                reverse: true
-                            }}>{t("reverse_and_learn")}</NavLink>
-                            <a>{t("rename")}</a>
-                            <a>{t("share")}</a>
-                            <a>{t("delete")}</a>
+                        <button onClick={() => toggleDropdown(props.row.original.id)}>{t("actions")}</button>
+                        <div className={`container ${openDropdownId === props.row.original.id ? 'open' : ''}`}>
+                            <div className={`content ${openDropdownId === props.row.original.id ? 'open' : ''}`}>
+                                <NavLink to="/preview" state={{id: props.row.original.id}}>{t("preview")}</NavLink>
+                                <NavLink to={`/learn/${props.row.original.slug}`}
+                                         state={{id: props.row.original.id, reverse: false}}>{t("learn")}</NavLink>
+                                <NavLink to={`/learn/${props.row.original.slug}`} state={{
+                                    id: props.row.original.id,
+                                    reverse: true
+                                }}>{t("reverse_and_learn")}</NavLink>
+                                <a>{t("rename")}</a>
+                                <a>{t("share")}</a>
+                                <a>{t("delete")}</a>
+                            </div>
                         </div>
                     </div>
                 )
@@ -106,11 +113,11 @@ const Decks = () => {
         <div className="decks">
             <h1 className="title">{t("decks")}</h1>
             <div className="decks__searchcontainer searchcontainer">
-            <input value={globalFilter ?? ''}
-                   onChange={e => setGlobalFilter(String(e.target.value))}
-                   className="searchcontainer__search"
-                   placeholder={t("search")}/>
-                </div>
+                <input value={globalFilter ?? ''}
+                       onChange={e => setGlobalFilter(String(e.target.value))}
+                       className="searchcontainer__search"
+                       placeholder={t("search")}/>
+            </div>
             <table className="decks__table">
                 <thead>
                 {table.getHeaderGroups().map(headerGroup => (

@@ -9,6 +9,7 @@ nav {
   padding-bottom: 0.4rem;
   border-bottom: 2px solid white;
   text-decoration: none;
+  z-index: 1000;
 }
 
 .navbar {
@@ -25,9 +26,9 @@ nav {
   }
   &__mobile{
     position: sticky;
-    z-index: 99;
     display:flex;
     justify-content: space-between;
+
 
     //padding: 0 2rem 0;
   }
@@ -56,6 +57,7 @@ nav {
     list-style-type: none;
     z-index: 40;
     width:100%;
+    padding: 0;
     &__element{
       border-bottom: 2px solid white;
       padding: 1rem;
