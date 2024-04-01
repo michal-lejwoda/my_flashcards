@@ -12,3 +12,15 @@ export interface DecksTable {
     wrong: number;
     all: number;
 }
+
+export interface LoginValues {
+    username: string,
+    password: string,
+}
+
+export interface RegisterValues {
+    username: string,
+    email: string,
+    password: string,
+    repeat_password: string
+}
