@@ -7,28 +7,25 @@ import {useNavigate} from "react-router-dom";
 import {useFormik} from "formik";
 import {validateLogin} from "../validation.tsx";
 import {LoginValues} from "../interfaces.tsx";
-import i18n from "i18next";
+import {useState} from "react";
 
 interface ErrorResponse {
     response: {
-        data: {
-            detail: string;
-        };
+        data: Record<string, unknown>;
     };
+}
+
+interface LoginError {
+    username?: string[];
+    password?: string[];
+    non_field_errors?: string[];
 }
 
 const Login = () => {
     const {t} = useTranslation();
     const [, setCookie] = useCookies(['flashcard_user_auth']);
+    const [loginError, setLoginError] = useState<LoginError | null>(null)
     const navigate = useNavigate();
-    const currentLanguage1 = i18n.language;
-    console.log("crLanguage")
-    console.log(currentLanguage1)
-    // const currentLanguage = i18n.language;
-    // console.log("currentLanguage")
-    // console.log(currentLanguage)
-    // console.log("t")
-    // console.log(t)
     const handleLogin = async (values: LoginValues) => {
         const form = new FormData()
         form.append("username", values.username)
@@ -49,13 +46,15 @@ const Login = () => {
 
         } catch (err: unknown) {
             const error = err as ErrorResponse
-            for (let i = 0; i < Object.keys(error.response.data).length; i++) {
-                setFieldError(Object.keys(error.response.data)[i], Object.values(error.response.data)[i])
-            }
+            setLoginError(error.response.data)
+            // setLoginError(error.response.data)
+            // for (let i = 0; i < Object.keys(error.response.data).length; i++) {
+            //     setFieldError(Object.keys(error.response.data)[i], Object.values(error.response.data)[i])
+            // }
         }
     }
 
-    const {values, setFieldError, handleSubmit, handleChange, errors} = useFormik({
+    const {handleSubmit, handleChange, errors} = useFormik({
         initialValues: {
             username: '',
             password: '',
@@ -70,9 +69,6 @@ const Login = () => {
         },
 
     });
-    console.log(values)
-    console.log("errors")
-    console.log(errors)
     return (
         <div className="login">
             <h1>{t('login')}</h1>
@@ -83,15 +79,21 @@ const Login = () => {
                         <Form.Control onChange={handleChange} name="username" type="text"
                                       placeholder={t("enter_username")}/>
                         {errors.username && <p className="text-red-400">{errors.username}</p>}
+                        {loginError && loginError.username && (
+                            <p className="text-red-400">{loginError.username}</p>
+                        )}
                     </Form.Group>
 
                     <Form.Group className="mb-3" controlId="formBasicPassword">
                         <Form.Label>{t('password')}</Form.Label>
                         <Form.Control onChange={handleChange} name="password" type="password" placeholder="Password"/>
                         {errors.password && <p className="text-red-400">{errors.password}</p>}
-                        {Array.isArray(errors.non_field_errors) && errors.non_field_errors.map((error, index) => (
-                            <p key={index} className="text-red-400">{error}</p>
-                        ))}
+                        {loginError && loginError.password && (
+                            <p className="text-red-400">{loginError.password}</p>
+                        )}
+                        {loginError && loginError.non_field_errors && (
+                            <p className="text-red-400">{loginError.non_field_errors}</p>
+                        )}
                     </Form.Group>
                     <div className="login__submit">
                         <button className="greenoutline--button" type="submit">
