@@ -1,10 +1,5 @@
 import {useTranslation} from "react-i18next";
-import {
-    createColumnHelper,
-    flexRender,
-    getCoreRowModel,
-    useReactTable,
-} from '@tanstack/react-table'
+import {createColumnHelper, flexRender, getCoreRowModel, useReactTable,} from '@tanstack/react-table'
 import React, {useState} from "react";
 import {DecksTable} from "../interfaces.tsx";
 import "../sass/decks.css"
@@ -49,6 +44,7 @@ const Decks = () => {
     const [globalFilter, setGlobalFilter] = React.useState('')
     const [openDropdownId, setOpenDropdownId] = useState<number | null>(null);
     const {t} = useTranslation();
+
 
     const toggleDropdown = (id: number) => {
         setOpenDropdownId(openDropdownId === id ? null : id); // Zmienia stan otwarcia dropdowna

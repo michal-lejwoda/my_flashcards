@@ -3,8 +3,8 @@ import {Form} from "react-bootstrap";
 import "../sass/register.css";
 import {useFormik} from "formik";
 import {validateRegistration} from "../validation.tsx";
-import {ErrorResponse, LoginValues, RegisterError} from "../interfaces.tsx";
-import {postLogin} from "../api.tsx";
+import {ErrorResponse, RegisterError, RegisterValues} from "../interfaces.tsx";
+import {postRegister} from "../api.tsx";
 import {useCookies} from "react-cookie";
 import {useState} from "react";
 import {useNavigate} from "react-router-dom";
@@ -27,12 +27,14 @@ const Register = () => {
             handleRegister(values)
         },
     });
-    const handleRegister = async (values: LoginValues) => {
+    const handleRegister = async (values: RegisterValues) => {
         const form = new FormData()
         form.append("username", values.username)
+        form.append("email", values.email)
         form.append("password", values.password)
+        form.append("password2", values.repeat_password)
         try {
-            const login_data = await postLogin(form)
+            const login_data = await postRegister(form)
             await setCookie('flashcard_user_auth', login_data, {'sameSite': 'lax'})
             // await setCookie('flashcard_user_auth', login_data.access_token, {'sameSite': 'lax'})
             // try {

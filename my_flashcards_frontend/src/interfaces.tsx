@@ -1,3 +1,5 @@
+import {Dispatch, ReactNode, SetStateAction} from "react";
+
 export interface Language {
     code: string;
     label: string;
@@ -45,3 +47,11 @@ export interface RegisterError {
     non_field_errors?: string[];
 }
 
+export interface Children {
+  children: ReactNode;
+}
+
+export interface AuthContextType {
+    token: string | null;
+    setToken: Dispatch<SetStateAction<string | null>>;
+}

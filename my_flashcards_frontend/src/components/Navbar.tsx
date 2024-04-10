@@ -14,7 +14,6 @@ const Navbar = () => {
         const lang_code = e.target.value;
         setLanguage(e.target.value)
         i18n.changeLanguage(lang_code);
-        // setYupLanguageChange(e.target.value)
     };
 
     return (
