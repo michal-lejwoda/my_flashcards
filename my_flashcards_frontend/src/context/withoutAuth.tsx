@@ -11,7 +11,7 @@ const withoutAuth = <P extends object>(Component: ComponentType<P>) => {
                 navigate("/");
             }
         }, [token, navigate]);
-        return token ? <Component {...props} /> : null;
+        return !token ? <Component {...props} /> : null;
     };
 
     return WrappedComponent;
