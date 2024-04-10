@@ -33,6 +33,14 @@
   "number_of_words": "Number of words",
   "learn_more": "Learn more",
   "max_size_file": "Max file size",
-  "drag_and_drop_file": "Drag and Drop file"
+  "drag_and_drop_file": "Drag and Drop file",
+  "usernameTooShort": "Username field is too short",
+  "usernameTooLong": "Username field is too long",
+  "usernameIsRequired": "Username field is required",
+  "emailIsNotCorrect": "Email field is not correct",
+  "emailIsRequired": "Email field is required",
+  "passwordIsRequired": "Password field is required",
+  "passwordsNotMatch": "Passwords does not match",
+  "passwordTooShort": "Password field is too short"
 
 }

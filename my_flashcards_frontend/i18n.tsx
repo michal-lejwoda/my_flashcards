@@ -16,6 +16,4 @@ i18n
         },
     });
 
-export function getCurrentLanguage() {
-  return i18n.language;
-}
+

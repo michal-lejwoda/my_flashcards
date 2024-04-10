@@ -24,3 +24,24 @@ export interface RegisterValues {
     password: string,
     repeat_password: string
 }
+
+export interface ErrorResponse {
+    response: {
+        data: Record<string, unknown>;
+    };
+}
+
+export interface LoginError {
+    username?: string[];
+    password?: string[];
+    non_field_errors?: string[];
+}
+
+export interface RegisterError {
+    username?: string[];
+    email?: string[];
+    password?: string[];
+    repeat_password?: string[]
+    non_field_errors?: string[];
+}
+

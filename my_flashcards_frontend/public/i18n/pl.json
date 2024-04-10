@@ -33,6 +33,16 @@
   "number_of_words": "Liczba słów",
   "learn_more": "Ucz się wielu",
   "max_size_file": "Maksymalny rozmiar pliku",
-  "drag_and_drop_file": "Przeciągnij i upuść plik"
+  "drag_and_drop_file": "Przeciągnij i upuść plik",
+  "usernameTooShort": "Pole username jest za krótkie",
+  "usernameTooLong": "Pole username jest za długie",
+  "usernameIsRequired": "Pole username jest wymagane",
+  "emailIsNotCorrect": "Pole email nie jest poprawne",
+  "emailIsRequired": "Pole email jest wymagane",
+  "passwordIsRequired": "Pole hasło jest wymagane",
+  "passwordsNotMatch": "Hasła się nie zgadzają",
+  "passwordTooShort": "Pole hasło jest za krótkie"
+
+
 
 }

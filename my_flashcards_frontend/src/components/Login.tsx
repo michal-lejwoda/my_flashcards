@@ -6,20 +6,9 @@ import {useCookies} from "react-cookie";
 import {useNavigate} from "react-router-dom";
 import {useFormik} from "formik";
 import {validateLogin} from "../validation.tsx";
-import {LoginValues} from "../interfaces.tsx";
+import {ErrorResponse, LoginError, LoginValues} from "../interfaces.tsx";
 import {useState} from "react";
 
-interface ErrorResponse {
-    response: {
-        data: Record<string, unknown>;
-    };
-}
-
-interface LoginError {
-    username?: string[];
-    password?: string[];
-    non_field_errors?: string[];
-}
 
 const Login = () => {
     const {t} = useTranslation();
@@ -47,10 +36,6 @@ const Login = () => {
         } catch (err: unknown) {
             const error = err as ErrorResponse
             setLoginError(error.response.data)
-            // setLoginError(error.response.data)
-            // for (let i = 0; i < Object.keys(error.response.data).length; i++) {
-            //     setFieldError(Object.keys(error.response.data)[i], Object.values(error.response.data)[i])
-            // }
         }
     }
 
@@ -58,17 +43,15 @@ const Login = () => {
         initialValues: {
             username: '',
             password: '',
-            non_field_errors: []
         },
         validationSchema: validateLogin,
         validateOnChange: false,
         onSubmit: values => {
-            const {username, password} = values;
-            const valuesToSend = {username, password};
-            handleLogin(valuesToSend)
+            handleLogin(values)
         },
-
     });
+    console.log("errors")
+    console.log(errors)
     return (
         <div className="login">
             <h1>{t('login')}</h1>
