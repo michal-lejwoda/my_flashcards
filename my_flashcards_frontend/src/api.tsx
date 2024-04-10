@@ -81,11 +81,12 @@ export async function postFile(form: FormData, token: string | null) {
     return response.data
 }
 
-export async function getTaskResult(task_id: string) {
+export async function getTaskResult(task_id: string, token: string | null) {
     const currentLanguage = i18n.language;
     const response = await instance.get(`/api/file_upload/get_task/?task_id=${task_id}`, {
         headers: {
             'Accept-Language': currentLanguage,
+            'Authorization': `Token ${token}`
         },
     });
     return response.data

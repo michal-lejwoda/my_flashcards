@@ -2,15 +2,27 @@ import {FileWithPath, useDropzone} from 'react-dropzone';
 import "../sass/addfile.css"
 import {useTranslation} from "react-i18next";
 import withAuth from "../context/withAuth.tsx";
-import {postFile} from "../api.tsx";
+import {getTaskResult, postFile} from "../api.tsx";
 import {ErrorResponse} from "../interfaces.tsx";
 import {useContext, useState} from "react";
 import AuthContext from "../context/AuthContext.tsx";
 
 const AddFile = () => {
-    const { token } = useContext(AuthContext);
+    const {token} = useContext(AuthContext);
     const {t} = useTranslation();
     const [taskId, setTaskId] = useState<string | null>(null)
+
+    function executeForTwoMinutes(action: (task_id: string, token: string|null) => void, task_id: string, token:string|null) {
+        const interval = setInterval(() => {
+            console.log("wywołanie")
+            action(task_id, token);
+        }, 5000);
+
+        setTimeout(() => {
+            clearInterval(interval); // Zatrzymaj interwał
+        }, 12000); //30 sek
+    }
+
     const handleSendFile = async (file: File) => {
         console.log("handleSendFile")
         const form = new FormData()
@@ -22,6 +34,7 @@ const AddFile = () => {
             if (post_file_data.message && post_file_data.message.task_id) {
                 console.log(post_file_data.message)
                 setTaskId(post_file_data.message.task_id)
+                executeForTwoMinutes(() => getTaskResult(post_file_data.message.task_id, token), post_file_data.message.task_id, token);
             }
 
         } catch (err: unknown) {
