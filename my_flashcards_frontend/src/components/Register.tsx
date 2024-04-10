@@ -6,14 +6,16 @@ import {validateRegistration} from "../validation.tsx";
 import {ErrorResponse, RegisterError, RegisterValues} from "../interfaces.tsx";
 import {postRegister} from "../api.tsx";
 import {useCookies} from "react-cookie";
-import {useState} from "react";
+import {useContext, useState} from "react";
 import {useNavigate} from "react-router-dom";
+import AuthContext from "../context/AuthContext.tsx";
 
 const Register = () => {
     const {t} = useTranslation();
     const navigate = useNavigate();
     const [, setCookie] = useCookies(['flashcard_user_auth']);
     const [registerError, setRegisterError] = useState<RegisterError | null>(null)
+    const auth = useContext(AuthContext);
     const {handleSubmit, handleChange, errors} = useFormik({
         initialValues: {
             username: '',
@@ -34,8 +36,13 @@ const Register = () => {
         form.append("password", values.password)
         form.append("password2", values.repeat_password)
         try {
-            const login_data = await postRegister(form)
-            await setCookie('flashcard_user_auth', login_data, {'sameSite': 'lax'})
+            const register_data = await postRegister(form)
+            if (register_data.data && register_data.data.token) {
+                await setCookie('flashcard_user_auth', register_data.data.token, {'sameSite': 'lax'});
+                auth.setToken(register_data.data.token)
+                await navigate("/");
+            }
+            // await setCookie('flashcard_user_auth', register_data, {'sameSite': 'lax'})
             // await setCookie('flashcard_user_auth', login_data.access_token, {'sameSite': 'lax'})
             // try {
             //     let logged_user = await checkIfUserLogged()
@@ -45,7 +52,7 @@ const Register = () => {
             //     setAuthUser(null)
             //     setIsLoggedIn(false)
             // }
-            await navigate("/");
+            // await navigate("/");
 
         } catch (err: unknown) {
             const error = err as ErrorResponse
