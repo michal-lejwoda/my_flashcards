@@ -1,15 +1,26 @@
 import "../sass/navbar.css"
 import {LANGUAGES} from "../constants/languages.tsx";
 import {useTranslation} from "react-i18next";
-import {NavLink} from "react-router-dom";
+import {NavLink, useNavigate} from "react-router-dom";
 import {faBars} from "@fortawesome/free-solid-svg-icons";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {useState} from "react";
+import {useContext, useState} from "react";
+import {useCookies} from "react-cookie";
+import AuthContext from "../context/AuthContext.tsx";
 
 const Navbar = () => {
     const {i18n, t} = useTranslation();
     const [language, setLanguage] = useState(i18n.language)
     const [isMobileNavOpen, setIsMobileNavOpen] = useState(false);
+    const navigate = useNavigate();
+    const [, ,removeCookie] = useCookies(['flashcard_user_auth']);
+    const auth = useContext(AuthContext);
+    const handleLogout = () =>{
+        auth.setToken(null)
+        removeCookie('flashcard_user_auth')
+        navigate("/login")
+    }
+
     const onChangeLanguage = (e: React.ChangeEvent<HTMLSelectElement>) => {
         const lang_code = e.target.value;
         setLanguage(e.target.value)
@@ -45,9 +56,9 @@ const Navbar = () => {
                     <NavLink to="/account" className="navbar__item">
                         <li className="menu__element ">{t("account")}</li>
                     </NavLink>
-                    <NavLink to="/logout" className="navbar__item">
+                    <div className="navbar__item" onClick={handleLogout}>
                         <li className="menu__element">{t("logout")}</li>
-                    </NavLink>
+                    </div>
                     <NavLink to="/login" className="navbar__item">
                         <li className="menu__element">{t("login")}</li>
                     </NavLink>

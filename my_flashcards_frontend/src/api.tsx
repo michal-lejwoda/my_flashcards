@@ -6,7 +6,6 @@ const instance = axios.create({
     baseURL: 'http://0.0.0.0:8000',
     headers: {
         'Accept': 'application/json',
-        // 'Accept-Language': currentLanguage
     }
 });
 
@@ -29,6 +28,16 @@ export async function postRegister(form: FormData) {
     });
     return response.data
 }
+
+// export async function postLogout(form: FormData) {
+//     const currentLanguage = i18n.language;
+//     const response = await instance.post(`/api/logout/`, form, {
+//         headers: {
+//             'Accept-Language': currentLanguage,
+//         },
+//     });
+//     return response.data
+// }
 
 export async function getDecks() {
     const currentLanguage = i18n.language;

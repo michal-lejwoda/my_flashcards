@@ -1,10 +1,10 @@
 import {useTranslation} from "react-i18next";
 import {createColumnHelper, flexRender, getCoreRowModel, useReactTable,} from '@tanstack/react-table'
-import React, {useContext, useState} from "react";
+import React, {useState} from "react";
 import {DecksTable} from "../interfaces.tsx";
 import "../sass/decks.css"
 import {NavLink} from "react-router-dom";
-import AuthContext from "../context/AuthContext.tsx";
+import withAuth from "../context/withAuth.tsx";
 
 
 const defaultData: DecksTable[] = [
@@ -151,4 +151,4 @@ const Decks = () => {
     );
 };
 
-export default Decks;
+export default withAuth(Decks);

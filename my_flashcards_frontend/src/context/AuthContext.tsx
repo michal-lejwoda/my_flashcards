@@ -20,6 +20,7 @@ export const AuthProvider = ({children}: Children) => {
             navigate("/login")
         }
     },[])
+
     return (
         <AuthContext.Provider value={{token, setToken}}>
             {children}
