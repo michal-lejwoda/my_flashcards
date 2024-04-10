@@ -42,18 +42,7 @@ const Register = () => {
                 auth.setToken(register_data.data.token)
                 await navigate("/");
             }
-            // await setCookie('flashcard_user_auth', register_data, {'sameSite': 'lax'})
-            // await setCookie('flashcard_user_auth', login_data.access_token, {'sameSite': 'lax'})
-            // try {
-            //     let logged_user = await checkIfUserLogged()
-            //     setAuthUser(logged_user)
-            //     setIsLoggedIn(true)
-            // } catch (err) {
-            //     setAuthUser(null)
-            //     setIsLoggedIn(false)
-            // }
-            // await navigate("/");
-
+            // TODO Maybe Add some sort of exception
         } catch (err: unknown) {
             const error = err as ErrorResponse
             setRegisterError(error.response.data)

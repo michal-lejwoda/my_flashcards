@@ -22,8 +22,9 @@ import {AuthProvider} from "./context/AuthContext.tsx";
 ReactDOM.createRoot(document.getElementById('root')!).render(
     <React.StrictMode>
         <Suspense fallback="loading">
-            <AuthProvider>
-                <BrowserRouter>
+            <BrowserRouter>
+                <AuthProvider>
+
                     <Navbar/>
                     <div className="main">
                         <Routes>
@@ -40,8 +41,9 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
                         </Routes>
                     </div>
                     <Footer/>
-                </BrowserRouter>
-            </AuthProvider>
+
+                </AuthProvider>
+            </BrowserRouter>
         </Suspense>
     </React.StrictMode>,
 )

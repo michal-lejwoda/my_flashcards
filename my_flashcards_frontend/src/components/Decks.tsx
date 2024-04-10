@@ -1,9 +1,10 @@
 import {useTranslation} from "react-i18next";
 import {createColumnHelper, flexRender, getCoreRowModel, useReactTable,} from '@tanstack/react-table'
-import React, {useState} from "react";
+import React, {useContext, useState} from "react";
 import {DecksTable} from "../interfaces.tsx";
 import "../sass/decks.css"
 import {NavLink} from "react-router-dom";
+import AuthContext from "../context/AuthContext.tsx";
 
 
 const defaultData: DecksTable[] = [
@@ -44,6 +45,7 @@ const Decks = () => {
     const [globalFilter, setGlobalFilter] = React.useState('')
     const [openDropdownId, setOpenDropdownId] = useState<number | null>(null);
     const {t} = useTranslation();
+    // const auth = useContext(AuthContext);
 
 
     const toggleDropdown = (id: number) => {
