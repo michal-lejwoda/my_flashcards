@@ -5,7 +5,16 @@ import withAuth from "../context/withAuth.tsx";
 
 const AddFile = () => {
     const {t} = useTranslation();
+    // const handleDrop = (acceptedFiles) =>{
+    //     const txtFiles = acceptedFiles.filter(file => file.name.endsWith('.txt'));
+    //     console.log(txtFiles)
+    // }
+    // accept: {
+    //     "image/*": [".png", ".gif", ".jpeg", ".jpg"],
+    //   },
     const {acceptedFiles, getRootProps, getInputProps} = useDropzone({
+        // onDrop: handleDrop,
+        maxFiles: 1,
         minSize: 0,
         maxSize: 5242880
     });
