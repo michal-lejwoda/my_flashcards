@@ -69,11 +69,13 @@ export async function getSingleDeck(id: number) {
     return response.data
 }
 
-export async function postFile(form: FormData) {
+export async function postFile(form: FormData, token: string | null) {
     const currentLanguage = i18n.language;
+
     const response = await instance.post(`/api/file_upload/`, form, {
         headers: {
             'Accept-Language': currentLanguage,
+            'Authorization': `Token ${token}`
         },
     });
     return response.data
