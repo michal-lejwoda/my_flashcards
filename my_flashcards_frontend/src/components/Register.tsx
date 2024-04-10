@@ -9,6 +9,7 @@ import {useCookies} from "react-cookie";
 import {useContext, useState} from "react";
 import {useNavigate} from "react-router-dom";
 import AuthContext from "../context/AuthContext.tsx";
+import withoutAuth from "../context/withoutAuth.tsx";
 
 const Register = () => {
     const {t} = useTranslation();
@@ -101,4 +102,4 @@ const Register = () => {
     );
 };
 
-export default Register;
+export default withoutAuth(Register);

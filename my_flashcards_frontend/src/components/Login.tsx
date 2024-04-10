@@ -9,6 +9,7 @@ import {validateLogin} from "../validation.tsx";
 import {ErrorResponse, LoginError, LoginValues} from "../interfaces.tsx";
 import {useContext, useState} from "react";
 import AuthContext from "../context/AuthContext.tsx";
+import withoutAuth from "../context/withoutAuth.tsx";
 
 
 const Login = () => {
@@ -83,4 +84,4 @@ const Login = () => {
     );
 };
 
-export default Login;
+export default withoutAuth(Login);

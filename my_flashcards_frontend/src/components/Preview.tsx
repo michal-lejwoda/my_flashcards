@@ -1,6 +1,7 @@
 import {useTranslation} from "react-i18next";
 import "../sass/preview.css"
 import AsyncSelect from 'react-select/async';
+import withAuth from "../context/withAuth.tsx";
 
 const Preview = () => {
     const {t} = useTranslation();
@@ -44,4 +45,4 @@ const Preview = () => {
     );
 };
 
-export default Preview;
+export default withAuth(Preview);

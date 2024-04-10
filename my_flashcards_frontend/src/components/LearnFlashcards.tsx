@@ -2,6 +2,7 @@ import {useTranslation} from "react-i18next";
 import "../sass/learnflashcards.css"
 import "../index.css"
 import {useState} from "react";
+import withAuth from "../context/withAuth.tsx";
 
 const LearnFlashcards = () => {
     const {t} = useTranslation();
@@ -41,4 +42,4 @@ const LearnFlashcards = () => {
 };
 
 
-export default LearnFlashcards;
+export default withAuth(LearnFlashcards);

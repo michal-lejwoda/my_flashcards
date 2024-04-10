@@ -1,3 +1,4 @@
+import withAuth from "../context/withAuth.tsx";
 
 const Search = () => {
     return (
@@ -7,4 +8,4 @@ const Search = () => {
     );
 };
 
-export default Search;
+export default withAuth(Search);

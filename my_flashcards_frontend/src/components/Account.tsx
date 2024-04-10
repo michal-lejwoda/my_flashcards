@@ -1,3 +1,5 @@
+import withAuth from "../context/withAuth.tsx";
+
 const Account = () => {
     return (
         <div>
@@ -6,4 +8,4 @@ const Account = () => {
     );
 };
 
-export default Account;
+export default withAuth(Account);

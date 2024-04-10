@@ -1,6 +1,7 @@
 import "../sass/chooseandlearn.css"
 import {useTranslation} from "react-i18next";
 import AsyncSelect from "react-select/async";
+import withAuth from "../context/withAuth.tsx";
 
 const ChooseAndLearn = () => {
     const {t} = useTranslation();
@@ -40,4 +41,4 @@ const ChooseAndLearn = () => {
     );
 };
 
-export default ChooseAndLearn;
+export default withAuth(ChooseAndLearn);

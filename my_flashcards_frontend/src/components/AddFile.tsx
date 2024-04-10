@@ -1,6 +1,7 @@
 import {FileWithPath, useDropzone} from 'react-dropzone';
 import "../sass/addfile.css"
 import {useTranslation} from "react-i18next";
+import withAuth from "../context/withAuth.tsx";
 
 const AddFile = () => {
     const {t} = useTranslation();
@@ -32,4 +33,4 @@ const AddFile = () => {
     );
 };
 
-export default AddFile;
+export default withAuth(AddFile);

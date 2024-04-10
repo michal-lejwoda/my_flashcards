@@ -1,3 +1,4 @@
+import withAuth from "../context/withAuth.tsx";
 
 const CreateComponent = () => {
     return (
@@ -7,4 +8,4 @@ const CreateComponent = () => {
     );
 };
 
-export default CreateComponent;
+export default withAuth(CreateComponent);
