@@ -10,21 +10,48 @@ import AuthContext from "../context/AuthContext.tsx";
 const AddFile = () => {
     const {token} = useContext(AuthContext);
     const {t} = useTranslation();
-    const [taskId, setTaskId] = useState<string | null>(null)
+    const [fileData, setFileData] = useState<[string, string][] | null>(null)
+    console.log(fileData)
 
-    function executeForTwoMinutes(action: (task_id: string, token: string|null) => void, task_id: string, token:string|null) {
-        const interval = setInterval(() => {
-            console.log("wywołanie")
-            action(task_id, token);
-        }, 5000);
-
-        setTimeout(() => {
-            clearInterval(interval); // Zatrzymaj interwał
-        }, 12000); //30 sek
+    interface Response {
+        status: number;
+        data: {
+            message: {
+                status: string;
+                result: [string, string][];
+            };
+        };
+        // inne właściwości
     }
 
+    async function executeForTwoMinutes(action: (task_id: string, token: string | null) => Promise<Response>, task_id: string, token: string | null): Promise<void> {
+        return new Promise((resolve, reject) => {
+            const interval = setInterval(async () => {
+                console.log("wywołanie")
+                try {
+                    const response = await action(task_id, token);
+                    if (response && response.status === 200 && response.data.message.result) {
+                        setFileData(response.data.message.result);
+                        clearInterval(interval);
+                        resolve();
+                    }
+                } catch (error) {
+                    // TODO Back Here
+                    console.error(error);
+                    clearInterval(interval);
+                    reject(error);
+                }
+            }, 5000);
+
+            setTimeout(() => {
+                clearInterval(interval);
+                resolve();
+            }, 12000);
+        });
+    }
+
+
     const handleSendFile = async (file: File) => {
-        console.log("handleSendFile")
         const form = new FormData()
         form.append("file", file)
         try {
@@ -32,8 +59,6 @@ const AddFile = () => {
             console.log("post_file_data")
             console.log(post_file_data)
             if (post_file_data.message && post_file_data.message.task_id) {
-                console.log(post_file_data.message)
-                setTaskId(post_file_data.message.task_id)
                 executeForTwoMinutes(() => getTaskResult(post_file_data.message.task_id, token), post_file_data.message.task_id, token);
             }
 
@@ -43,8 +68,6 @@ const AddFile = () => {
             console.log(error)
         }
     }
-    console.log("taskId")
-    console.log(taskId)
 
     const handleDrop = (acceptedFiles: File[]) => {
         console.log("acceptedFiles")
@@ -52,8 +75,6 @@ const AddFile = () => {
             console.log(acceptedFiles[0])
             handleSendFile(acceptedFiles[0])
         }
-        // const txtFiles = acceptedFiles.filter(file => file.name.endsWith('.txt'));
-        // console.log(txtFiles)
     }
     const {acceptedFiles, getRootProps, getInputProps} = useDropzone({
         // TODO Try without extension
@@ -85,6 +106,13 @@ const AddFile = () => {
                 <h4>Files</h4>
                 <ul>{files}</ul>
             </aside>
+            <div>
+                {fileData && fileData.map((el) => {
+                    return(
+                    <p>{el[0]} - {el[1]}</p>
+                    )})}
+            </div>
+            <p></p>
         </section>
     );
 };

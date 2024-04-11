@@ -77,12 +77,12 @@ class FileUploadViewSet(ErrorHandlingMixin, ViewSet):
             try:
                 file_data = file_obj.read()
                 task_id = get_words_from_file.apply_async(args=[file_data]).id
-                return self.handle_response({"message": _("The file was successfully uploaded"), "task_id": task_id},
-                                            status.HTTP_200_OK)
+                return self.handle_response(message={"message": _("The file was successfully uploaded"), "task_id": task_id},
+                                            status=status.HTTP_200_OK)
             except:
-                return self.handle_response(_("Error while reading a file"), status.HTTP_500_INTERNAL_SERVER_ERROR)
+                return self.handle_response(message={_("Error while reading a file")}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         else:
-            return self.handle_response(_("File not found"), status.HTTP_400_BAD_REQUEST)
+            return self.handle_response(message={"message": _("File not found")}, status=status.HTTP_400_BAD_REQUEST)
 
     @action(detail=False, methods=['GET'], permission_classes=[IsAuthenticated])
     def get_task(self, request):
@@ -91,19 +91,19 @@ class FileUploadViewSet(ErrorHandlingMixin, ViewSet):
             try:
                 result = AsyncResult(task_id)
                 if result.successful():
-                    return self.handle_response({"status": _("SUCCESS"), "result": result.get()},
+                    return self.handle_response(message={"status": _("SUCCESS"), "result": result.get()},
                                                 status=status.HTTP_200_OK)
                 elif result.failed():
-                    return self.handle_response({"status": _("FAILED"), "error": str(result.result)},
-                                                status.HTTP_500_INTERNAL_SERVER_ERROR)
+                    return self.handle_response(message={"status": _("FAILED"), "error": str(result.result)},
+                                                status=status.HTTP_500_INTERNAL_SERVER_ERROR)
                 else:
-                    return self.handle_response({"status": _("PENDING"), "error": "Task is still pending."},
-                                                status.HTTP_202_ACCEPTED)
+                    return self.handle_response(message={"status": _("PENDING"), "error": "Task is still pending."},
+                                                status=status.HTTP_202_ACCEPTED)
             except:
-                return Response({"status": _("ERROR"), "error": _("File problems")},
+                return Response(message={"status": _("ERROR"), "error": _("File problems")},
                                 status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         else:
-            return Response({"status": _("ERROR"), "error": _("Missing task_id parameter")},
+            return Response(message={"status": _("ERROR"), "error": _("Missing task_id parameter")},
                             status=status.HTTP_400_BAD_REQUEST)
 
 

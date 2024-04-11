@@ -89,7 +89,7 @@ export async function getTaskResult(task_id: string, token: string | null) {
             'Authorization': `Token ${token}`
         },
     });
-    return response.data
+    return response
 }
 
 export async function createDeckFromMultipleDecks(form: FormData) {
