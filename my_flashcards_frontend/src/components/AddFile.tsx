@@ -99,7 +99,7 @@ const AddFile = () => {
             {/*</div>*/}
             {/*<p></p>*/}
             {fileData &&
-                <FileResultTable fileData={fileData}/>
+                <FileResultTable fileData={fileData || []}/>
             }
         </section>
     );

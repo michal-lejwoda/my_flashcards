@@ -65,3 +65,7 @@ export interface Response {
         };
     };
 }
+
+export interface PropsFileData {
+    fileData: [string, string][] | null;
+}

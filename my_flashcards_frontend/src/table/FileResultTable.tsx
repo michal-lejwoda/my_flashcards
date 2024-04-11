@@ -6,189 +6,29 @@ import {
     getPaginationRowModel,
     useReactTable
 } from "@tanstack/react-table";
+import {useTranslation} from "react-i18next";
+import {PropsFileData} from "../interfaces.tsx";
 
-
-const data1 = [
-    [
-        "either way",
-        "tak czy inaczej"
-    ],
-    [
-        "donor",
-        "dawca"
-    ],
-    [
-        "discharged",
-        "zwolniony"
-    ],
-    [
-        "right femur",
-        "prawa kość udowa"
-    ],
-    [
-        "fracture",
-        "złamanie"
-    ],
-    [
-        "admit",
-        "przyznać"
-    ],
-    [
-        "grudge",
-        "uraz"
-    ],
-    [
-        "corpse",
-        "zwłoki"
-    ],
-    [
-        "blooming red",
-        "kwitnąca czerwień"
-    ],
-    [
-        "stall",
-        "stragan, stoisko"
-    ],
-    [
-        "I can relate",
-        "Mogę się zgodzić"
-    ],
-    [
-        "wipe",
-        "wytarty, przetarty"
-    ],
-    [
-        "restroom",
-        "toaleta"
-    ],
-    [
-        "That's definetely odd",
-        "To dziwne"
-    ],
-    [
-        "equivelant to",
-        "odpowiednik"
-    ],
-    [
-        "couldnt resist",
-        "Nie mogłem się oprzeć"
-    ],
-    [
-        "proceed",
-        "kontynuować"
-    ],
-    [
-        "according to",
-        "zgodnie z"
-    ],
-    [
-        "track record",
-        "osiągnięcia"
-    ],
-    [
-        "sue",
-        "pozwać"
-    ],
-    [
-        "approach",
-        "metoda"
-    ],
-    [
-        "associate",
-        "współpracownicy"
-    ],
-    [
-        "obvious",
-        "oczywisty"
-    ],
-    [
-        "settle",
-        "załatwić"
-    ],
-    [
-        "wittness",
-        "świadek"
-    ],
-    [
-        "proof",
-        "dowód"
-    ],
-    [
-        "proofed",
-        "zabezpieczony, zaimpregnowany"
-    ],
-    [
-        "cut to the bone",
-        "obcięte do minimum"
-    ],
-    [
-        "commit",
-        "popełnić"
-    ],
-    [
-        "market",
-        "rynek"
-    ],
-    [
-        "cure for everything",
-        "lek na wszystko"
-    ],
-    [
-        "discouraged me",
-        "zniechęciło mnie"
-    ],
-    [
-        "inherit",
-        "odziedziczyć"
-    ],
-    [
-        "i know so",
-        "Ja to wiem"
-    ],
-    [
-        "transmit",
-        "transmitować, przesyłać"
-    ],
-    [
-        "commence",
-        "rozpoczynać"
-    ],
-    [
-        "beyond solution",
-        "poza standardem"
-    ],
-    [
-        "atop",
-        "na szczycie"
-    ],
-    [
-        "atop",
-        "na szczycie"
-    ],
-    [
-        "atop",
-        "na szczycie"
-    ]
-]
-console.log("data1")
-console.log(data1)
 const columnHelper = createColumnHelper<string[]>()
 
-interface Props {
-    fileData: [string, string][] | null;
-}
-
-const FileResultTable: FC<Props> = () => {
+const FileResultTable: FC<PropsFileData> = ({fileData}) => {
+    const {t} = useTranslation();
     const [pagination, setPagination] = useState({
         pageIndex: 0, //initial page index
         pageSize: 10, //default page size
     });
+    const handleDelete = (index: number) => {
+        console.log("handleDelete")
+        console.log("index", index)
+    }
+
+
     const columns = [
         columnHelper.display({
             id: 'numbers',
             header: "front_side",
             cell: (props) => {
-                return (<span>
+                return (<span key={props.row.index}>
                 <span className="words__learn">{props.row.original[0]}</span>
             </span>)
             },
@@ -197,13 +37,24 @@ const FileResultTable: FC<Props> = () => {
             id: 'numbers1',
             header: "back_side",
             cell: (props) => {
-                return (<span>
-                <span className="words__learn">{props.row.original[1]}</span>
+                // console.log(props)
+                return (<span key={props.row.index}>
+                <button className="words__learn">{props.row.original[1]}</button>
+            </span>)
+            }
+        }),
+        columnHelper.display({
+            id: 'numbers1',
+            header: t("delete"),
+            cell: (props) => {
+                return (<span key={props.row.index}>
+                    {/*<p>delete</p>*/}
+                    <span className="words__learn" onClick={() => handleDelete(props.row.index)}>Delete</span>
             </span>)
             }
         })
     ]
-    const [data,] = useState<string[][]>(data1);
+    const [data,] = useState<string[][]>(fileData || []);
 
     const table = useReactTable({
         data,
@@ -215,7 +66,7 @@ const FileResultTable: FC<Props> = () => {
             pagination,
         },
     })
-    console.log(data)
+    // console.log(data)
     return (
         <div>
             <h1>FileResultTable</h1>
