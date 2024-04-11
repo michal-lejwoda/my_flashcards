@@ -48,10 +48,20 @@ export interface RegisterError {
 }
 
 export interface Children {
-  children: ReactNode;
+    children: ReactNode;
 }
 
 export interface AuthContextType {
     token: string | null;
     setToken: Dispatch<SetStateAction<string | null>>;
+}
+
+export interface Response {
+    status: number;
+    data: {
+        message: {
+            status: string;
+            result: [string, string][];
+        };
+    };
 }

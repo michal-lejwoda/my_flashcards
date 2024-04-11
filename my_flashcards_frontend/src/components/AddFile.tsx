@@ -3,26 +3,15 @@ import "../sass/addfile.css"
 import {useTranslation} from "react-i18next";
 import withAuth from "../context/withAuth.tsx";
 import {getTaskResult, postFile} from "../api.tsx";
-import {ErrorResponse} from "../interfaces.tsx";
+import {ErrorResponse, Response} from "../interfaces.tsx";
 import {useContext, useState} from "react";
 import AuthContext from "../context/AuthContext.tsx";
+import FileResultTable from "../table/FileResultTable.tsx";
 
 const AddFile = () => {
     const {token} = useContext(AuthContext);
     const {t} = useTranslation();
     const [fileData, setFileData] = useState<[string, string][] | null>(null)
-    console.log(fileData)
-
-    interface Response {
-        status: number;
-        data: {
-            message: {
-                status: string;
-                result: [string, string][];
-            };
-        };
-        // inne właściwości
-    }
 
     async function executeForTwoMinutes(action: (task_id: string, token: string | null) => Promise<Response>, task_id: string, token: string | null): Promise<void> {
         return new Promise((resolve, reject) => {
@@ -56,8 +45,6 @@ const AddFile = () => {
         form.append("file", file)
         try {
             const post_file_data = await postFile(form, token)
-            console.log("post_file_data")
-            console.log(post_file_data)
             if (post_file_data.message && post_file_data.message.task_id) {
                 executeForTwoMinutes(() => getTaskResult(post_file_data.message.task_id, token), post_file_data.message.task_id, token);
             }
@@ -70,9 +57,7 @@ const AddFile = () => {
     }
 
     const handleDrop = (acceptedFiles: File[]) => {
-        console.log("acceptedFiles")
         if (acceptedFiles[0] !== undefined) {
-            console.log(acceptedFiles[0])
             handleSendFile(acceptedFiles[0])
         }
     }
@@ -106,13 +91,16 @@ const AddFile = () => {
                 <h4>Files</h4>
                 <ul>{files}</ul>
             </aside>
-            <div>
-                {fileData && fileData.map((el) => {
-                    return(
-                    <p>{el[0]} - {el[1]}</p>
-                    )})}
-            </div>
-            <p></p>
+            {/*<div>*/}
+            {/*    {fileData && fileData.map((el) => {*/}
+            {/*        return(*/}
+            {/*        <p>{el[0]} - {el[1]}</p>*/}
+            {/*        )})}*/}
+            {/*</div>*/}
+            {/*<p></p>*/}
+            {fileData &&
+                <FileResultTable fileData={fileData}/>
+            }
         </section>
     );
 };
