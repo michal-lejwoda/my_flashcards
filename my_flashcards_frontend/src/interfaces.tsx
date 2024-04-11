@@ -61,11 +61,17 @@ export interface Response {
     data: {
         message: {
             status: string;
-            result: [string, string][];
+            result: FileRowData[];
         };
     };
 }
 
 export interface PropsFileData {
-    fileData: [string, string][] | null;
+    fileData: FileRowData[];
+}
+
+export interface FileRowData {
+  id: number;
+  front_side: string;
+  back_side: string;
 }

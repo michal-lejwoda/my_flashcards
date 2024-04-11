@@ -7,16 +7,19 @@ import {
     useReactTable
 } from "@tanstack/react-table";
 import {useTranslation} from "react-i18next";
-import {PropsFileData} from "../interfaces.tsx";
+import {FileRowData, PropsFileData} from "../interfaces.tsx";
 
-const columnHelper = createColumnHelper<string[]>()
+const columnHelper = createColumnHelper<FileRowData>()
 
 const FileResultTable: FC<PropsFileData> = ({fileData}) => {
+    console.log("fileData")
+    console.log(fileData)
     const {t} = useTranslation();
     const [pagination, setPagination] = useState({
-        pageIndex: 0, //initial page index
-        pageSize: 10, //default page size
+        pageIndex: 0,
+        pageSize: 10,
     });
+
     const handleDelete = (index: number) => {
         console.log("handleDelete")
         console.log("index", index)
@@ -28,8 +31,8 @@ const FileResultTable: FC<PropsFileData> = ({fileData}) => {
             id: 'numbers',
             header: "front_side",
             cell: (props) => {
-                return (<span key={props.row.index}>
-                <span className="words__learn">{props.row.original[0]}</span>
+                return (<span key={props.row.original['id']}>
+                <span className="words__learn">{props.row.original['front_side']}</span>
             </span>)
             },
         }),
@@ -37,28 +40,26 @@ const FileResultTable: FC<PropsFileData> = ({fileData}) => {
             id: 'numbers1',
             header: "back_side",
             cell: (props) => {
-                // console.log(props)
-                return (<span key={props.row.index}>
-                <button className="words__learn">{props.row.original[1]}</button>
+                return (<span key={props.row.original['id']}>
+                <span className="words__learn">{props.row.original['back_side']}</span>
             </span>)
             }
         }),
         columnHelper.display({
-            id: 'numbers1',
+            id: 'deleteColumn',
             header: t("delete"),
             cell: (props) => {
-                return (<span key={props.row.index}>
-                    {/*<p>delete</p>*/}
-                    <span className="words__learn" onClick={() => handleDelete(props.row.index)}>Delete</span>
+                return (<span key={props.row.original['id']}>
+                    <button className="words__learn" onClick={() => handleDelete(props.row.index)}>Delete</button>
             </span>)
             }
         })
     ]
-    const [data,] = useState<string[][]>(fileData || []);
+    // const [data,] = useState<RowData[]>(fileData);
 
     const table = useReactTable({
-        data,
-        columns,
+        data: fileData,
+        columns: columns,
         getCoreRowModel: getCoreRowModel(),
         getPaginationRowModel: getPaginationRowModel(),
         onPaginationChange: setPagination, //update the pagination state when internal APIs mutate the pagination state
