@@ -1,4 +1,4 @@
-import {FC, useMemo} from "react";
+import {FC, useEffect, useMemo} from "react";
 import {
     createColumnHelper,
     flexRender,
@@ -12,8 +12,7 @@ import {FileRowData, PropsFileData} from "../interfaces.tsx";
 const columnHelper = createColumnHelper<FileRowData>()
 
 const FileResultTable: FC<PropsFileData> = ({fileData, setFileData, pagination, setPagination}) => {
-    // console.log("fileData")
-    // console.log(fileData)
+
     const {t} = useTranslation();
     const columns = useMemo(() => [
         columnHelper.display({
@@ -67,6 +66,7 @@ const FileResultTable: FC<PropsFileData> = ({fileData, setFileData, pagination, 
         lastPage,
         setPageSize,
         getPageCount,
+        setPageIndex
     } = useReactTable({
         data: fileData,
         columns: columns,
@@ -78,19 +78,24 @@ const FileResultTable: FC<PropsFileData> = ({fileData, setFileData, pagination, 
         },
         autoResetPageIndex: false
     })
-    // const handleDelete = (id: number) => {
-    //     setFileData(fileData.filter(obj => obj.id !== id));
-    // }
+    useEffect(() => {
+        const index = getState().pagination.pageIndex
+        const page_count = getPageCount()
+        if (index !== 0) {
+            if (page_count >= index) {
+                setPageIndex(page_count - 1)
+            }
+        }
+    }, [fileData])
     const handleDelete = (id: number) => {
         setFileData(prevFileData => {
             if (prevFileData !== null) {
                 const indexToDelete = prevFileData.findIndex(obj => obj.id === id);
                 if (indexToDelete !== -1) {
-                    const updatedFileData = [...prevFileData.slice(0, indexToDelete), ...prevFileData.slice(indexToDelete + 1)];
-                    return updatedFileData;
+                    return [...prevFileData.slice(0, indexToDelete), ...prevFileData.slice(indexToDelete + 1)];
                 }
             }
-            return prevFileData; // Zwróć oryginalny stan lub pustą tablicę, jeśli prevFileData jest null
+            return prevFileData;
         });
     };
 
