@@ -1,4 +1,4 @@
-import {FC, useEffect, useMemo} from "react";
+import {FC, useContext, useEffect, useMemo} from "react";
 import {
     createColumnHelper,
     flexRender,
@@ -8,11 +8,26 @@ import {
 } from "@tanstack/react-table";
 import {useTranslation} from "react-i18next";
 import {FileRowData, PropsFileData} from "../interfaces.tsx";
+import {postDeckWithWords} from "../api.tsx";
+import AuthContext from "../context/AuthContext.tsx";
 
 const columnHelper = createColumnHelper<FileRowData>()
 
 const FileResultTable: FC<PropsFileData> = ({fileData, setFileData, pagination, setPagination}) => {
-
+    console.log(fileData)
+    const {token} = useContext(AuthContext);
+    const handleSendData = () => {
+        console.log("handleSendData")
+        const data = {
+            "name": "saffsaasffas",
+            "rows": fileData
+        }
+        // const form = new FormData()
+        // form.append("rows", fileData)
+        // form.append("test", "dasdasasdasd")
+        // #TODO ADD exception
+        postDeckWithWords(data, token)
+    }
     const {t} = useTranslation();
     const columns = useMemo(() => [
         columnHelper.display({
@@ -188,6 +203,7 @@ const FileResultTable: FC<PropsFileData> = ({fileData, setFileData, pagination, 
             </select>
             <strong>{getState().pagination.pageIndex + 1} of{" "} {getPageCount()}</strong>
             <p>Liczba słów {getRowCount()}</p>
+            <button onClick={handleSendData}>Wyślij</button>
         </div>
     );
 };
