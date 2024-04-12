@@ -11,7 +11,7 @@ import {FileRowData, PropsFileData} from "../interfaces.tsx";
 
 const columnHelper = createColumnHelper<FileRowData>()
 
-const FileResultTable: FC<PropsFileData> = ({fileData}) => {
+const FileResultTable: FC<PropsFileData> = ({fileData, setFileData}) => {
     console.log("fileData")
     console.log(fileData)
     const {t} = useTranslation();
@@ -20,15 +20,27 @@ const FileResultTable: FC<PropsFileData> = ({fileData}) => {
         pageSize: 10,
     });
 
-    const handleDelete = (index: number) => {
-        console.log("handleDelete")
-        console.log("index", index)
+    const handleDelete = (id: number) => {
+        setFileData(fileData.filter(obj => obj.id !== id));
+    }
+
+    const handleChange = (id: number) => {
+        const tempFile = fileData.slice()
+        for (const obj of tempFile) {
+            if (obj.id === id) {
+                const temp = obj.front_side;
+                obj.front_side = obj.back_side;
+                obj.back_side = temp;
+                break;
+            }
+        }
+        setFileData(tempFile)
     }
 
 
     const columns = [
         columnHelper.display({
-            id: 'numbers',
+            id: 'front_side',
             header: "front_side",
             cell: (props) => {
                 return (<span key={props.row.original['id']}>
@@ -37,7 +49,7 @@ const FileResultTable: FC<PropsFileData> = ({fileData}) => {
             },
         }),
         columnHelper.display({
-            id: 'numbers1',
+            id: 'back_side',
             header: "back_side",
             cell: (props) => {
                 return (<span key={props.row.original['id']}>
@@ -50,7 +62,17 @@ const FileResultTable: FC<PropsFileData> = ({fileData}) => {
             header: t("delete"),
             cell: (props) => {
                 return (<span key={props.row.original['id']}>
-                    <button className="words__learn" onClick={() => handleDelete(props.row.index)}>Delete</button>
+                    <button className="words__learn"
+                            onClick={() => handleDelete(props.row.original['id'])}>Delete</button>
+            </span>)
+            }
+        }),
+        columnHelper.display({
+            id: 'changeColumn',
+            header: t("change"),
+            cell: (props) => {
+                return (<span key={props.row.original['id']}>
+                    <button className="words__learn" onClick={() => handleChange(props.row.original['id'])}>Change places</button>
             </span>)
             }
         })
@@ -141,6 +163,7 @@ const FileResultTable: FC<PropsFileData> = ({fileData}) => {
                     </option>
                 ))}
             </select>
+            <strong>{table.getState().pagination.pageIndex + 1} of{" "} {table.getPageCount()}</strong>
             <p>Liczba słów {table.getRowCount()}</p>
         </div>
     );

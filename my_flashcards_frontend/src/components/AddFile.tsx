@@ -3,7 +3,7 @@ import "../sass/addfile.css"
 import {useTranslation} from "react-i18next";
 import withAuth from "../context/withAuth.tsx";
 import {getTaskResult, postFile} from "../api.tsx";
-import {ErrorResponse, Response, RowData} from "../interfaces.tsx";
+import {ErrorResponse, Response, FileRowData} from "../interfaces.tsx";
 import {useContext, useState} from "react";
 import AuthContext from "../context/AuthContext.tsx";
 import FileResultTable from "../table/FileResultTable.tsx";
@@ -11,7 +11,7 @@ import FileResultTable from "../table/FileResultTable.tsx";
 const AddFile = () => {
     const {token} = useContext(AuthContext);
     const {t} = useTranslation();
-    const [fileData, setFileData] = useState<RowData[] | null>(null);
+    const [fileData, setFileData] = useState<FileRowData[] | null>(null);
 
     async function executeForTwoMinutes(action: (task_id: string, token: string | null) => Promise<Response>, task_id: string, token: string | null): Promise<void> {
         return new Promise((resolve, reject) => {
@@ -99,7 +99,7 @@ const AddFile = () => {
             {/*</div>*/}
             {/*<p></p>*/}
             {fileData &&
-                <FileResultTable fileData={fileData}/>
+                <FileResultTable fileData={fileData} setFileData={setFileData}/>
             }
         </section>
     );

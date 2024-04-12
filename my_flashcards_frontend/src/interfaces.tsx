@@ -68,6 +68,7 @@ export interface Response {
 
 export interface PropsFileData {
     fileData: FileRowData[];
+    setFileData: Dispatch<SetStateAction<FileRowData[] | null>>
 }
 
 export interface FileRowData {
