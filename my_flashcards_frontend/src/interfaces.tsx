@@ -69,6 +69,8 @@ export interface Response {
 export interface PropsFileData {
     fileData: FileRowData[];
     setFileData: Dispatch<SetStateAction<FileRowData[] | null>>
+    pagination:  {pageIndex: number, pageSize: number}
+    setPagination: Dispatch<SetStateAction<{pageIndex: number, pageSize: number}>>
 }
 
 export interface FileRowData {

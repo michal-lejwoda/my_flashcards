@@ -1,4 +1,4 @@
-import {FC, useState} from "react";
+import {FC, useMemo} from "react";
 import {
     createColumnHelper,
     flexRender,
@@ -11,34 +11,11 @@ import {FileRowData, PropsFileData} from "../interfaces.tsx";
 
 const columnHelper = createColumnHelper<FileRowData>()
 
-const FileResultTable: FC<PropsFileData> = ({fileData, setFileData}) => {
-    console.log("fileData")
-    console.log(fileData)
+const FileResultTable: FC<PropsFileData> = ({fileData, setFileData, pagination, setPagination}) => {
+    // console.log("fileData")
+    // console.log(fileData)
     const {t} = useTranslation();
-    const [pagination, setPagination] = useState({
-        pageIndex: 0,
-        pageSize: 10,
-    });
-
-    const handleDelete = (id: number) => {
-        setFileData(fileData.filter(obj => obj.id !== id));
-    }
-
-    const handleChange = (id: number) => {
-        const tempFile = fileData.slice()
-        for (const obj of tempFile) {
-            if (obj.id === id) {
-                const temp = obj.front_side;
-                obj.front_side = obj.back_side;
-                obj.back_side = temp;
-                break;
-            }
-        }
-        setFileData(tempFile)
-    }
-
-
-    const columns = [
+    const columns = useMemo(() => [
         columnHelper.display({
             id: 'front_side',
             header: "front_side",
@@ -76,26 +53,67 @@ const FileResultTable: FC<PropsFileData> = ({fileData, setFileData}) => {
             </span>)
             }
         })
-    ]
-    // const [data,] = useState<RowData[]>(fileData);
-
-    const table = useReactTable({
+    ], [])
+    const {
+        getHeaderGroups,
+        getState,
+        getRowCount,
+        getRowModel,
+        firstPage,
+        getCanPreviousPage,
+        previousPage,
+        getCanNextPage,
+        nextPage,
+        lastPage,
+        setPageSize,
+        getPageCount,
+    } = useReactTable({
         data: fileData,
         columns: columns,
         getCoreRowModel: getCoreRowModel(),
         getPaginationRowModel: getPaginationRowModel(),
-        onPaginationChange: setPagination, //update the pagination state when internal APIs mutate the pagination state
+        onPaginationChange: setPagination,
         state: {
             pagination,
         },
+        autoResetPageIndex: false
     })
-    // console.log(data)
+    // const handleDelete = (id: number) => {
+    //     setFileData(fileData.filter(obj => obj.id !== id));
+    // }
+    const handleDelete = (id: number) => {
+        setFileData(prevFileData => {
+            if (prevFileData !== null) {
+                const indexToDelete = prevFileData.findIndex(obj => obj.id === id);
+                if (indexToDelete !== -1) {
+                    const updatedFileData = [...prevFileData.slice(0, indexToDelete), ...prevFileData.slice(indexToDelete + 1)];
+                    return updatedFileData;
+                }
+            }
+            return prevFileData; // Zwróć oryginalny stan lub pustą tablicę, jeśli prevFileData jest null
+        });
+    };
+
+    const handleChange = (id: number) => {
+        // const pageindex = getState().pagination.pageIndex
+        const tempFile = fileData.slice()
+        for (const obj of tempFile) {
+            if (obj.id === id) {
+                const temp = obj.front_side;
+                obj.front_side = obj.back_side;
+                obj.back_side = temp;
+                break;
+            }
+        }
+        setFileData(tempFile)
+
+    }
     return (
         <div>
             <h1>FileResultTable</h1>
             <table>
                 <thead>
-                {table.getHeaderGroups().map(headerGroup => (
+                {getHeaderGroups().map(headerGroup => (
                     <tr key={headerGroup.id}>
                         {headerGroup.headers.map(header => (
                             <th key={header.id}>
@@ -111,7 +129,7 @@ const FileResultTable: FC<PropsFileData> = ({fileData, setFileData}) => {
                 ))}
                 </thead>
                 <tbody>
-                {table.getRowModel().rows.map(row => (
+                {getRowModel().rows.map(row => (
                     <tr key={row.id}>
                         {row.getVisibleCells().map(cell => (
                             <td key={cell.id}>
@@ -123,38 +141,38 @@ const FileResultTable: FC<PropsFileData> = ({fileData, setFileData}) => {
                 </tbody>
             </table>
             <button
-                onClick={() => table.firstPage()}
-                disabled={!table.getCanPreviousPage()}
+                onClick={() => firstPage()}
+                disabled={!getCanPreviousPage()}
             >
                 {'<<'}
             </button>
             <button
-                onClick={() => table.previousPage()}
-                disabled={!table.getCanPreviousPage()}
+                onClick={() => previousPage()}
+                disabled={!getCanPreviousPage()}
             >
                 {'<'}
             </button>
-            {table.getCanNextPage() &&
+            {getCanNextPage() &&
                 <button
-                    onClick={() => table.nextPage()}
-                    disabled={!table.getCanNextPage()}
+                    onClick={() => nextPage()}
+                    disabled={!getCanNextPage()}
                 >
                     {'>'}
                 </button>
             }
             {/*#TODO https://tanstack.com/table/latest/docs/guide/pagination*/}
-            {table.getCanNextPage() &&
+            {getCanNextPage() &&
                 <button
-                    onClick={() => table.lastPage()}
-                    disabled={!table.getCanNextPage()}
+                    onClick={() => lastPage()}
+                    disabled={!getCanNextPage()}
                 >
                     {'>>'}
                 </button>
             }
             <select
-                value={table.getState().pagination.pageSize}
+                value={getState().pagination.pageSize}
                 onChange={e => {
-                    table.setPageSize(Number(e.target.value))
+                    setPageSize(Number(e.target.value))
                 }}
             >
                 {[10, 20, 30, 40, 50].map(pageSize => (
@@ -163,8 +181,8 @@ const FileResultTable: FC<PropsFileData> = ({fileData, setFileData}) => {
                     </option>
                 ))}
             </select>
-            <strong>{table.getState().pagination.pageIndex + 1} of{" "} {table.getPageCount()}</strong>
-            <p>Liczba słów {table.getRowCount()}</p>
+            <strong>{getState().pagination.pageIndex + 1} of{" "} {getPageCount()}</strong>
+            <p>Liczba słów {getRowCount()}</p>
         </div>
     );
 };

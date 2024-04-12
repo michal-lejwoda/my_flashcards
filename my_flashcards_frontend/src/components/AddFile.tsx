@@ -12,7 +12,10 @@ const AddFile = () => {
     const {token} = useContext(AuthContext);
     const {t} = useTranslation();
     const [fileData, setFileData] = useState<FileRowData[] | null>(null);
-
+    const [pagination, setPagination] = useState({
+        pageIndex: 0,
+        pageSize: 10,
+    });
     async function executeForTwoMinutes(action: (task_id: string, token: string | null) => Promise<Response>, task_id: string, token: string | null): Promise<void> {
         return new Promise((resolve, reject) => {
             const interval = setInterval(async () => {
@@ -99,7 +102,7 @@ const AddFile = () => {
             {/*</div>*/}
             {/*<p></p>*/}
             {fileData &&
-                <FileResultTable fileData={fileData} setFileData={setFileData}/>
+                <FileResultTable fileData={fileData} setFileData={setFileData} pagination={pagination} setPagination={setPagination}/>
             }
         </section>
     );
