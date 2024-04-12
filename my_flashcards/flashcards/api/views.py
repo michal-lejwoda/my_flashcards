@@ -67,6 +67,11 @@ class SingleDeckViewSet(ErrorHandlingMixin, RetrieveModelMixin, GenericViewSet):
         except IntegrityError:
             return self.handle_response(_("Incorrect data"), status.HTTP_400_BAD_REQUEST)
 
+    @action(detail=True, methods=['POST'], permission_classes=[IsAuthenticated])
+    def create_deck_with_words(self, request, pk=None):
+        #TODO BACk here
+        pass
+
 
 class FileUploadViewSet(ErrorHandlingMixin, ViewSet):
     parser_classes = [MultiPartParser]
