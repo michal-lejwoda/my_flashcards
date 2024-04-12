@@ -38,6 +38,11 @@ class DeckSerializer(serializers.ModelSerializer):
         model = Deck
         exclude = ['words']
 
+    def validate_name(self, value):
+        user = self.context['request'].user
+        if Deck.objects.filter(name=value, user=user).exists():
+            raise serializers.ValidationError("Deck o tej nazwie już istnieje dla tego użytkownika.")
+        return value
 
 class SingleDeckSerializer(serializers.ModelSerializer):
     words = WordSerializer(many=True, read_only=True)

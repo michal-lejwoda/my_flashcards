@@ -1,5 +1,5 @@
 from celery.result import AsyncResult
-from django.db import IntegrityError
+from django.db import IntegrityError, transaction
 from django.db.models import Q
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
@@ -10,7 +10,7 @@ from rest_framework.pagination import PageNumberPagination
 from rest_framework.parsers import MultiPartParser
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
-from rest_framework.viewsets import GenericViewSet, ViewSet, ModelViewSet
+from rest_framework.viewsets import GenericViewSet, ViewSet
 
 from my_flashcards.flashcards.api.serializers import DeckSerializer, SingleDeckSerializer, WordSerializer, \
     UserHistorySerializer, DeckSerializerWithAllFields, CreateUserHistorySerializer
@@ -67,10 +67,25 @@ class SingleDeckViewSet(ErrorHandlingMixin, RetrieveModelMixin, GenericViewSet):
         except IntegrityError:
             return self.handle_response(_("Incorrect data"), status.HTTP_400_BAD_REQUEST)
 
-    @action(detail=True, methods=['POST'], permission_classes=[IsAuthenticated])
-    def create_deck_with_words(self, request, pk=None):
-        #TODO BACk here
-        pass
+    @action(detail=False, methods=['POST'], permission_classes=[IsAuthenticated])
+    def create_deck_with_words(self, request):
+        try:
+            with transaction.atomic():
+                serializer = DeckSerializer(data=request.data, context={'request': request})
+                if serializer.is_valid():
+                    deck = serializer.save(user=request.user)
+                    for row in request.data['rows']:
+                        word_serializer = WordSerializer(data=row)
+                        if word_serializer.is_valid():
+                            word = word_serializer.save(user=request.user)
+                            deck.words.add(word)
+                    deck.save()
+                    serializer_with_all_fields = DeckSerializerWithAllFields(deck)
+                    return Response(serializer_with_all_fields.data)
+                else:
+                    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        except Exception as e:
+            return Response({"message": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
 class FileUploadViewSet(ErrorHandlingMixin, ViewSet):
@@ -82,10 +97,12 @@ class FileUploadViewSet(ErrorHandlingMixin, ViewSet):
             try:
                 file_data = file_obj.read()
                 task_id = get_words_from_file.apply_async(args=[file_data]).id
-                return self.handle_response(message={"message": _("The file was successfully uploaded"), "task_id": task_id},
-                                            status=status.HTTP_200_OK)
+                return self.handle_response(
+                    message={"message": _("The file was successfully uploaded"), "task_id": task_id},
+                    status=status.HTTP_200_OK)
             except:
-                return self.handle_response(message={_("Error while reading a file")}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+                return self.handle_response(message={_("Error while reading a file")},
+                                            status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         else:
             return self.handle_response(message={"message": _("File not found")}, status=status.HTTP_400_BAD_REQUEST)
 
@@ -146,6 +163,7 @@ class LearnViewSet(CreateModelMixin, GenericViewSet):
 
     def get(self, request, *args, **kwargs):
         pass
+
     def create(self, request, *args, **kwargs):
         data = request.data.copy()
         data['user'] = self.request.user.id
@@ -182,7 +200,7 @@ class LearnViewSet(CreateModelMixin, GenericViewSet):
         # print("type(user_history_instance)")
         # print(type(user_history_instance))
         # user_history_instance.correct_flashcards.add(*learned_data)
-        #TODO Back here
+        # TODO Back here
         headers = self.get_success_headers(serializer.data)
         return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
 
@@ -191,6 +209,7 @@ class LearnViewSet(CreateModelMixin, GenericViewSet):
         user_history_instance.correct_flashcards.add(*words)
         correct_data = deck.words.exclude(id__in=user_history_instance.correct_flashcards.values_list('id', flat=True))
         return {"user_history": user_history_instance.id, "words": correct_data}
+
     def get_learn_data(self, deck: Deck):
         # words = Word.objects.filter(deck=deck, next_learn__lte =timezone.now())
         words = Word.objects.filter(deck=deck).filter(Q(next_learn__lte=timezone.now()) | Q(is_correct=False))
