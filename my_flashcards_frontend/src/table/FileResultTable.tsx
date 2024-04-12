@@ -14,17 +14,12 @@ import AuthContext from "../context/AuthContext.tsx";
 const columnHelper = createColumnHelper<FileRowData>()
 
 const FileResultTable: FC<PropsFileData> = ({fileData, setFileData, pagination, setPagination}) => {
-    console.log(fileData)
     const {token} = useContext(AuthContext);
     const handleSendData = () => {
-        console.log("handleSendData")
         const data = {
             "name": "saffsaasffas",
             "rows": fileData
         }
-        // const form = new FormData()
-        // form.append("rows", fileData)
-        // form.append("test", "dasdasasdasd")
         // #TODO ADD exception
         postDeckWithWords(data, token)
     }

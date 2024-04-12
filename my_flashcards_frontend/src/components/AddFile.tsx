@@ -19,7 +19,6 @@ const AddFile = () => {
     async function executeForTwoMinutes(action: (task_id: string, token: string | null) => Promise<Response>, task_id: string, token: string | null): Promise<void> {
         return new Promise((resolve, reject) => {
             const interval = setInterval(async () => {
-                console.log("wywołanie")
                 try {
                     const response = await action(task_id, token);
                     if (response && response.status === 200 && response.data.message.result) {
@@ -53,6 +52,7 @@ const AddFile = () => {
             }
 
         } catch (err: unknown) {
+            // #TODO Back HEre
             const error = err as ErrorResponse
             console.log("error")
             console.log(error)
