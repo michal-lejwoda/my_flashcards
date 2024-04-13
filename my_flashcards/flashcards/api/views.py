@@ -26,7 +26,11 @@ class DeckViewSet(CreateModelMixin, ListModelMixin, GenericViewSet):
     pagination_class = PageNumberPagination
 
     def get_queryset(self):
-        return Deck.objects.filter(user=self.request.user)
+        queryset = Deck.objects.filter(user=self.request.user)
+        search_query = self.request.query_params.get('search', None)
+        if search_query:
+            queryset = queryset.filter(Q(name__icontains=search_query))
+        return queryset
 
 
 class SingleDeckViewSet(ErrorHandlingMixin, RetrieveModelMixin, GenericViewSet):

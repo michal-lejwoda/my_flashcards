@@ -40,9 +40,13 @@ export async function postRegister(form: FormData) {
 //     return response.data
 // }
 
-export async function getDecks(token: string|null) {
+export async function getDecks(token: string|null, search: string| null) {
     const currentLanguage = i18n.language;
-    const response = await instance.get(`/api/decks/`, {
+    let url = "/api/decks/";
+    if (search !== null) {
+        url = `/api/decks/?search=${search}`;
+    }
+    const response = await instance.get(url, {
         headers: {
             'Accept-Language': currentLanguage,
             'Authorization': `Token ${token}`
@@ -50,6 +54,8 @@ export async function getDecks(token: string|null) {
     });
     return response.data
 }
+
+
 
 export async function createDeck(form: FormData) {
     const currentLanguage = i18n.language;

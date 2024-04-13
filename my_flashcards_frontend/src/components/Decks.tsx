@@ -1,6 +1,6 @@
 import {useTranslation} from "react-i18next";
 import {createColumnHelper, flexRender, getCoreRowModel, useReactTable,} from '@tanstack/react-table'
-import React, {useContext, useEffect, useState} from "react";
+import {useContext, useEffect, useState} from "react";
 import {DecksTable, ErrorResponse} from "../interfaces.tsx";
 import "../sass/decks.css"
 import {NavLink} from "react-router-dom";
@@ -43,11 +43,13 @@ const columnHelper = createColumnHelper<DecksTable>()
 
 
 const Decks = () => {
+    //TODO Resolve problem of double rendering
     const {token} = useContext(AuthContext);
     const [data, setData] = useState<DecksTable[]>([])
-    const handleGetDecks = async (token: string | null) => {
+
+    const handleGetDecks = async (token: string | null, search: string | null) => {
         try {
-            const get_decks = await getDecks(token)
+            const get_decks = await getDecks(token, search)
             setData(get_decks.results)
         } catch (err: unknown) {
             // #TODO Back HEre
@@ -57,13 +59,10 @@ const Decks = () => {
         }
     }
     useEffect(() => {
-        handleGetDecks(token)
-    }, [])
-    // const [data,] = React.useState(() => [...defaultData])
-    const [globalFilter, setGlobalFilter] = React.useState('')
+        handleGetDecks(token, null);
+    }, [token])
     const [openDropdownId, setOpenDropdownId] = useState<number | null>(null);
     const {t} = useTranslation();
-    // const auth = useContext(AuthContext);
 
 
     const toggleDropdown = (id: number) => {
@@ -119,20 +118,18 @@ const Decks = () => {
         data: data,
         columns: columns,
         getCoreRowModel: getCoreRowModel(),
-        onGlobalFilterChange: setGlobalFilter,
-        state: {
-            globalFilter,
-        },
     })
 
     return (
         <div className="decks">
             <h1 className="title">{t("decks")}</h1>
             <div className="decks__searchcontainer searchcontainer">
-                <input value={globalFilter ?? ''}
-                       onChange={e => setGlobalFilter(String(e.target.value))}
-                       className="searchcontainer__search"
-                       placeholder={t("search")}/>
+                <input
+                    // value={globalFilter ?? ''}
+                    // onChange={e => setGlobalFilter(String(e.target.value))}
+                    onChange={e => handleGetDecks(token, e.target.value)}
+                    className="searchcontainer__search"
+                    placeholder={t("search")}/>
             </div>
             <table className="decks__table">
                 <thead>
