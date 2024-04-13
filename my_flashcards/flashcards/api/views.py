@@ -27,8 +27,6 @@ class CustomPagination(pagination.PageNumberPagination):
             first_page_link = self.request.build_absolute_uri(
                 f"?page=1"
             )
-
-        if total_pages > 0:
             last_page_link = self.request.build_absolute_uri(
                 f"?page={total_pages}"
             )
