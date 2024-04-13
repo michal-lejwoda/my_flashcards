@@ -8,37 +8,6 @@ import withAuth from "../context/withAuth.tsx";
 import {getDecks} from "../api.tsx";
 import AuthContext from "../context/AuthContext.tsx";
 
-
-// const defaultData: DecksTable[] = [
-//     {
-//         id: 1,
-//         name: "slowka1",
-//         slug: "slowka1",
-//         learn: 4,
-//         correct: 76,
-//         wrong: 12,
-//         all: 92
-//     },
-//     {
-//         id: 2,
-//         name: "slowka2",
-//         slug: "slowka2",
-//         learn: 5,
-//         correct: 12,
-//         wrong: 0,
-//         all: 17
-//     },
-//     {
-//         id: 3,
-//         name: "slowka3",
-//         slug: "slowka3",
-//         learn: 15,
-//         correct: 0,
-//         wrong: 0,
-//         all: 15
-//     },
-// ]
-
 const columnHelper = createColumnHelper<DecksTable>()
 
 
