@@ -3,10 +3,9 @@ from django.db import IntegrityError, transaction
 from django.db.models import Q
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
-from rest_framework import status
+from rest_framework import status, pagination
 from rest_framework.decorators import action
 from rest_framework.mixins import CreateModelMixin, ListModelMixin, RetrieveModelMixin, DestroyModelMixin
-from rest_framework.pagination import PageNumberPagination
 from rest_framework.parsers import MultiPartParser
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
@@ -16,14 +15,41 @@ from my_flashcards.flashcards.api.serializers import DeckSerializer, SingleDeckS
     UserHistorySerializer, DeckSerializerWithAllFields, CreateUserHistorySerializer
 from my_flashcards.flashcards.errors import ErrorHandlingMixin
 from my_flashcards.flashcards.models import Deck, Word, UserHistory
-from my_flashcards.flashcards.pagination import CustomPagination
 from my_flashcards.flashcards.tasks import get_words_from_file
 
+
+class CustomPagination(pagination.PageNumberPagination):
+    def get_paginated_response(self, data):
+        total_pages = self.page.paginator.num_pages
+        last_page_link = None
+        first_page_link = None
+        if total_pages > 0:
+            first_page_link = self.request.build_absolute_uri(
+                f"?page=1"
+            )
+
+        if total_pages > 0:
+            last_page_link = self.request.build_absolute_uri(
+                f"?page={total_pages}"
+            )
+        return Response(
+            {
+            'links': {
+                'next': self.get_next_link(),
+                'previous': self.get_previous_link(),
+                'last_page_link': last_page_link,
+                'first_page_link': first_page_link,
+            },
+            'count': self.page.paginator.count,
+            'current_page': self.page.number,
+            'total_pages': self.page.paginator.num_pages,
+            'results': data
+        })
 
 class DeckViewSet(CreateModelMixin, ListModelMixin, GenericViewSet):
     permission_classes = [IsAuthenticated]
     serializer_class = DeckSerializer
-    pagination_class = PageNumberPagination
+    pagination_class = CustomPagination
 
     def get_queryset(self):
         queryset = Deck.objects.filter(user=self.request.user)

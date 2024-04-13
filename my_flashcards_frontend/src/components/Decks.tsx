@@ -1,5 +1,11 @@
 import {useTranslation} from "react-i18next";
-import {createColumnHelper, flexRender, getCoreRowModel, useReactTable,} from '@tanstack/react-table'
+import {
+    createColumnHelper,
+    flexRender,
+    getCoreRowModel,
+    getPaginationRowModel,
+    useReactTable,
+} from '@tanstack/react-table'
 import {useContext, useEffect, useState} from "react";
 import {DecksTable, ErrorResponse} from "../interfaces.tsx";
 import "../sass/decks.css"
@@ -15,7 +21,10 @@ const Decks = () => {
     //TODO Resolve problem of double rendering
     const {token} = useContext(AuthContext);
     const [data, setData] = useState<DecksTable[]>([])
-
+    const [pagination, setPagination] = useState({
+        pageIndex: 0,
+        pageSize: 10,
+    });
     const handleGetDecks = async (token: string | null, search: string | null) => {
         try {
             const get_decks = await getDecks(token, search)
@@ -27,6 +36,12 @@ const Decks = () => {
             console.log(error)
         }
     }
+
+    useEffect(() => {
+        console.log("Pobieranie danych dla strony", pagination);
+    }, [pagination]);
+
+
     useEffect(() => {
         handleGetDecks(token, null);
     }, [token])
@@ -83,10 +98,25 @@ const Decks = () => {
         })
     ]
 
-    const table = useReactTable({
+    const {
+        getHeaderGroups,
+        firstPage,
+        getCanNextPage,
+        getCanPreviousPage,
+        nextPage,
+        lastPage,
+        getRowModel,
+        previousPage
+
+    } = useReactTable({
         data: data,
         columns: columns,
         getCoreRowModel: getCoreRowModel(),
+        getPaginationRowModel: getPaginationRowModel(),
+        onPaginationChange: setPagination,
+        state: {
+            pagination,
+        },
     })
 
     return (
@@ -102,7 +132,7 @@ const Decks = () => {
             </div>
             <table className="decks__table">
                 <thead>
-                {table.getHeaderGroups().map(headerGroup => (
+                {getHeaderGroups().map(headerGroup => (
                     <tr key={headerGroup.id}>
                         {headerGroup.headers.map(header => (
                             <th key={header.id}>
@@ -118,7 +148,7 @@ const Decks = () => {
                 ))}
                 </thead>
                 <tbody>
-                {table.getRowModel().rows.map(row => (
+                {getRowModel().rows.map(row => (
                     <tr key={row.id}>
                         {row.getVisibleCells().map(cell => (
                             <td key={cell.id}>
@@ -129,6 +159,35 @@ const Decks = () => {
                 ))}
                 </tbody>
             </table>
+            <button
+                onClick={() => firstPage()}
+                disabled={!getCanPreviousPage()}
+            >
+                {'<<'}
+            </button>
+            <button
+                onClick={() => previousPage()}
+                disabled={!getCanPreviousPage()}
+            >
+                {'<'}
+            </button>
+            {getCanNextPage() &&
+                <button
+                    onClick={() => nextPage()}
+                    disabled={!getCanNextPage()}
+                >
+                    {'>'}
+                </button>
+            }
+            {/*#TODO https://tanstack.com/table/latest/docs/guide/pagination*/}
+            {getCanNextPage() &&
+                <button
+                    onClick={() => lastPage()}
+                    disabled={!getCanNextPage()}
+                >
+                    {'>>'}
+                </button>
+            }
 
 
         </div>

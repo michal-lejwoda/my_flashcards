@@ -4,12 +4,12 @@ import i18next from "i18next";
 export const validateRegistration = yup.object().shape({
     username: yup.string().min(2, () => i18next.t('usernameTooShort')).max(80, () => i18next.t('usernameTooLong')).required(() => i18next.t('usernameIsRequired')),
     email: yup.string().email(() => i18next.t('emailIsNotCorrect')).required(() => i18next.t('emailIsRequired')),
-    password: yup.string().min(5, () => i18next.t('passwordTooShort')).required(() => i18next.t('passwordIsRequired')),
+    password: yup.string().min(4, () => i18next.t('passwordTooShort')).required(() => i18next.t('passwordIsRequired')),
     repeat_password: yup.string().oneOf([yup.ref("password")], () => i18next.t('passwordsNotMatch'))
 });
 
 export const validateLogin = yup.object().shape({
     username: yup.string().min(2, () => i18next.t('usernameTooShort')).max(80, () => i18next.t('usernameTooLong')).required(() => i18next.t('usernameIsRequired')),
-    password: yup.string().min(5, () => i18next.t('passwordTooShort')).required(() => i18next.t('passwordIsRequired')),
+    password: yup.string().min(4, () => i18next.t('passwordTooShort')).required(() => i18next.t('passwordIsRequired')),
 })
 
