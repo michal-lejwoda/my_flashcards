@@ -15,6 +15,19 @@ export interface DecksTable {
     all: number;
 }
 
+export interface DecksResponseTable {
+  links: {
+    next: string | null;
+    previous: string | null;
+    last_page_link: string;
+    first_page_link: string;
+  };
+  count: number;
+  current_page: number;
+  total_pages: number;
+  results: DecksTable[];
+}
+
 export interface LoginValues {
     username: string,
     password: string,
@@ -71,6 +84,10 @@ export interface PropsFileData {
     setFileData: Dispatch<SetStateAction<FileRowData[] | null>>
     pagination: { pageIndex: number, pageSize: number }
     setPagination: Dispatch<SetStateAction<{ pageIndex: number, pageSize: number }>>
+}
+export interface DecksTablewithPaginationProps{
+    data: DecksResponseTable
+    token: string | null
 }
 
 export interface FileRowData {
