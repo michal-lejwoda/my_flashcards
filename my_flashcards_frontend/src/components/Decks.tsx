@@ -1,47 +1,65 @@
 import {useTranslation} from "react-i18next";
 import {createColumnHelper, flexRender, getCoreRowModel, useReactTable,} from '@tanstack/react-table'
-import React, {useState} from "react";
-import {DecksTable} from "../interfaces.tsx";
+import React, {useContext, useEffect, useState} from "react";
+import {DecksTable, ErrorResponse} from "../interfaces.tsx";
 import "../sass/decks.css"
 import {NavLink} from "react-router-dom";
 import withAuth from "../context/withAuth.tsx";
+import {getDecks} from "../api.tsx";
+import AuthContext from "../context/AuthContext.tsx";
 
 
-const defaultData: DecksTable[] = [
-    {
-        id: 1,
-        name: "slowka1",
-        slug: "slowka1",
-        learn: 4,
-        correct: 76,
-        wrong: 12,
-        all: 92
-    },
-    {
-        id: 2,
-        name: "slowka2",
-        slug: "slowka2",
-        learn: 5,
-        correct: 12,
-        wrong: 0,
-        all: 17
-    },
-    {
-        id: 3,
-        name: "slowka3",
-        slug: "slowka3",
-        learn: 15,
-        correct: 0,
-        wrong: 0,
-        all: 15
-    },
-]
+// const defaultData: DecksTable[] = [
+//     {
+//         id: 1,
+//         name: "slowka1",
+//         slug: "slowka1",
+//         learn: 4,
+//         correct: 76,
+//         wrong: 12,
+//         all: 92
+//     },
+//     {
+//         id: 2,
+//         name: "slowka2",
+//         slug: "slowka2",
+//         learn: 5,
+//         correct: 12,
+//         wrong: 0,
+//         all: 17
+//     },
+//     {
+//         id: 3,
+//         name: "slowka3",
+//         slug: "slowka3",
+//         learn: 15,
+//         correct: 0,
+//         wrong: 0,
+//         all: 15
+//     },
+// ]
 
 const columnHelper = createColumnHelper<DecksTable>()
 
 
 const Decks = () => {
-    const [data,] = React.useState(() => [...defaultData])
+    const {token} = useContext(AuthContext);
+    const [data, setData] = useState<DecksTable[]>([])
+    const handleGetDecks = async (token: string | null) => {
+        try {
+            const get_decks = await getDecks(token)
+            setData(get_decks.results)
+        } catch (err: unknown) {
+            // #TODO Back HEre
+            const error = err as ErrorResponse
+            console.log("error")
+            console.log(error)
+        }
+    }
+    useEffect(() => {
+        handleGetDecks(token)
+    }, [])
+    // const [data,] = React.useState(() => [...defaultData])
     const [globalFilter, setGlobalFilter] = React.useState('')
     const [openDropdownId, setOpenDropdownId] = useState<number | null>(null);
     const {t} = useTranslation();
@@ -56,20 +74,20 @@ const Decks = () => {
         columnHelper.accessor('name', {
             header: () => <span>Name</span>,
             cell: info => info.getValue(),
-
         }),
-        columnHelper.display({
-            id: 'numbers',
-            header: t("words"),
-            cell: (props) => {
-                return (<span>
-                <span className="words__learn">{props.row.original.learn}</span> -
-                <span className="words__correct">{props.row.original.correct}</span> -
-                <span className="words__wrong">{props.row.original.wrong} </span>
-                 | <span className="words__all">{props.row.original.all}</span>
-            </span>)
-            },
-        }),
+        //TODO Back here after fix
+        // columnHelper.display({
+        //     id: 'numbers',
+        //     header: t("words"),
+        //     cell: (props) => {
+        //         return (<span>
+        //         <span className="words__learn">{props.row.original.learn}</span> -
+        //         <span className="words__correct">{props.row.original.correct}</span> -
+        //         <span className="words__wrong">{props.row.original.wrong} </span>
+        //          | <span className="words__all">{props.row.original.all}</span>
+        //     </span>)
+        //     },
+        // }),
         columnHelper.display({
             id: "actions",
             header: t("actions"),
@@ -98,8 +116,8 @@ const Decks = () => {
     ]
 
     const table = useReactTable({
-        data,
-        columns,
+        data: data,
+        columns: columns,
         getCoreRowModel: getCoreRowModel(),
         onGlobalFilterChange: setGlobalFilter,
         state: {

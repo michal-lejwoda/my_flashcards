@@ -40,11 +40,12 @@ export async function postRegister(form: FormData) {
 //     return response.data
 // }
 
-export async function getDecks() {
+export async function getDecks(token: string|null) {
     const currentLanguage = i18n.language;
     const response = await instance.get(`/api/decks/`, {
         headers: {
             'Accept-Language': currentLanguage,
+            'Authorization': `Token ${token}`
         },
     });
     return response.data
