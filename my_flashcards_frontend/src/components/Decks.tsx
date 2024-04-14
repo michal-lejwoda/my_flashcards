@@ -13,9 +13,10 @@ const Decks = () => {
     const {token} = useContext(AuthContext);
     const [data,setData] = useState<DecksResponseTable | null>(null)
     const {t} = useTranslation();
-    const handleGetDecks = async (token: string | null, search: string | null) => {
+    const [pageSize, setPageSize] = useState(10)
+    const handleGetDecks = async (token: string | null, search: string | null, pageSize: number) => {
         try {
-            const get_decks = await getDecks(token, search)
+            const get_decks = await getDecks(token, search, pageSize)
             setData(get_decks)
         } catch (err: unknown) {
             // #TODO Back HEre
@@ -26,7 +27,7 @@ const Decks = () => {
     }
 
     useEffect(() => {
-        handleGetDecks(token, null);
+        handleGetDecks(token, null, pageSize);
     }, [token])
 
 
@@ -34,7 +35,12 @@ const Decks = () => {
         <div className="decks">
             <h1 className="title">{t("decks")}</h1>
             {data && data.results &&
-                <DecksTablewithPagination data={data}  token={token} setData={setData}/>
+                <DecksTablewithPagination data={data}  token={token}
+                                          setData={setData} pageSize={pageSize}
+                                          setPageSize={setPageSize}
+                                          handleGetDecks={handleGetDecks}
+
+                />
             }
         </div>
     );

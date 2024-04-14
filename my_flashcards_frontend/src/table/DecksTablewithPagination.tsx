@@ -9,36 +9,44 @@ import {NavLink} from "react-router-dom";
 import {DecksTable, DecksTablewithPaginationProps, ErrorResponse} from "../interfaces.tsx";
 import {useState} from "react";
 import {useTranslation} from "react-i18next";
-import {getDecks, getUrl} from "../api.tsx";
+import {getUrl} from "../api.tsx";
 
 const columnHelper = createColumnHelper<DecksTable>()
-const DecksTablewithPagination: React.FC<DecksTablewithPaginationProps> = ({data, token, setData}) => {
+const DecksTablewithPagination: React.FC<DecksTablewithPaginationProps> = ({
+                                                                               data,
+                                                                               token,
+                                                                               setData,
+                                                                               pageSize,
+                                                                               setPageSize,
+                                                                               handleGetDecks
+                                                                           }) => {
     console.log("Data")
     console.log(data)
     const [openDropdownId, setOpenDropdownId] = useState<number | null>(null);
     const {t} = useTranslation();
-    const handleGoToUrl = async(url: string | null) =>{
+    const [search, setSearch] = useState("")
+
+
+    const handleChangeDataBasedOnPageSize = (pg_size: string) => {
+        setPageSize(Number(pg_size))
+        handleGetDecks(token, search, Number(pg_size))
+    }
+    const handleGoToUrl = async (url: string | null) => {
         try {
             const url_data = await getUrl(url, token)
             setData(url_data)
-        }catch (err: unknown){
+        } catch (err: unknown) {
             const error = err as ErrorResponse
             console.log("error")
             console.log(error)
         }
     }
 
-    const handleGetDecks = async (token: string | null, search: string | null) => {
-        try {
-            const get_decks = await getDecks(token, search)
-            setData(get_decks)
-        } catch (err: unknown) {
-            // #TODO Back HEre
-            const error = err as ErrorResponse
-            console.log("error")
-            console.log(error)
-        }
+    const handleSearch = (search_word: string) =>{
+        setSearch(search_word)
+        handleGetDecks(token, search_word, pageSize)
     }
+
     const toggleDropdown = (id: number) => {
         setOpenDropdownId(openDropdownId === id ? null : id);
     };
@@ -103,7 +111,7 @@ const DecksTablewithPagination: React.FC<DecksTablewithPaginationProps> = ({data
                 <input
                     // value={globalFilter ?? ''}
                     // onChange={e => setGlobalFilter(String(e.target.value))}
-                    onChange={e => handleGetDecks(token, e.target.value)}
+                    onChange={e => handleSearch(e.target.value)}
                     className="searchcontainer__search"
                     placeholder={t("search")}/>
             </div>
@@ -137,19 +145,31 @@ const DecksTablewithPagination: React.FC<DecksTablewithPaginationProps> = ({data
                 </tbody>
             </table>
             {data.links.first_page_link &&
-                <button onClick={()=>handleGoToUrl(data.links.first_page_link)}>{'<<'}</button>
+                <button onClick={() => handleGoToUrl(data.links.first_page_link)}>{'<<'}</button>
             }
             {data.links.previous &&
-                <button onClick={()=>handleGoToUrl(data.links.previous)}>{'<'}</button>
+                <button onClick={() => handleGoToUrl(data.links.previous)}>{'<'}</button>
             }
             {data.current_page} {t('of')} {data.total_pages}
             {data.links.next &&
-                <button onClick={()=>handleGoToUrl(data.links.next)}>{'>'}</button>
+                <button onClick={() => handleGoToUrl(data.links.next)}>{'>'}</button>
             }
 
             {data.links.last_page_link &&
-                <button onClick={()=>handleGoToUrl(data.links.last_page_link)}>{'>>'}</button>
+                <button onClick={() => handleGoToUrl(data.links.last_page_link)}>{'>>'}</button>
             }
+            <select
+                value={pageSize}
+                onChange={e => {
+                    handleChangeDataBasedOnPageSize(e.target.value)
+                }}
+            >
+                {[10, 20, 30, 40, 50].map(pageSize => (
+                    <option key={pageSize} value={pageSize}>
+                        {pageSize}
+                    </option>
+                ))}
+            </select>
         </div>
     );
 };

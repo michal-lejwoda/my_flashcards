@@ -54,11 +54,11 @@ export async function postRegister(form: FormData) {
 //     return response.data
 // }
 
-export async function getDecks(token: string | null, search: string | null) {
+export async function getDecks(token: string | null, search: string | null, page_size: number) {
     const currentLanguage = i18n.language;
-    let url = "/api/decks/";
+    let url = `/api/decks/?page_size=${page_size}`;
     if (search !== null) {
-        url = `/api/decks/?search=${search}`;
+        url = `/api/decks/?search=${search}&page_size=${page_size}`;
     }
     const response = await instance.get(url, {
         headers: {

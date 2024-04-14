@@ -89,6 +89,9 @@ export interface DecksTablewithPaginationProps{
     data: DecksResponseTable
     token: string | null
     setData: Dispatch<SetStateAction<DecksResponseTable | null>>
+    pageSize: number
+    setPageSize:  Dispatch<SetStateAction<number>>
+    handleGetDecks: (token: string | null, search: string | null, pageSize: number) => Promise<void>;
 }
 
 export interface FileRowData {

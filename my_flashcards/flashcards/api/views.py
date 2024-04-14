@@ -19,22 +19,37 @@ from my_flashcards.flashcards.tasks import get_words_from_file
 
 
 class CustomPagination(pagination.PageNumberPagination):
+    page_size = 10
+    page_size_query_param = 'page_size'
+    max_page_size = 100
+
+    def __init__(self, page_size_query_param=None, *args, **kwargs):
+        if page_size_query_param:
+            self.page_size_query_param = page_size_query_param
+        super().__init__(*args, **kwargs)
     def get_paginated_response(self, data):
         total_pages = self.page.paginator.num_pages
         last_page_link = None
         first_page_link = None
         if total_pages > 0:
             first_page_link = self.request.build_absolute_uri(
-                f"?page=1"
+                f"?page=1&page_size={self.page_size}"
             )
             last_page_link = self.request.build_absolute_uri(
-                f"?page={total_pages}"
+                f"?page={total_pages}&page_size={self.page_size}"
             )
+        next_link = self.get_next_link()
+        previous_link = self.get_previous_link()
+
+        if next_link:
+            next_link = f"{next_link}&page_size={self.page_size}"
+        if previous_link:
+            previous_link = f"{previous_link}&page_size={self.page_size}"
         return Response(
             {
             'links': {
-                'next': self.get_next_link(),
-                'previous': self.get_previous_link(),
+                'next': next_link,
+                'previous': previous_link,
                 'last_page_link': last_page_link,
                 'first_page_link': first_page_link,
             },
