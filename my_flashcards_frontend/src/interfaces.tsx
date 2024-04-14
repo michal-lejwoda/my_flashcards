@@ -88,6 +88,7 @@ export interface PropsFileData {
 export interface DecksTablewithPaginationProps{
     data: DecksResponseTable
     token: string | null
+    setData: Dispatch<SetStateAction<DecksResponseTable | null>>
 }
 
 export interface FileRowData {

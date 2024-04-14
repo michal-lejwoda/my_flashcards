@@ -9,20 +9,31 @@ import {NavLink} from "react-router-dom";
 import {DecksTable, DecksTablewithPaginationProps, ErrorResponse} from "../interfaces.tsx";
 import {useState} from "react";
 import {useTranslation} from "react-i18next";
-import {getDecks} from "../api.tsx";
+import {getDecks, getUrl} from "../api.tsx";
 
 const columnHelper = createColumnHelper<DecksTable>()
-const DecksTablewithPagination: React.FC<DecksTablewithPaginationProps> = ({data, token}) => {
+const DecksTablewithPagination: React.FC<DecksTablewithPaginationProps> = ({data, token, setData}) => {
     console.log("Data")
     console.log(data)
     const [openDropdownId, setOpenDropdownId] = useState<number | null>(null);
     const {t} = useTranslation();
+    const handleGoToUrl = async(url: string | null) =>{
+        try {
+            const url_data = await getUrl(url, token)
+            console.log("url_data")
+            console.log(url_data)
+            setData(url_data)
+        }catch (err: unknown){
+            const error = err as ErrorResponse
+            console.log("error")
+            console.log(error)
+        }
+    }
+
     const handleGetDecks = async (token: string | null, search: string | null) => {
         try {
             const get_decks = await getDecks(token, search)
-            console.log("get_decks")
-            console.log(get_decks)
-            // setData(get_decks)
+            setData(get_decks)
         } catch (err: unknown) {
             // #TODO Back HEre
             const error = err as ErrorResponse
@@ -80,14 +91,7 @@ const DecksTablewithPagination: React.FC<DecksTablewithPaginationProps> = ({data
 
     const {
         getHeaderGroups,
-        firstPage,
-        getCanNextPage,
-        getCanPreviousPage,
-        nextPage,
-        lastPage,
         getRowModel,
-        previousPage
-
     } = useReactTable({
         data: data.results,
         columns: columns,
@@ -134,35 +138,49 @@ const DecksTablewithPagination: React.FC<DecksTablewithPaginationProps> = ({data
                 ))}
                 </tbody>
             </table>
-            <button
-                onClick={() => firstPage()}
-                disabled={!getCanPreviousPage()}
-            >
-                {'<<'}
-            </button>
-            <button
-                onClick={() => previousPage()}
-                disabled={!getCanPreviousPage()}
-            >
-                {'<'}
-            </button>
-            {getCanNextPage() &&
-                <button
-                    onClick={() => nextPage()}
-                    disabled={!getCanNextPage()}
-                >
-                    {'>'}
-                </button>
+            {data.links.first_page_link &&
+                <button onClick={()=>handleGoToUrl(data.links.first_page_link)}>{'<<'}</button>
             }
-            {/*#TODO https://tanstack.com/table/latest/docs/guide/pagination*/}
-            {getCanNextPage() &&
-                <button
-                    onClick={() => lastPage()}
-                    disabled={!getCanNextPage()}
-                >
-                    {'>>'}
-                </button>
+            {data.links.previous &&
+                <button onClick={()=>handleGoToUrl(data.links.previous)}>{'<'}</button>
             }
+            {data.links.next &&
+                <button onClick={()=>handleGoToUrl(data.links.next)}>{'>'}</button>
+            }
+
+            {data.links.last_page_link &&
+                <button onClick={()=>handleGoToUrl(data.links.last_page_link)}>{'>>'}</button>
+            }
+
+            {/*<button*/}
+            {/*    onClick={() => firstPage()}*/}
+            {/*    disabled={!getCanPreviousPage()}*/}
+            {/*>*/}
+            {/*    {'<<'}*/}
+            {/*</button>*/}
+            {/*<button*/}
+            {/*    onClick={() => previousPage()}*/}
+            {/*    disabled={!getCanPreviousPage()}*/}
+            {/*>*/}
+            {/*    {'<'}*/}
+            {/*</button>*/}
+            {/*{getCanNextPage() &&*/}
+            {/*    <button*/}
+            {/*        onClick={() => nextPage()}*/}
+            {/*        disabled={!getCanNextPage()}*/}
+            {/*    >*/}
+            {/*        {'>'}*/}
+            {/*    </button>*/}
+            {/*}*/}
+            {/*/!*#TODO https://tanstack.com/table/latest/docs/guide/pagination*!/*/}
+            {/*{getCanNextPage() &&*/}
+            {/*    <button*/}
+            {/*        onClick={() => lastPage()}*/}
+            {/*        disabled={!getCanNextPage()}*/}
+            {/*    >*/}
+            {/*        {'>>'}*/}
+            {/*    </button>*/}
+            {/*}*/}
 
 
         </div>

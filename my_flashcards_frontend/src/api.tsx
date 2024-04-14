@@ -10,6 +10,20 @@ const instance = axios.create({
     }
 });
 
+export async function getUrl(url: string | null, token: string | null) {
+    const currentLanguage = i18n.language;
+    if (url !== null) {
+        const response = await instance.get(url, {
+            headers: {
+                'Accept-Language': currentLanguage,
+                'Authorization': `Token ${token}`
+            },
+        });
+        return response.data
+    }
+}
+
+
 export async function postLogin(form: FormData) {
     const currentLanguage = i18n.language;
     const response = await instance.post(`/api/login/`, form, {
@@ -40,7 +54,7 @@ export async function postRegister(form: FormData) {
 //     return response.data
 // }
 
-export async function getDecks(token: string|null, search: string| null) {
+export async function getDecks(token: string | null, search: string | null) {
     const currentLanguage = i18n.language;
     let url = "/api/decks/";
     if (search !== null) {
@@ -54,7 +68,6 @@ export async function getDecks(token: string|null, search: string| null) {
     });
     return response.data
 }
-
 
 
 export async function createDeck(form: FormData) {
@@ -88,7 +101,7 @@ export async function postFile(form: FormData, token: string | null) {
     return response.data
 }
 
-export async function postDeckWithWords(form: SendDeckData, token: string | null){
+export async function postDeckWithWords(form: SendDeckData, token: string | null) {
     const currentLanguage = i18n.language;
 
     const response = await instance.post(`/api/single_deck/create_deck_with_words/`, form, {

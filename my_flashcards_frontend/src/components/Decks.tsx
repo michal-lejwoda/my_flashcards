@@ -38,7 +38,7 @@ const Decks = () => {
         <div className="decks">
             <h1 className="title">{t("decks")}</h1>
             {data && data.results &&
-                <DecksTablewithPagination data={data}  token={token}/>
+                <DecksTablewithPagination data={data}  token={token} setData={setData}/>
             }
             {/*<table className="decks__table">*/}
             {/*    <thead>*/}
