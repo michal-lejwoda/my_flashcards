@@ -20,8 +20,6 @@ const DecksTablewithPagination: React.FC<DecksTablewithPaginationProps> = ({data
     const handleGoToUrl = async(url: string | null) =>{
         try {
             const url_data = await getUrl(url, token)
-            console.log("url_data")
-            console.log(url_data)
             setData(url_data)
         }catch (err: unknown){
             const error = err as ErrorResponse
@@ -144,6 +142,7 @@ const DecksTablewithPagination: React.FC<DecksTablewithPaginationProps> = ({data
             {data.links.previous &&
                 <button onClick={()=>handleGoToUrl(data.links.previous)}>{'<'}</button>
             }
+            {data.current_page} {t('of')} {data.total_pages}
             {data.links.next &&
                 <button onClick={()=>handleGoToUrl(data.links.next)}>{'>'}</button>
             }
@@ -151,38 +150,6 @@ const DecksTablewithPagination: React.FC<DecksTablewithPaginationProps> = ({data
             {data.links.last_page_link &&
                 <button onClick={()=>handleGoToUrl(data.links.last_page_link)}>{'>>'}</button>
             }
-
-            {/*<button*/}
-            {/*    onClick={() => firstPage()}*/}
-            {/*    disabled={!getCanPreviousPage()}*/}
-            {/*>*/}
-            {/*    {'<<'}*/}
-            {/*</button>*/}
-            {/*<button*/}
-            {/*    onClick={() => previousPage()}*/}
-            {/*    disabled={!getCanPreviousPage()}*/}
-            {/*>*/}
-            {/*    {'<'}*/}
-            {/*</button>*/}
-            {/*{getCanNextPage() &&*/}
-            {/*    <button*/}
-            {/*        onClick={() => nextPage()}*/}
-            {/*        disabled={!getCanNextPage()}*/}
-            {/*    >*/}
-            {/*        {'>'}*/}
-            {/*    </button>*/}
-            {/*}*/}
-            {/*/!*#TODO https://tanstack.com/table/latest/docs/guide/pagination*!/*/}
-            {/*{getCanNextPage() &&*/}
-            {/*    <button*/}
-            {/*        onClick={() => lastPage()}*/}
-            {/*        disabled={!getCanNextPage()}*/}
-            {/*    >*/}
-            {/*        {'>>'}*/}
-            {/*    </button>*/}
-            {/*}*/}
-
-
         </div>
     );
 };

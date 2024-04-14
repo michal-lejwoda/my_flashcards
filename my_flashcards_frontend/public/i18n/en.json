@@ -41,6 +41,7 @@
   "emailIsRequired": "Email field is required",
   "passwordIsRequired": "Password field is required",
   "passwordsNotMatch": "Passwords does not match",
-  "passwordTooShort": "Password field is too short"
+  "passwordTooShort": "Password field is too short",
+  "of": "of"
 
 }

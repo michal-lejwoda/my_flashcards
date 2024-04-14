@@ -41,7 +41,8 @@
   "emailIsRequired": "Pole email jest wymagane",
   "passwordIsRequired": "Pole hasło jest wymagane",
   "passwordsNotMatch": "Hasła się nie zgadzają",
-  "passwordTooShort": "Pole hasło jest za krótkie"
+  "passwordTooShort": "Pole hasło jest za krótkie",
+  "of": "z"
 
 
 
