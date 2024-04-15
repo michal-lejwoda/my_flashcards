@@ -1,24 +1,50 @@
-import withAuth from "../context/withAuth.tsx";
 import {useTranslation} from "react-i18next";
 import SearchTable from "../table/SearchTable.tsx";
+import {useContext, useEffect, useState} from "react";
+import {searchWordWithDeck} from "../api.tsx";
+import AuthContext from "../context/AuthContext.tsx";
+import {DecksResponseTable, ErrorResponse} from "../interfaces.tsx";
+import withAuth from "../context/withAuth.tsx";
 
 const Search = () => {
     const {t} = useTranslation();
-    const handleSearch = (search_word: string) => {
-        if (search_word.length > 2) {
-            console.log("search_word")
-            console.log(search_word)
+    const [searchWord, setSearchWord] = useState("")
+    const {token} = useContext(AuthContext);
+    const [data, setData] = useState<DecksResponseTable | null>(null)
+    const [pageSize, setPageSize] = useState(10)
+    const handleSearchWithDeck = async () => {
+        try {
+            const response = await searchWordWithDeck(searchWord, token)
+            setData(response)
+        } catch (err: unknown) {
+            // #TODO Back HEre
+            const error = err as ErrorResponse
+            console.log("error")
+            console.log(error)
         }
     }
+    useEffect(() => {
+        if (searchWord.length > 2) {
+            handleSearchWithDeck()
+        }
+    }, [searchWord])
+    console.log(data)
 
     return (
         <div className="search">
             <h1>Search</h1>
-            <input onChange={(e) => handleSearch(e.target.value)} type="text"/>
+            {/*<input onChange={(e) => handleSearch(e.target.value)} type="text"/>*/}
+            <input onChange={(e) => setSearchWord(e.target.value)} type="text"/>
             <button>{t("search")}</button>
-            <SearchTable />
-        </div>
-    );
-};
+            {data && data.results &&
+                <SearchTable data={data} token={token}
+                             setData={setData} pageSize={pageSize}
+                             setPageSize={setPageSize}
+                    // handleGetDecks={handleGetDecks}/>
+                  />
+            }
+                </div>
+                );
+            };
 
-export default withAuth(Search);
+            export default withAuth(Search);

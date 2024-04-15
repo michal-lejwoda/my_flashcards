@@ -3,6 +3,16 @@ from rest_framework import serializers
 
 from my_flashcards.flashcards.models import Deck, Word, UserHistory
 
+class DeckSerializerOnlyWithName(serializers.ModelSerializer):
+    class Meta:
+        model = Deck
+        fields = ['id','name']
+class WordSerializerWithDeck(serializers.ModelSerializer):
+    deck_words = DeckSerializerOnlyWithName(many=True, read_only=True)
+
+    class Meta:
+        model = Word
+        fields = ['id','front_side', 'back_side', 'deck_words']
 
 
 class WordSerializer(serializers.ModelSerializer):

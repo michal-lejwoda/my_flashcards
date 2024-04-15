@@ -6,10 +6,10 @@ import {
     useReactTable
 } from "@tanstack/react-table";
 import {NavLink} from "react-router-dom";
-import {DecksTable, DecksTablewithPaginationProps, ErrorResponse} from "../interfaces.tsx";
+import {DecksTable, DecksTablewithPaginationProps} from "../interfaces.tsx";
 import {useState} from "react";
 import {useTranslation} from "react-i18next";
-import {getUrl} from "../api.tsx";
+import {handleGoToUrl} from "../globalFunctions.tsx";
 
 const columnHelper = createColumnHelper<DecksTable>()
 const DecksTablewithPagination: React.FC<DecksTablewithPaginationProps> = ({
@@ -31,18 +31,18 @@ const DecksTablewithPagination: React.FC<DecksTablewithPaginationProps> = ({
         setPageSize(Number(pg_size))
         handleGetDecks(token, search, Number(pg_size))
     }
-    const handleGoToUrl = async (url: string | null) => {
-        try {
-            const url_data = await getUrl(url, token)
-            setData(url_data)
-        } catch (err: unknown) {
-            const error = err as ErrorResponse
-            console.log("error")
-            console.log(error)
-        }
-    }
+    // const handleGoToUrl = async (url: string | null) => {
+    //     try {
+    //         const url_data = await getUrl(url, token)
+    //         setData(url_data)
+    //     } catch (err: unknown) {
+    //         const error = err as ErrorResponse
+    //         console.log("error")
+    //         console.log(error)
+    //     }
+    // }
 
-    const handleSearch = (search_word: string) =>{
+    const handleSearch = (search_word: string) => {
         setSearch(search_word)
         handleGetDecks(token, search_word, pageSize)
     }
@@ -145,18 +145,18 @@ const DecksTablewithPagination: React.FC<DecksTablewithPaginationProps> = ({
                 </tbody>
             </table>
             {data.links.first_page_link &&
-                <button onClick={() => handleGoToUrl(data.links.first_page_link)}>{'<<'}</button>
+                <button onClick={() => handleGoToUrl(data.links.first_page_link,token,setData)}>{'<<'}</button>
             }
             {data.links.previous &&
-                <button onClick={() => handleGoToUrl(data.links.previous)}>{'<'}</button>
+                <button onClick={() => handleGoToUrl(data.links.previous,token,setData)}>{'<'}</button>
             }
             {data.current_page} {t('of')} {data.total_pages}
             {data.links.next &&
-                <button onClick={() => handleGoToUrl(data.links.next)}>{'>'}</button>
+                <button onClick={() => handleGoToUrl(data.links.next,token,setData)}>{'>'}</button>
             }
 
             {data.links.last_page_link &&
-                <button onClick={() => handleGoToUrl(data.links.last_page_link)}>{'>>'}</button>
+                <button onClick={() => handleGoToUrl(data.links.last_page_link,token,setData)}>{'>>'}</button>
             }
             <select
                 value={pageSize}

@@ -41,11 +41,10 @@ class Word(TimeStampedModel):
         return "{} {}".format(self.front_side, self.user.username)
 
 
-# Create your models here.
 class Deck(WithVisitCounter, TimeStampedModel):
     name = models.CharField(max_length=100, blank=True)
     slug = models.SlugField(unique=True, blank=True)
-    words = models.ManyToManyField(Word, blank=True, verbose_name=_('Words'))
+    words = models.ManyToManyField(Word, blank=True, verbose_name=_('Words'), related_name="deck_words")
     user = models.ForeignKey(User, on_delete=models.CASCADE, default=None, null=True)
     is_public = models.BooleanField(default=False, verbose_name=_('Is public'))
 

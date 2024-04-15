@@ -85,6 +85,15 @@ export interface PropsFileData {
     pagination: { pageIndex: number, pageSize: number }
     setPagination: Dispatch<SetStateAction<{ pageIndex: number, pageSize: number }>>
 }
+
+export interface SearchTableProps{
+    data: DecksResponseTable
+    token: string | null
+    setData: Dispatch<SetStateAction<DecksResponseTable | null>>
+    pageSize: number
+    setPageSize:  Dispatch<SetStateAction<number>>
+}
+
 export interface DecksTablewithPaginationProps{
     data: DecksResponseTable
     token: string | null

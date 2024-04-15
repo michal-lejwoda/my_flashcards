@@ -12,12 +12,10 @@ from rest_framework.response import Response
 from rest_framework.viewsets import GenericViewSet, ViewSet
 
 from my_flashcards.flashcards.api.serializers import DeckSerializer, SingleDeckSerializer, WordSerializer, \
-    UserHistorySerializer, DeckSerializerWithAllFields, CreateUserHistorySerializer
+    UserHistorySerializer, DeckSerializerWithAllFields, CreateUserHistorySerializer, WordSerializerWithDeck
 from my_flashcards.flashcards.errors import ErrorHandlingMixin
 from my_flashcards.flashcards.models import Deck, Word, UserHistory
 from my_flashcards.flashcards.tasks import get_words_from_file
-
-
 class CustomPagination(pagination.PageNumberPagination):
     page_size = 10
     page_size_query_param = 'page_size'
@@ -27,7 +25,10 @@ class CustomPagination(pagination.PageNumberPagination):
         if page_size_query_param:
             self.page_size_query_param = page_size_query_param
         super().__init__(*args, **kwargs)
+
     def get_paginated_response(self, data):
+        search_query = self.request.query_params.get('search')
+        print(search_query)
         total_pages = self.page.paginator.num_pages
         last_page_link = None
         first_page_link = None
@@ -38,26 +39,31 @@ class CustomPagination(pagination.PageNumberPagination):
             last_page_link = self.request.build_absolute_uri(
                 f"?page={total_pages}&page_size={self.page_size}"
             )
+            if search_query:
+                first_page_link += f"&search={search_query}"
+                last_page_link += f"&search={search_query}"
+
         next_link = self.get_next_link()
         previous_link = self.get_previous_link()
 
-        if next_link:
-            next_link = f"{next_link}&page_size={self.page_size}"
-        if previous_link:
-            previous_link = f"{previous_link}&page_size={self.page_size}"
+        # if next_link:
+        #     next_link = f"{next_link}&page_size={self.page_size}"
+        # if previous_link:
+        #     previous_link = f"{previous_link}&page_size={self.page_size}"
         return Response(
             {
-            'links': {
-                'next': next_link,
-                'previous': previous_link,
-                'last_page_link': last_page_link,
-                'first_page_link': first_page_link,
-            },
-            'count': self.page.paginator.count,
-            'current_page': self.page.number,
-            'total_pages': self.page.paginator.num_pages,
-            'results': data
-        })
+                'links': {
+                    'next': next_link,
+                    'previous': previous_link,
+                    'last_page_link': last_page_link,
+                    'first_page_link': first_page_link,
+                },
+                'count': self.page.paginator.count,
+                'current_page': self.page.number,
+                'total_pages': self.page.paginator.num_pages,
+                'results': data
+            })
+
 
 class DeckViewSet(CreateModelMixin, ListModelMixin, GenericViewSet):
     permission_classes = [IsAuthenticated]
@@ -198,6 +204,15 @@ class WordViewSet(ListModelMixin, DestroyModelMixin, GenericViewSet):
             queryset = queryset.filter(Q(front_side__icontains=search_query) | Q(
                 back_side__icontains=search_query))
         return queryset
+
+    @action(detail=False, methods=['GET'], permission_classes=[IsAuthenticated])
+    def find_word_in_decks(self, request):
+        paginator = CustomPagination(request)
+        search_query = self.request.query_params.get('search', None)
+        queryset = Word.objects.filter(Q(front_side__icontains=search_query) | Q(back_side__icontains=search_query), user=self.request.user)
+        paginated_queryset = paginator.paginate_queryset(queryset, request)
+        serializer = WordSerializerWithDeck(paginated_queryset, many=True)
+        return paginator.get_paginated_response(serializer.data)
 
 
 class LearnViewSet(CreateModelMixin, GenericViewSet):
