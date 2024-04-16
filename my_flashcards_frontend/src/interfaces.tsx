@@ -15,6 +15,32 @@ export interface DecksTable {
     all: number;
 }
 
+export interface DeckWithName{
+    id: number,
+    name: string
+}
+
+export interface SearchWordsTable{
+    id: number;
+    front_side: string,
+    back_side: string,
+    deck_words: DeckWithName[]
+
+}
+export  interface SearchWordsResponseTable {
+    links: {
+    next: string | null;
+    previous: string | null;
+    last_page_link: string;
+    first_page_link: string;
+  };
+  count: number;
+  current_page: number;
+  total_pages: number;
+  results: SearchWordsTable[]
+}
+
+
 export interface DecksResponseTable {
   links: {
     next: string | null;
@@ -87,11 +113,12 @@ export interface PropsFileData {
 }
 
 export interface SearchTableProps{
-    data: DecksResponseTable
+    data: SearchWordsResponseTable
     token: string | null
-    setData: Dispatch<SetStateAction<DecksResponseTable | null>>
+    setData: Dispatch<SetStateAction<SearchWordsResponseTable | null>>
     pageSize: number
     setPageSize:  Dispatch<SetStateAction<number>>
+    setEditIt: Dispatch<SetStateAction<number | null>>
 }
 
 export interface DecksTablewithPaginationProps{

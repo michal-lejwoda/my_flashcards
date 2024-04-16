@@ -1,4 +1,4 @@
-import {DecksTable, ErrorResponse, SearchTableProps} from "../interfaces.tsx";
+import {ErrorResponse, SearchTableProps, SearchWordsTable} from "../interfaces.tsx";
 import {getDecks} from "../api.tsx";
 import {
     createColumnHelper,
@@ -8,10 +8,10 @@ import {
     useReactTable
 } from "@tanstack/react-table";
 import {handleGoToUrl} from "../globalFunctions.tsx";
-import {useState} from "react";
+import React, {useState} from "react";
 import {useTranslation} from "react-i18next";
 
-const columnHelper = createColumnHelper<DecksTable>()
+const columnHelper = createColumnHelper<SearchWordsTable>()
 const SearchTable: React.FC<SearchTableProps> = ({
                                                      data,
                                                      token,
@@ -22,9 +22,13 @@ const SearchTable: React.FC<SearchTableProps> = ({
     const [search, setSearch] = useState("")
     const {t} = useTranslation();
     const columns = [
-        columnHelper.accessor('name', {
-            header: () => <span>Name</span>,
-            cell: info => info.getValue(),
+        columnHelper.accessor('front_side', {
+            header: () => <span>{t("front_page")}</span>,
+            cell: info => info.getValue()
+        }),
+        columnHelper.accessor('back_side', {
+            header: () => <span>{t("reverse_page")}</span>,
+            cell: info => info.getValue()
         }),
         //TODO Back here after fix
         // columnHelper.display({
@@ -42,27 +46,18 @@ const SearchTable: React.FC<SearchTableProps> = ({
         columnHelper.display({
             id: "actions",
             header: t("actions"),
-            // cell: (props) => {
-            //     return (
-            //         <div className="dropdown">
-            //             <button onClick={() => toggleDropdown(props.row.original.id)}>{t("actions")}</button>
-            //             <div className={`container ${openDropdownId === props.row.original.id ? 'open' : ''}`}>
-            //                 <div className={`content ${openDropdownId === props.row.original.id ? 'open' : ''}`}>
-            //                     <NavLink to="/preview" state={{id: props.row.original.id}}>{t("preview")}</NavLink>
-            //                     <NavLink to={`/learn/${props.row.original.slug}`}
-            //                              state={{id: props.row.original.id, reverse: false}}>{t("learn")}</NavLink>
-            //                     <NavLink to={`/learn/${props.row.original.slug}`} state={{
-            //                         id: props.row.original.id,
-            //                         reverse: true
-            //                     }}>{t("reverse_and_learn")}</NavLink>
-            //                     <a>{t("rename")}</a>
-            //                     <a>{t("share")}</a>
-            //                     <a>{t("delete")}</a>
-            //                 </div>
-            //             </div>
-            //         </div>
-            //     )
-            // }
+            cell: (props) => {
+                console.log(props.row.original.deck_words)
+                return(<button>Action</button>)
+            }
+        }),
+        columnHelper.display({
+            id: "edit",
+            header: t("edit"),
+            cell: (props) => {
+                console.log(props.row.original.deck_words)
+                return(<button>edit</button>)
+            }
         })
     ]
     const handleSearch = (search_word: string) => {
@@ -164,6 +159,7 @@ const SearchTable: React.FC<SearchTableProps> = ({
                 ))}
             </select>
         </div>
+
     );
 };
 

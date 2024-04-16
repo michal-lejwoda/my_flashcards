@@ -1,17 +1,18 @@
-import {useTranslation} from "react-i18next";
 import SearchTable from "../table/SearchTable.tsx";
 import {useContext, useEffect, useState} from "react";
 import {searchWordWithDeck} from "../api.tsx";
 import AuthContext from "../context/AuthContext.tsx";
-import {DecksResponseTable, ErrorResponse} from "../interfaces.tsx";
+import {ErrorResponse, SearchWordsResponseTable} from "../interfaces.tsx";
 import withAuth from "../context/withAuth.tsx";
+import EditModal from "../modals/EditModal.tsx";
 
 const Search = () => {
-    const {t} = useTranslation();
     const [searchWord, setSearchWord] = useState("")
     const {token} = useContext(AuthContext);
-    const [data, setData] = useState<DecksResponseTable | null>(null)
+    const [data, setData] = useState<SearchWordsResponseTable | null>(null)
     const [pageSize, setPageSize] = useState(10)
+    const [editId, setEditIt] = useState<number | null>(null)
+    console.log(editId)
     const handleSearchWithDeck = async () => {
         try {
             const response = await searchWordWithDeck(searchWord, token)
@@ -35,16 +36,18 @@ const Search = () => {
             <h1>Search</h1>
             {/*<input onChange={(e) => handleSearch(e.target.value)} type="text"/>*/}
             <input onChange={(e) => setSearchWord(e.target.value)} type="text"/>
-            <button>{t("search")}</button>
+            {/*<button>{t("search")}</button>*/}
             {data && data.results &&
                 <SearchTable data={data} token={token}
                              setData={setData} pageSize={pageSize}
                              setPageSize={setPageSize}
+                             setEditIt={setEditIt}
                     // handleGetDecks={handleGetDecks}/>
-                  />
+                />
             }
-                </div>
-                );
-            };
+            <EditModal editId={editId}/>
+        </div>
+    );
+};
 
-            export default withAuth(Search);
+export default withAuth(Search);
