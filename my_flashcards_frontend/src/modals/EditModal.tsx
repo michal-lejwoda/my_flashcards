@@ -1,15 +1,20 @@
 import {CloseButton, Modal} from "react-bootstrap";
+import {EditModalProps} from "../interfaces.tsx";
+import {useTranslation} from "react-i18next";
 
-const EditModal = (show: boolean, handleClose: unknown) => {
+const EditModal: React.FC<EditModalProps> = ({editId, show, setShowEdit}) => {
+    console.log("editId")
+    console.log(editId)
+    const {t} = useTranslation();
     return (
         <div>
-            <Modal show={show} onHide={() => handleClose(false)}>
+            <Modal show={show} onHide={() => setShowEdit(false)}>
                 <Modal.Header>
-                    <Modal.Title>Stworzono Trening</Modal.Title>
-                    <CloseButton onClick={() => handleClose(false)} variant="white"/>
+                    <Modal.Title>{t("edit")}</Modal.Title>
+                    <CloseButton onClick={() => setShowEdit(false)} variant="white"/>
                 </Modal.Header>
                 <Modal.Body>
-                    <p>Jeśli jesteś pewien, że chcesz usunąć ten trening kliknij przycisk Usuń Trening</p>
+                    {/*<p>Jeśli jesteś pewien, że chcesz usunąć ten trening kliknij przycisk Usuń Trening</p>*/}
                 </Modal.Body>
                 <Modal.Footer>
                     <button className="standard-button"

@@ -140,3 +140,11 @@ export interface SendDeckData {
     name: string,
     rows: FileRowData[]
 }
+
+// TODO Modify interface lated
+export interface EditModalProps {
+    editId: number | null,
+    show: boolean,
+    // setEditId: Dispatch<SetStateAction<number>>
+    setShowEdit: Dispatch<SetStateAction<boolean>>
+}

@@ -12,6 +12,7 @@ const Search = () => {
     const [data, setData] = useState<SearchWordsResponseTable | null>(null)
     const [pageSize, setPageSize] = useState(10)
     const [editId, setEditIt] = useState<number | null>(null)
+    const [showEdit, setShowEdit] = useState(false)
     console.log(editId)
     const handleSearchWithDeck = async () => {
         try {
@@ -45,7 +46,7 @@ const Search = () => {
                     // handleGetDecks={handleGetDecks}/>
                 />
             }
-            <EditModal editId={editId}/>
+            <EditModal show={showEdit} setShowEdit={setShowEdit} editId={editId}/>
         </div>
     );
 };
