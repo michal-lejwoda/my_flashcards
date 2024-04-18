@@ -80,11 +80,23 @@ export async function createDeck(form: FormData) {
     return response.data
 }
 
-export async function getSingleDeck(id: number) {
+export async function getSingleWord(id: number, token: string| null) {
+    const currentLanguage = i18n.language;
+    const response = await instance.get(`/api/word/${id}/`, {
+        headers: {
+            'Accept-Language': currentLanguage,
+            'Authorization': `Token ${token}`
+        },
+    });
+    return response.data
+}
+
+export async function getSingleDeck(id: number, token: string| null) {
     const currentLanguage = i18n.language;
     const response = await instance.get(`/api/single_deck/${id}/`, {
         headers: {
             'Accept-Language': currentLanguage,
+            'Authorization': `Token ${token}`
         },
     });
     return response.data

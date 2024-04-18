@@ -18,6 +18,7 @@ const SearchTable: React.FC<SearchTableProps> = ({
                                                      setData,
                                                      pageSize,
                                                      setPageSize,
+                                                     handleOpenEditModal
                                                  }) => {
     const [search, setSearch] = useState("")
     const {t} = useTranslation();
@@ -48,7 +49,7 @@ const SearchTable: React.FC<SearchTableProps> = ({
             header: t("actions"),
             cell: (props) => {
                 console.log(props.row.original.deck_words)
-                return(<button>Action</button>)
+                return (<button>Action</button>)
             }
         }),
         columnHelper.display({
@@ -56,7 +57,7 @@ const SearchTable: React.FC<SearchTableProps> = ({
             header: t("edit"),
             cell: (props) => {
                 console.log(props.row.original.deck_words)
-                return(<button>edit</button>)
+                return (<button onClick={()=>handleOpenEditModal(props.row.original.id)}>edit</button>)
             }
         })
     ]

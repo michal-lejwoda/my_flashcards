@@ -118,7 +118,22 @@ export interface SearchTableProps{
     setData: Dispatch<SetStateAction<SearchWordsResponseTable | null>>
     pageSize: number
     setPageSize:  Dispatch<SetStateAction<number>>
-    setEditIt: Dispatch<SetStateAction<number | null>>
+    // setEditIt: Dispatch<SetStateAction<number | null>>
+    // handleOpenEditModal: void
+    handleOpenEditModal: (id: number) => void
+}
+
+export interface SingleWordObject{
+    id: number,
+    created: string,
+    modified: string,
+    front_side: string,
+    back_side: string,
+    is_correct: boolean,
+    next_learn: string,
+    level: number,
+    user: number
+
 }
 
 export interface DecksTablewithPaginationProps{

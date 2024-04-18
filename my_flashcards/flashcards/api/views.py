@@ -192,7 +192,7 @@ class CreateDeckFromMultipleDecksViewSet(ViewSet):
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 
-class WordViewSet(ListModelMixin, DestroyModelMixin, GenericViewSet):
+class WordViewSet(ListModelMixin, DestroyModelMixin, RetrieveModelMixin, GenericViewSet):
     permission_classes = [IsAuthenticated]
     serializer_class = WordSerializer
     pagination_class = CustomPagination
