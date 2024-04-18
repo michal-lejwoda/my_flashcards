@@ -121,6 +121,7 @@ export interface SearchTableProps{
     // setEditIt: Dispatch<SetStateAction<number | null>>
     // handleOpenEditModal: void
     handleOpenEditModal: (id: number) => void
+    handleSearchWithDeck: ()=> Promise<void>
 }
 
 export interface SingleWordObject{

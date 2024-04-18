@@ -46,7 +46,7 @@ const Search = () => {
                              setData={setData} pageSize={pageSize}
                              setPageSize={setPageSize}
                              handleOpenEditModal={handleOpenEditModal}
-                    // handleGetDecks={handleGetDecks}/>
+                             handleSearchWithDeck={handleSearchWithDeck}
                 />
             }
             {editId &&

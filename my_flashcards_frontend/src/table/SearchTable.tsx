@@ -1,5 +1,5 @@
 import {ErrorResponse, SearchTableProps, SearchWordsTable} from "../interfaces.tsx";
-import {getDecks} from "../api.tsx";
+import {deleteWord, getDecks} from "../api.tsx";
 import {
     createColumnHelper,
     flexRender,
@@ -18,10 +18,15 @@ const SearchTable: React.FC<SearchTableProps> = ({
                                                      setData,
                                                      pageSize,
                                                      setPageSize,
-                                                     handleOpenEditModal
+                                                     handleOpenEditModal,
+                                                     handleSearchWithDeck
                                                  }) => {
     const [search, setSearch] = useState("")
     const {t} = useTranslation();
+    const handleDeleteWord = async (id: number) => {
+        await deleteWord(id, token)
+        await handleSearchWithDeck()
+    }
     const columns = [
         columnHelper.accessor('front_side', {
             header: () => <span>{t("front_page")}</span>,
@@ -57,9 +62,17 @@ const SearchTable: React.FC<SearchTableProps> = ({
             header: t("edit"),
             cell: (props) => {
                 console.log(props.row.original.deck_words)
-                return (<button onClick={()=>handleOpenEditModal(props.row.original.id)}>edit</button>)
+                return (<button onClick={() => handleOpenEditModal(props.row.original.id)}>edit</button>)
+            }
+        }),
+        columnHelper.display({
+            id: "remove",
+            header: t("remove"),
+            cell: (props) => {
+                return (<button onClick={() => handleDeleteWord(props.row.original.id)}>Remove</button>)
             }
         })
+
     ]
     const handleSearch = (search_word: string) => {
         setSearch(search_word)
@@ -96,14 +109,7 @@ const SearchTable: React.FC<SearchTableProps> = ({
     return (
         <div className="decks">
             <h1 className="title">{t("decks")}</h1>
-            <div className="decks__searchcontainer searchcontainer">
-                <input
-                    // value={globalFilter ?? ''}
-                    // onChange={e => setGlobalFilter(String(e.target.value))}
-                    onChange={e => handleSearch(e.target.value)}
-                    className="searchcontainer__search"
-                    placeholder={t("search")}/>
-            </div>
+
             <table className="decks__table">
                 <thead>
                 {getHeaderGroups().map(headerGroup => (

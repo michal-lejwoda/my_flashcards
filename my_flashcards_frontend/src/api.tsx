@@ -167,11 +167,12 @@ export async function createWordForDeck(id: number, form: FormData) {
     return response.data
 }
 
-export async function deleteWord(id: number) {
+export async function deleteWord(id: number, token: string | null) {
     const currentLanguage = i18n.language;
     const response = await instance.delete(`/api/word/${id}/`, {
         headers: {
             'Accept-Language': currentLanguage,
+            'Authorization': `Token ${token}`
         },
     });
     return response.data
