@@ -21,7 +21,7 @@ const SearchTable: React.FC<SearchTableProps> = ({
                                                      handleOpenEditModal,
                                                      handleSearchWithDeck
                                                  }) => {
-    const [search, setSearch] = useState("")
+    const [search,] = useState("")
     const {t} = useTranslation();
     const handleDeleteWord = async (id: number) => {
         await deleteWord(id, token)
@@ -74,10 +74,10 @@ const SearchTable: React.FC<SearchTableProps> = ({
         })
 
     ]
-    const handleSearch = (search_word: string) => {
-        setSearch(search_word)
-        handleSearchTable(search_word)
-    }
+    // const handleSearch = (search_word: string) => {
+    //     setSearch(search_word)
+    //     handleSearchTable(search_word)
+    // }
     const handleSearchTable = async (search: string | null) => {
         try {
             const get_decks = await getDecks(token, search, pageSize)

@@ -157,11 +157,12 @@ export async function createDeckFromMultipleDecks(form: FormData) {
     return response.data
 }
 
-export async function createWordForDeck(id: number, form: FormData) {
+export async function createWordForDeck(id: number, token: string | null, data: EditWordObject) {
     const currentLanguage = i18n.language;
-    const response = await instance.post(`/api/single_deck/${id}/create_word_for_deck/`, form, {
+    const response = await instance.post(`/api/single_deck/${id}/create_word_for_deck/`, data, {
         headers: {
             'Accept-Language': currentLanguage,
+            'Authorization': `Token ${token}`
         },
     });
     return response.data
