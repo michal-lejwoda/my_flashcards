@@ -1,6 +1,6 @@
 import axios from 'axios'
 import i18n from "i18next";
-import {SendDeckData} from "./interfaces.tsx";
+import {EditWordObject, SendDeckData} from "./interfaces.tsx";
 
 
 const instance = axios.create({
@@ -90,6 +90,17 @@ export async function getSingleWord(id: number, token: string| null) {
     });
     return response.data
 }
+export async function editSingleWord(id: number, token: string| null, form: EditWordObject){
+    const currentLanguage = i18n.language;
+    const response = await instance.patch(`/api/word/${id}/`, form,{
+        headers: {
+            'Accept-Language': currentLanguage,
+            'Authorization': `Token ${token}`
+        },
+    });
+    return response.data
+}
+
 
 export async function getSingleDeck(id: number, token: string| null) {
     const currentLanguage = i18n.language;

@@ -42,8 +42,9 @@
   "passwordIsRequired": "Pole hasło jest wymagane",
   "passwordsNotMatch": "Hasła się nie zgadzają",
   "passwordTooShort": "Pole hasło jest za krótkie",
-  "of": "z"
-
+  "of": "z",
+  "save": "Zapisz",
+  "change_places": "Zamień miejscami"
 
 
 }

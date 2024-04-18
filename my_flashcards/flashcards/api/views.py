@@ -5,7 +5,8 @@ from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 from rest_framework import status, pagination
 from rest_framework.decorators import action
-from rest_framework.mixins import CreateModelMixin, ListModelMixin, RetrieveModelMixin, DestroyModelMixin
+from rest_framework.mixins import CreateModelMixin, ListModelMixin, RetrieveModelMixin, DestroyModelMixin, \
+    UpdateModelMixin
 from rest_framework.parsers import MultiPartParser
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
@@ -192,7 +193,7 @@ class CreateDeckFromMultipleDecksViewSet(ViewSet):
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 
-class WordViewSet(ListModelMixin, DestroyModelMixin, RetrieveModelMixin, GenericViewSet):
+class WordViewSet(ListModelMixin, DestroyModelMixin, RetrieveModelMixin, UpdateModelMixin, GenericViewSet):
     permission_classes = [IsAuthenticated]
     serializer_class = WordSerializer
     pagination_class = CustomPagination

@@ -42,6 +42,8 @@
   "passwordIsRequired": "Password field is required",
   "passwordsNotMatch": "Passwords does not match",
   "passwordTooShort": "Password field is too short",
-  "of": "of"
+  "of": "of",
+  "save": "Save",
+  "change_places": "Change places"
 
 }

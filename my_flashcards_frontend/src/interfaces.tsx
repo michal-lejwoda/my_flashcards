@@ -136,6 +136,10 @@ export interface SingleWordObject{
 
 }
 
+export interface EditWordObject{
+    front_side: string,
+    back_side: string
+}
 export interface DecksTablewithPaginationProps{
     data: DecksResponseTable
     token: string | null
@@ -162,4 +166,5 @@ export interface EditModalProps {
     show: boolean,
     // setEditId: Dispatch<SetStateAction<number>>
     setShowEdit: Dispatch<SetStateAction<boolean>>
+    handleSearchWithDeck: ()=> Promise<void>
 }
