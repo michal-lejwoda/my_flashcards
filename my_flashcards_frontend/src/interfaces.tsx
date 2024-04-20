@@ -15,6 +15,18 @@ export interface DecksTable {
     all: number;
 }
 
+export interface WordTable {
+    id: number;
+    front_side: string;
+    back_side: string;
+    is_correct: boolean;
+    next_learn: string;
+    user: number;
+    level: number;
+}
+
+
+
 export interface DeckWithName{
     id: number,
     name: string
@@ -52,6 +64,19 @@ export interface DecksResponseTable {
   current_page: number;
   total_pages: number;
   results: DecksTable[];
+}
+
+export interface WordResponseTable{
+    links: {
+    next: string | null;
+    previous: string | null;
+    last_page_link: string;
+    first_page_link: string;
+  };
+  count: number;
+  current_page: number;
+  total_pages: number;
+  results: WordTable[];
 }
 
 export interface LoginValues {
@@ -143,6 +168,15 @@ export interface EditWordObject{
 }
 export interface DecksTablewithPaginationProps{
     data: DecksResponseTable
+    token: string | null
+    setData: Dispatch<SetStateAction<DecksResponseTable | null>>
+    pageSize: number
+    setPageSize:  Dispatch<SetStateAction<number>>
+    handleGetDecks: (token: string | null, search: string | null, pageSize: number) => Promise<void>;
+}
+
+export interface WordTablewithPaginationProps{
+    data: WordResponseTable
     token: string | null
     setData: Dispatch<SetStateAction<DecksResponseTable | null>>
     pageSize: number

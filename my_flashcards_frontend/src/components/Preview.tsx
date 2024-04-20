@@ -2,14 +2,39 @@ import {useTranslation} from "react-i18next";
 import "../sass/preview.css"
 import AsyncSelect from 'react-select/async';
 import withAuth from "../context/withAuth.tsx";
+import {getDecks} from "../api.tsx";
+import {DecksTable} from "../interfaces.tsx";
+import {useContext, useState} from "react";
+import AuthContext from "../context/AuthContext.tsx";
 
 const Preview = () => {
     const {t} = useTranslation();
+    const {token} = useContext(AuthContext);
+    const [deck, setDeck] = useState<DecksTable | null>(null)
+    const promiseOptions = async (inputValue: string) => {
+        const result = await getDecks(token, inputValue, 10)
+        return result.results
+    }
+    const customGetOptionLabel = (option: DecksTable) => option.name;
+
+    const customGetOptionValue = (option: DecksTable) => option.id.toString();
+
+    const handleChange = (newValue: DecksTable | null) => {
+        setDeck(newValue);
+    };
 
     return (
         <section className="preview">
             <h1 className="title">{t('preview_deck')}</h1>
-            <AsyncSelect cacheOptions defaultOptions/>
+            <AsyncSelect
+                cacheOptions
+                defaultOptions
+                value={deck}
+                onChange={handleChange}
+                loadOptions={promiseOptions}
+                getOptionLabel={customGetOptionLabel}
+                getOptionValue={customGetOptionValue}
+            />
             <div className="preview__middle">
                 <h1>{t('preview')}</h1>
                 <div className="preview__buttons">
