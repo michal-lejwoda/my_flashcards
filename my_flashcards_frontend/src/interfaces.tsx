@@ -15,6 +15,20 @@ export interface DecksTable {
     all: number;
 }
 
+export interface DecksTablewithLabel {
+    id: number;
+    label: string;
+    created: string,
+    modified: string,
+    popularity: number,
+    is_public: boolean,
+    user: number;
+    value: number;
+    name: string;
+    slug: string;
+}
+
+
 export interface WordTable {
     id: number;
     front_side: string;
@@ -181,6 +195,7 @@ export interface WordTablewithPaginationProps{
     setData: Dispatch<SetStateAction<WordResponseTable | null>>
     pageSize: number
     setPageSize:  Dispatch<SetStateAction<number>>
+    deck_id: number,
     handleGetWords: (token: string | null, deck_id: number, search: string | null, pageSize: number) => Promise<void>;
 }
 

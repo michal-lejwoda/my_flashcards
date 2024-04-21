@@ -4,11 +4,13 @@ import AsyncSelect from 'react-select/async';
 import withAuth from "../context/withAuth.tsx";
 import {getDecks, getDeckWords} from "../api.tsx";
 import {DecksTable, ErrorResponse, WordResponseTable} from "../interfaces.tsx";
-import {useContext, useState} from "react";
+import {useContext, useEffect, useState} from "react";
 import AuthContext from "../context/AuthContext.tsx";
 import WordTablewithPagination from "../table/WordTablewithPagination.tsx";
+import {useLocation} from "react-router-dom";
 
 const Preview = () => {
+    const location = useLocation();
     const {t} = useTranslation();
     const {token} = useContext(AuthContext);
     const [deck, setDeck] = useState<DecksTable | null>(null)
@@ -18,14 +20,37 @@ const Preview = () => {
         const result = await getDecks(token, inputValue, 10)
         return result.results
     }
-    const customGetOptionLabel = (option: DecksTable) => option.name;
+    const customGetOptionLabel = (option: DecksTable) => option.name
+
 
     const customGetOptionValue = (option: DecksTable) => option.id.toString();
 
     const handleChange = (newValue: DecksTable | null) => {
         setDeck(newValue);
     };
-    const handleGetWords = async (token: string | null, deck_id:number,  search: string | null, pageSize: number) => {
+
+    useEffect(() => {
+        handleGetWords(token, location.state.id, null, pageSize);
+    }, [token])
+    console.log("value")
+    console.log(deck)
+
+    const customStyles = {
+         // @ts-expect-error Custom styles
+        singleValue: provided => ({
+            ...provided,
+            color: 'white',
+            zIndex: 1,
+        }),
+         // @ts-expect-error Custom styles
+        placeholder: provided => ({
+            ...provided,
+            color: 'white',
+            zIndex: 1,
+        })
+    }
+
+    const handleGetWords = async (token: string | null, deck_id: number, search: string | null, pageSize: number) => {
         try {
             const get_decks = await getDeckWords(token, deck_id, search, pageSize)
             setData(get_decks)
@@ -44,6 +69,8 @@ const Preview = () => {
                 cacheOptions
                 defaultOptions
                 value={deck}
+                styles={customStyles}
+                placeholder={t("select...")}
                 onChange={handleChange}
                 loadOptions={promiseOptions}
                 getOptionLabel={customGetOptionLabel}
@@ -57,10 +84,11 @@ const Preview = () => {
                 </div>
             </div>
             {data && data.results &&
-            <WordTablewithPagination data={data} token={token}
-                                     setData={setData} pageSize={pageSize}
-                                     setPageSize={setPageSize}
-                                     handleGetWords={handleGetWords}/>
+                <WordTablewithPagination data={data} token={token}
+                                         setData={setData} pageSize={pageSize}
+                                         setPageSize={setPageSize}
+                                         deck_id={location.state.id}
+                                         handleGetWords={handleGetWords}/>
             }
         </section>
     );

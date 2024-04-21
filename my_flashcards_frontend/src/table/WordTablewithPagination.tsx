@@ -18,10 +18,10 @@ const WordTablewithPagination: React.FC<WordTablewithPaginationProps> = ({
                                                                              setData,
                                                                              pageSize,
                                                                              setPageSize,
-                                                                             handleGetDecks
+                                                                             deck_id,
+                                                                             handleGetWords
                                                                          }) => {
-    console.log("Data")
-    console.log(data)
+
     const [openDropdownId, setOpenDropdownId] = useState<number | null>(null);
     const {t} = useTranslation();
     const [search, setSearch] = useState("")
@@ -29,7 +29,7 @@ const WordTablewithPagination: React.FC<WordTablewithPaginationProps> = ({
 
     const handleChangeDataBasedOnPageSize = (pg_size: string) => {
         setPageSize(Number(pg_size))
-        handleGetDecks(token, search, Number(pg_size))
+        handleGetWords(token, deck_id, search, Number(pg_size))
     }
     // const handleGoToUrl = async (url: string | null) => {
     //     try {
@@ -44,7 +44,7 @@ const WordTablewithPagination: React.FC<WordTablewithPaginationProps> = ({
 
     const handleSearch = (search_word: string) => {
         setSearch(search_word)
-        handleGetDecks(token, search_word, pageSize)
+        handleGetWords(token, deck_id, search_word, pageSize)
     }
 
     const toggleDropdown = (id: number) => {
@@ -55,19 +55,6 @@ const WordTablewithPagination: React.FC<WordTablewithPaginationProps> = ({
             header: () => <span>{t("front_side")}</span>,
             cell: info => info.getValue(),
         }),
-        //TODO Back here after fix
-        // columnHelper.display({
-        //     id: 'numbers',
-        //     header: t("words"),
-        //     cell: (props) => {
-        //         return (<span>
-        //         <span className="words__learn">{props.row.original.learn}</span> -
-        //         <span className="words__correct">{props.row.original.correct}</span> -
-        //         <span className="words__wrong">{props.row.original.wrong} </span>
-        //          | <span className="words__all">{props.row.original.all}</span>
-        //     </span>)
-        //     },
-        // }),
         columnHelper.display({
             id: "actions",
             header: t("actions"),

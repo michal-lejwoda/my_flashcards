@@ -61,9 +61,9 @@ export async function getDecks(token: string | null, search: string | null, page
 
 export async function getDeckWords(token: string | null, deck_id: number, search: string | null, page_size: number){
     const currentLanguage = i18n.language;
-    let url = `/api/words/${deck_id}/?page_size=${page_size}`;
+    let url = `/api/word/${deck_id}/words_from_deck/?page_size=${page_size}`;
     if (search !== null) {
-        url = `/api/words/${deck_id}/?search=${search}&page_size=${page_size}`;
+        url = `/api/word/${deck_id}/words_from_deck/?search=${search}&page_size=${page_size}`;
     }
     const response = await instance.get(url, {
         headers: {

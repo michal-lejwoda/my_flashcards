@@ -29,6 +29,7 @@ const CreateComponent = () => {
         const result = await getDecks(token, inputValue, 10)
         return result.results
     }
+
     const customGetOptionLabel = (option: DecksTable) => option.name;
 
     const customGetOptionValue = (option: DecksTable) => option.id.toString();
@@ -36,9 +37,12 @@ const CreateComponent = () => {
     const handleChange = (newValue: DecksTable | null) => {
         setDeck(newValue);
     };
+
+
     return (
         <div>
             <h1>Create Component</h1>
+
             <AsyncSelect
                 cacheOptions
                 defaultOptions
@@ -47,11 +51,12 @@ const CreateComponent = () => {
                 loadOptions={promiseOptions}
                 getOptionLabel={customGetOptionLabel}
                 getOptionValue={customGetOptionValue}
+
             />
             <label htmlFor="">{t("front_side")}</label>
-            <input type="text" onChange={(e)=>setFrontSide(e.target.value)}/>
+            <input type="text" onChange={(e) => setFrontSide(e.target.value)}/>
             <label htmlFor="">{t("back_side")}</label>
-            <input type="text" onChange={(e)=>setBackSide(e.target.value)}/>
+            <input type="text" onChange={(e) => setBackSide(e.target.value)}/>
             <button onClick={handleAddWord}>{t("add_word")}</button>
         </div>
     );
