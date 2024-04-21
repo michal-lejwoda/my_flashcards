@@ -8,7 +8,7 @@ class DeckSerializerOnlyWithName(serializers.ModelSerializer):
         model = Deck
         fields = ['id','name']
 class WordSerializerWithDeck(serializers.ModelSerializer):
-    deck_words = DeckSerializerOnlyWithName(many=True, read_only=True)
+    # deck_words = DeckSerializerOnlyWithName(many=True, read_only=True)
 
     class Meta:
         model = Word
@@ -19,6 +19,7 @@ class WordSerializer(serializers.ModelSerializer):
     class Meta:
         model = Word
         fields = '__all__'
+
 
     def validate_front_side(self, value):
         if value is None:

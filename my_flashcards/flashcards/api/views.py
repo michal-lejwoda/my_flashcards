@@ -206,6 +206,20 @@ class WordViewSet(ListModelMixin, DestroyModelMixin, RetrieveModelMixin, UpdateM
                 back_side__icontains=search_query))
         return queryset
 
+    @action(detail=True, methods=['GET'], permission_classes=[IsAuthenticated])
+    def words_from_deck(self, request, pk=None):
+        paginator = CustomPagination(request)
+        search_query = self.request.query_params.get('search', None)
+        if search_query:
+            queryset = Word.objects.filter(Q(front_side__icontains=search_query) | Q(back_side__icontains=search_query),
+                                           user=self.request.user, deck_words=pk)
+        else:
+            queryset = Word.objects.filter(user=self.request.user, deck_words=pk)
+
+        paginated_queryset = paginator.paginate_queryset(queryset, request)
+        serializer = self.get_serializer(paginated_queryset, many=True)
+        return paginator.get_paginated_response(serializer.data)
+
     @action(detail=False, methods=['GET'], permission_classes=[IsAuthenticated])
     def find_word_in_decks(self, request):
         paginator = CustomPagination(request)

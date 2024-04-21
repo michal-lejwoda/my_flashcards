@@ -62,30 +62,6 @@ const Preview = () => {
                                      setPageSize={setPageSize}
                                      handleGetWords={handleGetWords}/>
             }
-            {/*<div className="preview__table">*/}
-            {/*    <table>*/}
-            {/*        <thead>*/}
-            {/*        <tr>*/}
-            {/*            <th>*/}
-            {/*                {t('front_page')}*/}
-            {/*            </th>*/}
-            {/*            <th>*/}
-            {/*                {t('reverse_page')}*/}
-            {/*            </th>*/}
-            {/*            <th>*/}
-            {/*                {t('actions')}*/}
-            {/*            </th>*/}
-            {/*        </tr>*/}
-            {/*        </thead>*/}
-            {/*        <tbody>*/}
-            {/*        <tr>*/}
-            {/*            <td>pies</td>*/}
-            {/*            <td>dog</td>*/}
-            {/*            <td><button>{t('actions')}</button></td>*/}
-            {/*        </tr>*/}
-            {/*        </tbody>*/}
-            {/*    </table>*/}
-            {/*</div>*/}
         </section>
     );
 };
