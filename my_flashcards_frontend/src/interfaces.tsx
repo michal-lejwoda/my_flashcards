@@ -178,10 +178,10 @@ export interface DecksTablewithPaginationProps{
 export interface WordTablewithPaginationProps{
     data: WordResponseTable
     token: string | null
-    setData: Dispatch<SetStateAction<DecksResponseTable | null>>
+    setData: Dispatch<SetStateAction<WordResponseTable | null>>
     pageSize: number
     setPageSize:  Dispatch<SetStateAction<number>>
-    handleGetDecks: (token: string | null, search: string | null, pageSize: number) => Promise<void>;
+    handleGetWords: (token: string | null, deck_id: number, search: string | null, pageSize: number) => Promise<void>;
 }
 
 export interface FileRowData {

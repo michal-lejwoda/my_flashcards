@@ -59,6 +59,21 @@ export async function getDecks(token: string | null, search: string | null, page
     return response.data
 }
 
+export async function getDeckWords(token: string | null, deck_id: number, search: string | null, page_size: number){
+    const currentLanguage = i18n.language;
+    let url = `/api/words/${deck_id}/?page_size=${page_size}`;
+    if (search !== null) {
+        url = `/api/words/${deck_id}/?search=${search}&page_size=${page_size}`;
+    }
+    const response = await instance.get(url, {
+        headers: {
+            'Accept-Language': currentLanguage,
+            'Authorization': `Token ${token}`
+        },
+    });
+    return response.data
+}
+
 export async function searchWordWithDeck(searchWord: string, token: string| null) {
     const currentLanguage = i18n.language;
     const response = await instance.get(`/api/word/find_word_in_decks/?search=${searchWord}`, {
