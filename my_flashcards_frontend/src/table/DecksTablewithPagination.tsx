@@ -77,7 +77,7 @@ const DecksTablewithPagination: React.FC<DecksTablewithPaginationProps> = ({
                         <button onClick={() => toggleDropdown(props.row.original.id)}>{t("actions")}</button>
                         <div className={`container ${openDropdownId === props.row.original.id ? 'open' : ''}`}>
                             <div className={`content ${openDropdownId === props.row.original.id ? 'open' : ''}`}>
-                                <NavLink to="/preview" state={{id: props.row.original.id}}>{t("preview")}</NavLink>
+                                <NavLink to="/preview" state={{deck: props.row.original}}>{t("preview")}</NavLink>
                                 <NavLink to={`/learn/${props.row.original.slug}`}
                                          state={{id: props.row.original.id, reverse: false}}>{t("learn")}</NavLink>
                                 <NavLink to={`/learn/${props.row.original.slug}`} state={{

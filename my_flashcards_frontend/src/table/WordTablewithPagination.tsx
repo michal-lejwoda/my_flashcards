@@ -52,7 +52,11 @@ const WordTablewithPagination: React.FC<WordTablewithPaginationProps> = ({
     };
     const columns = [
         columnHelper.accessor('front_side', {
-            header: () => <span>{t("front_side")}</span>,
+            header: () => <span>{t("front_page")}</span>,
+            cell: info => info.getValue(),
+        }),
+        columnHelper.accessor('back_side', {
+            header: () => <span>{t("reverse_page")}</span>,
             cell: info => info.getValue(),
         }),
         columnHelper.display({

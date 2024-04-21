@@ -22,7 +22,6 @@ const Preview = () => {
     }
     const customGetOptionLabel = (option: DecksTable) => option.name
 
-
     const customGetOptionValue = (option: DecksTable) => option.id.toString();
 
     const handleChange = (newValue: DecksTable | null) => {
@@ -30,29 +29,54 @@ const Preview = () => {
     };
 
     useEffect(() => {
-        handleGetWords(token, location.state.id, null, pageSize);
+        if (location.state.deck){
+            setDeck(location.state.deck)
+            // handleGetWords(token, location.state.deck.id, null, pageSize);
+        }
+
+
     }, [token])
-    console.log("value")
-    console.log(deck)
+
+    useEffect(()=>{
+        console.log("Second use Effect")
+        if (deck !== null) {
+            handleGetWords(token, deck.id, null, pageSize);
+        }
+    },[deck])
+
+
 
     const customStyles = {
-         // @ts-expect-error Custom styles
+        // @ts-expect-error Custom styles
         singleValue: provided => ({
             ...provided,
             color: 'white',
             zIndex: 1,
         }),
-         // @ts-expect-error Custom styles
+        // @ts-expect-error Custom styles
         placeholder: provided => ({
             ...provided,
             color: 'white',
             zIndex: 1,
+        }),
+        // @ts-expect-error Custom styles
+        input: provided => ({
+            ...provided,
+            color: 'white',
+            // zIndex: 1
+        }),
+        // @ts-expect-error Custom styles
+        option: (base,{ isFocused, isSelected }) => ({
+            ...base,
+            backgroundColor: isSelected ? "DodgerBlue" : isFocused ? "grey" : undefined
         })
     }
 
     const handleGetWords = async (token: string | null, deck_id: number, search: string | null, pageSize: number) => {
         try {
             const get_decks = await getDeckWords(token, deck_id, search, pageSize)
+            console.log("get_decks")
+            console.log(get_decks)
             setData(get_decks)
         } catch (err: unknown) {
             // #TODO Back HEre
@@ -62,6 +86,9 @@ const Preview = () => {
         }
     }
 
+    console.log("deck")
+    console.log(deck)
+
     return (
         <section className="preview">
             <h1 className="title">{t('preview_deck')}</h1>
@@ -70,7 +97,7 @@ const Preview = () => {
                 defaultOptions
                 value={deck}
                 styles={customStyles}
-                placeholder={t("select...")}
+                placeholder={t("select")}
                 onChange={handleChange}
                 loadOptions={promiseOptions}
                 getOptionLabel={customGetOptionLabel}

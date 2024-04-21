@@ -44,6 +44,7 @@
   "passwordTooShort": "Password field is too short",
   "of": "of",
   "save": "Save",
-  "change_places": "Change places"
+  "change_places": "Change places",
+  "select": "Select..."
 
 }
