@@ -45,6 +45,14 @@
   "of": "of",
   "save": "Save",
   "change_places": "Change places",
-  "select": "Select..."
-
+  "select": "Select...",
+  "account_settings": "Account settings",
+  "remove_account": "Remove account",
+  "change_email": "Change email",
+  "change_password": "Change password",
+  "update": "Update",
+  "current_password": "Current password",
+  "new_password": "New password",
+  "account_not_sure": "Nie jesteś pewny swojego obecnego hasła? Możesz je",
+  "reset_it": "Zresetuj."
 }
