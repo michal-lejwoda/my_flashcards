@@ -15,19 +15,6 @@ export interface DecksTable {
     all: number;
 }
 
-export interface DecksTablewithLabel {
-    id: number;
-    label: string;
-    created: string,
-    modified: string,
-    popularity: number,
-    is_public: boolean,
-    user: number;
-    value: number;
-    name: string;
-    slug: string;
-}
-
 
 export interface WordTable {
     id: number;
@@ -197,6 +184,7 @@ export interface WordTablewithPaginationProps{
     setPageSize:  Dispatch<SetStateAction<number>>
     deck_id: number,
     handleGetWords: (token: string | null, deck_id: number, search: string | null, pageSize: number) => Promise<void>;
+    setEditIt: Dispatch<SetStateAction<number | null>>
 }
 
 export interface FileRowData {
@@ -217,4 +205,11 @@ export interface EditModalProps {
     // setEditId: Dispatch<SetStateAction<number>>
     setShowEdit: Dispatch<SetStateAction<boolean>>
     handleSearchWithDeck: ()=> Promise<void>
+}
+export interface EditWordModalProps {
+    editId: number | null,
+    show: boolean,
+    setShowEdit: Dispatch<SetStateAction<boolean>>
+    refreshDeck: ()=> Promise<void>
+    // handleSearchWithDeck: ()=> Promise<void>
 }

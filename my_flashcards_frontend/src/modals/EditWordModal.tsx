@@ -1,11 +1,11 @@
 import {CloseButton, Modal} from "react-bootstrap";
-import {EditModalProps, SingleWordObject} from "../interfaces.tsx";
+import {EditWordModalProps, SingleWordObject} from "../interfaces.tsx";
 import {useTranslation} from "react-i18next";
 import {editSingleWord, getSingleWord} from "../api.tsx";
 import {useContext, useEffect, useState} from "react";
 import AuthContext from "../context/AuthContext.tsx";
 
-const EditModal: React.FC<EditModalProps> = ({editId, show, setShowEdit, handleSearchWithDeck}) => {
+const EditWordModal: React.FC<EditWordModalProps> = ({editId, show, setShowEdit, refreshDeck}) => {
     const {t} = useTranslation();
     const {token} = useContext(AuthContext);
     const [data, setData] = useState<SingleWordObject>({
@@ -36,7 +36,7 @@ const EditModal: React.FC<EditModalProps> = ({editId, show, setShowEdit, handleS
             const {id, front_side, back_side} = data;
             const json_obj = {"front_side": back_side, "back_side": front_side}
             await editSingleWord(id, token, json_obj)
-            await handleSearchWithDeck()
+            await refreshDeck()
             await setShowEdit(false)
         } catch (e) {
             // TODO BAck HEre
@@ -53,12 +53,12 @@ const EditModal: React.FC<EditModalProps> = ({editId, show, setShowEdit, handleS
         }));
     };
 
-    const saveEditData = async() => {
+    const saveEditData = async () => {
         try {
             const {id, front_side, back_side} = data;
             const json_obj = {"front_side": front_side, "back_side": back_side}
             await editSingleWord(id, token, json_obj)
-            await handleSearchWithDeck()
+            await refreshDeck()
             await setShowEdit(false)
         } catch (e) {
             // TODO BAck HEre
@@ -97,4 +97,4 @@ const EditModal: React.FC<EditModalProps> = ({editId, show, setShowEdit, handleS
     );
 };
 
-export default EditModal;
+export default EditWordModal;

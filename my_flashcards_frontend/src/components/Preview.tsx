@@ -8,6 +8,7 @@ import {useContext, useEffect, useState} from "react";
 import AuthContext from "../context/AuthContext.tsx";
 import WordTablewithPagination from "../table/WordTablewithPagination.tsx";
 import {useLocation} from "react-router-dom";
+import EditWordModal from "../modals/EditWordModal.tsx";
 
 const Preview = () => {
     const location = useLocation();
@@ -16,6 +17,8 @@ const Preview = () => {
     const [deck, setDeck] = useState<DecksTable | null>(null)
     const [data, setData] = useState<WordResponseTable | null>(null)
     const [pageSize, setPageSize] = useState(10)
+    const [editId, setEditIt] = useState<number | null>(null)
+    const [showEdit, setShowEdit] = useState(false)
     const promiseOptions = async (inputValue: string) => {
         const result = await getDecks(token, inputValue, 10)
         return result.results
@@ -29,18 +32,17 @@ const Preview = () => {
     };
 
     useEffect(() => {
-        if (location.state.deck){
+        if (location.state.deck) {
             setDeck(location.state.deck)
         }
     }, [token])
 
-    useEffect(()=>{
+    useEffect(() => {
         console.log("Second use Effect")
         if (deck !== null) {
             handleGetWords(token, deck.id, null, pageSize);
         }
-    },[deck])
-
+    }, [deck])
 
 
     const customStyles = {
@@ -63,7 +65,7 @@ const Preview = () => {
             // zIndex: 1
         }),
         // @ts-expect-error Custom styles
-        option: (base,{ isFocused, isSelected }) => ({
+        option: (base, {isFocused, isSelected}) => ({
             ...base,
             backgroundColor: isSelected ? "DodgerBlue" : isFocused ? "grey" : undefined
         })
@@ -82,6 +84,19 @@ const Preview = () => {
             console.log(error)
         }
     }
+    const refreshDeck = async () => {
+        if (deck !== null) {
+        try {
+            const response = await getDeckWords(token, deck.id, null, pageSize)
+            setData(response)
+        } catch (err: unknown) {
+            // #TODO Back HEre
+            const error = err as ErrorResponse
+            console.log("error")
+            console.log(error)
+        }
+    }}
+
 
     console.log("deck")
     console.log(deck)
@@ -101,11 +116,8 @@ const Preview = () => {
                 getOptionValue={customGetOptionValue}
             />
             <div className="preview__middle">
-                {/*<h1>{t('preview')}</h1>*/}
                 <div className="preview__buttons">
                     <button className="standard-button">{t('learn')}</button>
-
-                    {/*<input className="preview__search" placeholder={t("filter")} type="text"/>*/}
                 </div>
             </div>
             {data && data.results &&
@@ -113,7 +125,14 @@ const Preview = () => {
                                          setData={setData} pageSize={pageSize}
                                          setPageSize={setPageSize}
                                          deck_id={location.state.id}
-                                         handleGetWords={handleGetWords}/>
+                                         handleGetWords={handleGetWords}
+                                         setEditIt={setEditIt}
+                />
+
+            }
+            {editId &&
+                <EditWordModal show={showEdit} setShowEdit={setShowEdit} editId={editId}
+                               refreshDeck={refreshDeck}/>
             }
         </section>
     );
