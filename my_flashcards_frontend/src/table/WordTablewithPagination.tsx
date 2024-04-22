@@ -1,10 +1,4 @@
-import {
-    createColumnHelper,
-    flexRender,
-    getCoreRowModel,
-    getPaginationRowModel,
-    useReactTable
-} from "@tanstack/react-table";
+import {createColumnHelper, flexRender, getCoreRowModel, useReactTable} from "@tanstack/react-table";
 import {NavLink} from "react-router-dom";
 import {WordTable, WordTablewithPaginationProps} from "../interfaces.tsx";
 import {useState} from "react";
@@ -25,22 +19,10 @@ const WordTablewithPagination: React.FC<WordTablewithPaginationProps> = ({
     const [openDropdownId, setOpenDropdownId] = useState<number | null>(null);
     const {t} = useTranslation();
     const [search, setSearch] = useState("")
-
-
     const handleChangeDataBasedOnPageSize = (pg_size: string) => {
         setPageSize(Number(pg_size))
         handleGetWords(token, deck_id, search, Number(pg_size))
     }
-    // const handleGoToUrl = async (url: string | null) => {
-    //     try {
-    //         const url_data = await getUrl(url, token)
-    //         setData(url_data)
-    //     } catch (err: unknown) {
-    //         const error = err as ErrorResponse
-    //         console.log("error")
-    //         console.log(error)
-    //     }
-    // }
 
     const handleSearch = (search_word: string) => {
         setSearch(search_word)
@@ -93,7 +75,6 @@ const WordTablewithPagination: React.FC<WordTablewithPaginationProps> = ({
         data: data.results,
         columns: columns,
         getCoreRowModel: getCoreRowModel(),
-        getPaginationRowModel: getPaginationRowModel(),
     })
     return (
         <div className="decks">

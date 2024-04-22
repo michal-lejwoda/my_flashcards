@@ -32,8 +32,6 @@ const Preview = () => {
         if (location.state.deck){
             setDeck(location.state.deck)
         }
-
-
     }, [token])
 
     useEffect(()=>{
@@ -103,10 +101,11 @@ const Preview = () => {
                 getOptionValue={customGetOptionValue}
             />
             <div className="preview__middle">
-                <h1>{t('preview')}</h1>
+                {/*<h1>{t('preview')}</h1>*/}
                 <div className="preview__buttons">
                     <button className="standard-button">{t('learn')}</button>
-                    <input className="preview__search" placeholder={t("filter")} type="text"/>
+
+                    {/*<input className="preview__search" placeholder={t("filter")} type="text"/>*/}
                 </div>
             </div>
             {data && data.results &&

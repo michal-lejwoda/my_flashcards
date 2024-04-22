@@ -1,10 +1,4 @@
-import {
-    createColumnHelper,
-    flexRender,
-    getCoreRowModel,
-    getPaginationRowModel,
-    useReactTable
-} from "@tanstack/react-table";
+import {createColumnHelper, flexRender, getCoreRowModel, useReactTable} from "@tanstack/react-table";
 import {NavLink} from "react-router-dom";
 import {DecksTable, DecksTablewithPaginationProps} from "../interfaces.tsx";
 import {useState} from "react";
@@ -20,27 +14,14 @@ const DecksTablewithPagination: React.FC<DecksTablewithPaginationProps> = ({
                                                                                setPageSize,
                                                                                handleGetDecks
                                                                            }) => {
-    console.log("Data")
-    console.log(data)
     const [openDropdownId, setOpenDropdownId] = useState<number | null>(null);
     const {t} = useTranslation();
     const [search, setSearch] = useState("")
-
 
     const handleChangeDataBasedOnPageSize = (pg_size: string) => {
         setPageSize(Number(pg_size))
         handleGetDecks(token, search, Number(pg_size))
     }
-    // const handleGoToUrl = async (url: string | null) => {
-    //     try {
-    //         const url_data = await getUrl(url, token)
-    //         setData(url_data)
-    //     } catch (err: unknown) {
-    //         const error = err as ErrorResponse
-    //         console.log("error")
-    //         console.log(error)
-    //     }
-    // }
 
     const handleSearch = (search_word: string) => {
         setSearch(search_word)
@@ -102,11 +83,10 @@ const DecksTablewithPagination: React.FC<DecksTablewithPaginationProps> = ({
         data: data.results,
         columns: columns,
         getCoreRowModel: getCoreRowModel(),
-        getPaginationRowModel: getPaginationRowModel(),
+        // getPaginationRowModel: getPaginationRowModel(),
     })
     return (
         <div className="decks">
-            <h1 className="title">{t("decks")}</h1>
             <div className="decks__searchcontainer searchcontainer">
                 <input
                     // value={globalFilter ?? ''}
@@ -145,18 +125,18 @@ const DecksTablewithPagination: React.FC<DecksTablewithPaginationProps> = ({
                 </tbody>
             </table>
             {data.links.first_page_link &&
-                <button onClick={() => handleGoToUrl(data.links.first_page_link,token,setData)}>{'<<'}</button>
+                <button onClick={() => handleGoToUrl(data.links.first_page_link, token, setData)}>{'<<'}</button>
             }
             {data.links.previous &&
-                <button onClick={() => handleGoToUrl(data.links.previous,token,setData)}>{'<'}</button>
+                <button onClick={() => handleGoToUrl(data.links.previous, token, setData)}>{'<'}</button>
             }
             {data.current_page} {t('of')} {data.total_pages}
             {data.links.next &&
-                <button onClick={() => handleGoToUrl(data.links.next,token,setData)}>{'>'}</button>
+                <button onClick={() => handleGoToUrl(data.links.next, token, setData)}>{'>'}</button>
             }
 
             {data.links.last_page_link &&
-                <button onClick={() => handleGoToUrl(data.links.last_page_link,token,setData)}>{'>>'}</button>
+                <button onClick={() => handleGoToUrl(data.links.last_page_link, token, setData)}>{'>>'}</button>
             }
             <select
                 value={pageSize}

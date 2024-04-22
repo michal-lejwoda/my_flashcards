@@ -29,16 +29,18 @@ class CustomPagination(pagination.PageNumberPagination):
 
     def get_paginated_response(self, data):
         search_query = self.request.query_params.get('search')
-        print(search_query)
+        page_size = self.request.query_params.get('page_size')
+        if page_size is None:
+            page_size = self.page_size
         total_pages = self.page.paginator.num_pages
         last_page_link = None
         first_page_link = None
         if total_pages > 0:
             first_page_link = self.request.build_absolute_uri(
-                f"?page=1&page_size={self.page_size}"
+                f"?page=1&page_size={page_size}"
             )
             last_page_link = self.request.build_absolute_uri(
-                f"?page={total_pages}&page_size={self.page_size}"
+                f"?page={total_pages}&page_size={page_size}"
             )
             if search_query:
                 first_page_link += f"&search={search_query}"

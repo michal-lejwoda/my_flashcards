@@ -26,6 +26,7 @@ const Decks = () => {
         }
     }
 
+
     useEffect(() => {
         handleGetDecks(token, null, pageSize);
     }, [token])
