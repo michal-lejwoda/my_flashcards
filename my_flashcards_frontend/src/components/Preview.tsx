@@ -31,7 +31,6 @@ const Preview = () => {
     useEffect(() => {
         if (location.state.deck){
             setDeck(location.state.deck)
-            // handleGetWords(token, location.state.deck.id, null, pageSize);
         }
 
 
