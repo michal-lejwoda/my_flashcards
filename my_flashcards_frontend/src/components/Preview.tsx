@@ -23,6 +23,10 @@ const Preview = () => {
         const result = await getDecks(token, inputValue, 10)
         return result.results
     }
+    const handleOpenEditModal = (id: number) => {
+        setEditIt(id)
+        setShowEdit(true)
+    }
     const customGetOptionLabel = (option: DecksTable) => option.name
 
     const customGetOptionValue = (option: DecksTable) => option.id.toString();
@@ -126,7 +130,8 @@ const Preview = () => {
                                          setPageSize={setPageSize}
                                          deck_id={location.state.id}
                                          handleGetWords={handleGetWords}
-                                         setEditIt={setEditIt}
+                                         handleOpenEditModal={handleOpenEditModal}
+                                         // setEditIt={setEditIt}
                 />
 
             }

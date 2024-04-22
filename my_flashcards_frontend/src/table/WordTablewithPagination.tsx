@@ -1,5 +1,4 @@
 import {createColumnHelper, flexRender, getCoreRowModel, useReactTable} from "@tanstack/react-table";
-import {NavLink} from "react-router-dom";
 import {WordTable, WordTablewithPaginationProps} from "../interfaces.tsx";
 import {useState} from "react";
 import {useTranslation} from "react-i18next";
@@ -13,7 +12,9 @@ const WordTablewithPagination: React.FC<WordTablewithPaginationProps> = ({
                                                                              pageSize,
                                                                              setPageSize,
                                                                              deck_id,
-                                                                             handleGetWords
+                                                                             handleGetWords,
+                                                                             handleOpenEditModal
+
                                                                          }) => {
 
     const [openDropdownId, setOpenDropdownId] = useState<number | null>(null);
@@ -50,14 +51,7 @@ const WordTablewithPagination: React.FC<WordTablewithPaginationProps> = ({
                         <button onClick={() => toggleDropdown(props.row.original.id)}>{t("actions")}</button>
                         <div className={`container ${openDropdownId === props.row.original.id ? 'open' : ''}`}>
                             <div className={`content ${openDropdownId === props.row.original.id ? 'open' : ''}`}>
-                                <NavLink to="/preview" state={{id: props.row.original.id}}>{t("preview")}</NavLink>
-                                <NavLink to={`/learn/${props.row.original}`}
-                                         state={{id: props.row.original.id, reverse: false}}>{t("learn")}</NavLink>
-                                <NavLink to={`/learn/${props.row.original}`} state={{
-                                    id: props.row.original.id,
-                                    reverse: true
-                                }}>{t("reverse_and_learn")}</NavLink>
-                                <a>{t("rename")}</a>
+                                <a onClick={() => handleOpenEditModal(props.row.original.id)}>{t("edit")}</a>
                                 <a>{t("share")}</a>
                                 <a>{t("delete")}</a>
                             </div>

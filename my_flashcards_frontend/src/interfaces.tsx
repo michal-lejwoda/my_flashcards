@@ -184,7 +184,8 @@ export interface WordTablewithPaginationProps{
     setPageSize:  Dispatch<SetStateAction<number>>
     deck_id: number,
     handleGetWords: (token: string | null, deck_id: number, search: string | null, pageSize: number) => Promise<void>;
-    setEditIt: Dispatch<SetStateAction<number | null>>
+    handleOpenEditModal: (id: number) => void
+    // setEditIt: Dispatch<SetStateAction<number | null>>
 }
 
 export interface FileRowData {
