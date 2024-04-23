@@ -7,10 +7,11 @@ from rest_framework.mixins import RetrieveModelMixin
 from rest_framework.mixins import UpdateModelMixin
 from rest_framework.response import Response
 from rest_framework.viewsets import GenericViewSet
+from django.utils.translation import gettext_lazy as _
 
 from my_flashcards.users.models import User
 
-from .serializers import UserSerializer, RegistrationSerializer
+from .serializers import UserSerializer, RegistrationSerializer, ChangeEmailSerializer, ChangePasswordSerializer
 
 
 class UserViewSet(RetrieveModelMixin, ListModelMixin, UpdateModelMixin, GenericViewSet):
@@ -26,6 +27,27 @@ class UserViewSet(RetrieveModelMixin, ListModelMixin, UpdateModelMixin, GenericV
     def me(self, request):
         serializer = UserSerializer(request.user, context={"request": request})
         return Response(status=status.HTTP_200_OK, data=serializer.data)
+
+    @action(detail=False, methods=['POST'])
+    def change_email(self, request):
+        serializer = ChangeEmailSerializer(data=request.data, user=request.user)
+        if serializer.is_valid():
+            new_email = serializer.validated_data['email']
+            request.user.email = new_email
+            request.user.save()
+            return Response(status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_404_NOT_FOUND)
+
+    @action(detail=False, methods=['POST'])
+    def change_password(self, request):
+        serializer = ChangePasswordSerializer(data=request.data, user=request.user)
+        if serializer.is_valid():
+            new_password = serializer.validated_data['new_password']
+            user = request.user
+            user.set_password(new_password)
+            user.save()
+            return Response({"message": _("Password has been successfully changed")}, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class CustomAuthToken(ObtainAuthToken, GenericViewSet):
     def post(self, request, *args, **kwargs):

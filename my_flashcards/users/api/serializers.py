@@ -1,8 +1,40 @@
+from django.contrib.auth.hashers import check_password
+from django.utils.translation import gettext_lazy as _
 from django.core.validators import validate_email
 from rest_framework import serializers
 
 from my_flashcards.users.models import User
 
+class ChangePasswordSerializer(serializers.Serializer):
+    old_password = serializers.CharField()
+    new_password = serializers.CharField()
+    def __init__(self, *args, **kwargs):
+        self.user = kwargs.pop('user', None)
+        super().__init__(*args, **kwargs)
+
+    def validate_old_password(self, value):
+        if not check_password(value, self.user.password):
+            raise serializers.ValidationError("Incorrect old password")
+        return value
+
+class ChangeEmailSerializer(serializers.Serializer):
+    email = serializers.EmailField()
+    password = serializers.CharField()
+
+    def __init__(self, *args, **kwargs):
+        self.user = kwargs.pop('user', None)
+        super().__init__(*args, **kwargs)
+
+    def validate_email(self, value):
+        try:
+            User.objects.get(email=value)
+            raise serializers.ValidationError(_("This email address is already used"))
+        except User.DoesNotExist:
+            return value
+    def validate_password(self, value):
+        if not check_password(value, self.user.password):
+            raise serializers.ValidationError(_("Incorrect password"))
+        return value
 
 class UserSerializer(serializers.ModelSerializer[User]):
     class Meta:
@@ -25,18 +57,18 @@ class RegistrationSerializer(serializers.ModelSerializer):
     @staticmethod
     def validate_password(password):
         if len(password) < 4:
-            raise serializers.ValidationError('Hasło za krótkie (minimum 4 litery)')
+            raise serializers.ValidationError(_("Password is too short(min 4 letters)"))
 
         if len(password) > 50:
-            raise serializers.ValidationError('Hasło za długie (maksimum 50 liter)')
+            raise serializers.ValidationError(_("Password is too long(max 50 letters)"))
         return password
     @staticmethod
     def validate_username(username):
         if len(username) < 4:
-            raise serializers.ValidationError('Nazwa użytkowanika jest za krótka (minimum 4 litery)')
+            raise serializers.ValidationError(_("Username is too short(min 4 letters)"))
 
         if len(username) > 30:
-            raise serializers.ValidationError('Nazwa użytkowanika jest za długa (maksimum 30 liter)')
+            raise serializers.ValidationError(_("Username is too long(max 30 letters)"))
         return username
 
     @staticmethod
@@ -44,11 +76,11 @@ class RegistrationSerializer(serializers.ModelSerializer):
         try:
             validate_email(email)
         except:
-            raise serializers.ValidationError({'email': 'Email jest nie poprawny'})
+            raise serializers.ValidationError({'email': _('Email address is not correct')})
         return email
     def validate(self, data):
         if data['password'] != data['password2']:
-            raise serializers.ValidationError({'password': 'Hasła się nie zgadzają'})
+            raise serializers.ValidationError({'password': _("Passwords don't match")})
         return data
     def create(self, validated_data):
         user = User.objects.create(
