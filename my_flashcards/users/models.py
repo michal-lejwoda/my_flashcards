@@ -1,10 +1,11 @@
 from django.contrib.auth.models import AbstractUser
-from django.db.models import CharField
+from django.db.models import CharField, UUIDField
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
 from rest_framework.authtoken.models import Token
+import uuid
 
 class User(AbstractUser):
     """

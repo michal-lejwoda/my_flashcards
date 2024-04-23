@@ -2,9 +2,29 @@ from django.contrib.auth.hashers import check_password
 from django.core.validators import validate_email
 from django.utils.translation import gettext_lazy as _
 from rest_framework import serializers
-
+from rest_framework.authtoken.models import Token
 from my_flashcards.users.models import User
 
+class ChangePasswordWithTokenSerializer(serializers.Serializer):
+    token = serializers.CharField(required=True)
+    email = serializers.EmailField(required=True)
+    new_password1 = serializers.CharField(required=True)
+    new_password2 = serializers.CharField(required=True)
+
+    def validate_new_password1(self, password):
+        if len(password) < 4:
+            raise serializers.ValidationError(_("Password is too short(min 4 letters)"))
+    def validate(self, data):
+        try:
+            token = Token.objects.get(key__exact=data['token'])
+            if token.user.email != data['email']:
+                raise serializers.ValidationError()
+            if data['new_password1'] != data['new_password2']:
+                raise serializers.ValidationError()
+            data['user'] = token.user
+            return data
+        except Token.DoesNotExist:
+            raise serializers.ValidationError()
 
 class DeleteUserSerializer(serializers.Serializer):
     password = serializers.CharField()

@@ -12,7 +12,8 @@ from django.utils.translation import gettext_lazy as _
 from my_flashcards.users.models import User
 
 from .serializers import UserSerializer, RegistrationSerializer, ChangeEmailSerializer, ChangePasswordSerializer, \
-    DeleteUserSerializer
+    DeleteUserSerializer, ChangePasswordWithTokenSerializer
+from ...flashcards.tasks import send_reset_password_to_mail
 
 
 class UserViewSet(RetrieveModelMixin, ListModelMixin, UpdateModelMixin, GenericViewSet):
@@ -49,6 +50,25 @@ class UserViewSet(RetrieveModelMixin, ListModelMixin, UpdateModelMixin, GenericV
             user.save()
             return Response({"message": _("Password has been successfully changed")}, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    @action(detail=False, methods=['POST'])
+    def send_mail_with_reset_link(self, request):
+        send_reset_password_to_mail(request.data['email'])
+        return Response({"message": _("If the email exists then a message with a link has been sent to it ")}, status=status.HTTP_200_OK)
+
+    @action(detail=False, methods=['POST'])
+    def reset_password(self, request):
+        serializer = ChangePasswordWithTokenSerializer(data=request.data)
+        if serializer.is_valid():
+            user = serializer.validated_data.get('user')
+            new_password = serializer.validated_data.get('new_password1')
+            user.set_password(new_password)
+            user.save()
+            return Response({'detail': _("Password has been successfully changed")}, status=status.HTTP_200_OK)
+        else:
+            return Response({'error': _("Password change has failed")},
+                            status=status.HTTP_400_BAD_REQUEST)
+
 
     @action(detail=False, methods=['DELETE'])
     def delete_user(self, request):

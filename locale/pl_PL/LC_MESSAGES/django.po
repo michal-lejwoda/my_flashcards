@@ -151,3 +151,15 @@ msgstr "Hasło zostało pomyślnie zmienione"
 
 msgid "Your account has been deleted"
 msgstr "Twoje konto zostało usunięte"
+
+msgid "Password Reset on Flashcards website"
+msgstr "Reset hasła na stronie flashcards"
+
+msgid "If the email exists then a message with a link has been sent to it"
+msgstr  "Jeśli email istnieje to została na niego wysłana wiadomość z linkiem"
+
+msgid "Email is incorrect"
+msgstr "Adres email nie jest poprawny"
+
+msgid "Password change has failed"
+msgstr "Zmiana hasła się nie powiodła"

@@ -34,7 +34,6 @@ class WordSerializer(serializers.ModelSerializer):
         return value
 
     def validate(self, data):
-        # Dodatkowe niestandardowe walidacje można tutaj umieścić
         if data.get('front_side') == data.get('back_side'):
             raise serializers.ValidationError(_("Both sites are the same"))
         return data
