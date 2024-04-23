@@ -16,6 +16,7 @@
 }
 
 .account{
+  min-width: 280px;
   &__title{
     margin-top: 0.5rem;
     margin-bottom: 1rem;
@@ -38,11 +39,18 @@
   }
   &__form{
     padding-left: 0.5rem;
+    //min-width: 120px;
+    width: 400px;
     &--textfield{
       margin-bottom: 1rem;
     }
     &--remove{
-      color: #0d6efd;
+      color: rgb(138, 224, 1);
+      text-decoration: underline;
+      cursor: pointer;
+    }
+    &--reset{
+      color: rgb(138, 224, 1);
       text-decoration: underline;
       cursor: pointer;
     }

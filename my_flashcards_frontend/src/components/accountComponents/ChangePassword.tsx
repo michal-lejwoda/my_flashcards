@@ -24,7 +24,7 @@ const ChangePassword = () => {
                                    style: {color: '#fff'},
                                }}/>
                 </div>
-                <p>{t("account_not_sure")}<NavLink to="/reset-password"> {t("reset it")}</NavLink></p>
+                <p>{t("account_not_sure")}<NavLink className="account__form--reset" to="/reset-password"> {t("reset it")}</NavLink></p>
                 <p><span className="account__form--remove">{t("remove_account")}</span></p>
                 <button className="greenoutline--button" type="submit">
                     {t("update")}
