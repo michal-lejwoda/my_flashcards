@@ -148,3 +148,6 @@ msgstr "Nieprawidłowe stare hasło"
 
 msgid "Password has been successfully changed"
 msgstr "Hasło zostało pomyślnie zmienione"
+
+msgid "Your account has been deleted"
+msgstr "Twoje konto zostało usunięte"

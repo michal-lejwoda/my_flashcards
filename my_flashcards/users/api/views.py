@@ -11,7 +11,8 @@ from django.utils.translation import gettext_lazy as _
 
 from my_flashcards.users.models import User
 
-from .serializers import UserSerializer, RegistrationSerializer, ChangeEmailSerializer, ChangePasswordSerializer
+from .serializers import UserSerializer, RegistrationSerializer, ChangeEmailSerializer, ChangePasswordSerializer, \
+    DeleteUserSerializer
 
 
 class UserViewSet(RetrieveModelMixin, ListModelMixin, UpdateModelMixin, GenericViewSet):
@@ -48,6 +49,16 @@ class UserViewSet(RetrieveModelMixin, ListModelMixin, UpdateModelMixin, GenericV
             user.save()
             return Response({"message": _("Password has been successfully changed")}, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    @action(detail=False, methods=['DELETE'])
+    def delete_user(self, request):
+        serializer = DeleteUserSerializer(data=request.data, user=request.user)
+        if serializer.is_valid():
+            request.user.delete()
+            return Response({"message": _("Your account has been deleted")}, status=status.HTTP_204_NO_CONTENT)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
 
 class CustomAuthToken(ObtainAuthToken, GenericViewSet):
     def post(self, request, *args, **kwargs):

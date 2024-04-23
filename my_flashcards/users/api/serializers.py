@@ -1,21 +1,37 @@
 from django.contrib.auth.hashers import check_password
-from django.utils.translation import gettext_lazy as _
 from django.core.validators import validate_email
+from django.utils.translation import gettext_lazy as _
 from rest_framework import serializers
 
 from my_flashcards.users.models import User
 
+
+class DeleteUserSerializer(serializers.Serializer):
+    password = serializers.CharField()
+
+    def __init__(self, *args, **kwargs):
+        self.user = kwargs.pop('user', None)
+        super().__init__(*args, **kwargs)
+
+    def validate_password(self, value):
+        if not check_password(value, self.user.password):
+            raise serializers.ValidationError(_("Incorrect password"))
+        return value
+
+
 class ChangePasswordSerializer(serializers.Serializer):
     old_password = serializers.CharField()
     new_password = serializers.CharField()
+
     def __init__(self, *args, **kwargs):
         self.user = kwargs.pop('user', None)
         super().__init__(*args, **kwargs)
 
     def validate_old_password(self, value):
         if not check_password(value, self.user.password):
-            raise serializers.ValidationError("Incorrect old password")
+            raise serializers.ValidationError(_("Incorrect old password"))
         return value
+
 
 class ChangeEmailSerializer(serializers.Serializer):
     email = serializers.EmailField()
@@ -31,10 +47,12 @@ class ChangeEmailSerializer(serializers.Serializer):
             raise serializers.ValidationError(_("This email address is already used"))
         except User.DoesNotExist:
             return value
+
     def validate_password(self, value):
         if not check_password(value, self.user.password):
             raise serializers.ValidationError(_("Incorrect password"))
         return value
+
 
 class UserSerializer(serializers.ModelSerializer[User]):
     class Meta:
@@ -45,8 +63,10 @@ class UserSerializer(serializers.ModelSerializer[User]):
             "url": {"view_name": "api:user-detail", "lookup_field": "username"},
         }
 
+
 class RegistrationSerializer(serializers.ModelSerializer):
     password2 = serializers.CharField(style={'input_type': 'password'}, write_only=True)
+
     class Meta:
         model = User
         fields = ('id', 'username', 'email', 'password', 'password2')
@@ -62,6 +82,7 @@ class RegistrationSerializer(serializers.ModelSerializer):
         if len(password) > 50:
             raise serializers.ValidationError(_("Password is too long(max 50 letters)"))
         return password
+
     @staticmethod
     def validate_username(username):
         if len(username) < 4:
@@ -78,10 +99,12 @@ class RegistrationSerializer(serializers.ModelSerializer):
         except:
             raise serializers.ValidationError({'email': _('Email address is not correct')})
         return email
+
     def validate(self, data):
         if data['password'] != data['password2']:
             raise serializers.ValidationError({'password': _("Passwords don't match")})
         return data
+
     def create(self, validated_data):
         user = User.objects.create(
             username=validated_data['username'],
