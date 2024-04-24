@@ -37,7 +37,7 @@ class UserViewSet(RetrieveModelMixin, ListModelMixin, UpdateModelMixin, GenericV
             new_email = serializer.validated_data['email']
             request.user.email = new_email
             request.user.save()
-            return Response(status=status.HTTP_201_CREATED)
+            return Response({"message": _("Email has been successfully changed")},status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_404_NOT_FOUND)
 
     @action(detail=False, methods=['POST'])

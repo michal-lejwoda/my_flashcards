@@ -38,6 +38,7 @@
     }
   }
   &__form{
+
     padding-left: 0.5rem;
     //min-width: 120px;
     width: 400px;
@@ -60,6 +61,15 @@
       display:flex;
       justify-content: center;
     }
+  }
+}
+.form{
+  &__message{
+      margin-top: 0.7rem;
+      margin-bottom: 0.7rem;
+    }
+  &__error{
+    color: darkred;
   }
 }
 

@@ -112,6 +112,11 @@ export interface RegisterError {
     non_field_errors?: string[];
 }
 
+export interface ChangeEmailError{
+    email?: string[];
+    password?: string[];
+}
+
 export interface Children {
     children: ReactNode;
 }
@@ -213,4 +218,9 @@ export interface EditWordModalProps {
     setShowEdit: Dispatch<SetStateAction<boolean>>
     refreshDeck: ()=> Promise<void>
     // handleSearchWithDeck: ()=> Promise<void>
+}
+
+export interface ChangeEmailData{
+    email: string;
+    password: string;
 }

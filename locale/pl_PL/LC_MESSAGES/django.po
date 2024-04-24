@@ -163,3 +163,6 @@ msgstr "Adres email nie jest poprawny"
 
 msgid "Password change has failed"
 msgstr "Zmiana hasła się nie powiodła"
+
+msgid "Email has been successfully changed"
+msgstr "Zmiana adresu email się powiodła"
