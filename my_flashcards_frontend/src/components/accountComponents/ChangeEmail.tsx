@@ -20,6 +20,7 @@ const ChangeEmail = () => {
         validateOnChange: false,
         onSubmit: () => {
             setChangeEmailError(null)
+            setEmailErrorSuccess(null)
             handleChangeEmail()
         },
     });
