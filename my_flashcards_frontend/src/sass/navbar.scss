@@ -22,15 +22,15 @@ nav {
     }
   }
   &__select{
-    cursor: pointer;
+    background-color: #1c1c1c;
+    :hover{
+      color: white;
+    }
   }
   &__mobile{
     position: sticky;
     display:flex;
     justify-content: space-between;
-
-
-    //padding: 0 2rem 0;
   }
   &__item{
     text-decoration: none;
