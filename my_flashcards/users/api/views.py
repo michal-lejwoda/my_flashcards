@@ -5,6 +5,7 @@ from rest_framework.decorators import action
 from rest_framework.mixins import ListModelMixin, CreateModelMixin
 from rest_framework.mixins import RetrieveModelMixin
 from rest_framework.mixins import UpdateModelMixin
+from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from rest_framework.viewsets import GenericViewSet
 from django.utils.translation import gettext_lazy as _
@@ -51,7 +52,7 @@ class UserViewSet(RetrieveModelMixin, ListModelMixin, UpdateModelMixin, GenericV
             return Response({"message": _("Password has been successfully changed")}, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-    @action(detail=False, methods=['POST'])
+    @action(detail=False, methods=['POST'], permission_classes = [AllowAny])
     def send_mail_with_reset_link(self, request):
         send_reset_password_to_mail(request.data['email'])
         return Response({"message": _("If the email exists then a message with a link has been sent to it ")}, status=status.HTTP_200_OK)

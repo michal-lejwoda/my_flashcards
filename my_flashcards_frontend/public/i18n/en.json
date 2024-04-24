@@ -54,5 +54,9 @@
   "current_password": "Current password",
   "new_password": "New password",
   "account_not_sure": "Not sure of your current password? You can",
-  "reset_it": "Zresetuj."
+  "reset_it": "Reset it.",
+  "if_email_exists": "If the email exists in the database then a message has been sent to it",
+  "reset_password_error": "An error occurred try again later",
+  "reset_password": "Reset password",
+  "reset_password_notification": "If you've forgotten your password, please enter your email address to reset your password"
 }

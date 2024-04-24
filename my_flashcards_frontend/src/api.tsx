@@ -1,6 +1,12 @@
 import axios from 'axios'
 import i18n from "i18next";
-import {ChangeEmailData, ChangePasswordData, EditWordObject, SendDeckData} from "./interfaces.tsx";
+import {
+    ChangeEmailData,
+    ChangePasswordData,
+    EditWordObject,
+    handleSendMailWithResetPasswordData,
+    SendDeckData
+} from "./interfaces.tsx";
 
 
 const instance = axios.create({
@@ -228,7 +234,7 @@ export async function changeEmail(data: ChangeEmailData, token: string | null){
 
 export async function changePassword(data: ChangePasswordData, token: string | null){
     const currentLanguage = i18n.language;
-    const response = await instance.post(`/api/users/change_email/`, data, {
+    const response = await instance.post(`/api/users/change_password/`, data, {
         headers: {
             'Accept-Language': currentLanguage,
             'Authorization': `Token ${token}`
@@ -236,4 +242,14 @@ export async function changePassword(data: ChangePasswordData, token: string | n
     });
     return response.data
 
+}
+
+export async function handleSendMailWithResetPassword(data: handleSendMailWithResetPasswordData){
+    const currentLanguage = i18n.language;
+    const response = await instance.post(`/api/users/send_mail_with_reset_link/`, data, {
+        headers: {
+            'Accept-Language': currentLanguage,
+        },
+    });
+    return response
 }

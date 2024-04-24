@@ -17,6 +17,7 @@ import Preview from "./components/Preview.tsx";
 import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
 import ChooseAndLearn from "./components/ChooseAndLearn.tsx";
 import {AuthProvider} from "./context/AuthContext.tsx";
+import ResetPassword from "./components/ResetPassword.tsx";
 
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
@@ -29,6 +30,7 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
                     <div className="main">
                         <Routes>
                             <Route path="/" element={<Decks/>}/>
+                            <Route path="/reset-password" element={<ResetPassword/>}></Route>
                             <Route path="/search" element={<Search/>}/>
                             <Route path="/create" element={<CreateComponent/>}/>
                             <Route path="/learn/:slug" element={<LearnFlashcards/>}/>

@@ -54,7 +54,9 @@
   "current_password": "Obecne hasło",
   "new_password": "Nowe hasło",
   "account_not_sure": "Nie jesteś pewny swojego obecnego hasła? Możesz je",
-
-  "reset_it": "reset it."
-
+  "reset_it": "Zresetuj",
+  "if_email_exists": "Jeśli email znajduje się w bazie to została wysłana na niego wiadomość",
+  "reset_password_error": "Wystąpił błąd. Spróbuj ponownie później",
+  "reset_password": "Zresetuj hasło",
+  "reset_password_notification": "Jeśli zapomniałeś hasła, wprowadź swój email aby go zresetować"
 }

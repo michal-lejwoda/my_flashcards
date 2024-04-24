@@ -45,6 +45,7 @@ const ChangeEmail = () => {
                     <div className="account__form--textfield change_email__form--textfield">
                         <TextField
                             name="email"
+                            type="email"
                             onChange={handleChange}
                             label={t("change_email")}
                             variant="outlined"

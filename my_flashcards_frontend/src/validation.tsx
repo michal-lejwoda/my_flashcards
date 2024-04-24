@@ -20,5 +20,9 @@ export const changeEmailValidation = yup.object().shape({
 
 export const changePasswordValidation = yup.object().shape({
     old_password: yup.string().min(4, () => i18next.t('passwordTooShort')).required(() => i18next.t('passwordIsRequired')),
-    new_password: yup.string().oneOf([yup.ref("old_password")], () => i18next.t('passwordsNotMatch'))
+    new_password: yup.string().min(4, () => i18next.t('passwordTooShort')).required(() => i18next.t('passwordIsRequired')),
+})
+
+export const changeResetPasswordValidation = yup.object().shape({
+    email: yup.string().email(() => i18next.t('emailIsNotCorrect')).required(() => i18next.t('emailIsRequired')),
 })
