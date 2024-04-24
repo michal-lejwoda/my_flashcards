@@ -31,7 +31,6 @@ const EditModal: React.FC<EditModalProps> = ({editId, show, setShowEdit, handleS
     }, [editId])
 
     const handleChangePlaces = async () => {
-        console.log("handleChangePlaces")
         try {
             const {id, front_side, back_side} = data;
             const json_obj = {"front_side": back_side, "back_side": front_side}

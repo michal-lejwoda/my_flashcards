@@ -122,6 +122,11 @@ export interface ChangePasswordError{
     new_password?: string[];
 }
 
+export interface deleteUserError{
+    password?: string[];
+
+}
+
 export interface Children {
     children: ReactNode;
 }
@@ -235,4 +240,17 @@ export interface ChangePasswordData{
 
 export interface handleSendMailWithResetPasswordData{
     email: string
+}
+
+export interface DeleteAccountProps{
+    showDeleteModal: boolean;
+    setShowDeleteModal: Dispatch<SetStateAction<boolean>>;
+}
+
+export interface ChangePasswordProps{
+    setShowDeleteModal: Dispatch<SetStateAction<boolean>>;
+}
+
+export interface handleDeleteUserData{
+    password: string;
 }

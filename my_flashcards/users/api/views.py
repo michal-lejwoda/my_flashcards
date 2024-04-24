@@ -71,7 +71,7 @@ class UserViewSet(RetrieveModelMixin, ListModelMixin, UpdateModelMixin, GenericV
                             status=status.HTTP_400_BAD_REQUEST)
 
 
-    @action(detail=False, methods=['DELETE'])
+    @action(detail=False, methods=['POST'])
     def delete_user(self, request):
         serializer = DeleteUserSerializer(data=request.data, user=request.user)
         if serializer.is_valid():

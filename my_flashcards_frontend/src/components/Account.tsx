@@ -4,11 +4,12 @@ import ChangeEmail from "./accountComponents/ChangeEmail.tsx";
 import ChangePassword from "./accountComponents/ChangePassword.tsx";
 import {useState} from "react";
 import "../sass/account.css"
+import DeleteAccountModal from "../modals/DeleteAccountModal.tsx";
 
 const Account = () => {
     const {t} = useTranslation();
     const [clickedButton, setClickedButton] = useState<string>('CHANGE_EMAIL');
-
+    const [showDeleteModal, setShowDeleteModal] = useState(false)
     const handleClick = (value: string) => {
         setClickedButton(value);
     };
@@ -36,8 +37,9 @@ const Account = () => {
                             <ChangeEmail/>
                         }
                         {clickedButton === 'CHANGE_PASSWORD' &&
-                            <ChangePassword/>
+                            <ChangePassword setShowDeleteModal={setShowDeleteModal} />
                         }
+                        <DeleteAccountModal showDeleteModal={showDeleteModal} setShowDeleteModal={setShowDeleteModal}/>
                     </div>
                 </div>
             </div>

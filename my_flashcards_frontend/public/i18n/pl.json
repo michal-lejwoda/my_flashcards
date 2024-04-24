@@ -58,5 +58,9 @@
   "if_email_exists": "Jeśli email znajduje się w bazie to została wysłana na niego wiadomość",
   "reset_password_error": "Wystąpił błąd. Spróbuj ponownie później",
   "reset_password": "Zresetuj hasło",
-  "reset_password_notification": "Jeśli zapomniałeś hasła, wprowadź swój email aby go zresetować"
+  "reset_password_notification": "Jeśli zapomniałeś hasła, wprowadź swój email aby go zresetować",
+  "delete_account": "Usuń konto",
+  "account_deleted": "Konto zostało usunięte",
+  "delete": "USUŃ",
+  "delete_info": "Jeśli chcesz usunąć konto wprowadź swoje aktualne hasło"
 }

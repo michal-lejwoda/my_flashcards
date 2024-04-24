@@ -3,12 +3,12 @@ import {TextField} from "@mui/material";
 import {NavLink} from "react-router-dom";
 import {useContext, useState} from "react";
 import AuthContext from "../../context/AuthContext.tsx";
-import {ChangePasswordError, ErrorResponse} from "../../interfaces.tsx";
+import {ChangePasswordError, ChangePasswordProps, ErrorResponse} from "../../interfaces.tsx";
 import {useFormik} from "formik";
 import {changePasswordValidation} from "../../validation.tsx";
 import {changePassword} from "../../api.tsx";
 
-const ChangePassword = () => {
+const ChangePassword: React.FC<ChangePasswordProps> = ({setShowDeleteModal}) => {
     const {t} = useTranslation();
     const {token} = useContext(AuthContext);
     const [changePasswordError, setChangePasswordError] = useState<ChangePasswordError | null>(null)
@@ -85,7 +85,8 @@ const ChangePassword = () => {
                     </div>
                     <p>{t("account_not_sure")}<NavLink className="account__form--reset"
                                                        to="/reset-password"> {t("reset_it")}</NavLink></p>
-                    <p><span className="account__form--remove">{t("remove_account")}</span></p>
+                    <p><span className="account__form--remove"
+                             onClick={() => setShowDeleteModal(true)}>{t("remove_account")}</span></p>
                     <div className="account__button">
                         <button className="greenoutline--button" type="submit">
                             {t("update")}

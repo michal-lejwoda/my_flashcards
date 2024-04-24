@@ -3,7 +3,7 @@ import i18n from "i18next";
 import {
     ChangeEmailData,
     ChangePasswordData,
-    EditWordObject,
+    EditWordObject, handleDeleteUserData,
     handleSendMailWithResetPasswordData,
     SendDeckData
 } from "./interfaces.tsx";
@@ -252,4 +252,15 @@ export async function handleSendMailWithResetPassword(data: handleSendMailWithRe
         },
     });
     return response
+}
+
+export async function handleDeleteUser(data: handleDeleteUserData, token: string | null){
+    const currentLanguage = i18n.language;
+    const response = await instance.post(`/api/users/delete_user/`, data, {
+        headers: {
+            'Accept-Language': currentLanguage,
+            'Authorization': `Token ${token}`
+        },
+    });
+    return response.data
 }

@@ -58,5 +58,9 @@
   "if_email_exists": "If the email exists in the database then a message has been sent to it",
   "reset_password_error": "An error occurred try again later",
   "reset_password": "Reset password",
-  "reset_password_notification": "If you've forgotten your password, please enter your email address to reset your password"
+  "reset_password_notification": "If you've forgotten your password, please enter your email address to reset your password",
+  "delete_account": "Delete account",
+  "account_deleted": "Account has been deleted",
+  "delete_info": "If you want to delete account you need to provide password",
+  "delete": "DELETE"
 }

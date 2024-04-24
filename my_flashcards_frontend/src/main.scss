@@ -14,3 +14,7 @@
     @else if $point == LGdesktop{
       @media screen and (min-width:1401px){@content;}
     }}
+
+.modal-content{
+  background-color: #1c1c1a !important;
+}
