@@ -1,6 +1,6 @@
 import axios from 'axios'
 import i18n from "i18next";
-import {ChangeEmailData, EditWordObject, SendDeckData} from "./interfaces.tsx";
+import {ChangeEmailData, ChangePasswordData, EditWordObject, SendDeckData} from "./interfaces.tsx";
 
 
 const instance = axios.create({
@@ -215,6 +215,18 @@ export async function searchForWord(str: string) {
 }
 
 export async function changeEmail(data: ChangeEmailData, token: string | null){
+    const currentLanguage = i18n.language;
+    const response = await instance.post(`/api/users/change_email/`, data, {
+        headers: {
+            'Accept-Language': currentLanguage,
+            'Authorization': `Token ${token}`
+        },
+    });
+    return response.data
+
+}
+
+export async function changePassword(data: ChangePasswordData, token: string | null){
     const currentLanguage = i18n.language;
     const response = await instance.post(`/api/users/change_email/`, data, {
         headers: {

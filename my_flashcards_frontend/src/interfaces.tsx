@@ -117,6 +117,11 @@ export interface ChangeEmailError{
     password?: string[];
 }
 
+export interface ChangePasswordError{
+    old_password?: string[];
+    new_password?: string[];
+}
+
 export interface Children {
     children: ReactNode;
 }
@@ -206,21 +211,24 @@ export interface SendDeckData {
 
 // TODO Modify interface lated
 export interface EditModalProps {
-    editId: number | null,
-    show: boolean,
-    // setEditId: Dispatch<SetStateAction<number>>
-    setShowEdit: Dispatch<SetStateAction<boolean>>
-    handleSearchWithDeck: ()=> Promise<void>
+    editId: number | null;
+    show: boolean;
+    setShowEdit: Dispatch<SetStateAction<boolean>>;
+    handleSearchWithDeck: ()=> Promise<void>;
 }
 export interface EditWordModalProps {
-    editId: number | null,
-    show: boolean,
-    setShowEdit: Dispatch<SetStateAction<boolean>>
-    refreshDeck: ()=> Promise<void>
-    // handleSearchWithDeck: ()=> Promise<void>
+    editId: number | null;
+    show: boolean;
+    setShowEdit: Dispatch<SetStateAction<boolean>>;
+    refreshDeck: ()=> Promise<void>;
 }
 
 export interface ChangeEmailData{
     email: string;
     password: string;
+}
+
+export interface ChangePasswordData{
+    old_password: string;
+    new_password: string;
 }
