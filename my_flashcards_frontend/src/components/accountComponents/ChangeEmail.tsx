@@ -38,7 +38,7 @@ const ChangeEmail = () => {
     }
     return (
         <div className="change_email">
-            <h1 className="account__title">{t("change_email")}</h1>
+            <h2 className="account__title">{t("change_email")}</h2>
             <div className="change_email__form">
                 <form onSubmit={handleSubmit}>
 
@@ -81,9 +81,11 @@ const ChangeEmail = () => {
                             {emailErrorSuccess && <p className="form__success form__message">{emailErrorSuccess}</p>}
                         </div>
                     </div>
-                    <button className="greenoutline--button" type="submit">
-                        {t("update")}
-                    </button>
+                    <div className="account__button">
+                        <button className="greenoutline--button" type="submit">
+                            {t("update")}
+                        </button>
+                    </div>
                 </form>
             </div>
         </div>

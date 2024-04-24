@@ -40,7 +40,7 @@ const ChangePassword = () => {
 
     return (
         <div className="change_password">
-            <h1 className="account__title">{t("change_password")}</h1>
+            <h2 className="account__title">{t("change_password")}</h2>
             <form onSubmit={handleSubmit}>
                 <div className="change_password__form">
                     <div className="account__form--textfield change_password__form--textfield">
@@ -86,9 +86,11 @@ const ChangePassword = () => {
                     <p>{t("account_not_sure")}<NavLink className="account__form--reset"
                                                        to="/reset-password"> {t("reset_it")}</NavLink></p>
                     <p><span className="account__form--remove">{t("remove_account")}</span></p>
-                    <button className="greenoutline--button" type="submit">
-                        {t("update")}
-                    </button>
+                    <div className="account__button">
+                        <button className="greenoutline--button" type="submit">
+                            {t("update")}
+                        </button>
+                    </div>
                 </div>
             </form>
         </div>

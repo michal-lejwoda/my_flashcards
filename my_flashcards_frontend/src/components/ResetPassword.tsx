@@ -17,11 +17,11 @@ const ResetPassword = () => {
         onSubmit: async () => {
             try {
                 await handleSendMailWithResetPassword(values);
-                await alert(t("if_email_exists"));
-                await navigate("/login")
+                alert(t("if_email_exists"));
+                navigate("/login")
             } catch (error) {
                 alert(t("reset_password_error"))
-                await navigate("/login")
+                navigate("/login")
             }
         },
     });
@@ -29,29 +29,33 @@ const ResetPassword = () => {
     return (
         <div className="reset_password">
             <h1 className="reset_password__title">{t("reset_password")}</h1>
-            <div className="change_email__form">
-                <p>{t("reset_password_notification")}</p>
-                <form onSubmit={handleSubmit}>
-                    <div className="account__form--textfield change_email__form--textfield">
-                        <TextField
-                            name="email"
-                            type="text"
-                            onChange={handleChange}
-                            label={t("change_email")}
-                            variant="outlined"
-                            className="customTextField"
-                            InputLabelProps={{
-                                style: {color: '#fff'},
-                            }}
-                        />
-                        <div className="errors form__errors">
-                            {errors.email && <p className="form__error form__message">{errors.email}</p>}
+            <div className="reset_password__body">
+                <div className="change_email__form">
+                    <p>{t("reset_password_notification")}</p>
+                    <form onSubmit={handleSubmit}>
+                        <div className="account__form--textfield change_email__form--textfield">
+                            <TextField
+                                name="email"
+                                type="text"
+                                onChange={handleChange}
+                                label={t("change_email")}
+                                variant="outlined"
+                                className="customTextField"
+                                InputLabelProps={{
+                                    style: {color: '#fff'},
+                                }}
+                            />
+                            <div className="errors form__errors">
+                                {errors.email && <p className="form__error form__message">{errors.email}</p>}
+                            </div>
                         </div>
-                    </div>
-                    <button className="greenoutline--button" type="submit">
-                        {t("update")}
-                    </button>
-                </form>
+                        <div className="account__button">
+                            <button className="greenoutline--button" type="submit">
+                                {t("update")}
+                            </button>
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
     );
