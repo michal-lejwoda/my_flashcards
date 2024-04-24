@@ -10,6 +10,7 @@ import {useContext, useState} from "react";
 import {useNavigate} from "react-router-dom";
 import AuthContext from "../context/AuthContext.tsx";
 import withoutAuth from "../context/withoutAuth.tsx";
+import {TextField} from "@mui/material";
 
 const Register = () => {
     const {t} = useTranslation();
@@ -55,41 +56,82 @@ const Register = () => {
         <div className="register">
             <h1>{t('register')}</h1>
             <div className="register__container">
-                <Form onSubmit={handleSubmit}>
-                    <Form.Group className="mb-3" controlId="formBasicEmail">
-                        <Form.Label>{t('username')}</Form.Label>
-                        <Form.Control onChange={handleChange} name="username" type="text"
-                                      placeholder={t("enter_username")}/>
-                        {errors.username && <p className="text-red-400">{errors.username}</p>}
-                        {registerError && registerError.username && (
-                            <p className="text-red-400">{registerError.username}</p>
-                        )}
+                <Form className="register__form" onSubmit={handleSubmit}>
+                    <Form.Group className="mb-3" controlId="formBasicUsername">
+                        <TextField
+                            style={{borderColor: 'white'}}
+                            id="outlined-basic"
+                            variant="outlined"
+                            className="customTextField"
+                            InputLabelProps={{
+                                style: {color: '#fff'},
+                            }}
+                            label={t("username")}
+                            onChange={handleChange} name="username" type="text"
+                        />
+                        <div className="errors form__errors">
+                            {errors.username && <p className="form__error form__message">{errors.username}</p>}
+                            {registerError && registerError.username && (
+                                <p className="form__error form__message">{registerError.username}</p>
+                            )}
+                        </div>
                     </Form.Group>
                     <Form.Group className="mb-3" controlId="formBasicEmail">
-                        <Form.Label>{t('email')}</Form.Label>
-                        <Form.Control onChange={handleChange} name="email" type="email" placeholder={t("enter_email")}/>
-                        {errors.email && <p className="text-red-400">{errors.email}</p>}
-                        {registerError && registerError.email && (
-                            <p className="text-red-400">{registerError.email}</p>
-                        )}
+                        <TextField
+                            style={{borderColor: 'white'}}
+                            id="outlined-basic"
+                            variant="outlined"
+                            className="customTextField"
+                            InputLabelProps={{
+                                style: {color: '#fff'},
+                            }}
+                            label={t("email")}
+                            onChange={handleChange} name="email" type="email"/>
+                        <div className="errors form__errors">
+                            {errors.email && <p className="form__error form__message">{errors.email}</p>}
+                            {registerError && registerError.email && (
+                                <p className="form__error form__message">{registerError.email}</p>
+                            )}
+                        </div>
                     </Form.Group>
                     <Form.Group className="mb-3" controlId="formBasicPassword">
-                        <Form.Label>{t('password')}</Form.Label>
-                        <Form.Control onChange={handleChange} name="password" type="password"
-                                      placeholder={t("password")}/>
-                        {errors.password && <p className="text-red-400">{errors.password}</p>}
-                        {registerError && registerError.password && (
-                            <p className="text-red-400">{registerError.password}</p>
-                        )}
+                        <TextField
+                            style={{borderColor: 'white'}}
+                            id="outlined-basic"
+                            variant="outlined"
+                            className="customTextField"
+                            InputLabelProps={{
+                                style: {color: '#fff'},
+                            }}
+                            label={t("password")}
+                            onChange={handleChange} name="password" type="password"
+                        />
+                        <div className="errors form__errors">
+                            {errors.password && <p className="form__error form__message">{errors.password}</p>}
+                            {registerError && registerError.password && (
+                                <p className="form__error form__message">{registerError.password}</p>
+                            )}
+                        </div>
                     </Form.Group>
-                    <Form.Group className="mb-3" controlId="formBasicPassword">
-                        <Form.Label>{t('repeat_password')}</Form.Label>
-                        <Form.Control onChange={handleChange} name="repeat_password" type="password"
-                                      placeholder={t("repeat_password")}/>
-                        {errors.repeat_password && <p className="text-red-400">{errors.repeat_password}</p>}
-                        {registerError && registerError.repeat_password && (
-                            <p className="text-red-400">{registerError.repeat_password}</p>
-                        )}
+                    <Form.Group className="mb-3" controlId="formBasicRepeatPassword">
+                        <TextField
+                            style={{borderColor: 'white'}}
+                            id="outlined-basic"
+                            variant="outlined"
+                            className="customTextField"
+                            InputLabelProps={{
+                                style: {color: '#fff'},
+                            }}
+                            label={t("repeat_password")}
+                            onChange={handleChange} name="repeat_password" type="password"
+                        />
+                        <div className="errors form__errors">
+                            {errors.repeat_password &&
+                                <p className="form__error form__message">{errors.repeat_password}</p>}
+                            {registerError && registerError.repeat_password && (
+                                <p className="form__error form__message">{registerError.repeat_password}</p>
+                            )}
+                        </div>
                     </Form.Group>
                     <div className="register__submit">
                         <button className="greenoutline--button" type="submit">

@@ -50,7 +50,7 @@ const DeleteAccountModal: React.FC<DeleteAccountProps> = ({showDeleteModal, setS
                         <CloseButton onClick={() => setShowDeleteModal(false)} variant="white"/>
                     </Modal.Header>
                     <Modal.Body>
-                        <p>Jeśli chcesz usunąć konto wprowadź swoje aktualne hasło</p>
+                        <p>{t("delete_info")}</p>
                         <TextField
                             name="password"
                             type="password"

@@ -10,6 +10,7 @@ import {ErrorResponse, LoginError, LoginValues} from "../interfaces.tsx";
 import {useContext, useState} from "react";
 import AuthContext from "../context/AuthContext.tsx";
 import withoutAuth from "../context/withoutAuth.tsx";
+import {TextField} from "@mui/material";
 
 
 const Login = () => {
@@ -51,27 +52,52 @@ const Login = () => {
         <div className="login">
             <h1>{t('login')}</h1>
             <div className="login__container">
-                <Form onSubmit={handleSubmit}>
+                <Form className="login__form" onSubmit={handleSubmit}>
                     <Form.Group className="mb-3" controlId="formBasicEmail">
-                        <Form.Label>{t('username')}</Form.Label>
-                        <Form.Control onChange={handleChange} name="username" type="text"
-                                      placeholder={t("enter_username")}/>
-                        {errors.username && <p className="text-red-400">{errors.username}</p>}
-                        {loginError && loginError.username && (
-                            <p className="text-red-400">{loginError.username}</p>
-                        )}
+                        <TextField
+                            style={{borderColor: 'white'}}
+                            id="outlined-basic"
+                            variant="outlined"
+                            className="customTextField"
+                            InputLabelProps={{
+                                style: {color: '#fff'},
+                            }}
+                            label={t("username")}
+                            onChange={handleChange}
+                            name="username"
+                            type="text"
+                        />
+                        <div className="errors form__errors">
+                            {errors.username && <p className="text-red-400">{errors.username}</p>}
+                            {loginError && loginError.username && (
+                                <p className="text-red-400">{loginError.username}</p>
+                            )}
+                        </div>
                     </Form.Group>
 
                     <Form.Group className="mb-3" controlId="formBasicPassword">
-                        <Form.Label>{t('password')}</Form.Label>
-                        <Form.Control onChange={handleChange} name="password" type="password" placeholder="Password"/>
-                        {errors.password && <p className="text-red-400">{errors.password}</p>}
-                        {loginError && loginError.password && (
-                            <p className="text-red-400">{loginError.password}</p>
-                        )}
-                        {loginError && loginError.non_field_errors && (
-                            <p className="text-red-400">{loginError.non_field_errors}</p>
-                        )}
+                        <TextField
+                            style={{borderColor: 'white'}}
+                            id="outlined-basic"
+                            variant="outlined"
+                            className="customTextField"
+                            InputLabelProps={{
+                                style: {color: '#fff'},
+                            }}
+                            label={t("password")}
+                            onChange={handleChange}
+                            name="password"
+                            type="password"
+                        />
+                        <div className="errors form__errors">
+                            {errors.password && <p className="form__error form__message">{errors.password}</p>}
+                            {loginError && loginError.password && (
+                                <p className="form__error form__message">{loginError.password}</p>
+                            )}
+                            {loginError && loginError.non_field_errors && (
+                                <p className="form__error form__message">{loginError.non_field_errors}</p>
+                            )}
+                            </div>
                     </Form.Group>
                     <div className="login__submit">
                         <button className="greenoutline--button" type="submit">
