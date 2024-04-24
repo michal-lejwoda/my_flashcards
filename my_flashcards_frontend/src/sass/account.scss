@@ -1,74 +1,102 @@
-.MuiInputBase-input{
+@import '../main.scss';
+
+.MuiInputBase-input {
   color: white !important;
 }
+
 .customTextField .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline {
   border-color: white !important;
   color: white !important;
 }
-.customTextField{
+
+.customTextField {
   width: 100%;
 }
-.textFieldInput{
+
+.textFieldInput {
   color: white !important;
-  ::placeholder{
+
+  ::placeholder {
     color: white !important;
   }
 }
 
-.account{
+.account {
   min-width: 280px;
-  &__title{
+
+  &__title {
     margin-top: 0.5rem;
     margin-bottom: 1rem;
   }
-  &__body{
-    display:flex;
+
+  &__body {
+    display: flex;
     flex-direction: row;
     justify-content: center;
     align-items: flex-start;
     margin-top: 2rem;
   }
-  &__options{
+
+  &__options {
     &--button {
       padding: 0.4rem 1rem;
       font-weight: 800;
       white-space: nowrap;
       border: none;
       border-radius: 10px;
+      white-space: normal;
+      width: 140px;
+      @include breakpoint("mobilebig") {
+        width: 170px;
+      }
+    }
+
+    &--input {
+      width: 140px;
+      @include breakpoint("mobilebig") {
+        width: 170px;
+      }
     }
   }
-  &__form{
+
+  &__form {
 
     padding-left: 0.5rem;
     //min-width: 120px;
     width: 400px;
-    &--textfield{
+
+    &--textfield {
       margin-bottom: 1rem;
     }
-    &--remove{
+
+    &--remove {
       color: rgb(138, 224, 1);
       text-decoration: underline;
       cursor: pointer;
     }
-    &--reset{
+
+    &--reset {
       color: rgb(138, 224, 1);
       text-decoration: underline;
       cursor: pointer;
     }
   }
-  &__header{
-    &--title{
-      display:flex;
+
+  &__header {
+    &--title {
+      display: flex;
       justify-content: center;
     }
   }
 }
-.form{
-  &__message{
-      margin-top: 0.7rem;
-      margin-bottom: 0.7rem;
-    }
-  &__error{
+
+.form {
+  &__message {
+    margin-top: 0.7rem;
+    margin-bottom: 0.7rem;
+  }
+
+  &__error {
     color: darkred;
   }
 }
