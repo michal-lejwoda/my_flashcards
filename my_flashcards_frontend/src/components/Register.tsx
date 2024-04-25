@@ -1,5 +1,4 @@
 import {useTranslation} from "react-i18next";
-import {Form} from "react-bootstrap";
 import "../sass/register.css";
 import {useFormik} from "formik";
 import {validateRegistration} from "../validation.tsx";
@@ -10,7 +9,12 @@ import {useContext, useState} from "react";
 import {useNavigate} from "react-router-dom";
 import AuthContext from "../context/AuthContext.tsx";
 import withoutAuth from "../context/withoutAuth.tsx";
-import {TextField} from "@mui/material";
+import GreenButton from "./elements/GreenButton.tsx";
+import CenteredForm from "./elements/CenteredForm.tsx";
+import InputField from "./elements/InputField.tsx";
+import ErrorMessage from "./elements/errors/ErrorMessage.tsx";
+import BackendErrorMessage from "./elements/errors/BackendErrorMessage.tsx";
+import CenteredTitle from "./elements/CenteredTitle.tsx";
 
 const Register = () => {
     const {t} = useTranslation();
@@ -51,94 +55,72 @@ const Register = () => {
         }
     }
 
-
     return (
         <div className="register">
-            <h1>{t('register')}</h1>
+            <CenteredTitle title={t('register')}/>
             <div className="register__container">
-                <Form className="register__form" onSubmit={handleSubmit}>
-                    <Form.Group className="mb-3" controlId="formBasicUsername">
-                        <TextField
-                            style={{borderColor: 'white'}}
-                            id="outlined-basic"
-                            variant="outlined"
-                            className="customTextField"
-                            InputLabelProps={{
-                                style: {color: '#fff'},
-                            }}
+                <CenteredForm handleSubmit={handleSubmit}>
+                    <div className="account__form--textfield">
+                        <InputField
                             label={t("username")}
-                            onChange={handleChange} name="username" type="text"
+                            name="username"
+                            type="text"
+                            handleChange={handleChange}
                         />
                         <div className="errors form__errors">
-                            {errors.username && <p className="form__error form__message">{errors.username}</p>}
+                            {errors.username && <ErrorMessage message={errors.username}/>}
                             {registerError && registerError.username && (
-                                <p className="form__error form__message">{registerError.username}</p>
+                                <BackendErrorMessage message={registerError.username}/>
                             )}
                         </div>
-                    </Form.Group>
-                    <Form.Group className="mb-3" controlId="formBasicEmail">
-                        <TextField
-                            style={{borderColor: 'white'}}
-                            id="outlined-basic"
-                            variant="outlined"
-                            className="customTextField"
-                            InputLabelProps={{
-                                style: {color: '#fff'},
-                            }}
+                    </div>
+                    <div className="account__form--textfield">
+                        <InputField
                             label={t("email")}
-                            onChange={handleChange} name="email" type="email"/>
-                        <div className="errors form__errors">
-                            {errors.email && <p className="form__error form__message">{errors.email}</p>}
-                            {registerError && registerError.email && (
-                                <p className="form__error form__message">{registerError.email}</p>
-                            )}
-                        </div>
-                    </Form.Group>
-                    <Form.Group className="mb-3" controlId="formBasicPassword">
-                        <TextField
-                            style={{borderColor: 'white'}}
-                            id="outlined-basic"
-                            variant="outlined"
-                            className="customTextField"
-                            InputLabelProps={{
-                                style: {color: '#fff'},
-                            }}
-                            label={t("password")}
-                            onChange={handleChange} name="password" type="password"
+                            name="email"
+                            type="email"
+                            handleChange={handleChange}
                         />
                         <div className="errors form__errors">
-                            {errors.password && <p className="form__error form__message">{errors.password}</p>}
-                            {registerError && registerError.password && (
-                                <p className="form__error form__message">{registerError.password}</p>
+                            {errors.email && <ErrorMessage message={errors.email}/>}
+                            {registerError && registerError.email && (
+                                <BackendErrorMessage message={registerError.email}/>
                             )}
                         </div>
-                    </Form.Group>
-                    <Form.Group className="mb-3" controlId="formBasicRepeatPassword">
-                        <TextField
-                            style={{borderColor: 'white'}}
-                            id="outlined-basic"
-                            variant="outlined"
-                            className="customTextField"
-                            InputLabelProps={{
-                                style: {color: '#fff'},
-                            }}
+                    </div>
+                    <div className="account__form--textfield">
+                        <InputField
+                            label={t("password")}
+                            name="password"
+                            type="password"
+                            handleChange={handleChange}
+                        />
+                        <div className="errors form__errors">
+                            {errors.password && <ErrorMessage message={errors.password}/>}
+                            {registerError && registerError.password && (
+                                <BackendErrorMessage message={registerError.password}/>
+                            )}
+                        </div>
+                    </div>
+                    <div className="account__form--textfield">
+                        <InputField
                             label={t("repeat_password")}
-                            onChange={handleChange} name="repeat_password" type="password"
+                            name="repeat_password"
+                            type="password"
+                            handleChange={handleChange}
                         />
                         <div className="errors form__errors">
                             {errors.repeat_password &&
-                                <p className="form__error form__message">{errors.repeat_password}</p>}
+                                <ErrorMessage message={errors.repeat_password}/>}
                             {registerError && registerError.repeat_password && (
-                                <p className="form__error form__message">{registerError.repeat_password}</p>
+                                <BackendErrorMessage message={registerError.repeat_password}/>
                             )}
                         </div>
-                    </Form.Group>
-                    <div className="register__submit">
-                        <button className="greenoutline--button" type="submit">
-                            {t("submit")}
-                        </button>
                     </div>
-                </Form>
+                    <div className="account__button">
+                        <GreenButton message={t("submit")}/>
+                    </div>
+                </CenteredForm>
             </div>
         </div>
     );

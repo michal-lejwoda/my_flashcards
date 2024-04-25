@@ -10,6 +10,8 @@ import SuccessMessage from "../elements/errors/SuccessMessage.tsx";
 import ErrorMessage from "../elements/errors/ErrorMessage.tsx";
 import BackendErrorMessage from "../elements/errors/BackendErrorMessage.tsx";
 import InputField from "../elements/InputField.tsx";
+import CenteredForm from "../elements/CenteredForm.tsx";
+import CenteredTitle from "../elements/CenteredTitle.tsx";
 
 const ChangeEmail = () => {
     const {t} = useTranslation();
@@ -42,9 +44,9 @@ const ChangeEmail = () => {
     }
     return (
         <div className="change_email">
-            <h2 className="account__title">{t("change_email")}</h2>
+            <CenteredTitle title={t("change_email")} />
             <div className="change_email__form">
-                <form onSubmit={handleSubmit}>
+                <CenteredForm handleSubmit={handleSubmit}>
                     <div className="account__form--textfield change_email__form--textfield">
                         <InputField
                             label={t("current_password")}
@@ -76,7 +78,7 @@ const ChangeEmail = () => {
                     <div className="account__button">
                         <GreenButton message={t("update")}/>
                     </div>
-                </form>
+                </CenteredForm>
             </div>
         </div>
     );

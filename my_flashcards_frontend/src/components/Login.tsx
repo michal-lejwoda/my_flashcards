@@ -1,5 +1,4 @@
 import "../sass/login.css"
-import {Form} from "react-bootstrap";
 import {useTranslation} from "react-i18next";
 import {postLogin} from "../api.tsx";
 import {useCookies} from "react-cookie";
@@ -10,7 +9,12 @@ import {ErrorResponse, LoginError, LoginValues} from "../interfaces.tsx";
 import {useContext, useState} from "react";
 import AuthContext from "../context/AuthContext.tsx";
 import withoutAuth from "../context/withoutAuth.tsx";
-import {TextField} from "@mui/material";
+import CenteredTitle from "./elements/CenteredTitle.tsx";
+import InputField from "./elements/InputField.tsx";
+import CenteredForm from "./elements/CenteredForm.tsx";
+import ErrorMessage from "./elements/errors/ErrorMessage.tsx";
+import BackendErrorMessage from "./elements/errors/BackendErrorMessage.tsx";
+import GreenButton from "./elements/GreenButton.tsx";
 
 
 const Login = () => {
@@ -50,61 +54,44 @@ const Login = () => {
     });
     return (
         <div className="login">
-            <h1>{t('login')}</h1>
+            <CenteredTitle title={t('login')}/>
             <div className="login__container">
-                <Form className="login__form" onSubmit={handleSubmit}>
-                    <Form.Group className="mb-3" controlId="formBasicEmail">
-                        <TextField
-                            style={{borderColor: 'white'}}
-                            id="outlined-basic"
-                            variant="outlined"
-                            className="customTextField"
-                            InputLabelProps={{
-                                style: {color: '#fff'},
-                            }}
+                <CenteredForm handleSubmit={handleSubmit}>
+                    <div className="account__form--textfield">
+                        <InputField
                             label={t("username")}
-                            onChange={handleChange}
                             name="username"
                             type="text"
+                            handleChange={handleChange}
                         />
                         <div className="errors form__errors">
-                            {errors.username && <p className="text-red-400">{errors.username}</p>}
+                            {errors.username && <ErrorMessage message={errors.username}/>}
                             {loginError && loginError.username && (
-                                <p className="text-red-400">{loginError.username}</p>
+                                <BackendErrorMessage message={loginError.username}/>
                             )}
                         </div>
-                    </Form.Group>
-
-                    <Form.Group className="mb-3" controlId="formBasicPassword">
-                        <TextField
-                            style={{borderColor: 'white'}}
-                            id="outlined-basic"
-                            variant="outlined"
-                            className="customTextField"
-                            InputLabelProps={{
-                                style: {color: '#fff'},
-                            }}
+                    </div>
+                    <div className="account__form--textfield">
+                        <InputField
                             label={t("password")}
-                            onChange={handleChange}
                             name="password"
                             type="password"
+                            handleChange={handleChange}
                         />
                         <div className="errors form__errors">
-                            {errors.password && <p className="form__error form__message">{errors.password}</p>}
+                            {errors.password && <ErrorMessage message={errors.password}/>}
                             {loginError && loginError.password && (
-                                <p className="form__error form__message">{loginError.password}</p>
+                                <BackendErrorMessage message={loginError.password}/>
                             )}
                             {loginError && loginError.non_field_errors && (
-                                <p className="form__error form__message">{loginError.non_field_errors}</p>
+                                <BackendErrorMessage message={loginError.non_field_errors}/>
                             )}
-                            </div>
-                    </Form.Group>
-                    <div className="login__submit">
-                        <button className="greenoutline--button" type="submit">
-                            {t("submit")}
-                        </button>
+                        </div>
                     </div>
-                </Form>
+                    <div className="account__button">
+                        <GreenButton message={t("submit")}/>
+                    </div>
+                </CenteredForm>
             </div>
         </div>
     );

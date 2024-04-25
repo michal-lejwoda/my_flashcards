@@ -12,6 +12,7 @@ import ErrorMessage from "../elements/errors/ErrorMessage.tsx";
 import BackendErrorMessage from "../elements/errors/BackendErrorMessage.tsx";
 import SuccessMessage from "../elements/errors/SuccessMessage.tsx";
 import GreenButton from "../elements/GreenButton.tsx";
+import CenteredTitle from "../elements/CenteredTitle.tsx";
 
 const ChangePassword: React.FC<ChangePasswordProps> = ({setShowDeleteModal}) => {
     const {t} = useTranslation();
@@ -45,7 +46,7 @@ const ChangePassword: React.FC<ChangePasswordProps> = ({setShowDeleteModal}) => 
 
     return (
         <div className="change_password">
-            <h2 className="account__title centered__title">{t("change_password")}</h2>
+            <CenteredTitle title={t("change_password")} />
             <CenteredForm handleSubmit={handleSubmit}>
                 <div className="account__form--textfield change_password__form--textfield">
                     <InputField

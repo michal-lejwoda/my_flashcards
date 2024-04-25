@@ -1,14 +1,11 @@
 @import '../main.scss';
+
 .register {
   display: flex;
   flex-direction: column;
   justify-content: center;
   text-align: center;
-  &__form{
-    @include breakpoint("mobilebig") {
-        width: 500px;
-      }
-  }
+  align-items: center;
 
   &__submit {
     display: flex;
@@ -16,12 +13,11 @@
   }
 
   &__container {
-    margin-top: 2rem;
-    text-align: start;
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: flex-start;
-    margin-top: 2rem;
+    @include breakpoint("mobilebig") {
+      width: 500px;
+    }
+    @include breakpoint("tablet") {
+      width: 600px;
+    }
   }
 }

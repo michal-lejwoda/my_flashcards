@@ -283,3 +283,7 @@ export interface BackendMessageProps{
 export interface GreenButtonProps{
     message: string
 }
+
+export interface CenteredTitleProps{
+    title: string
+}
