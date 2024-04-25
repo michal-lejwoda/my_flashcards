@@ -274,5 +274,12 @@ export interface InputFieldProps {
 }
 
 export interface MessageProps{
+    message: string;
+}
+
+export interface BackendMessageProps{
+    message: string[];
+}
+export interface GreenButtonProps{
     message: string
 }

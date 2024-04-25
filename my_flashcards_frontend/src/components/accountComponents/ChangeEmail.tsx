@@ -1,11 +1,15 @@
 import {useTranslation} from "react-i18next";
-import {TextField} from "@mui/material";
 import {useFormik} from "formik";
 import {changeEmailValidation} from "../../validation.tsx";
 import {changeEmail} from "../../api.tsx";
 import {ChangeEmailError, ErrorResponse} from "../../interfaces.tsx";
 import {useContext, useState} from "react";
 import AuthContext from "../../context/AuthContext.tsx";
+import GreenButton from "../elements/GreenButton.tsx";
+import SuccessMessage from "../elements/errors/SuccessMessage.tsx";
+import ErrorMessage from "../elements/errors/ErrorMessage.tsx";
+import BackendErrorMessage from "../elements/errors/BackendErrorMessage.tsx";
+import InputField from "../elements/InputField.tsx";
 
 const ChangeEmail = () => {
     const {t} = useTranslation();
@@ -41,50 +45,36 @@ const ChangeEmail = () => {
             <h2 className="account__title">{t("change_email")}</h2>
             <div className="change_email__form">
                 <form onSubmit={handleSubmit}>
-
                     <div className="account__form--textfield change_email__form--textfield">
-                        <TextField
+                        <InputField
+                            label={t("current_password")}
                             name="email"
                             type="email"
-                            onChange={handleChange}
-                            label={t("change_email")}
-                            variant="outlined"
-                            className="customTextField"
-                            InputLabelProps={{
-                                style: {color: '#fff'},
-                            }}
+                            handleChange={handleChange}
                         />
                         <div className="errors form__errors">
-                            {errors.email && <p className="form__error form__message">{errors.email}</p>}
+                            {errors.email && <ErrorMessage message={errors.email}/>}
                             {changeEmailError && changeEmailError.email &&
-                                <p className="form__error form__message">{changeEmailError.email}</p>}
+                                <BackendErrorMessage message={changeEmailError.email}/>}
                         </div>
                     </div>
 
                     <div className="account__form--textfield change_email__form--textfield">
-                        <TextField
-                            name="password"
-                            onChange={handleChange}
-                            style={{borderColor: 'white'}}
-                            id="outlined-basic"
-                            type="password"
+                        <InputField
                             label={t("current_password")}
-                            variant="outlined"
-                            className="customTextField"
-                            InputLabelProps={{
-                                style: {color: '#fff'},
-                            }}/>
+                            name="password"
+                            type="password"
+                            handleChange={handleChange}
+                        />
                         <div className="errors form__errors">
-                            {errors.password && <p className="form__error form__message">{errors.password}</p>}
+                            {errors.password && <ErrorMessage message={errors.password}/>}
                             {changeEmailError && changeEmailError.password &&
-                                <p className="form__error form__message">{changeEmailError.password}</p>}
-                            {emailErrorSuccess && <p className="form__success form__message">{emailErrorSuccess}</p>}
+                                <BackendErrorMessage message={changeEmailError.password}/>}
+                            {emailErrorSuccess && <SuccessMessage message={emailErrorSuccess}/>}
                         </div>
                     </div>
                     <div className="account__button">
-                        <button className="greenoutline--button" type="submit">
-                            {t("update")}
-                        </button>
+                        <GreenButton message={t("update")}/>
                     </div>
                 </form>
             </div>

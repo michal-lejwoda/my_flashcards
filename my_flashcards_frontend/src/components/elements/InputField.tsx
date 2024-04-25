@@ -4,7 +4,7 @@ import {InputFieldProps} from "../../interfaces.tsx";
 
 const InputField: React.FC<InputFieldProps> = ({handleChange, label, type, name}) => {
     return (
-        <div className="account__form--textfield change_password__form--textfield">
+        <>
             <TextField
                 name={name}
                 type={type}
@@ -17,7 +17,7 @@ const InputField: React.FC<InputFieldProps> = ({handleChange, label, type, name}
                 InputLabelProps={{
                     style: {color: '#fff'},
                 }}/>
-        </div>
+        </>
     );
 };
 

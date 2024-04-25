@@ -1,5 +1,4 @@
 import {useTranslation} from "react-i18next";
-import {TextField} from "@mui/material";
 import {NavLink} from "react-router-dom";
 import {useContext, useState} from "react";
 import AuthContext from "../../context/AuthContext.tsx";
@@ -8,6 +7,11 @@ import {useFormik} from "formik";
 import {changePasswordValidation} from "../../validation.tsx";
 import {changePassword} from "../../api.tsx";
 import CenteredForm from "../elements/CenteredForm.tsx";
+import InputField from "../elements/InputField.tsx";
+import ErrorMessage from "../elements/errors/ErrorMessage.tsx";
+import BackendErrorMessage from "../elements/errors/BackendErrorMessage.tsx";
+import SuccessMessage from "../elements/errors/SuccessMessage.tsx";
+import GreenButton from "../elements/GreenButton.tsx";
 
 const ChangePassword: React.FC<ChangePasswordProps> = ({setShowDeleteModal}) => {
     const {t} = useTranslation();
@@ -43,57 +47,45 @@ const ChangePassword: React.FC<ChangePasswordProps> = ({setShowDeleteModal}) => 
         <div className="change_password">
             <h2 className="account__title centered__title">{t("change_password")}</h2>
             <CenteredForm handleSubmit={handleSubmit}>
-                <div className="change_password__form">
-                    <div className="account__form--textfield change_password__form--textfield">
-                        <TextField
-                            name="old_password"
-                            type="password"
-                            onChange={handleChange}
-                            style={{borderColor: 'white'}}
-                            id="outlined-basic"
-                            label={t("current_password")}
-                            variant="outlined"
-                            className="customTextField"
-                            InputLabelProps={{
-                                style: {color: '#fff'},
-                            }}/>
-                        <div className="errors form__errors">
-                            {errors.old_password && <p className="form__error form__message">{errors.old_password}</p>}
-                            {changePasswordError && changePasswordError.old_password &&
-                                <p className="form__error form__message">{changePasswordError.old_password}</p>}
-                        </div>
-                    </div>
-                    <div className="account__form--textfield change_password__form--textfield">
-                        <TextField
-                            name="new_password"
-                            type="password"
-                            onChange={handleChange}
-                            style={{borderColor: 'white'}}
-                            id="outlined-basic"
-                            label={t("new_password")}
-                            variant="outlined"
-                            className="customTextField"
-                            InputLabelProps={{
-                                style: {color: '#fff'},
-                            }}/>
-                        <div className="errors form__errors">
-                            {errors.new_password && <p className="form__error form__message">{errors.new_password}</p>}
-                            {changePasswordError && changePasswordError.new_password &&
-                                <p className="form__error form__message">{changePasswordError.new_password}</p>}
-                            {passwordErrorSuccess &&
-                                <p className="form__success form__message">{passwordErrorSuccess}</p>}
-                        </div>
-                    </div>
-                    <p>{t("account_not_sure")}<NavLink className="account__form--reset"
-                                                       to="/reset-password"> {t("reset_it")}</NavLink></p>
-                    <p><span className="account__form--remove"
-                             onClick={() => setShowDeleteModal(true)}>{t("remove_account")}</span></p>
-                    <div className="account__button">
-                        <button className="greenoutline--button" type="submit">
-                            {t("update")}
-                        </button>
+                <div className="account__form--textfield change_password__form--textfield">
+                    <InputField
+                        label={t("current_password")}
+                        name="old_password"
+                        type="password"
+                        handleChange={handleChange}
+                    />
+                    <div className="errors form__errors">
+                        {errors.old_password && <ErrorMessage message={errors.old_password}/>}
+                        {changePasswordError && changePasswordError.old_password &&
+                            <BackendErrorMessage message={changePasswordError.old_password}/>}
                     </div>
                 </div>
+                <div className="account__form--textfield change_password__form--textfield">
+                    <InputField
+                        label={t("new_password")}
+                        name="new_password"
+                        type="password"
+                        handleChange={handleChange}
+                    />
+                    <div className="errors form__errors">
+                        <div className="errors form__errors">
+                            {errors.new_password && <ErrorMessage message={errors.new_password}/>}
+                            {changePasswordError && changePasswordError.new_password &&
+                                <BackendErrorMessage message={changePasswordError.new_password}/>}
+                            {passwordErrorSuccess &&
+                                <SuccessMessage message={passwordErrorSuccess}/>}
+                        </div>
+                    </div>
+                </div>
+                <p>{t("account_not_sure")}<NavLink className="account__form--reset"
+                                                   to="/reset-password"> {t("reset_it")}</NavLink></p>
+                <p>
+                    <span className="account__form--remove"
+                          onClick={() => setShowDeleteModal(true)}>{t("remove_account")}</span></p>
+                <div className="account__button">
+                    <GreenButton message={t("update")}/>
+                </div>
+
             </CenteredForm>
         </div>
     );
