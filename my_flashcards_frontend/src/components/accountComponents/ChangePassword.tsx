@@ -7,6 +7,7 @@ import {ChangePasswordError, ChangePasswordProps, ErrorResponse} from "../../int
 import {useFormik} from "formik";
 import {changePasswordValidation} from "../../validation.tsx";
 import {changePassword} from "../../api.tsx";
+import CenteredForm from "../elements/CenteredForm.tsx";
 
 const ChangePassword: React.FC<ChangePasswordProps> = ({setShowDeleteModal}) => {
     const {t} = useTranslation();
@@ -40,8 +41,8 @@ const ChangePassword: React.FC<ChangePasswordProps> = ({setShowDeleteModal}) => 
 
     return (
         <div className="change_password">
-            <h2 className="account__title">{t("change_password")}</h2>
-            <form onSubmit={handleSubmit}>
+            <h2 className="account__title centered__title">{t("change_password")}</h2>
+            <CenteredForm handleSubmit={handleSubmit}>
                 <div className="change_password__form">
                     <div className="account__form--textfield change_password__form--textfield">
                         <TextField
@@ -93,7 +94,7 @@ const ChangePassword: React.FC<ChangePasswordProps> = ({setShowDeleteModal}) => 
                         </button>
                     </div>
                 </div>
-            </form>
+            </CenteredForm>
         </div>
     );
 };
