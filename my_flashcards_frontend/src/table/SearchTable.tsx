@@ -7,9 +7,14 @@ import {
     getPaginationRowModel,
     useReactTable
 } from "@tanstack/react-table";
-import {handleGoToUrl} from "../globalFunctions.tsx";
 import React, {useState} from "react";
 import {useTranslation} from "react-i18next";
+import RemoveButton from "../components/elements/RemoveButton.tsx";
+import EditButton from "../components/elements/EditButton.tsx";
+import Pagination from "../components/elements/pagination/Pagination.tsx";
+import PaginationButton from "../components/elements/pagination/PaginationButton.tsx";
+import PaginationSelect from "../components/elements/pagination/PaginationSelect.tsx";
+import PaginationNumber from "../components/elements/pagination/PaginationNumber.tsx";
 
 const columnHelper = createColumnHelper<SearchWordsTable>()
 const SearchTable: React.FC<SearchTableProps> = ({
@@ -30,23 +35,22 @@ const SearchTable: React.FC<SearchTableProps> = ({
     const columns = [
         columnHelper.accessor('front_side', {
             header: () => <span>{t("front_page")}</span>,
+            size: 400,
             cell: info => info.getValue(),
         }),
         columnHelper.accessor('back_side', {
             header: () => <span>{t("reverse_page")}</span>,
-
+            size: 400,
             cell: info => info.getValue()
         }),
 
         columnHelper.display({
             id: "edit",
             header: t("edit"),
-            size: 1,
             enableResizing: false,
             cell: (props) => {
-                return (<button onClick={() => handleOpenEditModal(props.row.original.id)}>{t("edit")}</button>)
+                return (<EditButton message={t("edit")} id={props.row.original.id} handleFunc={handleOpenEditModal}/>)
             },
-            maxSize:50
 
 
         }),
@@ -55,10 +59,9 @@ const SearchTable: React.FC<SearchTableProps> = ({
             header: t("remove"),
             enableResizing: false,
             cell: (props) => {
-                return (<button onClick={() => handleDeleteWord(props.row.original.id)}>{t("remove")}</button>)
+                return (<RemoveButton message={t("remove")} id={props.row.original.id} handleFunc={handleDeleteWord}/>)
             },
             size: 1,
-            maxSize:50
         })
 
     ]
@@ -73,8 +76,6 @@ const SearchTable: React.FC<SearchTableProps> = ({
             console.log(error)
         }
     }
-    console.log("data")
-    console.log(data)
     const handleChangeDataBasedOnPageSize = (pg_size: string) => {
         setPageSize(Number(pg_size))
         handleSearchTable(search)
@@ -92,8 +93,6 @@ const SearchTable: React.FC<SearchTableProps> = ({
     })
     return (
         <div className="search_table">
-            {/*<h1 className="title">{t("decks")}</h1>*/}
-
             <table className="search_table__table">
                 <thead>
                 {getHeaderGroups().map(headerGroup => (
@@ -114,44 +113,43 @@ const SearchTable: React.FC<SearchTableProps> = ({
                 <tbody>
                 {getRowModel().rows.map(row => (
                     <tr key={row.id}>
-                        {row.getVisibleCells().map(cell => (
-                            <td style={{
-                                width: cell.column.getSize(),
-                            }} key={cell.id}>
-                                {/*{cell.getContext()}*/}
-                                {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                            </td>
-                        ))}
+                        {row.getVisibleCells().map(cell => {
+                            console.log(cell);
+                            return (
+                                <td
+                                    key={cell.id}
+                                    style={{
+                                        width: cell.column.getSize(),
+                                    }}
+                                >
+                                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                                </td>
+                            );
+                        })}
                     </tr>
                 ))}
                 </tbody>
             </table>
-            {data.links.first_page_link &&
-                <button onClick={() => handleGoToUrl(data.links.first_page_link, token, setData)}>{'<<'}</button>
-            }
-            {data.links.previous &&
-                <button onClick={() => handleGoToUrl(data.links.previous, token, setData)}>{'<'}</button>
-            }
-            {data.current_page} {t('of')} {data.total_pages}
-            {data.links.next &&
-                <button onClick={() => handleGoToUrl(data.links.next, token, setData)}>{'>'}</button>
-            }
+            <Pagination>
+                {data.links.first_page_link &&
+                    <PaginationButton link={data.links.first_page_link} token={token} message={'<<'} setData={setData}/>
+                }
+                {data.links.previous &&
+                    <PaginationButton link={data.links.previous} token={token} message={'<'} setData={setData}/>
+                }
+                <PaginationNumber current_page={data.current_page} total_pages={data.total_pages}/>
+                {data.links.next &&
+                    <PaginationButton link={data.links.next} token={token} message={'>'} setData={setData}/>
+                }
 
-            {data.links.last_page_link &&
-                <button onClick={() => handleGoToUrl(data.links.last_page_link, token, setData)}>{'>>'}</button>
-            }
-            <select
-                value={pageSize}
-                onChange={e => {
-                    handleChangeDataBasedOnPageSize(e.target.value)
-                }}
-            >
-                {[10, 20, 30, 40, 50].map(pageSize => (
-                    <option key={pageSize} value={pageSize}>
-                        {pageSize}
-                    </option>
-                ))}
-            </select>
+                {data.links.last_page_link &&
+                    <PaginationButton link={data.links.last_page_link} token={token} message={'>>'} setData={setData}/>
+                }
+                <PaginationSelect
+                    pageSize={pageSize}
+                    handleChange={handleChangeDataBasedOnPageSize}
+                />
+            </Pagination>
         </div>
 
     );

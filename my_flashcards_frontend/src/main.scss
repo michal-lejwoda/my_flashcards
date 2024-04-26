@@ -18,6 +18,47 @@
 .modal-content{
   background-color: #1c1c1a !important;
 }
-.centered__form{
 
+.dangeroutline--button{
+  margin: 1rem;
+  padding: 0.5rem;
+  border: 2px solid white;
+  font-weight: 700;
+  background-color: darkred;
+  cursor: pointer;
+}
+.editoutline--button{
+  margin: 1rem;
+  padding: 0.5rem;
+  border: 2px solid white;
+  font-weight: 700;
+  background-color: darkgreen;
+  cursor: pointer;
+}
+
+.pagination{
+  margin-top: 1rem;
+  text-align: center;
+  width:300px;
+  display: flex;
+  justify-content: center;
+  &--number{
+    display:flex;
+    justify-content: center;
+    align-items: center;
+    margin-left:0.4rem;
+    margin-right:0.4rem;
+
+  }
+  &--select{
+    background-color: transparent;
+    margin-left: 1rem;
+  }
+  &--button{
+    padding: 0.4rem;
+    border: 1px solid white;
+    background-color: transparent;
+    margin-right:0.3rem;
+    cursor: pointer;
+  }
 }

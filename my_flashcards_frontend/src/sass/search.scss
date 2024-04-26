@@ -20,8 +20,11 @@
 }
 
 .search_table {
-  width: 100%;
-  margin-top:2rem;
+  margin-top: 2rem;
+  display: flex;
+  flex-direction: column;
+  align-content: center;
+  align-items: center;
 
   &__table {
     //width: 100%;

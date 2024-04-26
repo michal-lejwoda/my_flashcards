@@ -262,6 +262,9 @@ export interface CenteredFormProps {
     handleSubmit: (e?: (FormEvent<HTMLFormElement> | undefined)) => void
     children: ReactNode
 }
+export interface PaginationProps{
+    children: ReactNode
+}
 
 export interface InputFieldProps {
     label: string;
@@ -284,6 +287,13 @@ export interface GreenButtonProps{
     message: string
 }
 
+export interface RemoveButtonProps{
+    message: string
+    id: number
+    handleFunc: (id: number) => void
+
+}
+
 export interface CenteredTitleProps{
     title: string
 }
@@ -296,4 +306,21 @@ export interface MainSearchFieldProps{
         (e: ChangeEvent<HTMLInputElement>): void;
     }
 
+}
+
+export interface PaginationButtonProps{
+    link: string | null;
+    token: string | null;
+    message: string;
+    setData: React.Dispatch<React.SetStateAction<SearchWordsResponseTable | null>>;
+}
+
+export interface PaginationSelectProps{
+    pageSize: number;
+    handleChange: {(pg_size: string): void};
+}
+
+export interface PaginationNumberProps{
+    current_page: number,
+    total_pages: number
 }
