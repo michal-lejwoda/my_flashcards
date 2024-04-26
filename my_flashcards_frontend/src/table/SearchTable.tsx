@@ -1,13 +1,7 @@
-import {ErrorResponse, SearchTableProps, SearchWordsTable} from "../interfaces.tsx";
-import {deleteWord, getDecks} from "../api.tsx";
-import {
-    createColumnHelper,
-    flexRender,
-    getCoreRowModel,
-    getPaginationRowModel,
-    useReactTable
-} from "@tanstack/react-table";
-import React, {useState} from "react";
+import {SearchTableProps, SearchWordsTable} from "../interfaces.tsx";
+import {deleteWord} from "../api.tsx";
+import {createColumnHelper, flexRender, getCoreRowModel, useReactTable} from "@tanstack/react-table";
+import React from "react";
 import {useTranslation} from "react-i18next";
 import RemoveButton from "../components/elements/RemoveButton.tsx";
 import EditButton from "../components/elements/EditButton.tsx";
@@ -26,8 +20,8 @@ const SearchTable: React.FC<SearchTableProps> = ({
                                                      handleOpenEditModal,
                                                      handleSearchWithDeck
                                                  }) => {
-    const [search,] = useState("")
     const {t} = useTranslation();
+
     const handleDeleteWord = async (id: number) => {
         await deleteWord(id, token)
         await handleSearchWithDeck()
@@ -65,20 +59,8 @@ const SearchTable: React.FC<SearchTableProps> = ({
         })
 
     ]
-    const handleSearchTable = async (search: string | null) => {
-        try {
-            const get_decks = await getDecks(token, search, pageSize)
-            setData(get_decks)
-        } catch (err: unknown) {
-            // #TODO Back HEre
-            const error = err as ErrorResponse
-            console.log("error")
-            console.log(error)
-        }
-    }
     const handleChangeDataBasedOnPageSize = (pg_size: string) => {
         setPageSize(Number(pg_size))
-        handleSearchTable(search)
     }
 
 
@@ -89,7 +71,6 @@ const SearchTable: React.FC<SearchTableProps> = ({
         data: data.results,
         columns: columns,
         getCoreRowModel: getCoreRowModel(),
-        getPaginationRowModel: getPaginationRowModel(),
     })
     return (
         <div className="search_table">
@@ -114,7 +95,6 @@ const SearchTable: React.FC<SearchTableProps> = ({
                 {getRowModel().rows.map(row => (
                     <tr key={row.id}>
                         {row.getVisibleCells().map(cell => {
-                            console.log(cell);
                             return (
                                 <td
                                     key={cell.id}

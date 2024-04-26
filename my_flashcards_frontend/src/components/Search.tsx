@@ -26,7 +26,7 @@ const Search = () => {
 
     const handleSearchWithDeck = async () => {
         try {
-            const response = await searchWordWithDeck(searchWord, token)
+            const response = await searchWordWithDeck(searchWord, token, pageSize)
             setData(response)
         } catch (err: unknown) {
             const error = err as ErrorResponse
@@ -36,7 +36,7 @@ const Search = () => {
     }
     useEffect(() => {
         handleSearchWithDeck()
-    }, [searchWord])
+    }, [searchWord, pageSize])
 
     return (
         <div className="search">
@@ -52,7 +52,8 @@ const Search = () => {
             <div className="search__body">
                 {data && data.results &&
                     <SearchTable data={data} token={token}
-                                 setData={setData} pageSize={pageSize}
+                                 setData={setData}
+                                 pageSize={pageSize}
                                  setPageSize={setPageSize}
                                  handleOpenEditModal={handleOpenEditModal}
                                  handleSearchWithDeck={handleSearchWithDeck}

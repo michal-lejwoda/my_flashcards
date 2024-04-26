@@ -80,9 +80,9 @@ export async function getDeckWords(token: string | null, deck_id: number, search
     return response.data
 }
 
-export async function searchWordWithDeck(searchWord: string, token: string| null) {
+export async function searchWordWithDeck(searchWord: string, token: string| null, page_size: number) {
     const currentLanguage = i18n.language;
-    const response = await instance.get(`/api/word/find_word_in_decks/?search=${searchWord}`, {
+    const response = await instance.get(`/api/word/find_word_in_decks/?search=${searchWord}&page_size=${page_size}`, {
         headers: {
             'Accept-Language': currentLanguage,
             'Authorization': `Token ${token}`

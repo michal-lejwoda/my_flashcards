@@ -20,9 +20,11 @@ from my_flashcards.flashcards.tasks import get_words_from_file
 class CustomPagination(pagination.PageNumberPagination):
     page_size = 10
     page_size_query_param = 'page_size'
-    max_page_size = 100
+    max_page_size = 50
 
     def __init__(self, page_size_query_param=None, *args, **kwargs):
+        if 'page_size' in kwargs:
+            self.page_size = kwargs.pop('page_size')
         if page_size_query_param:
             self.page_size_query_param = page_size_query_param
         super().__init__(*args, **kwargs)
@@ -48,11 +50,6 @@ class CustomPagination(pagination.PageNumberPagination):
 
         next_link = self.get_next_link()
         previous_link = self.get_previous_link()
-
-        # if next_link:
-        #     next_link = f"{next_link}&page_size={self.page_size}"
-        # if previous_link:
-        #     previous_link = f"{previous_link}&page_size={self.page_size}"
         return Response(
             {
                 'links': {
@@ -224,7 +221,7 @@ class WordViewSet(ListModelMixin, DestroyModelMixin, RetrieveModelMixin, UpdateM
 
     @action(detail=False, methods=['GET'], permission_classes=[IsAuthenticated])
     def find_word_in_decks(self, request):
-        paginator = CustomPagination(request)
+        paginator = CustomPagination(request, page_size=request.query_params.get('page_size'))
         search_query = self.request.query_params.get('search', None)
         queryset = Word.objects.filter(Q(front_side__icontains=search_query) | Q(back_side__icontains=search_query), user=self.request.user)
         paginated_queryset = paginator.paginate_queryset(queryset, request)
