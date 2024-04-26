@@ -275,6 +275,14 @@ export interface InputFieldProps {
         <T_1 = string | React.ChangeEvent<unknown>>(field: T_1): T_1 extends React.ChangeEvent<unknown> ? void : (e: string | React.ChangeEvent<unknown>) => void;
     };
 }
+export interface InputFieldWithoutFormikProps{
+    label: string;
+    type: string;
+    name: string;
+    value: string;
+    handleChange: (event: React.ChangeEvent<HTMLInputElement>) => void
+
+}
 
 export interface MessageProps{
     message: string;
@@ -284,6 +292,7 @@ export interface BackendMessageProps{
     message: string[];
 }
 export interface GreenButtonProps{
+    onClick?: () => void;
     message: string
 }
 

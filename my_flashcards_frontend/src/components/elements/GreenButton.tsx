@@ -1,8 +1,8 @@
 import {GreenButtonProps} from "../../interfaces.tsx";
 
-const GreenButton: React.FC<GreenButtonProps> = ({message}) => {
+const GreenButton: React.FC<GreenButtonProps> = ({message, onClick}) => {
     return (
-        <button className="greenoutline--button" type="submit">
+        <button onClick={onClick && (() => onClick())} className="greenoutline--button" type="submit">
             {message}
         </button>
     );
