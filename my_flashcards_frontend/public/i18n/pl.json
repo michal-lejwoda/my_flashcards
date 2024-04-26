@@ -62,5 +62,8 @@
   "delete_account": "Usuń konto",
   "account_deleted": "Konto zostało usunięte",
   "delete": "USUŃ",
-  "delete_info": "Jeśli chcesz usunąć konto wprowadź swoje aktualne hasło"
+  "delete_info": "Jeśli chcesz usunąć konto wprowadź swoje aktualne hasło",
+  "search_words": "Szukaj słów",
+  "edit": "Edytuj",
+  "remove": "Usuń"
 }

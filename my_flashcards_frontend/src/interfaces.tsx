@@ -1,5 +1,5 @@
 import * as React from "react";
-import {Dispatch, FormEvent, ReactNode, SetStateAction} from "react";
+import {ChangeEvent, Dispatch, FormEvent, ReactNode, SetStateAction} from "react";
 
 export interface Language {
     code: string;
@@ -286,4 +286,14 @@ export interface GreenButtonProps{
 
 export interface CenteredTitleProps{
     title: string
+}
+
+export interface MainSearchFieldProps{
+    label: string;
+    type: string;
+    name: string;
+    onChange: {
+        (e: ChangeEvent<HTMLInputElement>): void;
+    }
+
 }

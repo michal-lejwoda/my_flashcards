@@ -30,54 +30,38 @@ const SearchTable: React.FC<SearchTableProps> = ({
     const columns = [
         columnHelper.accessor('front_side', {
             header: () => <span>{t("front_page")}</span>,
-            cell: info => info.getValue()
+            cell: info => info.getValue(),
         }),
         columnHelper.accessor('back_side', {
             header: () => <span>{t("reverse_page")}</span>,
+
             cell: info => info.getValue()
         }),
-        //TODO Back here after fix
-        // columnHelper.display({
-        //     id: 'numbers',
-        //     header: t("words"),
-        //     cell: (props) => {
-        //         return (<span>
-        //         <span className="words__learn">{props.row.original.learn}</span> -
-        //         <span className="words__correct">{props.row.original.correct}</span> -
-        //         <span className="words__wrong">{props.row.original.wrong} </span>
-        //          | <span className="words__all">{props.row.original.all}</span>
-        //     </span>)
-        //     },
-        // }),
-        columnHelper.display({
-            id: "actions",
-            header: t("actions"),
-            cell: (props) => {
-                console.log(props.row.original.deck_words)
-                return (<button>Action</button>)
-            }
-        }),
+
         columnHelper.display({
             id: "edit",
             header: t("edit"),
+            size: 1,
+            enableResizing: false,
             cell: (props) => {
-                console.log(props.row.original.deck_words)
-                return (<button onClick={() => handleOpenEditModal(props.row.original.id)}>edit</button>)
-            }
+                return (<button onClick={() => handleOpenEditModal(props.row.original.id)}>{t("edit")}</button>)
+            },
+            maxSize:50
+
+
         }),
         columnHelper.display({
-            id: "remove",
+            id: "delete",
             header: t("remove"),
+            enableResizing: false,
             cell: (props) => {
-                return (<button onClick={() => handleDeleteWord(props.row.original.id)}>Remove</button>)
-            }
+                return (<button onClick={() => handleDeleteWord(props.row.original.id)}>{t("remove")}</button>)
+            },
+            size: 1,
+            maxSize:50
         })
 
     ]
-    // const handleSearch = (search_word: string) => {
-    //     setSearch(search_word)
-    //     handleSearchTable(search_word)
-    // }
     const handleSearchTable = async (search: string | null) => {
         try {
             const get_decks = await getDecks(token, search, pageSize)
@@ -107,10 +91,10 @@ const SearchTable: React.FC<SearchTableProps> = ({
         getPaginationRowModel: getPaginationRowModel(),
     })
     return (
-        <div className="decks">
-            <h1 className="title">{t("decks")}</h1>
+        <div className="search_table">
+            {/*<h1 className="title">{t("decks")}</h1>*/}
 
-            <table className="decks__table">
+            <table className="search_table__table">
                 <thead>
                 {getHeaderGroups().map(headerGroup => (
                     <tr key={headerGroup.id}>
@@ -131,7 +115,10 @@ const SearchTable: React.FC<SearchTableProps> = ({
                 {getRowModel().rows.map(row => (
                     <tr key={row.id}>
                         {row.getVisibleCells().map(cell => (
-                            <td key={cell.id}>
+                            <td style={{
+                                width: cell.column.getSize(),
+                            }} key={cell.id}>
+                                {/*{cell.getContext()}*/}
                                 {flexRender(cell.column.columnDef.cell, cell.getContext())}
                             </td>
                         ))}

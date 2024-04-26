@@ -62,5 +62,8 @@
   "delete_account": "Delete account",
   "account_deleted": "Account has been deleted",
   "delete_info": "If you want to delete account you need to provide password",
-  "delete": "DELETE"
+  "delete": "DELETE",
+  "search_words": "Search words",
+  "edit": "Edit",
+  "remove": "Remove"
 }

@@ -6,6 +6,9 @@ import {ErrorResponse, SearchWordsResponseTable} from "../interfaces.tsx";
 import withAuth from "../context/withAuth.tsx";
 import EditModal from "../modals/EditModal.tsx";
 import {useTranslation} from "react-i18next";
+import CenteredTitle from "./elements/CenteredTitle.tsx";
+import MainSearchField from "./elements/MainSearchField.tsx";
+import '../sass/search.css'
 
 const Search = () => {
     const [searchWord, setSearchWord] = useState("")
@@ -19,38 +22,46 @@ const Search = () => {
         setEditIt(id)
         setShowEdit(true)
     }
+
+
     const handleSearchWithDeck = async () => {
         try {
             const response = await searchWordWithDeck(searchWord, token)
             setData(response)
         } catch (err: unknown) {
-            // #TODO Back HEre
             const error = err as ErrorResponse
             console.log("error")
             console.log(error)
         }
     }
     useEffect(() => {
-        if (searchWord.length > 2) {
-            handleSearchWithDeck()
-        }
+        handleSearchWithDeck()
     }, [searchWord])
-    console.log(data)
 
     return (
         <div className="search">
-            <h1>{t("search")}</h1>
-            <input onChange={(e) => setSearchWord(e.target.value)} type="text"/>
-            {data && data.results &&
-                <SearchTable data={data} token={token}
-                             setData={setData} pageSize={pageSize}
-                             setPageSize={setPageSize}
-                             handleOpenEditModal={handleOpenEditModal}
-                             handleSearchWithDeck={handleSearchWithDeck}
+            <div className="search__header">
+                <CenteredTitle title={t("search")}/>
+                <MainSearchField
+                    label={t("search_words")}
+                    name="search"
+                    type="text"
+                    onChange={(e) => setSearchWord(e.target.value)}
                 />
-            }
+            </div>
+            <div className="search__body">
+                {data && data.results &&
+                    <SearchTable data={data} token={token}
+                                 setData={setData} pageSize={pageSize}
+                                 setPageSize={setPageSize}
+                                 handleOpenEditModal={handleOpenEditModal}
+                                 handleSearchWithDeck={handleSearchWithDeck}
+                    />
+                }
+            </div>
             {editId &&
-                <EditModal show={showEdit} setShowEdit={setShowEdit} editId={editId} handleSearchWithDeck={handleSearchWithDeck}/>
+                <EditModal show={showEdit} setShowEdit={setShowEdit} editId={editId}
+                           handleSearchWithDeck={handleSearchWithDeck}/>
             }
         </div>
     );

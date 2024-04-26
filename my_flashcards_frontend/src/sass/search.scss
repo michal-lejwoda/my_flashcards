@@ -1,0 +1,35 @@
+@import '../main.scss';
+
+.search {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
+  align-items: center;
+  &__body{
+    width: 100%;
+  }
+  &__header {
+    @include breakpoint("mobilebig") {
+      width: 500px;
+    }
+    @include breakpoint("tablet") {
+      width: 600px;
+    }
+  }
+}
+
+.search_table {
+  width: 100%;
+  margin-top:2rem;
+
+  &__table {
+    //width: 100%;
+    border-collapse: collapse;
+
+    table, th, td {
+      border: 1px solid white;
+      border-collapse: collapse;
+    }
+  }
+}
