@@ -45,6 +45,7 @@ const SearchTable: React.FC<SearchTableProps> = ({
             cell: (props) => {
                 return (<EditButton message={t("edit")} id={props.row.original.id} handleFunc={handleOpenEditModal}/>)
             },
+            size: 90,
 
 
         }),
@@ -55,7 +56,7 @@ const SearchTable: React.FC<SearchTableProps> = ({
             cell: (props) => {
                 return (<RemoveButton message={t("remove")} id={props.row.original.id} handleFunc={handleDeleteWord}/>)
             },
-            size: 1,
+            size: 90,
         })
 
     ]
@@ -79,7 +80,9 @@ const SearchTable: React.FC<SearchTableProps> = ({
                 {getHeaderGroups().map(headerGroup => (
                     <tr key={headerGroup.id}>
                         {headerGroup.headers.map(header => (
-                            <th key={header.id}>
+                            <th key={header.id} style={{
+                                        width: header.column.getSize(),
+                                    }}>
                                 {header.isPlaceholder
                                     ? null
                                     : flexRender(
