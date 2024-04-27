@@ -69,5 +69,6 @@
   "choose_deck": "Wybierz talie",
   "field_at_least_2": "Pole musi mieć co najmniej 2 znaki",
   "fieldIsRequired": "Pole jest wymagane",
-  "field_max_200": "Pole musi mieć mniej niż 200 znaków"
+  "field_max_200": "Pole musi mieć mniej niż 200 znaków",
+  "add_word": "Dodaj słowo"
 }
