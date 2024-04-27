@@ -1,0 +1,15 @@
+@import '../main.scss';
+.create_word{
+  display:flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  &__container{
+    @include breakpoint("mobilebig") {
+      width: 500px;
+    }
+    @include breakpoint("tablet") {
+      width: 600px;
+    }
+  }
+}

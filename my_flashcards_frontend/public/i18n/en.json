@@ -70,5 +70,6 @@
   "field_at_least_2": "The field must have at least 2 characters",
   "fieldIsRequired": "Field is required",
   "field_max_200": "Field must be less than 200 characters",
-  "add_word": "Add word"
+  "add_word": "Add word",
+  "select_deck": "Select deck"
 }

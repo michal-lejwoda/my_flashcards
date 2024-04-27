@@ -13,6 +13,7 @@ import CenteredTitle from "./elements/CenteredTitle.tsx";
 import ErrorMessage from "./elements/errors/ErrorMessage.tsx";
 import BackendErrorMessage from "./elements/errors/BackendErrorMessage.tsx";
 import {createWordValidation} from "../validation.tsx";
+import "../sass/create_word.css"
 
 const CreateComponent = () => {
     const {token} = useContext(AuthContext);
@@ -61,51 +62,103 @@ const CreateComponent = () => {
             }
         },
     });
+    const customStyles = {
+        // @ts-expect-error Custom styles
+        singleValue: provided => ({
+            ...provided,
+            color: 'white',
+            backgroundColor: '#1c1c1a',
+            zIndex: 1,
+        }),
+        // @ts-expect-error Custom styles
+        menu: provided => ({
+            ...provided,
+            color: 'white',
+            backgroundColor: '#1c1c1a',
+            zIndex: 2,
+        }),
+        // @ts-expect-error Custom styles
+        placeholder: provided => ({
+            ...provided,
+            color: 'white',
+            zIndex: 1,
+        }),
+        // @ts-expect-error Custom styles
+        control: provided => ({
+            ...provided,
+            color: 'white',
+            backgroundColor: '1c1c1c1c',
+            // zIndex: 1
+        }),
+        // @ts-expect-error Custom styles
+        input: provided => ({
+            ...provided,
+            color: 'white',
+            // backgroundColor: 'black',
+            // zIndex: 1
+        }),
+        // @ts-expect-error Custom styles
+        option: (base, {isFocused, isSelected}) => ({
+            ...base,
+            zIndex: 1,
+            backgroundColor: isSelected ? "DodgerBlue" : isFocused ? "grey" : undefined
+        })
+    }
     return (
         <div className="create_word">
             <CenteredTitle title={t("create")}/>
-            <AsyncSelect
-                cacheOptions
-                defaultOptions
-                value={deck}
-                onChange={handleChangeDeck}
-                loadOptions={promiseOptions}
-                getOptionLabel={customGetOptionLabel}
-                getOptionValue={customGetOptionValue}
-            />
-            <div className="errors form__errors">
-                {deckError && (
-                    <ErrorMessage message={deckError}/>
-                )}
-            </div>
+            <div className="create_word__container">
+                <CenteredForm handleSubmit={handleSubmit}>
 
-            <CenteredForm handleSubmit={handleSubmit}>
-                <div className="">
-                    <div className="account__form--textfield">
-                        <InputField label={t("front_page")} type="text" name="front_side" handleChange={handleChange}/>
-                        <div className="errors form__errors">
-                            {errors.front_side && <ErrorMessage message={errors.front_side}/>}
-                            {createComponentError && createComponentError.front_side && (
-                                <BackendErrorMessage message={createComponentError.front_side}/>
-                            )}
+                    <AsyncSelect
+                        className="async_select"
+                        cacheOptions
+                        defaultOptions
+                        value={deck}
+                        onChange={handleChangeDeck}
+                        loadOptions={promiseOptions}
+                        getOptionLabel={customGetOptionLabel}
+                        getOptionValue={customGetOptionValue}
+                        placeholder={t("select_deck")}
+                        styles={customStyles}
+                    />
+                    <div className="errors form__errors">
+                        {deckError && (
+                            <ErrorMessage message={deckError}/>
+                        )}
+                    </div>
+
+
+                    <div className="">
+                        <div className="account__form--textfield">
+                            <InputField label={t("front_page")} type="text" name="front_side"
+                                        handleChange={handleChange}/>
+                            <div className="errors form__errors">
+                                {errors.front_side && <ErrorMessage message={errors.front_side}/>}
+                                {createComponentError && createComponentError.front_side && (
+                                    <BackendErrorMessage message={createComponentError.front_side}/>
+                                )}
+                            </div>
+                        </div>
+                        <div className="account__form--textfield">
+                            <InputField label={t("reverse_page")} type="text" name="front_side"
+                                        handleChange={handleChange}/>
+                            <div className="errors form__errors">
+                                {errors.back_side && <ErrorMessage message={errors.back_side}/>}
+                                {createComponentError && createComponentError.back_side && (
+                                    <BackendErrorMessage message={createComponentError.back_side}/>
+                                )}
+                                {createComponentError && createComponentError.non_field_errors && (
+                                    <BackendErrorMessage message={createComponentError.non_field_errors}/>
+                                )}
+                            </div>
+                        </div>
+                        <div className="account__button">
+                            <GreenButton message={t("add_word")}/>
                         </div>
                     </div>
-                    <div className="account__form--textfield">
-                        <InputField label={t("reverse_page")} type="text" name="front_side"
-                                    handleChange={handleChange}/>
-                        <div className="errors form__errors">
-                            {errors.back_side && <ErrorMessage message={errors.back_side}/>}
-                            {createComponentError && createComponentError.back_side && (
-                                <BackendErrorMessage message={createComponentError.back_side}/>
-                            )}
-                            {createComponentError && createComponentError.non_field_errors && (
-                                <BackendErrorMessage message={createComponentError.non_field_errors}/>
-                            )}
-                        </div>
-                    </div>
-                    <GreenButton message={t("add_word")}/>
-                </div>
-            </CenteredForm>
+                </CenteredForm>
+            </div>
         </div>
     );
 };
