@@ -91,16 +91,9 @@ const AddFile = () => {
             <p>{t('max_size_file')}: 2mb</p>
             {/*TODO Remove this later*/}
             <aside>
-                <h4>Files</h4>
-                <ul>{files}</ul>
+                {/*<h4>Files</h4>*/}
+                {files}
             </aside>
-            {/*<div>*/}
-            {/*    {fileData && fileData.map((el) => {*/}
-            {/*        return(*/}
-            {/*        <p>{el[0]} - {el[1]}</p>*/}
-            {/*        )})}*/}
-            {/*</div>*/}
-            {/*<p></p>*/}
             {fileData &&
                 <FileResultTable fileData={fileData} setFileData={setFileData} pagination={pagination} setPagination={setPagination}/>
             }

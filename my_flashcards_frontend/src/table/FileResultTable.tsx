@@ -1,4 +1,4 @@
-import {FC, useContext, useEffect, useMemo} from "react";
+import React, {FC, useContext, useEffect, useMemo} from "react";
 import {
     createColumnHelper,
     flexRender,
@@ -10,6 +10,10 @@ import {useTranslation} from "react-i18next";
 import {FileRowData, PropsFileData} from "../interfaces.tsx";
 import {postDeckWithWords} from "../api.tsx";
 import AuthContext from "../context/AuthContext.tsx";
+import PaginationButtonReactTable from "../components/elements/pagination/PaginationButtonReactTable.tsx";
+import Pagination from "../components/elements/pagination/Pagination.tsx";
+import PaginationSelect from "../components/elements/pagination/PaginationSelect.tsx";
+import PaginationNumber from "../components/elements/pagination/PaginationNumber.tsx";
 
 const columnHelper = createColumnHelper<FileRowData>()
 
@@ -28,6 +32,7 @@ const FileResultTable: FC<PropsFileData> = ({fileData, setFileData, pagination, 
         columnHelper.display({
             id: 'front_side',
             header: "front_side",
+            size: 400,
             cell: (props) => {
                 return (<span key={props.row.original['id']}>
                 <span className="words__learn">{props.row.original['front_side']}</span>
@@ -37,6 +42,7 @@ const FileResultTable: FC<PropsFileData> = ({fileData, setFileData, pagination, 
         columnHelper.display({
             id: 'back_side',
             header: "back_side",
+            size: 400,
             cell: (props) => {
                 return (<span key={props.row.original['id']}>
                 <span className="words__learn">{props.row.original['back_side']}</span>
@@ -46,6 +52,7 @@ const FileResultTable: FC<PropsFileData> = ({fileData, setFileData, pagination, 
         columnHelper.display({
             id: 'deleteColumn',
             header: t("delete"),
+            size: 90,
             cell: (props) => {
                 return (<span key={props.row.original['id']}>
                     <button className="words__learn"
@@ -56,6 +63,7 @@ const FileResultTable: FC<PropsFileData> = ({fileData, setFileData, pagination, 
         columnHelper.display({
             id: 'changeColumn',
             header: t("change"),
+            size: 90,
             cell: (props) => {
                 return (<span key={props.row.original['id']}>
                     <button className="words__learn" onClick={() => handleChange(props.row.original['id'])}>Change places</button>
@@ -123,10 +131,13 @@ const FileResultTable: FC<PropsFileData> = ({fileData, setFileData, pagination, 
         setFileData(tempFile)
 
     }
+    const handleChangeDataBasedOnPageSize = (pg_size: string) => {
+        setPageSize(Number(pg_size))
+    }
+
     return (
-        <div>
-            <h1>FileResultTable</h1>
-            <table>
+        <div className="decks">
+            <table className="decks__table">
                 <thead>
                 {getHeaderGroups().map(headerGroup => (
                     <tr key={headerGroup.id}>
@@ -147,7 +158,9 @@ const FileResultTable: FC<PropsFileData> = ({fileData, setFileData, pagination, 
                 {getRowModel().rows.map(row => (
                     <tr key={row.id}>
                         {row.getVisibleCells().map(cell => (
-                            <td key={cell.id}>
+                            <td key={cell.id} style={{
+                                        width: cell.column.getSize(),
+                                    }}>
                                 {flexRender(cell.column.columnDef.cell, cell.getContext())}
                             </td>
                         ))}
@@ -155,49 +168,49 @@ const FileResultTable: FC<PropsFileData> = ({fileData, setFileData, pagination, 
                 ))}
                 </tbody>
             </table>
-            <button
-                onClick={() => firstPage()}
-                disabled={!getCanPreviousPage()}
-            >
-                {'<<'}
-            </button>
-            <button
-                onClick={() => previousPage()}
-                disabled={!getCanPreviousPage()}
-            >
-                {'<'}
-            </button>
-            {getCanNextPage() &&
-                <button
-                    onClick={() => nextPage()}
-                    disabled={!getCanNextPage()}
-                >
-                    {'>'}
-                </button>
-            }
-            {/*#TODO https://tanstack.com/table/latest/docs/guide/pagination*/}
-            {getCanNextPage() &&
-                <button
-                    onClick={() => lastPage()}
-                    disabled={!getCanNextPage()}
-                >
-                    {'>>'}
-                </button>
-            }
-            <select
-                value={getState().pagination.pageSize}
-                onChange={e => {
-                    setPageSize(Number(e.target.value))
-                }}
-            >
-                {[10, 20, 30, 40, 50].map(pageSize => (
-                    <option key={pageSize} value={pageSize}>
-                        {pageSize}
-                    </option>
-                ))}
-            </select>
-            <strong>{getState().pagination.pageIndex + 1} of{" "} {getPageCount()}</strong>
-            <p>Liczba słów {getRowCount()}</p>
+            <Pagination>
+                <PaginationButtonReactTable
+                    onClick={() => firstPage()}
+                    disabled={!getCanPreviousPage()}
+                    message={'<<'}
+                />
+                <PaginationButtonReactTable
+                    onClick={() => previousPage()}
+                    disabled={!getCanPreviousPage()}
+                    message={'<'}
+                />
+                <PaginationNumber current_page={getState().pagination.pageIndex + 1} total_pages={getPageCount()}/>
+                {getCanNextPage() &&
+                    <PaginationButtonReactTable
+                        onClick={() => nextPage()}
+                        disabled={!getCanNextPage()}
+                        message={'>'}
+                    />
+
+                }
+                {getCanNextPage() &&
+                    <PaginationButtonReactTable
+                        onClick={() => lastPage()}
+                        disabled={!getCanNextPage()}
+                        message={'>>'}
+                    />
+
+                }
+                <PaginationSelect
+                    pageSize={getState().pagination.pageSize}
+                    handleChange={handleChangeDataBasedOnPageSize}
+                />
+
+            </Pagination>
+            {/*{[10, 20, 30, 40, 50].map(pageSize => (*/}
+            {/*    <option key={pageSize} value={pageSize}>*/}
+            {/*        {pageSize}*/}
+            {/*    </option>*/}
+            {/*))}*/}
+
+
+            {/*<strong>{getState().pagination.pageIndex + 1} of{" "} {getPageCount()}</strong>*/}
+            <p>{t("number_of_words")} {getRowCount()}</p>
             <button onClick={handleSendData}>Wyślij</button>
         </div>
     );

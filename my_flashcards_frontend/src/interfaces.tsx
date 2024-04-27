@@ -331,6 +331,12 @@ export interface PaginationButtonProps<>{
     message: string;
     setData: Dispatch<any>;
 }
+export interface PaginationButtonReactTableProps{
+    onClick: ()=>void;
+    disabled: boolean;
+    message: string;
+}
+
 
 export interface PaginationSelectProps{
     pageSize: number;
