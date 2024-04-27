@@ -105,6 +105,13 @@ export interface LoginError {
     non_field_errors?: string[];
 }
 
+export interface CreateComponentError {
+    front_side?: string[];
+    back_side?: string[];
+    non_field_errors?: string[];
+}
+
+
 export interface RegisterError {
     username?: string[];
     email?: string[];
@@ -317,11 +324,12 @@ export interface MainSearchFieldProps{
 
 }
 
-export interface PaginationButtonProps{
+
+export interface PaginationButtonProps<>{
     link: string | null;
     token: string | null;
     message: string;
-    setData: React.Dispatch<React.SetStateAction<SearchWordsResponseTable | null>>;
+    setData: Dispatch<any>;
 }
 
 export interface PaginationSelectProps{

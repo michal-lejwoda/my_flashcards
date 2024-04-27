@@ -65,5 +65,9 @@
   "delete_info": "Jeśli chcesz usunąć konto wprowadź swoje aktualne hasło",
   "search_words": "Szukaj słów",
   "edit": "Edytuj",
-  "remove": "Usuń"
+  "remove": "Usuń",
+  "choose_deck": "Wybierz talie",
+  "field_at_least_2": "Pole musi mieć co najmniej 2 znaki",
+  "fieldIsRequired": "Pole jest wymagane",
+  "field_max_200": "Pole musi mieć mniej niż 200 znaków"
 }

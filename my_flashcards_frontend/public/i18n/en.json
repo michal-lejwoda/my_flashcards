@@ -65,5 +65,9 @@
   "delete": "DELETE",
   "search_words": "Search words",
   "edit": "Edit",
-  "remove": "Remove"
+  "remove": "Remove",
+  "choose_deck": "Choose Deck",
+  "field_at_least_2": "The field must have at least 2 characters",
+  "fieldIsRequired": "Field is required",
+  "field_max_200": "Field must be less than 200 characters"
 }

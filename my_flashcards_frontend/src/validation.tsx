@@ -26,3 +26,8 @@ export const changePasswordValidation = yup.object().shape({
 export const changeResetPasswordValidation = yup.object().shape({
     email: yup.string().email(() => i18next.t('emailIsNotCorrect')).required(() => i18next.t('emailIsRequired')),
 })
+
+export const createWordValidation = yup.object().shape({
+    front_side: yup.string().min(2, () => i18next.t('field_at_least_2')).max(200, () => i18next.t('field_max_200')).required(() => i18next.t('fieldIsRequired')),
+    back_side: yup.string().min(2, () => i18next.t('field_at_least_2')).max(200, () => i18next.t('field_max_200')).required(() => i18next.t('fieldIsRequired')),
+})

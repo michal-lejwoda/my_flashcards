@@ -3,27 +3,35 @@ import AsyncSelect from "react-select/async";
 import {createWordForDeck, getDecks} from "../api.tsx";
 import {useContext, useState} from "react";
 import AuthContext from "../context/AuthContext.tsx";
-import {DecksTable} from "../interfaces.tsx";
+import {CreateComponentError, DecksTable, ErrorResponse} from "../interfaces.tsx";
 import {useTranslation} from "react-i18next";
+import GreenButton from "./elements/GreenButton.tsx";
+import {useFormik} from "formik";
+import InputField from "./elements/InputField.tsx";
+import CenteredForm from "./elements/CenteredForm.tsx";
+import CenteredTitle from "./elements/CenteredTitle.tsx";
+import ErrorMessage from "./elements/errors/ErrorMessage.tsx";
+import BackendErrorMessage from "./elements/errors/BackendErrorMessage.tsx";
+import {createWordValidation} from "../validation.tsx";
 
 const CreateComponent = () => {
     const {token} = useContext(AuthContext);
     const {t} = useTranslation();
     const [deck, setDeck] = useState<DecksTable | null>(null)
-    const [frontSide, setFrontSide] = useState<string>("")
-    const [backSide, setBackSide] = useState<string>("")
+    const [deckError, setDeckError] = useState<string | null>(null)
+    const [createComponentError, setCreateComponentError] = useState<CreateComponentError | null>(null)
 
     const handleAddWord = async () => {
         if (deck !== null) {
-            console.log("handleAddWord")
-            const json_obj = {
-                "front_side": frontSide,
-                "back_side": backSide
+            try {
+                await createWordForDeck(deck.id, token, values)
+                setDeckError("")
+            } catch (err: unknown) {
+                const error = err as ErrorResponse
+                setCreateComponentError(error.response.data)
             }
-            await createWordForDeck(deck.id, token, json_obj)
-            setFrontSide("")
-            setBackSide("")
         }
+
     }
     const promiseOptions = async (inputValue: string) => {
         const result = await getDecks(token, inputValue, 10)
@@ -34,30 +42,70 @@ const CreateComponent = () => {
 
     const customGetOptionValue = (option: DecksTable) => option.id.toString();
 
-    const handleChange = (newValue: DecksTable | null) => {
+    const handleChangeDeck = (newValue: DecksTable | null) => {
         setDeck(newValue);
     };
-
-
+    const {values, handleChange, handleSubmit, errors, resetForm} = useFormik({
+        initialValues: {
+            front_side: "",
+            back_side: "",
+        },
+        validationSchema: createWordValidation,
+        validateOnChange: false,
+        onSubmit: () => {
+            if (deck !== null) {
+                handleAddWord()
+                resetForm()
+            } else {
+                setDeckError(t("choose_deck"))
+            }
+        },
+    });
     return (
-        <div>
-            <h1>Create Component</h1>
-
+        <div className="create_word">
+            <CenteredTitle title={t("create")}/>
             <AsyncSelect
                 cacheOptions
                 defaultOptions
                 value={deck}
-                onChange={handleChange}
+                onChange={handleChangeDeck}
                 loadOptions={promiseOptions}
                 getOptionLabel={customGetOptionLabel}
                 getOptionValue={customGetOptionValue}
-
             />
-            <label htmlFor="">{t("front_side")}</label>
-            <input type="text" onChange={(e) => setFrontSide(e.target.value)}/>
-            <label htmlFor="">{t("back_side")}</label>
-            <input type="text" onChange={(e) => setBackSide(e.target.value)}/>
-            <button onClick={handleAddWord}>{t("add_word")}</button>
+            <div className="errors form__errors">
+                {deckError && (
+                    <ErrorMessage message={deckError}/>
+                )}
+            </div>
+
+            <CenteredForm handleSubmit={handleSubmit}>
+                <div className="">
+                    <div className="account__form--textfield">
+                        <InputField label={t("front_page")} type="text" name="front_side" handleChange={handleChange}/>
+                        <div className="errors form__errors">
+                            {errors.front_side && <ErrorMessage message={errors.front_side}/>}
+                            {createComponentError && createComponentError.front_side && (
+                                <BackendErrorMessage message={createComponentError.front_side}/>
+                            )}
+                        </div>
+                    </div>
+                    <div className="account__form--textfield">
+                        <InputField label={t("reverse_page")} type="text" name="front_side"
+                                    handleChange={handleChange}/>
+                        <div className="errors form__errors">
+                            {errors.back_side && <ErrorMessage message={errors.back_side}/>}
+                            {createComponentError && createComponentError.back_side && (
+                                <BackendErrorMessage message={createComponentError.back_side}/>
+                            )}
+                            {createComponentError && createComponentError.non_field_errors && (
+                                <BackendErrorMessage message={createComponentError.non_field_errors}/>
+                            )}
+                        </div>
+                    </div>
+                    <GreenButton message={t("add_word")}/>
+                </div>
+            </CenteredForm>
         </div>
     );
 };
