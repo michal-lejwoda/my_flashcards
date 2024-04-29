@@ -236,6 +236,7 @@ export interface EditWordModalProps {
     show: boolean;
     setShowEdit: Dispatch<SetStateAction<boolean>>;
     refreshDeck: () => Promise<void>;
+    handleGetWords: (token: string | null, deck_id: number, search: string | null, pageSize: number) => Promise<void>;
 }
 
 export interface ChangeEmailData {

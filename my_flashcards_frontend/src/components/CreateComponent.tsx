@@ -14,6 +14,7 @@ import ErrorMessage from "./elements/errors/ErrorMessage.tsx";
 import BackendErrorMessage from "./elements/errors/BackendErrorMessage.tsx";
 import {createWordValidation} from "../validation.tsx";
 import "../sass/create_word.css"
+import {customStyles} from "../customFunctions.tsx";
 
 const CreateComponent = () => {
     const {token} = useContext(AuthContext);
@@ -62,48 +63,7 @@ const CreateComponent = () => {
             }
         },
     });
-    const customStyles = {
-        // @ts-expect-error Custom styles
-        singleValue: provided => ({
-            ...provided,
-            color: 'white',
-            backgroundColor: '#1c1c1a',
-            zIndex: 1,
-        }),
-        // @ts-expect-error Custom styles
-        menu: provided => ({
-            ...provided,
-            color: 'white',
-            backgroundColor: '#1c1c1a',
-            zIndex: 2,
-        }),
-        // @ts-expect-error Custom styles
-        placeholder: provided => ({
-            ...provided,
-            color: 'white',
-            zIndex: 1,
-        }),
-        // @ts-expect-error Custom styles
-        control: provided => ({
-            ...provided,
-            color: 'white',
-            backgroundColor: '1c1c1c1c',
-            // zIndex: 1
-        }),
-        // @ts-expect-error Custom styles
-        input: provided => ({
-            ...provided,
-            color: 'white',
-            // backgroundColor: 'black',
-            // zIndex: 1
-        }),
-        // @ts-expect-error Custom styles
-        option: (base, {isFocused, isSelected}) => ({
-            ...base,
-            zIndex: 1,
-            backgroundColor: isSelected ? "DodgerBlue" : isFocused ? "grey" : undefined
-        })
-    }
+
     return (
         <div className="create_word">
             <CenteredTitle title={t("create")}/>

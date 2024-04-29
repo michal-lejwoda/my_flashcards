@@ -1,4 +1,4 @@
-import React, {FC, useContext, useEffect, useMemo} from "react";
+import {FC, useContext, useEffect, useMemo} from "react";
 import {
     createColumnHelper,
     flexRender,
@@ -14,6 +14,12 @@ import PaginationButtonReactTable from "../components/elements/pagination/Pagina
 import Pagination from "../components/elements/pagination/Pagination.tsx";
 import PaginationSelect from "../components/elements/pagination/PaginationSelect.tsx";
 import PaginationNumber from "../components/elements/pagination/PaginationNumber.tsx";
+import RemoveButton from "../components/elements/RemoveButton.tsx";
+import EditButton from "../components/elements/EditButton.tsx";
+import InputField from "../components/elements/InputField.tsx";
+import {useFormik} from "formik";
+import {changeCreateDataFromFileValidation} from "../validation.tsx";
+import GreenButton from "../components/elements/GreenButton.tsx";
 
 const columnHelper = createColumnHelper<FileRowData>()
 
@@ -21,17 +27,16 @@ const FileResultTable: FC<PropsFileData> = ({fileData, setFileData, pagination, 
     const {token} = useContext(AuthContext);
     const handleSendData = () => {
         const data = {
-            "name": "saffsaasffas",
+            "name": values.deck,
             "rows": fileData
         }
-        // #TODO ADD exception
         postDeckWithWords(data, token)
     }
     const {t} = useTranslation();
     const columns = useMemo(() => [
         columnHelper.display({
             id: 'front_side',
-            header: "front_side",
+            header: t("front_page"),
             size: 400,
             cell: (props) => {
                 return (<span key={props.row.original['id']}>
@@ -41,7 +46,7 @@ const FileResultTable: FC<PropsFileData> = ({fileData, setFileData, pagination, 
         }),
         columnHelper.display({
             id: 'back_side',
-            header: "back_side",
+            header: t("reverse_page"),
             size: 400,
             cell: (props) => {
                 return (<span key={props.row.original['id']}>
@@ -55,19 +60,26 @@ const FileResultTable: FC<PropsFileData> = ({fileData, setFileData, pagination, 
             size: 90,
             cell: (props) => {
                 return (<span key={props.row.original['id']}>
-                    <button className="words__learn"
-                            onClick={() => handleDelete(props.row.original['id'])}>Delete</button>
+                    <RemoveButton
+                        id={props.row.original['id']}
+                        message={t("delete")}
+                        handleFunc={handleDelete}
+                    />
             </span>)
             }
         }),
         columnHelper.display({
             id: 'changeColumn',
-            header: t("change"),
+            header: t("change_places"),
             size: 90,
             cell: (props) => {
-                return (<span key={props.row.original['id']}>
-                    <button className="words__learn" onClick={() => handleChange(props.row.original['id'])}>Change places</button>
-            </span>)
+                return (
+                    <EditButton
+                        id={props.row.original['id']}
+                        message={t("change")}
+                        handleFunc={handleChangePlace}
+                    />)
+
             }
         })
     ], [])
@@ -117,7 +129,7 @@ const FileResultTable: FC<PropsFileData> = ({fileData, setFileData, pagination, 
         });
     };
 
-    const handleChange = (id: number) => {
+    const handleChangePlace = (id: number) => {
         // const pageindex = getState().pagination.pageIndex
         const tempFile = fileData.slice()
         for (const obj of tempFile) {
@@ -134,10 +146,40 @@ const FileResultTable: FC<PropsFileData> = ({fileData, setFileData, pagination, 
     const handleChangeDataBasedOnPageSize = (pg_size: string) => {
         setPageSize(Number(pg_size))
     }
+    const {values, handleChange, handleSubmit, errors} = useFormik({
+        initialValues: {
+            deck: ""
+        },
+        validationSchema: changeCreateDataFromFileValidation,
+        validateOnChange: false,
+        onSubmit: async () => {
+            try {
+                handleSendData();
+            } catch (error) {
+                alert(t("reset_password_error"))
+            }
+        },
+    });
 
     return (
-        <div className="decks">
-            <table className="decks__table">
+        <div className="file-result">
+            <form className="file-result__form" onSubmit={handleSubmit}>
+                <div className="file-result__container">
+                    <InputField
+                        name="deck"
+                        label={t("deck_name")}
+                        type="text"
+                        handleChange={handleChange}
+                    />
+                    <div className="errors form__errors">
+                        {errors.deck && <p className="form__error form__message">{errors.deck}</p>}
+                    </div>
+                </div>
+                <div className="file-result__button">
+                    <GreenButton message={t("create")}/>
+                </div>
+            </form>
+            <table className="file-result__table">
                 <thead>
                 {getHeaderGroups().map(headerGroup => (
                     <tr key={headerGroup.id}>
@@ -159,8 +201,8 @@ const FileResultTable: FC<PropsFileData> = ({fileData, setFileData, pagination, 
                     <tr key={row.id}>
                         {row.getVisibleCells().map(cell => (
                             <td key={cell.id} style={{
-                                        width: cell.column.getSize(),
-                                    }}>
+                                width: cell.column.getSize(),
+                            }}>
                                 {flexRender(cell.column.columnDef.cell, cell.getContext())}
                             </td>
                         ))}
@@ -202,16 +244,8 @@ const FileResultTable: FC<PropsFileData> = ({fileData, setFileData, pagination, 
                 />
 
             </Pagination>
-            {/*{[10, 20, 30, 40, 50].map(pageSize => (*/}
-            {/*    <option key={pageSize} value={pageSize}>*/}
-            {/*        {pageSize}*/}
-            {/*    </option>*/}
-            {/*))}*/}
+            <p className="file-result__words-num">{t("number_of_words")} {getRowCount()}</p>
 
-
-            {/*<strong>{getState().pagination.pageIndex + 1} of{" "} {getPageCount()}</strong>*/}
-            <p>{t("number_of_words")} {getRowCount()}</p>
-            <button onClick={handleSendData}>Wyślij</button>
         </div>
     );
 };

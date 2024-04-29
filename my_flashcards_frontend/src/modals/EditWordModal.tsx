@@ -4,6 +4,8 @@ import {useTranslation} from "react-i18next";
 import {editSingleWord, getSingleWord} from "../api.tsx";
 import {useContext, useEffect, useState} from "react";
 import AuthContext from "../context/AuthContext.tsx";
+import InputFieldWithoutFormik from "../components/elements/InputFieldWithoutFormik.tsx";
+import GreenButton from "../components/elements/GreenButton.tsx";
 
 const EditWordModal: React.FC<EditWordModalProps> = ({editId, show, setShowEdit, refreshDeck}) => {
     const {t} = useTranslation();
@@ -22,7 +24,6 @@ const EditWordModal: React.FC<EditWordModalProps> = ({editId, show, setShowEdit,
     const fetchEditData = async () => {
         if (editId) {
             const response = await getSingleWord(editId, token)
-            console.log(response)
             setData(response)
         }
     }
@@ -31,11 +32,11 @@ const EditWordModal: React.FC<EditWordModalProps> = ({editId, show, setShowEdit,
     }, [editId])
 
     const handleChangePlaces = async () => {
-        console.log("handleChangePlaces")
         try {
             const {id, front_side, back_side} = data;
             const json_obj = {"front_side": back_side, "back_side": front_side}
             await editSingleWord(id, token, json_obj)
+            await fetchEditData()
             await refreshDeck()
             await setShowEdit(false)
         } catch (e) {
@@ -74,23 +75,26 @@ const EditWordModal: React.FC<EditWordModalProps> = ({editId, show, setShowEdit,
                     <CloseButton onClick={() => setShowEdit(false)} variant="white"/>
                 </Modal.Header>
                 <Modal.Body>
-                    <input
-                        type="text"
-                        name="front_side"
-                        value={data.front_side}
-                        onChange={handleInputChange}
-                    />
-                    <input
-                        type="text"
-                        name="back_side"
-                        value={data.back_side}
-                        onChange={handleInputChange}
-                    />
-
+                    <div className="account__form--textfield">
+                        <InputFieldWithoutFormik handleChange={handleInputChange}
+                                                 label={t("front_page")}
+                                                 type="text"
+                                                 name="front_side"
+                                                 value={data.front_side}
+                        />
+                    </div>
+                    <div className="account__form--textfield">
+                        <InputFieldWithoutFormik handleChange={handleInputChange}
+                                                 label={t("reverse_page")}
+                                                 type="text"
+                                                 name="back_side"
+                                                 value={data.back_side}
+                        />
+                    </div>
                 </Modal.Body>
                 <Modal.Footer>
-                    <button onClick={handleChangePlaces}>{t("change_places")}</button>
-                    <button onClick={saveEditData}>{t("save")}</button>
+                    <GreenButton onClick={handleChangePlaces} message={t("change_places")} />
+                    <GreenButton onClick={saveEditData} message={t("save")} />
                 </Modal.Footer>
             </Modal>
         </div>

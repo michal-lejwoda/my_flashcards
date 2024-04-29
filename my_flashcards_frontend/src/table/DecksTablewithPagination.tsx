@@ -62,16 +62,16 @@ const DecksTablewithPagination: React.FC<DecksTablewithPaginationProps> = ({
                         <button onClick={() => toggleDropdown(props.row.original.id)}>{t("actions")}</button>
                         <div className={`container ${openDropdownId === props.row.original.id ? 'open' : ''}`}>
                             <div className={`content ${openDropdownId === props.row.original.id ? 'open' : ''}`}>
-                                <NavLink to="/preview" state={{deck: props.row.original}}>{t("preview")}</NavLink>
-                                <NavLink to={`/learn/${props.row.original.slug}`}
+                                <NavLink className="dropdown__element" to="/preview" state={{deck: props.row.original}}>{t("preview")}</NavLink>
+                                <NavLink className="dropdown__element" to={`/learn/${props.row.original.slug}`}
                                          state={{id: props.row.original.id, reverse: false}}>{t("learn")}</NavLink>
-                                <NavLink to={`/learn/${props.row.original.slug}`} state={{
+                                <NavLink className="dropdown__element" to={`/learn/${props.row.original.slug}`} state={{
                                     id: props.row.original.id,
                                     reverse: true
                                 }}>{t("reverse_and_learn")}</NavLink>
-                                <a>{t("rename")}</a>
-                                <a>{t("share")}</a>
-                                <a>{t("delete")}</a>
+                                <a className="dropdown__element">{t("rename")}</a>
+                                {/*<a className="dropdown__element">{t("share")}</a>*/}
+                                <a className="dropdown__element">{t("remove")}</a>
                             </div>
                         </div>
                     </div>
@@ -92,8 +92,6 @@ const DecksTablewithPagination: React.FC<DecksTablewithPaginationProps> = ({
         <div className="decks">
             <div className="decks__searchcontainer searchcontainer">
                 <input
-                    // value={globalFilter ?? ''}
-                    // onChange={e => setGlobalFilter(String(e.target.value))}
                     onChange={e => handleSearch(e.target.value)}
                     className="searchcontainer__search"
                     placeholder={t("search")}/>

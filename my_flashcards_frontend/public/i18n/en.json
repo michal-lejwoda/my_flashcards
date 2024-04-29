@@ -71,5 +71,7 @@
   "fieldIsRequired": "Field is required",
   "field_max_200": "Field must be less than 200 characters",
   "add_word": "Add word",
-  "select_deck": "Select deck"
+  "select_deck": "Select deck",
+  "change": "Change",
+  "deck_name": "Deck name"
 }

@@ -13,9 +13,12 @@ const Navbar = () => {
     const [language, setLanguage] = useState(i18n.language)
     const [isMobileNavOpen, setIsMobileNavOpen] = useState(false);
     const navigate = useNavigate();
-    const [, ,removeCookie] = useCookies(['flashcard_user_auth']);
+    const [, , removeCookie] = useCookies(['flashcard_user_auth']);
+    const {token} = useContext(AuthContext);
     const auth = useContext(AuthContext);
-    const handleLogout = () =>{
+    console.log("auth")
+    console.log(auth)
+    const handleLogout = () => {
         auth.setToken(null)
         removeCookie('flashcard_user_auth')
         navigate("/login")
@@ -53,18 +56,27 @@ const Navbar = () => {
                             </option>
                         ))}
                     </select>
-                    <NavLink to="/account" className="navbar__item">
-                        <li className="menu__element ">{t("account")}</li>
-                    </NavLink>
-                    <div className="navbar__item" onClick={handleLogout}>
-                        <li className="menu__element">{t("logout")}</li>
-                    </div>
-                    <NavLink to="/login" className="navbar__item">
-                        <li className="menu__element">{t("login")}</li>
-                    </NavLink>
-                    <NavLink to="/register" className="navbar__item">
-                        <li className="menu__element">{t("register")}</li>
-                    </NavLink>
+
+                    {token &&
+                        <>
+                            <NavLink to="/account" className="navbar__item">
+                                <li className="menu__element ">{t("account")}</li>
+                            </NavLink>
+                            <div className="navbar__item" onClick={handleLogout}>
+                                <li className="menu__element">{t("logout")}</li>
+                            </div>
+                        </>
+                    }
+                    {!token &&
+                        <>
+                            <NavLink to="/login" className="navbar__item">
+                                <li className="menu__element">{t("login")}</li>
+                            </NavLink>
+                            <NavLink to="/register" className="navbar__item">
+                                <li className="menu__element">{t("register")}</li>
+                            </NavLink>
+                        </>
+                    }
                 </ul>
             </div>
             <div className="navbar__mobile mobile">
@@ -96,7 +108,8 @@ const Navbar = () => {
 
             </div>
         </nav>
-    );
+    )
+        ;
 };
 
 export default Navbar;

@@ -1,8 +1,11 @@
 import {createColumnHelper, flexRender, getCoreRowModel, useReactTable} from "@tanstack/react-table";
 import {WordTable, WordTablewithPaginationProps} from "../interfaces.tsx";
-import {useState} from "react";
+import React, {useState} from "react";
 import {useTranslation} from "react-i18next";
-import {handleGoToUrl} from "../globalFunctions.tsx";
+import PaginationButton from "../components/elements/pagination/PaginationButton.tsx";
+import PaginationNumber from "../components/elements/pagination/PaginationNumber.tsx";
+import PaginationSelect from "../components/elements/pagination/PaginationSelect.tsx";
+import Pagination from "../components/elements/pagination/Pagination.tsx";
 
 const columnHelper = createColumnHelper<WordTable>()
 const WordTablewithPagination: React.FC<WordTablewithPaginationProps> = ({
@@ -110,32 +113,26 @@ const WordTablewithPagination: React.FC<WordTablewithPaginationProps> = ({
                 ))}
                 </tbody>
             </table>
-            {data.links.first_page_link &&
-                <button onClick={() => handleGoToUrl(data.links.first_page_link, token, setData)}>{'<<'}</button>
-            }
-            {data.links.previous &&
-                <button onClick={() => handleGoToUrl(data.links.previous, token, setData)}>{'<'}</button>
-            }
-            {data.current_page} {t('of')} {data.total_pages}
-            {data.links.next &&
-                <button onClick={() => handleGoToUrl(data.links.next, token, setData)}>{'>'}</button>
-            }
+            <Pagination>
+                {data.links.first_page_link &&
+                    <PaginationButton link={data.links.first_page_link} token={token} message={'<<'} setData={setData}/>
+                }
+                {data.links.previous &&
+                    <PaginationButton link={data.links.previous} token={token} message={'<'} setData={setData}/>
+                }
+                <PaginationNumber current_page={data.current_page} total_pages={data.total_pages}/>
+                {data.links.next &&
+                    <PaginationButton link={data.links.next} token={token} message={'>'} setData={setData}/>
+                }
 
-            {data.links.last_page_link &&
-                <button onClick={() => handleGoToUrl(data.links.last_page_link, token, setData)}>{'>>'}</button>
-            }
-            <select
-                value={pageSize}
-                onChange={e => {
-                    handleChangeDataBasedOnPageSize(e.target.value)
-                }}
-            >
-                {[10, 20, 30, 40, 50].map(pageSize => (
-                    <option key={pageSize} value={pageSize}>
-                        {pageSize}
-                    </option>
-                ))}
-            </select>
+                {data.links.last_page_link &&
+                    <PaginationButton link={data.links.last_page_link} token={token} message={'>>'} setData={setData}/>
+                }
+                <PaginationSelect
+                    pageSize={pageSize}
+                    handleChange={handleChangeDataBasedOnPageSize}
+                />
+            </Pagination>
         </div>
     );
 };

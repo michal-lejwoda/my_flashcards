@@ -64,6 +64,12 @@
 .container {
   position: relative;
 }
+.dropdown{
+  &__element{
+    background-color: #1c1c1a;
+    border-bottom: 2px solid white;
+  }
+}
 
 .dropdown .content {
   display: none;
@@ -72,6 +78,7 @@
   min-width: 100px;
   box-shadow: 2px 2px 5px black;
   top: 100%;
+  border:2px solid white;
 }
 .content.open{
   display:block;

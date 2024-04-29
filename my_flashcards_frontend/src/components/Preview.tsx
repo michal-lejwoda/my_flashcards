@@ -9,6 +9,7 @@ import AuthContext from "../context/AuthContext.tsx";
 import WordTablewithPagination from "../table/WordTablewithPagination.tsx";
 import {useLocation} from "react-router-dom";
 import EditWordModal from "../modals/EditWordModal.tsx";
+import {customStyles} from "../customFunctions.tsx";
 
 const Preview = () => {
     const location = useLocation();
@@ -49,31 +50,31 @@ const Preview = () => {
     }, [deck])
 
 
-    const customStyles = {
-        // @ts-expect-error Custom styles
-        singleValue: provided => ({
-            ...provided,
-            color: 'white',
-            zIndex: 1,
-        }),
-        // @ts-expect-error Custom styles
-        placeholder: provided => ({
-            ...provided,
-            color: 'white',
-            zIndex: 1,
-        }),
-        // @ts-expect-error Custom styles
-        input: provided => ({
-            ...provided,
-            color: 'white',
-            // zIndex: 1
-        }),
-        // @ts-expect-error Custom styles
-        option: (base, {isFocused, isSelected}) => ({
-            ...base,
-            backgroundColor: isSelected ? "DodgerBlue" : isFocused ? "grey" : undefined
-        })
-    }
+    // const customStyles = {
+    //     // @ts-expect-error Custom styles
+    //     singleValue: provided => ({
+    //         ...provided,
+    //         color: 'white',
+    //         zIndex: 1,
+    //     }),
+    //     // @ts-expect-error Custom styles
+    //     placeholder: provided => ({
+    //         ...provided,
+    //         color: 'white',
+    //         zIndex: 1,
+    //     }),
+    //     // @ts-expect-error Custom styles
+    //     input: provided => ({
+    //         ...provided,
+    //         color: 'white',
+    //         // zIndex: 1
+    //     }),
+    //     // @ts-expect-error Custom styles
+    //     option: (base, {isFocused, isSelected}) => ({
+    //         ...base,
+    //         backgroundColor: isSelected ? "DodgerBlue" : isFocused ? "grey" : undefined
+    //     })
+    // }
 
     const handleGetWords = async (token: string | null, deck_id: number, search: string | null, pageSize: number) => {
         try {
@@ -137,6 +138,7 @@ const Preview = () => {
             }
             {editId &&
                 <EditWordModal show={showEdit} setShowEdit={setShowEdit} editId={editId}
+                               handleGetWords={handleGetWords}
                                refreshDeck={refreshDeck}/>
             }
         </section>

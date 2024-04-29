@@ -1,9 +1,21 @@
-.addfile{
+@import '../main.scss';
+.addfile {
   text-align: center;
-  &__dropzone{
-    padding: 1rem;
+
+
+  &__dropzone {
+    @include breakpoint("laptop") {
+      width: 600px;
+    }
+    padding: 2rem;
     border: 1px solid white;
     cursor: pointer;
+  }
 
+  &__fieldname {
+    ul li::marker {
+      padding-left: 0;
+      list-style-type: none;
+    }
   }
 }

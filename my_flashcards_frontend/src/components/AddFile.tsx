@@ -3,10 +3,11 @@ import "../sass/addfile.css"
 import {useTranslation} from "react-i18next";
 import withAuth from "../context/withAuth.tsx";
 import {getTaskResult, postFile} from "../api.tsx";
-import {ErrorResponse, Response, FileRowData} from "../interfaces.tsx";
+import {ErrorResponse, FileRowData, Response} from "../interfaces.tsx";
 import {useContext, useState} from "react";
 import AuthContext from "../context/AuthContext.tsx";
 import FileResultTable from "../table/FileResultTable.tsx";
+import "../sass/fileresult.css";
 
 const AddFile = () => {
     const {token} = useContext(AuthContext);
@@ -16,6 +17,7 @@ const AddFile = () => {
         pageIndex: 0,
         pageSize: 10,
     });
+
     async function executeForTwoMinutes(action: (task_id: string, token: string | null) => Promise<Response>, task_id: string, token: string | null): Promise<void> {
         return new Promise((resolve, reject) => {
             const interval = setInterval(async () => {
@@ -76,26 +78,29 @@ const AddFile = () => {
     });
 
     const files = acceptedFiles.map((file: FileWithPath) => (
-        <li key={file.path}>
+
+        <p className="addfile__fieldname--list" key={file.path}>
             {file.path} - {file.size} bytes
-        </li>
+        </p>
+
+
     ));
+
 
     return (
         <section className="addfile">
             <h1 className="title">{t('add_file')}</h1>
-            <div {...getRootProps({className: 'addfile__dropzone'})}>
-                <input {...getInputProps()} />
-                <p>{t('drag_and_drop_file')}(.txt, .docx)</p>
+            <div className="dropzone__container">
+                <div {...getRootProps({className: 'addfile__dropzone'})}>
+                    <input {...getInputProps()} />
+                    <p>{t('drag_and_drop_file')}(.txt, .docx)</p>
+                </div>
             </div>
-            <p>{t('max_size_file')}: 2mb</p>
-            {/*TODO Remove this later*/}
-            <aside>
-                {/*<h4>Files</h4>*/}
-                {files}
-            </aside>
+            <p className="file-result__words-num">{t('max_size_file')}: 2mb</p>
+            <div className="addfile__filename">{files}</div>
             {fileData &&
-                <FileResultTable fileData={fileData} setFileData={setFileData} pagination={pagination} setPagination={setPagination}/>
+                <FileResultTable fileData={fileData} setFileData={setFileData} pagination={pagination}
+                                 setPagination={setPagination}/>
             }
         </section>
     );

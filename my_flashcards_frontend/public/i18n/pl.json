@@ -71,5 +71,7 @@
   "fieldIsRequired": "Pole jest wymagane",
   "field_max_200": "Pole musi mieć mniej niż 200 znaków",
   "add_word": "Dodaj słowo",
-  "select_deck": "Wybierz talie"
+  "select_deck": "Wybierz talie",
+  "change": "Zamień",
+  "deck_name": "Nazwa talii"
 }
