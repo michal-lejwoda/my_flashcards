@@ -24,7 +24,6 @@ const EditModal: React.FC<EditModalProps> = ({editId, show, setShowEdit, handleS
     const fetchEditData = async () => {
         if (editId) {
             const response = await getSingleWord(editId, token)
-            console.log(response)
             setData(response)
         }
     }

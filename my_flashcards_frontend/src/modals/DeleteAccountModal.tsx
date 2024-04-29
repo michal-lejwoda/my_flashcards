@@ -15,7 +15,7 @@ const DeleteAccountModal: React.FC<DeleteAccountProps> = ({showDeleteModal, setS
     const navigate = useNavigate();
     const {token} = useContext(AuthContext);
     const auth = useContext(AuthContext);
-    const [, ,removeCookie] = useCookies(['flashcard_user_auth']);
+    const [, , removeCookie] = useCookies(['flashcard_user_auth']);
     const [deleteUserError, setDeleteUserError] = useState<deleteUserError | null>(null)
     const deleteAccount = async () => {
         try {

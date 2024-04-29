@@ -43,44 +43,15 @@ const Preview = () => {
     }, [token])
 
     useEffect(() => {
-        console.log("Second use Effect")
         if (deck !== null) {
             handleGetWords(token, deck.id, null, pageSize);
         }
     }, [deck])
 
 
-    // const customStyles = {
-    //     // @ts-expect-error Custom styles
-    //     singleValue: provided => ({
-    //         ...provided,
-    //         color: 'white',
-    //         zIndex: 1,
-    //     }),
-    //     // @ts-expect-error Custom styles
-    //     placeholder: provided => ({
-    //         ...provided,
-    //         color: 'white',
-    //         zIndex: 1,
-    //     }),
-    //     // @ts-expect-error Custom styles
-    //     input: provided => ({
-    //         ...provided,
-    //         color: 'white',
-    //         // zIndex: 1
-    //     }),
-    //     // @ts-expect-error Custom styles
-    //     option: (base, {isFocused, isSelected}) => ({
-    //         ...base,
-    //         backgroundColor: isSelected ? "DodgerBlue" : isFocused ? "grey" : undefined
-    //     })
-    // }
-
     const handleGetWords = async (token: string | null, deck_id: number, search: string | null, pageSize: number) => {
         try {
             const get_decks = await getDeckWords(token, deck_id, search, pageSize)
-            console.log("get_decks")
-            console.log(get_decks)
             setData(get_decks)
         } catch (err: unknown) {
             // #TODO Back HEre
@@ -91,20 +62,14 @@ const Preview = () => {
     }
     const refreshDeck = async () => {
         if (deck !== null) {
-        try {
-            const response = await getDeckWords(token, deck.id, null, pageSize)
-            setData(response)
-        } catch (err: unknown) {
-            // #TODO Back HEre
-            const error = err as ErrorResponse
-            console.log("error")
-            console.log(error)
+            try {
+                const response = await getDeckWords(token, deck.id, null, pageSize)
+                setData(response)
+            } catch (err: unknown) {
+                // Blank
+            }
         }
-    }}
-
-
-    console.log("deck")
-    console.log(deck)
+    }
 
     return (
         <section className="preview">
@@ -132,7 +97,6 @@ const Preview = () => {
                                          deck_id={location.state.id}
                                          handleGetWords={handleGetWords}
                                          handleOpenEditModal={handleOpenEditModal}
-                                         // setEditIt={setEditIt}
                 />
 
             }

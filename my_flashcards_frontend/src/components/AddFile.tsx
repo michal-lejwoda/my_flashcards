@@ -17,6 +17,7 @@ const AddFile = () => {
         pageIndex: 0,
         pageSize: 10,
     });
+    // TODO Back Here
 
     async function executeForTwoMinutes(action: (task_id: string, token: string | null) => Promise<Response>, task_id: string, token: string | null): Promise<void> {
         return new Promise((resolve, reject) => {
@@ -29,8 +30,6 @@ const AddFile = () => {
                         resolve();
                     }
                 } catch (error) {
-                    // TODO Back Here
-                    console.error(error);
                     clearInterval(interval);
                     reject(error);
                 }
