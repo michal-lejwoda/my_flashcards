@@ -21,7 +21,8 @@
     }
   }
 }
-.title{
+
+.title {
   margin-bottom: 1rem;
   @include breakpoint("mobilebig") {
     margin-bottom: 2rem;
@@ -111,6 +112,6 @@
   justify-content: center;
 }
 
-.errors{
+.errors {
   text-align: start;
 }

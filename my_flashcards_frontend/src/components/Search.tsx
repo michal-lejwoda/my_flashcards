@@ -30,6 +30,7 @@ const Search = () => {
             setData(response)
         } catch (err: unknown) {
             const error = err as ErrorResponse
+            // TODO Backhere
             console.log("error")
             console.log(error)
         }

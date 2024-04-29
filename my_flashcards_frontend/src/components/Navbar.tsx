@@ -16,8 +16,6 @@ const Navbar = () => {
     const [, , removeCookie] = useCookies(['flashcard_user_auth']);
     const {token} = useContext(AuthContext);
     const auth = useContext(AuthContext);
-    console.log("auth")
-    console.log(auth)
     const handleLogout = () => {
         auth.setToken(null)
         removeCookie('flashcard_user_auth')
@@ -108,8 +106,7 @@ const Navbar = () => {
 
             </div>
         </nav>
-    )
-        ;
+    );
 };
 
 export default Navbar;

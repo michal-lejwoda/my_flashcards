@@ -10,6 +10,7 @@ const LearnFlashcards = () => {
     const handleGoNext = () => {
         setReverse(true)
     }
+    // TODO Back here
     return (
         <div className="learnflashcards">
             <h1 className="title">{t('learn')}</h1>
