@@ -90,11 +90,12 @@ const Preview = () => {
                     <button className="standard-button">{t('learn')}</button>
                 </div>
             </div>
-            {data && data.results &&
+            {data && data.results && deck &&
                 <WordTablewithPagination data={data} token={token}
                                          setData={setData} pageSize={pageSize}
                                          setPageSize={setPageSize}
-                                         deck_id={location.state.id}
+                                         deck_id={deck.id}
+                                         // deck_id={location.state.id}
                                          handleGetWords={handleGetWords}
                                          handleOpenEditModal={handleOpenEditModal}
                 />

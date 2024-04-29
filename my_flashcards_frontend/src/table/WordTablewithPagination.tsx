@@ -6,6 +6,9 @@ import PaginationButton from "../components/elements/pagination/PaginationButton
 import PaginationNumber from "../components/elements/pagination/PaginationNumber.tsx";
 import PaginationSelect from "../components/elements/pagination/PaginationSelect.tsx";
 import Pagination from "../components/elements/pagination/Pagination.tsx";
+import EditButton from "../components/elements/EditButton.tsx";
+import RemoveButton from "../components/elements/RemoveButton.tsx";
+import {deleteWordFromDeckOnly} from "../api.tsx";
 
 const columnHelper = createColumnHelper<WordTable>()
 const WordTablewithPagination: React.FC<WordTablewithPaginationProps> = ({
@@ -19,8 +22,8 @@ const WordTablewithPagination: React.FC<WordTablewithPaginationProps> = ({
                                                                              handleOpenEditModal
 
                                                                          }) => {
-
-    const [openDropdownId, setOpenDropdownId] = useState<number | null>(null);
+    console.log("deck_id")
+    console.log(deck_id)
     const {t} = useTranslation();
     const [search, setSearch] = useState("")
     const handleChangeDataBasedOnPageSize = (pg_size: string) => {
@@ -32,35 +35,44 @@ const WordTablewithPagination: React.FC<WordTablewithPaginationProps> = ({
         setSearch(search_word)
         handleGetWords(token, deck_id, search_word, pageSize)
     }
+    const handleDeleteWord = async (id: number) => {
+        console.log("deck_id")
+        console.log(deck_id)
+        console.log("id")
+        console.log(id)
+        await deleteWordFromDeckOnly(deck_id, id, token)
+        handleGetWords(token, deck_id, search, Number(pageSize))
 
-    const toggleDropdown = (id: number) => {
-        setOpenDropdownId(openDropdownId === id ? null : id);
-    };
+        // await handleSearchWithDeck()
+    }
+
+
     const columns = [
         columnHelper.accessor('front_side', {
             header: () => <span>{t("front_page")}</span>,
+            size: 400,
             cell: info => info.getValue(),
         }),
         columnHelper.accessor('back_side', {
             header: () => <span>{t("reverse_page")}</span>,
+            size: 400,
             cell: info => info.getValue(),
         }),
         columnHelper.display({
-            id: "actions",
-            header: t("actions"),
+            id: "edit",
+            header: t("edit"),
+            size: 90,
             cell: (props) => {
-                return (
-                    <div className="dropdown">
-                        <button onClick={() => toggleDropdown(props.row.original.id)}>{t("actions")}</button>
-                        <div className={`container ${openDropdownId === props.row.original.id ? 'open' : ''}`}>
-                            <div className={`content ${openDropdownId === props.row.original.id ? 'open' : ''}`}>
-                                <a onClick={() => handleOpenEditModal(props.row.original.id)}>{t("edit")}</a>
-                                <a>{t("share")}</a>
-                                <a>{t("delete")}</a>
-                            </div>
-                        </div>
-                    </div>
-                )
+                return (<EditButton message={t("edit")} id={props.row.original.id} handleFunc={handleOpenEditModal}/>)
+            }
+
+        }),
+        columnHelper.display({
+            id: "remove",
+            header: t("remove"),
+            size: 90,
+            cell: (props) => {
+                return (<RemoveButton message={t("remove")} id={props.row.original.id} handleFunc={handleDeleteWord}/>)
             }
         })
     ]
@@ -75,11 +87,9 @@ const WordTablewithPagination: React.FC<WordTablewithPaginationProps> = ({
     })
     return (
         <div className="decks">
-            <h1 className="title">{t("decks")}</h1>
+            <h1 className="title">{t("words")}</h1>
             <div className="decks__searchcontainer searchcontainer">
                 <input
-                    // value={globalFilter ?? ''}
-                    // onChange={e => setGlobalFilter(String(e.target.value))}
                     onChange={e => handleSearch(e.target.value)}
                     className="searchcontainer__search"
                     placeholder={t("search")}/>
@@ -89,7 +99,9 @@ const WordTablewithPagination: React.FC<WordTablewithPaginationProps> = ({
                 {getHeaderGroups().map(headerGroup => (
                     <tr key={headerGroup.id}>
                         {headerGroup.headers.map(header => (
-                            <th key={header.id}>
+                            <th key={header.id} style={{
+                                width: header.column.getSize(),
+                            }}>
                                 {header.isPlaceholder
                                     ? null
                                     : flexRender(
@@ -105,7 +117,9 @@ const WordTablewithPagination: React.FC<WordTablewithPaginationProps> = ({
                 {getRowModel().rows.map(row => (
                     <tr key={row.id}>
                         {row.getVisibleCells().map(cell => (
-                            <td key={cell.id}>
+                            <td key={cell.id} style={{
+                                width: cell.column.getSize(),
+                            }}>
                                 {flexRender(cell.column.columnDef.cell, cell.getContext())}
                             </td>
                         ))}

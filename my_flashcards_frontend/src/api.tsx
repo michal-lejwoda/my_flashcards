@@ -200,11 +200,12 @@ export async function deleteWord(id: number, token: string | null) {
     return response.data
 }
 
-export async function deleteWordFromDeckOnly(deck_id: number, word_id: number) {
+export async function deleteWordFromDeckOnly(deck_id: number, word_id: number, token: string | null) {
     const currentLanguage = i18n.language;
     const response = await instance.delete(`/api/single_deck/${deck_id}/delete_word_from_deck/${word_id}/`, {
         headers: {
             'Accept-Language': currentLanguage,
+            'Authorization': `Token ${token}`
         },
     });
     return response.data
