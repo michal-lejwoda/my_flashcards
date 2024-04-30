@@ -1,4 +1,4 @@
-import React, {Suspense} from 'react'
+import {Suspense} from 'react'
 import ReactDOM from 'react-dom/client'
 import {BrowserRouter, Route, Routes,} from "react-router-dom";
 import './index.css'
@@ -22,11 +22,10 @@ import ResetPassword from "./components/ResetPassword.tsx";
 
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
-    <React.StrictMode>
+    // <React.StrictMode>
         <Suspense fallback="loading">
             <BrowserRouter>
                 <AuthProvider>
-
                     <Navbar/>
                     <div className="main">
                         <Routes>
@@ -34,7 +33,7 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
                             <Route path="/reset-password" element={<ResetPassword/>}></Route>
                             <Route path="/search" element={<Search/>}/>
                             <Route path="/create" element={<CreateComponent/>}/>
-                            <Route path="/learn/:slug" element={<LearnFlashcards/>}/>
+                            <Route path="/learn" element={<LearnFlashcards/>}/>
                             <Route path="/add_file" element={<AddFile/>}/>
                             <Route path="/login" element={<Login/>}/>
                             <Route path="/register" element={<Register/>}/>
@@ -48,5 +47,5 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
                 </AuthProvider>
             </BrowserRouter>
         </Suspense>
-    </React.StrictMode>,
+    // </React.StrictMode>,
 )

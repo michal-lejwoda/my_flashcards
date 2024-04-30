@@ -6,12 +6,14 @@ import {useNavigate} from "react-router-dom";
 const AuthContext = createContext<AuthContextType>({
     token: null,
     setToken: () => {
-    }
+    },
+    tokenLoading: true
 });
 export const AuthProvider = ({children}: Children) => {
     const navigate = useNavigate();
     const [token, setToken] = useState<string | null>(null);
     const [cookie] = useCookies(['flashcard_user_auth']);
+    const [tokenLoading, setTokenLoading] = useState(true)
     useEffect(()=>{
         if(cookie.flashcard_user_auth){
             setToken(cookie.flashcard_user_auth)
@@ -19,10 +21,11 @@ export const AuthProvider = ({children}: Children) => {
         else{
             navigate("/login")
         }
+        setTokenLoading(false)
     },[])
 
     return (
-        <AuthContext.Provider value={{token, setToken}}>
+        <AuthContext.Provider value={{token, setToken, tokenLoading}}>
             {children}
         </AuthContext.Provider>
     );

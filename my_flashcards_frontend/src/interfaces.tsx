@@ -142,6 +142,7 @@ export interface Children {
 export interface AuthContextType {
     token: string | null;
     setToken: Dispatch<SetStateAction<string | null>>;
+    tokenLoading: boolean;
 }
 
 export interface Response {

@@ -4,13 +4,13 @@ import {useNavigate} from "react-router-dom";
 
 const withAuth = <P extends object>(Component: ComponentType<P>) => {
     const WrappedComponent: React.FC<P> = (props) => {
-        const {token} = useContext(AuthContext);
+        const {token, tokenLoading} = useContext(AuthContext);
         const navigate = useNavigate();
         useEffect(() => {
-            if (!token) {
-                navigate("/login");
+            if (!tokenLoading && !token) {
+                navigate('/login');
             }
-        }, [token, navigate]);
+        }, [token]);
         return token ? <Component {...props} /> : null;
     };
 
