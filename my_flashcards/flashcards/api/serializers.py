@@ -56,10 +56,22 @@ class DeckSerializer(serializers.ModelSerializer):
 
 class SingleDeckSerializer(serializers.ModelSerializer):
     words = WordSerializer(many=True, read_only=True)
-
+    true_words = serializers.SerializerMethodField(read_only=True)
+    false_words = serializers.SerializerMethodField(read_only=True)
+    #TODO backe here
     class Meta:
         model = Deck
         fields = '__all__'
+
+    def get_true_words(self, obj):
+        true_words = obj.words.filter(is_correct=True)
+        serializer = WordSerializer(instance=true_words, many=True)
+        return serializer.data
+
+    def get_false_words(self, obj):
+        false_words = obj.words.filter(is_correct=False)
+        serializer = WordSerializer(instance=false_words, many=True)
+        return serializer.data
 
 
 class UserHistorySerializer(serializers.ModelSerializer):

@@ -38,7 +38,7 @@ class Word(TimeStampedModel):
     level = models.IntegerField(default=1, validators=[MaxValueValidator(6)])
 
     def __str__(self):
-        return "{} {}".format(self.front_side, self.user.username)
+        return "{} {}".format(self.front_side, self.user)
 
 
 class Deck(WithVisitCounter, TimeStampedModel):
