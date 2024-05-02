@@ -349,3 +349,14 @@ export interface PaginationNumberProps{
     current_page: number,
     total_pages: number
 }
+
+export interface LearnObject{
+    created: string,
+    modified: string,
+    front_side: string,
+    back_side: string,
+    is_correct: boolean,
+    next_learn: string,
+    level: number,
+    user: number
+}
