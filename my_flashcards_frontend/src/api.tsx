@@ -145,6 +145,17 @@ export async function getSingleDeck(id: number, token: string| null) {
     return response.data
 }
 
+export async function getSingleDeckAllWords(id: number, token: string| null) {
+    const currentLanguage = i18n.language;
+    const response = await instance.get(`/api/single_deck/${id}/all_words/`, {
+        headers: {
+            'Accept-Language': currentLanguage,
+            'Authorization': `Token ${token}`
+        },
+    });
+    return response.data
+}
+
 export async function postFile(form: FormData, token: string | null) {
     const currentLanguage = i18n.language;
     const response = await instance.post(`/api/file_upload/`, form, {

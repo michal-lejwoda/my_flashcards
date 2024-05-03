@@ -14,7 +14,7 @@ from rest_framework.viewsets import GenericViewSet, ViewSet
 
 from my_flashcards.flashcards.api.serializers import DeckSerializer, SingleDeckSerializer, WordSerializer, \
     UserHistorySerializer, DeckSerializerWithAllFields, CreateUserHistorySerializer, WordSerializerWithDeck, \
-    WordUpdateSerializer
+    WordUpdateSerializer, SingleDeckSerializerAllWords
 from my_flashcards.flashcards.choices import POSSIBLE_RESULTS
 from my_flashcards.flashcards.errors import ErrorHandlingMixin
 from my_flashcards.flashcards.models import Deck, Word, UserHistory
@@ -86,6 +86,12 @@ class SingleDeckViewSet(ErrorHandlingMixin, RetrieveModelMixin, GenericViewSet):
 
     def get_queryset(self):
         return Deck.objects.filter(user=self.request.user)
+
+    @action(detail=True, methods=['GET'], permission_classes=[IsAuthenticated])
+    def all_words(self, request, pk=None):
+        instance = self.get_object()
+        serializer = SingleDeckSerializerAllWords(instance)
+        return Response(serializer.data)
 
     @action(detail=True, methods=['DELETE'], permission_classes=[IsAuthenticated],
             url_path='delete_word_from_deck/(?P<word_id>[^/.]+)')

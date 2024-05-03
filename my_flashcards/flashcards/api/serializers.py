@@ -62,6 +62,11 @@ class DeckSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError("Deck o tej nazwie już istnieje dla tego użytkownika.")
         return value
 
+class SingleDeckSerializerAllWords(serializers.ModelSerializer):
+    words = WordSerializer(many=True)
+    class Meta:
+        model = Deck
+        fields = ['id', 'words']
 class SingleDeckSerializer(serializers.ModelSerializer):
     words_to_learn = serializers.SerializerMethodField(read_only=True)
     wrong_words_to_learn = serializers.SerializerMethodField(read_only=True)
@@ -69,7 +74,6 @@ class SingleDeckSerializer(serializers.ModelSerializer):
     class Meta:
         model = Deck
         exclude = ('words',)
-        # fields = '__all__'
 
     def get_words_to_learn(self, obj):
         words = obj.words.annotate(
@@ -92,25 +96,6 @@ class SingleDeckSerializer(serializers.ModelSerializer):
         ).filter(wrong_words=True)
         serializer = WordSerializer(instance=words, many=True)
         return serializer.data
-    # def get_words_learned(self, obj):
-    #     words = obj.words.annotate(
-    #         learned=Case(
-    #             When(is_correct=True, next_learn__gt=timezone.now(), then=Value(True)),
-    #             default=Value(False),
-    #             output_field=BooleanField()
-    #         )
-    #     ).filter(learned=True)
-    #     serializer = WordSerializer(instance=words, many=True)
-    #     return serializer.data
-    # def get_words_to_learn(self, obj):
-    #     true_words = obj.words.filter(next_learn__lte=timezone.now())
-    #     serializer = WordSerializer(instance=true_words, many=True)
-    #     return serializer.data
-    #
-    # def get_words_learned(self, obj):
-    #     false_words = obj.words.filter(is_correct=True, next_learn__gt=timezone.now())
-    #     serializer = WordSerializer(instance=false_words, many=True)
-    #     return serializer.data
 
 
 class UserHistorySerializer(serializers.ModelSerializer):
