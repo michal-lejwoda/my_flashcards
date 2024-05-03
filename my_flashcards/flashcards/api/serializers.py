@@ -3,6 +3,7 @@ from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 from rest_framework import serializers
 
+from my_flashcards.flashcards.choices import POSSIBLE_RESULTS
 from my_flashcards.flashcards.models import Deck, Word, UserHistory
 
 class DeckSerializerOnlyWithName(serializers.ModelSerializer):
@@ -15,6 +16,11 @@ class WordSerializerWithDeck(serializers.ModelSerializer):
     class Meta:
         model = Word
         fields = ['id','front_side', 'back_side', 'deck_words']
+
+class WordUpdateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Word
+        fields = ['is_correct', 'next_learn', 'level']
 
 
 class WordSerializer(serializers.ModelSerializer):

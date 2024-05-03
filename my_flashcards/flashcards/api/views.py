@@ -13,7 +13,9 @@ from rest_framework.response import Response
 from rest_framework.viewsets import GenericViewSet, ViewSet
 
 from my_flashcards.flashcards.api.serializers import DeckSerializer, SingleDeckSerializer, WordSerializer, \
-    UserHistorySerializer, DeckSerializerWithAllFields, CreateUserHistorySerializer, WordSerializerWithDeck
+    UserHistorySerializer, DeckSerializerWithAllFields, CreateUserHistorySerializer, WordSerializerWithDeck, \
+    WordUpdateSerializer
+from my_flashcards.flashcards.choices import POSSIBLE_RESULTS
 from my_flashcards.flashcards.errors import ErrorHandlingMixin
 from my_flashcards.flashcards.models import Deck, Word, UserHistory
 from my_flashcards.flashcards.tasks import get_words_from_file
@@ -191,6 +193,33 @@ class CreateDeckFromMultipleDecksViewSet(ViewSet):
         serializer = self.serializer_class(new_deck)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
+class LearnWordViewSet(RetrieveModelMixin,UpdateModelMixin, GenericViewSet):
+    permission_classes = [IsAuthenticated]
+    serializer_class = WordUpdateSerializer
+    pagination_class = CustomPagination
+
+    def update(self, request, *args, **kwargs):
+        result_type = request.data['result_type']
+        level = request.data['level']
+        result = POSSIBLE_RESULTS[0][level][result_type]
+        data = {"is_correct": result['correct'], "level": result['next_level'], "next_learn": timezone.now() + result['time']}
+        partial = kwargs.pop('partial', False)
+        instance = self.get_object()
+        serializer = self.get_serializer(instance, data=data, partial=partial)
+        serializer.is_valid(raise_exception=True)
+        self.perform_update(serializer)
+
+        if getattr(instance, '_prefetched_objects_cache', None):
+            instance._prefetched_objects_cache = {}
+
+        return Response(serializer.data)
+    def get_queryset(self):
+        queryset = Word.objects.filter(user=self.request.user)
+        search_query = self.request.query_params.get('search', None)
+        if search_query:
+            queryset = queryset.filter(Q(front_side__icontains=search_query) | Q(
+                back_side__icontains=search_query))
+        return queryset
 
 class WordViewSet(ListModelMixin, DestroyModelMixin, RetrieveModelMixin, UpdateModelMixin, GenericViewSet):
     permission_classes = [IsAuthenticated]

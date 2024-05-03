@@ -32,7 +32,7 @@ class Word(TimeStampedModel):
     back_side = models.CharField(max_length=200,
                                  validators=[MinLengthValidator(2, message=_('The field must contain at least 2 characters'))],
                                  verbose_name=_('Back side'))
-    is_correct = models.BooleanField(default=False)
+    is_correct = models.BooleanField(default=True)
     next_learn = models.DateTimeField(default=timezone.now)
     user = models.ForeignKey(User, on_delete=models.CASCADE, default=None, null=True)
     level = models.IntegerField(default=1, validators=[MaxValueValidator(6)])

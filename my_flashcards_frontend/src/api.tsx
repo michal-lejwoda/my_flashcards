@@ -2,7 +2,7 @@ import axios from 'axios'
 import i18n from "i18next";
 import {
     ChangeEmailData,
-    ChangePasswordData,
+    ChangePasswordData, EditLearnWordObject,
     EditWordObject, handleDeleteUserData,
     handleSendMailWithResetPasswordData,
     SendDeckData
@@ -114,6 +114,17 @@ export async function getSingleWord(id: number, token: string| null) {
 export async function editSingleWord(id: number, token: string| null, form: EditWordObject){
     const currentLanguage = i18n.language;
     const response = await instance.patch(`/api/word/${id}/`, form,{
+        headers: {
+            'Accept-Language': currentLanguage,
+            'Authorization': `Token ${token}`
+        },
+    });
+    return response.data
+}
+
+export async function learnSingleWord(id: number, token: string| null, form: EditLearnWordObject){
+    const currentLanguage = i18n.language;
+    const response = await instance.patch(`/api/learn_word/${id}/`, form,{
         headers: {
             'Accept-Language': currentLanguage,
             'Authorization': `Token ${token}`

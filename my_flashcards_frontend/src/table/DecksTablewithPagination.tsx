@@ -65,7 +65,7 @@ const DecksTablewithPagination: React.FC<DecksTablewithPaginationProps> = ({
                                 <NavLink className="dropdown__element" to="/preview" state={{deck: props.row.original}}>{t("preview")}</NavLink>
                                 <NavLink className="dropdown__element" to="/learn"
                                          state={{id: props.row.original.id, reverse: false}}>{t("learn")}</NavLink>
-                                <NavLink className="dropdown__element" to={`/learn/${props.row.original.slug}`} state={{
+                                <NavLink className="dropdown__element" to="/learn" state={{
                                     id: props.row.original.id,
                                     reverse: true
                                 }}>{t("reverse_and_learn")}</NavLink>

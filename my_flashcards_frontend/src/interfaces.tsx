@@ -192,6 +192,11 @@ export interface EditWordObject {
     back_side: string
 }
 
+export interface EditLearnWordObject{
+    result_type: string,
+    level: number
+}
+
 export interface DecksTablewithPaginationProps {
     data: DecksResponseTable
     token: string | null
@@ -351,6 +356,7 @@ export interface PaginationNumberProps{
 }
 
 export interface LearnObject{
+    id: number,
     created: string,
     modified: string,
     front_side: string,

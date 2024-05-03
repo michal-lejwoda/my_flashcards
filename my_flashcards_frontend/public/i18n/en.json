@@ -73,5 +73,6 @@
   "add_word": "Add word",
   "select_deck": "Select deck",
   "change": "Change",
-  "deck_name": "Deck name"
+  "deck_name": "Deck name",
+  "reverse_and_learn": "Reverse and learn"
 }
