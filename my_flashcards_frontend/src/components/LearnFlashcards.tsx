@@ -149,7 +149,7 @@ const LearnFlashcards = () => {
                     </div>
                 }
             </div>
-            <p><span>{wrongWordsToLearn.length}</span>/{wordsToLearn.length}</p>
+            <p className="learnflashcards__howmany"><span className="learnflashcards--wrong" style={{ textDecoration: !currentWord?.is_correct ? 'underline' : 'none'  }}>{wrongWordsToLearn.length}</span>/<span className="learnflashcards--normal" style={{ textDecoration: currentWord?.is_correct ? 'underline' : 'none'  }}>{wordsToLearn.length}</span></p>
 
             <div className="learnflashcards__buttons">
                 {reverse &&
