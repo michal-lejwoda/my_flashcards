@@ -160,6 +160,15 @@ const FileResultTable: FC<PropsFileData> = ({fileData, setFileData, pagination, 
             }
         },
     });
+    const changeAll = () => {
+        const tempFile = fileData.slice()
+        for (const obj of tempFile) {
+            const temp = obj.front_side;
+            obj.front_side = obj.back_side;
+            obj.back_side = temp;
+        }
+        setFileData(tempFile)
+    }
 
     return (
         <div className="file-result">
@@ -178,6 +187,13 @@ const FileResultTable: FC<PropsFileData> = ({fileData, setFileData, pagination, 
                 <div className="file-result__button">
                     <GreenButton message={t("create")}/>
                 </div>
+                <div className="file-result__button">
+                    <button className="greenoutline--button" onClick={(e) => {
+                        e.preventDefault();
+                        changeAll();
+                    }}>{t("change_all")}</button>
+                </div>
+
             </form>
             <table className="file-result__table">
                 <thead>
