@@ -21,16 +21,21 @@ const LearnFlashcards = () => {
 
     function setInitData(wordsLearn: LearnObject[], wrongWordsLearn: LearnObject[]) {
         if (wrongWordsLearn.length > 0) {
+
             const first_word = wrongWordsLearn.shift();
-            setCurrentWord(first_word)
-            setWrongWordsToLearn(wrongWordsLearn)
-            setWordsToLearn(wordsLearn);
+            if (first_word) {
+                setCurrentWord(first_word)
+                setWrongWordsToLearn(wrongWordsLearn)
+                setWordsToLearn(wordsLearn);
+            }
         }
         if (wordsLearn.length > 0) {
             const first_word = wordsLearn.shift();
-            setCurrentWord(first_word)
-            setWrongWordsToLearn(wrongWordsLearn)
-            setWordsToLearn(wordsLearn);
+            if (first_word) {
+                setCurrentWord(first_word)
+                setWrongWordsToLearn(wrongWordsLearn)
+                setWordsToLearn(wordsLearn);
+            }
         }
     }
 

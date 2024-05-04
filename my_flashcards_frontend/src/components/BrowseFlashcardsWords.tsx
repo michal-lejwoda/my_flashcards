@@ -2,7 +2,7 @@ import {useContext, useEffect, useState} from "react";
 import {useLocation, useNavigate} from "react-router-dom";
 import {LearnObject} from "../interfaces.tsx";
 import {useTranslation} from "react-i18next";
-import {getSingleDeck, getSingleDeckAllWords} from "../api.tsx";
+import {getSingleDeckAllWords} from "../api.tsx";
 import AuthContext from "../context/AuthContext.tsx";
 import withAuth from "../context/withAuth.tsx";
 
@@ -17,16 +17,22 @@ const BrowseFlashcardsWords = () => {
     const [wrongWordsToLearn, setWrongWordsToLearn] = useState<LearnObject[]>([])
 
     const handleGoNext = (result_type: boolean) => {
-        console.log("handleGoNext")
-        console.log(result_type)
+        if (currentWord) {
+            if (!result_type) {
+                setWrongWordsToLearn(prevState => [...prevState, currentWord]);
+            }
+        }
         getNextWord()
+        setReverse(true)
     }
 
     function setInitData(wordsLearn: LearnObject[]) {
         if (wordsLearn.length > 0) {
             const first_word = wordsLearn.shift();
-            setCurrentWord(first_word)
-            setWordsToLearn(wordsLearn);
+            if (first_word) {
+                setCurrentWord(first_word)
+                setWordsToLearn(wordsLearn);
+            }
         }
     }
 

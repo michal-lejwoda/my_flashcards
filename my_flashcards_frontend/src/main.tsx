@@ -19,6 +19,7 @@ import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
 import ChooseAndLearn from "./components/ChooseAndLearn.tsx";
 import {AuthProvider} from "./context/AuthContext.tsx";
 import ResetPassword from "./components/ResetPassword.tsx";
+import BrowseFlashcardsWords from "./components/BrowseFlashcardsWords.tsx";
 
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
@@ -34,6 +35,7 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
                             <Route path="/search" element={<Search/>}/>
                             <Route path="/create" element={<CreateComponent/>}/>
                             <Route path="/learn" element={<LearnFlashcards/>}/>
+                            <Route path="/browse" element={<BrowseFlashcardsWords/>} />
                             <Route path="/add_file" element={<AddFile/>}/>
                             <Route path="/login" element={<Login/>}/>
                             <Route path="/register" element={<Register/>}/>
