@@ -4,7 +4,7 @@ import withAuth from "../context/withAuth.tsx";
 import {useLocation, useNavigate} from "react-router-dom";
 import {getSingleDeck, learnSingleWord} from "../api.tsx";
 import AuthContext from "../context/AuthContext.tsx";
-import {LearnObject} from "../interfaces.tsx";
+import {FlashcardsSet, LearnObject} from "../interfaces.tsx";
 import {POSSIBLE_RESULTS} from "../globalFunctions.tsx";
 import "../sass/learnflashcards.css"
 import "../index.css"
@@ -72,48 +72,58 @@ const LearnFlashcards = () => {
         setInitData(res.words_to_learn, res.wrong_words_to_learn)
     }
 
-    function getResultByKey(key: string): { [key: string]: any } | undefined {
-        const result = POSSIBLE_RESULTS.find(result => result.hasOwnProperty(key));
+
+    function getResultByKey(key: number): FlashcardsSet | undefined {
+        // @ts-expect-error Its working Normally
+        const result = POSSIBLE_RESULTS[0][key];
         if (result) {
-            return result[key];
+            return result;
         }
         return undefined;
     }
 
+
     const handleGoNext = (level: number, res_type: string) => {
-        const res = getResultByKey(level.toString())[res_type]
-        const form = {
-            "result_type": res_type,
-            "level": level
-        }
-        if (res.correct) {
-            // TODO: Add endpoint
-            if (currentWord !== null) {
-                learnSingleWord(currentWord.id, token, form)
+        const resultKey = getResultByKey(level)
+        if (resultKey) {
+            // @ts-expect-error Same here
+            const res = resultKey[res_type]
+
+            const form = {
+                "result_type": res_type,
+                "level": level
             }
-        } else {
-            if (currentWord !== null) {
-                learnSingleWord(currentWord.id, token, form)
-            }
-            setWrongWordsToLearn(prevState => {
-                const modifyCurrentWord = currentWord
-                const actualTime = new Date()
-                actualTime.setMinutes(actualTime.getMinutes() + res.time.minutes);
-                modifyCurrentWord.next_learn = actualTime.toISOString()
-                modifyCurrentWord.is_correct = false
-                const updatedState = [...prevState, modifyCurrentWord];
-                return updatedState.sort((a, b) => {
-                    const nextLearnA = a.next_learn;
-                    const nextLearnB = b.next_learn;
-                    if (nextLearnA < nextLearnB) {
-                        return -1;
+            if (res.correct) {
+                if (currentWord !== null) {
+                    learnSingleWord(currentWord.id, token, form)
+                }
+            } else {
+                if (currentWord !== null) {
+                    learnSingleWord(currentWord.id, token, form)
+                }
+                setWrongWordsToLearn(prevState => {
+                    const modifyCurrentWord = currentWord
+                    if (modifyCurrentWord) {
+                        const actualTime = new Date()
+                        actualTime.setMinutes(actualTime.getMinutes() + res.time.minutes);
+                        modifyCurrentWord.next_learn = actualTime.toISOString()
+                        modifyCurrentWord.is_correct = false
+                        const updatedState = [...prevState, modifyCurrentWord];
+                        return updatedState.sort((a, b) => {
+                            const nextLearnA = a.next_learn;
+                            const nextLearnB = b.next_learn;
+                            if (nextLearnA < nextLearnB) {
+                                return -1;
+                            }
+                            if (nextLearnA > nextLearnB) {
+                                return 1;
+                            }
+                            return 0;
+                        });
                     }
-                    if (nextLearnA > nextLearnB) {
-                        return 1;
-                    }
-                    return 0;
+                    return prevState;
                 });
-            });
+            }
         }
         getNextWord()
         setReverse(true)

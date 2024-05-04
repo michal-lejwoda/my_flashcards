@@ -192,7 +192,7 @@ export interface EditWordObject {
     back_side: string
 }
 
-export interface EditLearnWordObject{
+export interface EditLearnWordObject {
     result_type: string,
     level: number
 }
@@ -276,7 +276,8 @@ export interface CenteredFormProps {
     handleSubmit: (e?: (FormEvent<HTMLFormElement> | undefined)) => void
     children: ReactNode
 }
-export interface PaginationProps{
+
+export interface PaginationProps {
     children: ReactNode
 }
 
@@ -289,7 +290,8 @@ export interface InputFieldProps {
         <T_1 = string | React.ChangeEvent<unknown>>(field: T_1): T_1 extends React.ChangeEvent<unknown> ? void : (e: string | React.ChangeEvent<unknown>) => void;
     };
 }
-export interface InputFieldWithoutFormikProps{
+
+export interface InputFieldWithoutFormikProps {
     label: string;
     type: string;
     name: string;
@@ -298,30 +300,31 @@ export interface InputFieldWithoutFormikProps{
 
 }
 
-export interface MessageProps{
+export interface MessageProps {
     message: string;
 }
 
-export interface BackendMessageProps{
+export interface BackendMessageProps {
     message: string[];
 }
-export interface GreenButtonProps{
+
+export interface GreenButtonProps {
     onClick?: () => void;
     message: string
 }
 
-export interface RemoveButtonProps{
+export interface RemoveButtonProps {
     message: string
     id: number
     handleFunc: (id: number) => void
 
 }
 
-export interface CenteredTitleProps{
+export interface CenteredTitleProps {
     title: string
 }
 
-export interface MainSearchFieldProps{
+export interface MainSearchFieldProps {
     label: string;
     type: string;
     name: string;
@@ -332,30 +335,31 @@ export interface MainSearchFieldProps{
 }
 
 
-export interface PaginationButtonProps<>{
+export interface PaginationButtonProps<> {
     link: string | null;
     token: string | null;
     message: string;
     setData: Dispatch<any>;
 }
-export interface PaginationButtonReactTableProps{
-    onClick: ()=>void;
+
+export interface PaginationButtonReactTableProps {
+    onClick: () => void;
     disabled: boolean;
     message: string;
 }
 
 
-export interface PaginationSelectProps{
+export interface PaginationSelectProps {
     pageSize: number;
-    handleChange: {(pg_size: string): void};
+    handleChange: { (pg_size: string): void };
 }
 
-export interface PaginationNumberProps{
+export interface PaginationNumberProps {
     current_page: number,
     total_pages: number
 }
 
-export interface LearnObject{
+export interface LearnObject {
     id: number,
     created: string,
     modified: string,
@@ -365,4 +369,21 @@ export interface LearnObject{
     next_learn: string,
     level: number,
     user: number
+}
+
+interface Time {
+  minutes?: number;
+  days?: number;
+}
+
+interface Flashcard {
+  time: Time;
+  correct: boolean;
+}
+
+export type FlashcardsSet = {
+  AGAIN: Flashcard;
+  HARD: Flashcard;
+  MEDIUM: Flashcard;
+  EASY: Flashcard;
 }
