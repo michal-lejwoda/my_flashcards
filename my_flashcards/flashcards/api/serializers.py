@@ -52,9 +52,33 @@ class DeckSerializerWithAllFields(serializers.ModelSerializer):
         model = Deck
         fields = '__all__'
 class DeckSerializer(serializers.ModelSerializer):
+    num_of_words_to_learn = serializers.SerializerMethodField()
+    num_of_wrong_words = serializers.SerializerMethodField()
     class Meta:
         model = Deck
         exclude = ['words']
+
+    def get_num_of_words_to_learn(self, obj):
+        # return obj.words.filter(is_correct=True, next_learn__lte=timezone.now()).count()
+        words = obj.words.annotate(
+            to_learn=Case(
+                When(is_correct=True, next_learn__lte=timezone.now(), then=Value(True)),
+                default=Value(False),
+                output_field=BooleanField()
+            )
+        ).filter(to_learn=True).count()
+        return words
+
+    def get_num_of_wrong_words(self, obj):
+        # return obj.words.filter(is_correct=False).count()
+        words = obj.words.annotate(
+            wrong_words=Case(
+                When(is_correct=False, then=Value(True)),
+                default=Value(False),
+                output_field=BooleanField()
+            )
+        ).filter(wrong_words=True).count()
+        return words
 
     def validate_name(self, value):
         user = self.context['request'].user

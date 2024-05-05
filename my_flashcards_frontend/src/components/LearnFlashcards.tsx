@@ -74,8 +74,14 @@ const LearnFlashcards = () => {
 
 
     function getResultByKey(key: number): FlashcardsSet | undefined {
+        // console.log("key")
+        // console.log(key)
+        // console.log(POSSIBLE_RESULTS)
+        // console.log(POSSIBLE_RESULTS[key-1][key])
         // @ts-expect-error Its working Normally
-        const result = POSSIBLE_RESULTS[0][key];
+        const result = POSSIBLE_RESULTS[key-1][key];
+
+        console.log(result)
         if (result) {
             return result;
         }
@@ -84,6 +90,7 @@ const LearnFlashcards = () => {
 
 
     const handleGoNext = (level: number, res_type: string) => {
+        console.log("handleGoNext")
         const resultKey = getResultByKey(level)
         if (resultKey) {
             // @ts-expect-error Same here
@@ -94,11 +101,14 @@ const LearnFlashcards = () => {
                 "level": level
             }
             if (res.correct) {
-                if (currentWord !== null) {
+                console.log("Prawda")
+                if (currentWord) {
+                    console.log("tu powinno wysyłac")
                     learnSingleWord(currentWord.id, token, form)
                 }
             } else {
-                if (currentWord !== null) {
+                console.log("falsz")
+                if (currentWord) {
                     learnSingleWord(currentWord.id, token, form)
                 }
                 setWrongWordsToLearn(prevState => {
@@ -136,6 +146,8 @@ const LearnFlashcards = () => {
             getData()
         }
     }, [])
+    console.log("wrongWordsToLearn")
+    console.log(wrongWordsToLearn)
 
     return (
         <div className="learnflashcards">

@@ -207,7 +207,10 @@ class LearnWordViewSet(RetrieveModelMixin,UpdateModelMixin, GenericViewSet):
     def update(self, request, *args, **kwargs):
         result_type = request.data['result_type']
         level = request.data['level']
-        result = POSSIBLE_RESULTS[0][level][result_type]
+        print("level")
+        print(level)
+        print(POSSIBLE_RESULTS[level])
+        result = POSSIBLE_RESULTS[level][result_type]
         data = {"is_correct": result['correct'], "level": result['next_level'], "next_learn": timezone.now() + result['time']}
         partial = kwargs.pop('partial', False)
         instance = self.get_object()
