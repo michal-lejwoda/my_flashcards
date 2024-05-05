@@ -32,20 +32,19 @@ class Word(TimeStampedModel):
     back_side = models.CharField(max_length=200,
                                  validators=[MinLengthValidator(2, message=_('The field must contain at least 2 characters'))],
                                  verbose_name=_('Back side'))
-    is_correct = models.BooleanField(default=False)
+    is_correct = models.BooleanField(default=True)
     next_learn = models.DateTimeField(default=timezone.now)
     user = models.ForeignKey(User, on_delete=models.CASCADE, default=None, null=True)
-    level = models.IntegerField(default=1, validators=[MaxValueValidator(6)])
+    level = models.IntegerField(default=0, validators=[MaxValueValidator(6)])
 
     def __str__(self):
-        return "{} {}".format(self.front_side, self.user.username)
+        return "{} {}".format(self.front_side, self.user)
 
 
-# Create your models here.
 class Deck(WithVisitCounter, TimeStampedModel):
     name = models.CharField(max_length=100, blank=True)
     slug = models.SlugField(unique=True, blank=True)
-    words = models.ManyToManyField(Word, blank=True, verbose_name=_('Words'))
+    words = models.ManyToManyField(Word, blank=True, verbose_name=_('Words'), related_name="deck_words")
     user = models.ForeignKey(User, on_delete=models.CASCADE, default=None, null=True)
     is_public = models.BooleanField(default=False, verbose_name=_('Is public'))
 

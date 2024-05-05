@@ -1,11 +1,23 @@
-.register{
+@import '../main.scss';
+
+.register {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
   text-align: center;
-  &__submit{
+  align-items: center;
+
+  &__submit {
     display: flex;
     justify-content: flex-end;
   }
-  &__container{
-    margin-top: 2rem;
-    text-align: start;
+
+  &__container {
+    @include breakpoint("mobilebig") {
+      width: 500px;
+    }
+    @include breakpoint("tablet") {
+      width: 600px;
+    }
   }
 }

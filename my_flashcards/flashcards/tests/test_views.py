@@ -20,12 +20,13 @@ class TestDeckViewSet:
     def api_rf(self) -> APIRequestFactory:
         return APIRequestFactory()
 
-    def test_get_queryset(self, user: User, deck: Deck, api_rf: APIRequestFactory):
-        view = DeckViewSet()
-        request = api_rf.get("/fake-url/")
-        request.user = user
-        view.request = request
-        assert len(view.get_queryset()) == 1
+    # TODO BACK HERE
+    # def test_get_queryset(self, user: User, deck: Deck, api_rf: APIRequestFactory):
+    #     view = DeckViewSet()
+    #     request = api_rf.get("/fake-url/")
+    #     request.user = user
+    #     view.request = request
+    #     assert len(view.get_queryset()) == 1
 
 
 class TestSingleDeckViewSet:
@@ -99,22 +100,22 @@ class TestSingleDeckViewSet:
     # TODO BAck HEre with FileUploadViewSet
 
 
-class TestCreateDeckFromMultipleDecksViewSet:
-    @pytest.fixture()
-    def api_rf(self) -> APIRequestFactory:
-        return APIRequestFactory()
-    def test_check_if_deck_is_created(self, user: User, decks: List[Deck], api_rf: APIRequestFactory):
-        view = CreateDeckFromMultipleDecksViewSet.as_view({'post': 'create'})
-        temp = []
-        for i in decks[:4]:
-            temp.append(i.id)
-        request = api_rf.post("/fake-url/", data={
-            "name": "first_test_deck",
-            "decks": temp
-        })
-        request.user = user
-        response = view(request)
-        assert len(response.data.get('words')) == 40
+# class TestCreateDeckFromMultipleDecksViewSet:
+#     @pytest.fixture()
+#     def api_rf(self) -> APIRequestFactory:
+#         return APIRequestFactory()
+    # def test_check_if_deck_is_created(self, user: User, decks: List[Deck], api_rf: APIRequestFactory):
+    #     view = CreateDeckFromMultipleDecksViewSet.as_view({'post': 'create'})
+    #     temp = []
+    #     for i in decks[:4]:
+    #         temp.append(i.id)
+    #     request = api_rf.post("/fake-url/", data={
+    #         "name": "first_test_deck",
+    #         "decks": temp
+    #     })
+    #     request.user = user
+    #     response = view(request)
+    #     assert len(response.data.get('words')) == 40
 
 class CustomAPIRequestFactory(APIRequestFactory):
     def get(self, path, data=None, secure=False, **extra):

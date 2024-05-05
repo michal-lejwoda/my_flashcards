@@ -1,39 +1,129 @@
 import {useTranslation} from "react-i18next";
-import {Form} from "react-bootstrap";
 import "../sass/register.css";
+import {useFormik} from "formik";
+import {validateRegistration} from "../validation.tsx";
+import {ErrorResponse, RegisterError, RegisterValues} from "../interfaces.tsx";
+import {postRegister} from "../api.tsx";
+import {useCookies} from "react-cookie";
+import {useContext, useState} from "react";
+import {useNavigate} from "react-router-dom";
+import AuthContext from "../context/AuthContext.tsx";
+import withoutAuth from "../context/withoutAuth.tsx";
+import GreenButton from "./elements/GreenButton.tsx";
+import CenteredForm from "./elements/CenteredForm.tsx";
+import InputField from "./elements/InputField.tsx";
+import ErrorMessage from "./elements/errors/ErrorMessage.tsx";
+import BackendErrorMessage from "./elements/errors/BackendErrorMessage.tsx";
+import CenteredTitle from "./elements/CenteredTitle.tsx";
 
 const Register = () => {
     const {t} = useTranslation();
+    const navigate = useNavigate();
+    const [, setCookie] = useCookies(['flashcard_user_auth']);
+    const [registerError, setRegisterError] = useState<RegisterError | null>(null)
+    const auth = useContext(AuthContext);
+    const {handleSubmit, handleChange, errors} = useFormik({
+        initialValues: {
+            username: '',
+            email: '',
+            password: '',
+            repeat_password: '',
+        },
+        validationSchema: validateRegistration,
+        validateOnChange: false,
+        onSubmit: values => {
+            handleRegister(values)
+        },
+    });
+    const handleRegister = async (values: RegisterValues) => {
+        const form = new FormData()
+        form.append("username", values.username)
+        form.append("email", values.email)
+        form.append("password", values.password)
+        form.append("password2", values.repeat_password)
+        try {
+            const register_data = await postRegister(form)
+            if (register_data.data && register_data.data.token) {
+                await setCookie('flashcard_user_auth', register_data.data.token, {'sameSite': 'lax'});
+                auth.setToken(register_data.data.token)
+                await navigate("/");
+            }
+            // TODO Maybe Add some sort of exception
+        } catch (err: unknown) {
+            const error = err as ErrorResponse
+            setRegisterError(error.response.data)
+        }
+    }
+
     return (
         <div className="register">
-            <h1>{t('register')}</h1>
+            <CenteredTitle title={t('register')}/>
             <div className="register__container">
-                <Form>
-                    <Form.Group className="mb-3" controlId="formBasicEmail">
-                        <Form.Label>{t('username')}</Form.Label>
-                        <Form.Control type="text" placeholder={t("enter_username")}/>
-                    </Form.Group>
-                    <Form.Group className="mb-3" controlId="formBasicEmail">
-                        <Form.Label>{t('email')}</Form.Label>
-                        <Form.Control type="email" placeholder={t("enter_email")}/>
-                    </Form.Group>
-                    <Form.Group className="mb-3" controlId="formBasicPassword">
-                        <Form.Label>{t('password')}</Form.Label>
-                        <Form.Control type="password" placeholder={t("password")}/>
-                    </Form.Group>
-                    <Form.Group className="mb-3" controlId="formBasicPassword">
-                        <Form.Label>{t('repeat_password')}</Form.Label>
-                        <Form.Control type="password" placeholder={t("repeat_password")}/>
-                    </Form.Group>
-                    <div className="register__submit">
-                        <button className="greenoutline--button" type="submit">
-                            {t("submit")}
-                        </button>
+                <CenteredForm handleSubmit={handleSubmit}>
+                    <div className="account__form--textfield">
+                        <InputField
+                            label={t("username")}
+                            name="username"
+                            type="text"
+                            handleChange={handleChange}
+                        />
+                        <div className="errors form__errors">
+                            {errors.username && <ErrorMessage message={errors.username}/>}
+                            {registerError && registerError.username && (
+                                <BackendErrorMessage message={registerError.username}/>
+                            )}
+                        </div>
                     </div>
-                </Form>
+                    <div className="account__form--textfield">
+                        <InputField
+                            label={t("email")}
+                            name="email"
+                            type="email"
+                            handleChange={handleChange}
+                        />
+                        <div className="errors form__errors">
+                            {errors.email && <ErrorMessage message={errors.email}/>}
+                            {registerError && registerError.email && (
+                                <BackendErrorMessage message={registerError.email}/>
+                            )}
+                        </div>
+                    </div>
+                    <div className="account__form--textfield">
+                        <InputField
+                            label={t("password")}
+                            name="password"
+                            type="password"
+                            handleChange={handleChange}
+                        />
+                        <div className="errors form__errors">
+                            {errors.password && <ErrorMessage message={errors.password}/>}
+                            {registerError && registerError.password && (
+                                <BackendErrorMessage message={registerError.password}/>
+                            )}
+                        </div>
+                    </div>
+                    <div className="account__form--textfield">
+                        <InputField
+                            label={t("repeat_password")}
+                            name="repeat_password"
+                            type="password"
+                            handleChange={handleChange}
+                        />
+                        <div className="errors form__errors">
+                            {errors.repeat_password &&
+                                <ErrorMessage message={errors.repeat_password}/>}
+                            {registerError && registerError.repeat_password && (
+                                <BackendErrorMessage message={registerError.repeat_password}/>
+                            )}
+                        </div>
+                    </div>
+                    <div className="account__button">
+                        <GreenButton message={t("submit")}/>
+                    </div>
+                </CenteredForm>
             </div>
         </div>
     );
 };
 
-export default Register;
+export default withoutAuth(Register);

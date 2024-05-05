@@ -1,9 +1,9 @@
+
 * {
     margin: 0;
     padding: 0;
-    box-sizing: border-box; /* Upewnij się, że box-sizing jest ustawiony na border-box */
+    box-sizing: border-box;
     color:white;
-    background-color: #1c1c1a;
 }
 
 #root {
@@ -17,9 +17,7 @@
 .main{
   padding: 2rem 1rem 1rem;
 }
-.title{
-  margin-bottom: 2rem;
-}
+
 .standard-button{
   padding: 0.5rem 1rem 0.5rem;
   margin-right: 0.2rem;
@@ -52,4 +50,7 @@
 }
 .greenoutline--button:hover{
   background-color: #8ae001;
+}
+button{
+  background-color: #1c1c1a;
 }

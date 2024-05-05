@@ -1,0 +1,44 @@
+@import '../main.scss';
+
+.file-result {
+  margin-top: 2rem;
+  display: flex;
+  flex-direction: column;
+  align-content: center;
+  align-items: center;
+  text-align: center;
+
+  &__form {
+    margin-bottom: 2rem;
+    @include breakpoint("laptop") {
+      width: 600px;
+    }
+  }
+  &__words-num{
+    margin-top: 1rem;
+  }
+
+  &__button {
+    display: flex;
+    justify-content: flex-end;
+  }
+
+  &__table {
+    border-collapse: collapse;
+
+    table, th, td {
+      border: 1px solid white;
+      border-collapse: collapse;
+    }
+  }
+}
+
+.dropzone {
+  &__container {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+  }
+}

@@ -1,0 +1,117 @@
+@mixin breakpoint($point) {
+  @if $point == mobilebig {
+    @media screen and (min-width: 500px) {
+      @content;
+    }
+  } @else if $point == tablet {
+    @media screen and (min-width: 700px) {
+      @content;
+    }
+  } @else if $point == laptop {
+    @media screen and (min-width: 900px) {
+      @content;
+    }
+  } @else if $point == desktop {
+    @media screen and (min-width: 1200px) {
+      @content;
+    }
+  } @else if $point == LGdesktop {
+    @media screen and (min-width: 1401px) {
+      @content;
+    }
+  }
+}
+
+.title {
+  margin-bottom: 1rem;
+  @include breakpoint("mobilebig") {
+    margin-bottom: 2rem;
+  }
+}
+
+.modal-content {
+  background-color: #1c1c1a !important;
+}
+
+.dangeroutline--button {
+  padding: 0.2rem;
+  font-size: 0.8rem;
+  background-color: darkred;
+  cursor: pointer;
+  border: 2px solid white;
+  font-weight: 600;
+  margin: 0.2rem;
+  @include breakpoint("mobilebig") {
+    font-size: 1rem;
+    margin: 1rem;
+    padding: 0.5rem;
+    font-weight: 700;
+
+  }
+}
+
+
+.editoutline--button {
+  padding: 0.2rem;
+  font-size: 0.8rem;
+  background-color: darkgreen;
+  cursor: pointer;
+  border: 2px solid white;
+  font-weight: 600;
+  margin: 0.2rem;
+  @include breakpoint("mobilebig") {
+    font-size: 1rem;
+    margin: 1rem;
+    padding: 0.5rem;
+    font-weight: 700;
+
+  }
+}
+
+.pagination {
+  margin-top: 1rem;
+  text-align: center;
+  width: 300px;
+  display: flex;
+  justify-content: center;
+
+  &--number {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-left: 0.4rem;
+    margin-right: 0.4rem;
+
+  }
+
+  &--select {
+    background-color: transparent;
+    margin-left: 1rem;
+  }
+
+  &--button {
+    padding: 0.4rem;
+    border: 1px solid white;
+    background-color: transparent;
+    margin-right: 0.3rem;
+    cursor: pointer;
+  }
+}
+
+.async_select {
+  margin-bottom: 1rem;
+}
+
+.search_table {
+  margin-top: 2rem;
+  display: flex;
+  flex-direction: column;
+  align-content: center;
+  align-items: center;
+  text-align: center;
+  justify-content: center;
+}
+
+.errors {
+  text-align: start;
+}

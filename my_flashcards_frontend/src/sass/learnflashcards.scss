@@ -1,11 +1,14 @@
 .learnflashcards {
   text-align: center;
-  &__buttons{
+
+  &__buttons {
     margin-top: 1rem;
   }
-  &__translation{
+
+  &__translation {
     margin-top: 4rem;
   }
+
   &__container {
     border-radius: 20px;
     min-height: 300px;
@@ -20,10 +23,51 @@
     text-align: center;
 
   }
+
+  &__howmany {
+    margin-top: 1rem;
+  }
+
+  &--wrong {
+    color: red;
+    margin-right: 0.2rem;
+    font-size: 1.2rem;
+    font-weight: 500
+  }
+
+  &--normal {
+    color: cornflowerblue;
+    margin-left: 0.2rem;
+    font-size: 1.2rem;
+    font-weight: 500
+  }
 }
-.translation{
-  &__title{
+
+.translation {
+  &__title {
     padding-bottom: 1rem;
   }
 
+}
+
+.buttons {
+  &__results {
+    display: flex;
+    justify-content: center;
+  }
+}
+
+.singlebutton {
+  &--correct {
+    color: cornflowerblue;
+  }
+
+  &--wrong {
+    color: red;
+  }
+
+  &__container {
+    display: flex;
+    flex-direction: column;
+  }
 }

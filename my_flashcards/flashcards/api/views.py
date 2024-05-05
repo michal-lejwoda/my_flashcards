@@ -1,32 +1,83 @@
 from celery.result import AsyncResult
-from django.db import IntegrityError
+from django.db import IntegrityError, transaction
 from django.db.models import Q
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
-from rest_framework import status
+from rest_framework import status, pagination
 from rest_framework.decorators import action
-from rest_framework.mixins import CreateModelMixin, ListModelMixin, RetrieveModelMixin, DestroyModelMixin
-from rest_framework.pagination import PageNumberPagination
+from rest_framework.mixins import CreateModelMixin, ListModelMixin, RetrieveModelMixin, DestroyModelMixin, \
+    UpdateModelMixin
 from rest_framework.parsers import MultiPartParser
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
-from rest_framework.viewsets import GenericViewSet, ViewSet, ModelViewSet
+from rest_framework.viewsets import GenericViewSet, ViewSet
 
 from my_flashcards.flashcards.api.serializers import DeckSerializer, SingleDeckSerializer, WordSerializer, \
-    UserHistorySerializer, DeckSerializerWithAllFields, CreateUserHistorySerializer
+    UserHistorySerializer, DeckSerializerWithAllFields, CreateUserHistorySerializer, WordSerializerWithDeck, \
+    WordUpdateSerializer, SingleDeckSerializerAllWords
+from my_flashcards.flashcards.choices import POSSIBLE_RESULTS
 from my_flashcards.flashcards.errors import ErrorHandlingMixin
 from my_flashcards.flashcards.models import Deck, Word, UserHistory
-from my_flashcards.flashcards.pagination import CustomPagination
 from my_flashcards.flashcards.tasks import get_words_from_file
+class CustomPagination(pagination.PageNumberPagination):
+    page_size = 10
+    page_size_query_param = 'page_size'
+    max_page_size = 50
+
+    def __init__(self, page_size_query_param=None, *args, **kwargs):
+        if 'page_size' in kwargs:
+            self.page_size = kwargs.pop('page_size')
+        if page_size_query_param:
+            self.page_size_query_param = page_size_query_param
+        super().__init__(*args, **kwargs)
+
+    def get_paginated_response(self, data):
+        search_query = self.request.query_params.get('search')
+        page_size = self.request.query_params.get('page_size')
+        if page_size is None:
+            page_size = self.page_size
+        total_pages = self.page.paginator.num_pages
+        last_page_link = None
+        first_page_link = None
+        if total_pages > 0:
+            first_page_link = self.request.build_absolute_uri(
+                f"?page=1&page_size={page_size}"
+            )
+            last_page_link = self.request.build_absolute_uri(
+                f"?page={total_pages}&page_size={page_size}"
+            )
+            if search_query:
+                first_page_link += f"&search={search_query}"
+                last_page_link += f"&search={search_query}"
+
+        next_link = self.get_next_link()
+        previous_link = self.get_previous_link()
+        return Response(
+            {
+                'links': {
+                    'next': next_link,
+                    'previous': previous_link,
+                    'last_page_link': last_page_link,
+                    'first_page_link': first_page_link,
+                },
+                'count': self.page.paginator.count,
+                'current_page': self.page.number,
+                'total_pages': self.page.paginator.num_pages,
+                'results': data
+            })
 
 
 class DeckViewSet(CreateModelMixin, ListModelMixin, GenericViewSet):
     permission_classes = [IsAuthenticated]
     serializer_class = DeckSerializer
-    pagination_class = PageNumberPagination
+    pagination_class = CustomPagination
 
     def get_queryset(self):
-        return Deck.objects.filter(user=self.request.user)
+        queryset = Deck.objects.filter(user=self.request.user)
+        search_query = self.request.query_params.get('search', None)
+        if search_query:
+            queryset = queryset.filter(Q(name__icontains=search_query))
+        return queryset
 
 
 class SingleDeckViewSet(ErrorHandlingMixin, RetrieveModelMixin, GenericViewSet):
@@ -35,6 +86,12 @@ class SingleDeckViewSet(ErrorHandlingMixin, RetrieveModelMixin, GenericViewSet):
 
     def get_queryset(self):
         return Deck.objects.filter(user=self.request.user)
+
+    @action(detail=True, methods=['GET'], permission_classes=[IsAuthenticated])
+    def all_words(self, request, pk=None):
+        instance = self.get_object()
+        serializer = SingleDeckSerializerAllWords(instance)
+        return Response(serializer.data)
 
     @action(detail=True, methods=['DELETE'], permission_classes=[IsAuthenticated],
             url_path='delete_word_from_deck/(?P<word_id>[^/.]+)')
@@ -67,6 +124,26 @@ class SingleDeckViewSet(ErrorHandlingMixin, RetrieveModelMixin, GenericViewSet):
         except IntegrityError:
             return self.handle_response(_("Incorrect data"), status.HTTP_400_BAD_REQUEST)
 
+    @action(detail=False, methods=['POST'], permission_classes=[IsAuthenticated])
+    def create_deck_with_words(self, request):
+        try:
+            with transaction.atomic():
+                serializer = DeckSerializer(data=request.data, context={'request': request})
+                if serializer.is_valid():
+                    deck = serializer.save(user=request.user)
+                    for row in request.data['rows']:
+                        word_serializer = WordSerializer(data=row)
+                        if word_serializer.is_valid():
+                            word = word_serializer.save(user=request.user)
+                            deck.words.add(word)
+                    deck.save()
+                    serializer_with_all_fields = DeckSerializerWithAllFields(deck)
+                    return Response(serializer_with_all_fields.data)
+                else:
+                    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        except Exception as e:
+            return Response({"message": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
 
 class FileUploadViewSet(ErrorHandlingMixin, ViewSet):
     parser_classes = [MultiPartParser]
@@ -77,12 +154,14 @@ class FileUploadViewSet(ErrorHandlingMixin, ViewSet):
             try:
                 file_data = file_obj.read()
                 task_id = get_words_from_file.apply_async(args=[file_data]).id
-                return self.handle_response({"message": _("The file was successfully uploaded"), "task_id": task_id},
-                                            status.HTTP_200_OK)
+                return self.handle_response(
+                    message={"message": _("The file was successfully uploaded"), "task_id": task_id},
+                    status=status.HTTP_200_OK)
             except:
-                return self.handle_response(_("Error while reading a file"), status.HTTP_500_INTERNAL_SERVER_ERROR)
+                return self.handle_response(message={_("Error while reading a file")},
+                                            status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         else:
-            return self.handle_response(_("File not found"), status.HTTP_400_BAD_REQUEST)
+            return self.handle_response(message={"message": _("File not found")}, status=status.HTTP_400_BAD_REQUEST)
 
     @action(detail=False, methods=['GET'], permission_classes=[IsAuthenticated])
     def get_task(self, request):
@@ -91,19 +170,19 @@ class FileUploadViewSet(ErrorHandlingMixin, ViewSet):
             try:
                 result = AsyncResult(task_id)
                 if result.successful():
-                    return self.handle_response({"status": _("SUCCESS"), "result": result.get()},
+                    return self.handle_response(message={"status": _("SUCCESS"), "result": result.get()},
                                                 status=status.HTTP_200_OK)
                 elif result.failed():
-                    return self.handle_response({"status": _("FAILED"), "error": str(result.result)},
-                                                status.HTTP_500_INTERNAL_SERVER_ERROR)
+                    return self.handle_response(message={"status": _("FAILED"), "error": str(result.result)},
+                                                status=status.HTTP_500_INTERNAL_SERVER_ERROR)
                 else:
-                    return self.handle_response({"status": _("PENDING"), "error": "Task is still pending."},
-                                                status.HTTP_202_ACCEPTED)
+                    return self.handle_response(message={"status": _("PENDING"), "error": "Task is still pending."},
+                                                status=status.HTTP_202_ACCEPTED)
             except:
-                return Response({"status": _("ERROR"), "error": _("File problems")},
+                return Response(message={"status": _("ERROR"), "error": _("File problems")},
                                 status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         else:
-            return Response({"status": _("ERROR"), "error": _("Missing task_id parameter")},
+            return Response(message={"status": _("ERROR"), "error": _("Missing task_id parameter")},
                             status=status.HTTP_400_BAD_REQUEST)
 
 
@@ -120,8 +199,35 @@ class CreateDeckFromMultipleDecksViewSet(ViewSet):
         serializer = self.serializer_class(new_deck)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
+class LearnWordViewSet(RetrieveModelMixin,UpdateModelMixin, GenericViewSet):
+    permission_classes = [IsAuthenticated]
+    serializer_class = WordUpdateSerializer
+    pagination_class = CustomPagination
 
-class WordViewSet(ListModelMixin, DestroyModelMixin, GenericViewSet):
+    def update(self, request, *args, **kwargs):
+        result_type = request.data['result_type']
+        level = request.data['level']
+        result = POSSIBLE_RESULTS[level][result_type]
+        data = {"is_correct": result['correct'], "level": result['next_level'], "next_learn": timezone.now() + result['time']}
+        partial = kwargs.pop('partial', False)
+        instance = self.get_object()
+        serializer = self.get_serializer(instance, data=data, partial=partial)
+        serializer.is_valid(raise_exception=True)
+        self.perform_update(serializer)
+
+        if getattr(instance, '_prefetched_objects_cache', None):
+            instance._prefetched_objects_cache = {}
+
+        return Response(serializer.data)
+    def get_queryset(self):
+        queryset = Word.objects.filter(user=self.request.user)
+        search_query = self.request.query_params.get('search', None)
+        if search_query:
+            queryset = queryset.filter(Q(front_side__icontains=search_query) | Q(
+                back_side__icontains=search_query))
+        return queryset
+
+class WordViewSet(ListModelMixin, DestroyModelMixin, RetrieveModelMixin, UpdateModelMixin, GenericViewSet):
     permission_classes = [IsAuthenticated]
     serializer_class = WordSerializer
     pagination_class = CustomPagination
@@ -134,6 +240,29 @@ class WordViewSet(ListModelMixin, DestroyModelMixin, GenericViewSet):
                 back_side__icontains=search_query))
         return queryset
 
+    @action(detail=True, methods=['GET'], permission_classes=[IsAuthenticated])
+    def words_from_deck(self, request, pk=None):
+        paginator = CustomPagination(request)
+        search_query = self.request.query_params.get('search', None)
+        if search_query:
+            queryset = Word.objects.filter(Q(front_side__icontains=search_query) | Q(back_side__icontains=search_query),
+                                           user=self.request.user, deck_words=pk)
+        else:
+            queryset = Word.objects.filter(user=self.request.user, deck_words=pk)
+
+        paginated_queryset = paginator.paginate_queryset(queryset, request)
+        serializer = self.get_serializer(paginated_queryset, many=True)
+        return paginator.get_paginated_response(serializer.data)
+
+    @action(detail=False, methods=['GET'], permission_classes=[IsAuthenticated])
+    def find_word_in_decks(self, request):
+        paginator = CustomPagination(request, page_size=request.query_params.get('page_size'))
+        search_query = self.request.query_params.get('search', None)
+        queryset = Word.objects.filter(Q(front_side__icontains=search_query) | Q(back_side__icontains=search_query), user=self.request.user)
+        paginated_queryset = paginator.paginate_queryset(queryset, request)
+        serializer = WordSerializerWithDeck(paginated_queryset, many=True)
+        return paginator.get_paginated_response(serializer.data)
+
 
 class LearnViewSet(CreateModelMixin, GenericViewSet):
     permission_classes = [IsAuthenticated]
@@ -141,6 +270,7 @@ class LearnViewSet(CreateModelMixin, GenericViewSet):
 
     def get(self, request, *args, **kwargs):
         pass
+
     def create(self, request, *args, **kwargs):
         data = request.data.copy()
         data['user'] = self.request.user.id
@@ -163,21 +293,6 @@ class LearnViewSet(CreateModelMixin, GenericViewSet):
         else:
             return Response(status=status.HTTP_400_BAD_REQUEST)
 
-        # if deck_serializer.is_valid():
-        #     # Jeśli dane są poprawne, uzyskaj zserializowane dane
-        #     serialized_data = deck_serializer.data
-        #
-        #     # Zwróć zserializowane dane jako odpowiedź
-        #     return Response(serialized_data, status=status.HTTP_200_OK)
-        # else:
-        #     # Jeśli dane są niepoprawne, obsłuż błąd
-        #     errors = deck_serializer.errors
-        #     return Response(errors, status=status.HTTP_400_BAD_REQUEST)
-
-        # print("type(user_history_instance)")
-        # print(type(user_history_instance))
-        # user_history_instance.correct_flashcards.add(*learned_data)
-        #TODO Back here
         headers = self.get_success_headers(serializer.data)
         return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
 
@@ -186,6 +301,7 @@ class LearnViewSet(CreateModelMixin, GenericViewSet):
         user_history_instance.correct_flashcards.add(*words)
         correct_data = deck.words.exclude(id__in=user_history_instance.correct_flashcards.values_list('id', flat=True))
         return {"user_history": user_history_instance.id, "words": correct_data}
+
     def get_learn_data(self, deck: Deck):
         # words = Word.objects.filter(deck=deck, next_learn__lte =timezone.now())
         words = Word.objects.filter(deck=deck).filter(Q(next_learn__lte=timezone.now()) | Q(is_correct=False))

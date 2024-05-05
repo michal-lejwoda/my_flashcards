@@ -118,3 +118,51 @@ msgstr "Poprawnie zarejestrowano użytkownika"
 
 msgid "Field 'deck is required"
 msgstr "Pole talia jest wymagane"
+
+msgid "Incorrect password"
+msgstr "Nieprawidłowe hasło"
+
+msgid "This email address is already used"
+msgstr "Ten adres e-mail jest już w użyciu."
+
+msgid  "Password is too short(min 4 letters)"
+msgstr 'Hasło za krótkie (minimum 4 litery)'
+
+msgid  "Password is too long(max 50 letters)"
+msgstr 'Hasło za długie (maksimum 50 liter)'
+
+msgid  "Username is too short(min 4 letters)"
+msgstr 'Nazwa użytkowanika jest za krótka (minimum 4 litery)'
+
+msgid  "Username is too long(max 30 letters)"
+msgstr 'Nazwa użytkowanika jest za długa (maksimum 30 liter)'
+
+msgid  "Email address is not correct"
+msgstr "Email jest nie poprawny"
+
+msgid  "Passwords don't match"
+msgstr "Hasła się nie zgadzają"
+
+msgid "Incorrect old password"
+msgstr "Nieprawidłowe stare hasło"
+
+msgid "Password has been successfully changed"
+msgstr "Hasło zostało pomyślnie zmienione"
+
+msgid "Your account has been deleted"
+msgstr "Twoje konto zostało usunięte"
+
+msgid "Password Reset on Flashcards website"
+msgstr "Reset hasła na stronie flashcards"
+
+msgid "If the email exists then a message with a link has been sent to it"
+msgstr  "Jeśli email istnieje to została na niego wysłana wiadomość z linkiem"
+
+msgid "Email is incorrect"
+msgstr "Adres email nie jest poprawny"
+
+msgid "Password change has failed"
+msgstr "Zmiana hasła się nie powiodła"
+
+msgid "Email has been successfully changed"
+msgstr "Zmiana adresu email się powiodła"
