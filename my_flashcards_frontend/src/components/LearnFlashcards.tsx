@@ -171,12 +171,16 @@ const LearnFlashcards = () => {
                 }
                 {!reverse && currentWord &&
                     <div className="buttons__results">
+                        <p>{POSSIBLE_RESULTS[currentWord.level]['AGAIN'].text}</p>
                         <button className="standard-button"
                                 onClick={() => handleGoNext(currentWord.level, "AGAIN")}>{t("again")}</button>
+                        <p>{POSSIBLE_RESULTS[currentWord.level]['HARD'].text}</p>
                         <button className="standard-button"
                                 onClick={() => handleGoNext(currentWord.level, "HARD")}>{t("hard")}</button>
+                        <p>{POSSIBLE_RESULTS[currentWord.level]['MEDIUM'].text}</p>
                         <button className="standard-button"
                                 onClick={() => handleGoNext(currentWord.level, "MEDIUM")}>{t("medium")}</button>
+                        <p>{POSSIBLE_RESULTS[currentWord.level]['EASY'].text}</p>
                         <button className="standard-button"
                                 onClick={() => handleGoNext(currentWord.level, "EASY")}>{t("easy")}</button>
                     </div>
