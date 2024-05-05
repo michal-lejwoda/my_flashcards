@@ -79,7 +79,7 @@ const LearnFlashcards = () => {
         // console.log(POSSIBLE_RESULTS)
         // console.log(POSSIBLE_RESULTS[key-1][key])
         // @ts-expect-error Its working Normally
-        const result = POSSIBLE_RESULTS[key-1][key];
+        const result = POSSIBLE_RESULTS[key - 1][key];
 
         console.log(result)
         if (result) {
@@ -161,7 +161,11 @@ const LearnFlashcards = () => {
                     </div>
                 }
             </div>
-            <p className="learnflashcards__howmany"><span className="learnflashcards--wrong" style={{ textDecoration: !currentWord?.is_correct ? 'underline' : 'none'  }}>{wrongWordsToLearn.length}</span>/<span className="learnflashcards--normal" style={{ textDecoration: currentWord?.is_correct ? 'underline' : 'none'  }}>{wordsToLearn.length}</span></p>
+            <p className="learnflashcards__howmany"><span className="learnflashcards--wrong"
+                                                          style={{textDecoration: !currentWord?.is_correct ? 'underline' : 'none'}}>{wrongWordsToLearn.length}</span>/<span
+                className="learnflashcards--normal"
+                style={{textDecoration: currentWord?.is_correct ? 'underline' : 'none'}}>{wordsToLearn.length}</span>
+            </p>
 
             <div className="learnflashcards__buttons">
                 {reverse &&
@@ -171,18 +175,27 @@ const LearnFlashcards = () => {
                 }
                 {!reverse && currentWord &&
                     <div className="buttons__results">
-                        <p>{POSSIBLE_RESULTS[currentWord.level]['AGAIN'].text}</p>
-                        <button className="standard-button"
-                                onClick={() => handleGoNext(currentWord.level, "AGAIN")}>{t("again")}</button>
-                        <p>{POSSIBLE_RESULTS[currentWord.level]['HARD'].text}</p>
-                        <button className="standard-button"
-                                onClick={() => handleGoNext(currentWord.level, "HARD")}>{t("hard")}</button>
-                        <p>{POSSIBLE_RESULTS[currentWord.level]['MEDIUM'].text}</p>
-                        <button className="standard-button"
-                                onClick={() => handleGoNext(currentWord.level, "MEDIUM")}>{t("medium")}</button>
-                        <p>{POSSIBLE_RESULTS[currentWord.level]['EASY'].text}</p>
-                        <button className="standard-button"
-                                onClick={() => handleGoNext(currentWord.level, "EASY")}>{t("easy")}</button>
+                        <div className="singlebutton__container">
+                            <p className={POSSIBLE_RESULTS[currentWord.level]['AGAIN'].correct ? "singlebutton--correct" : "singlebutton--wrong"}>{t(POSSIBLE_RESULTS[currentWord.level]['AGAIN'].text)}</p>
+                            <button className="standard-button"
+                                    onClick={() => handleGoNext(currentWord.level, "AGAIN")}>{t("again")}</button>
+                        </div>
+                        <div className="singlebutton__container">
+                            <p className={POSSIBLE_RESULTS[currentWord.level]['HARD'].correct ? "singlebutton--correct" : "singlebutton--wrong"}>{t(POSSIBLE_RESULTS[currentWord.level]['HARD'].text)}</p>
+                            <button className="standard-button"
+                                    onClick={() => handleGoNext(currentWord.level, "HARD")}>{t("hard")}</button>
+                        </div>
+                        <div className="singlebutton__container">
+                            <p className={POSSIBLE_RESULTS[currentWord.level]['MEDIUM'].correct ? "singlebutton--correct" : "singlebutton--wrong"}>{t(POSSIBLE_RESULTS[currentWord.level]['MEDIUM'].text)}</p>
+
+                            <button className="standard-button"
+                                    onClick={() => handleGoNext(currentWord.level, "MEDIUM")}>{t("medium")}</button>
+                        </div>
+                        <div className="singlebutton__container">
+                            <p className={POSSIBLE_RESULTS[currentWord.level]['EASY'].correct ? "singlebutton--correct" : "singlebutton--wrong"}>{t(POSSIBLE_RESULTS[currentWord.level]['EASY'].text)}</p>
+                            <button className="standard-button"
+                                    onClick={() => handleGoNext(currentWord.level, "EASY")}>{t("easy")}</button>
+                        </div>
                     </div>
                 }
             </div>

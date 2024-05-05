@@ -74,5 +74,18 @@
   "select_deck": "Wybierz talie",
   "change": "Zamień",
   "deck_name": "Nazwa talii",
-  "reverse_and_learn": "Obróć i ucz się"
+  "reverse_and_learn": "Odwróć i ucz się",
+  "reverse": "Odwróć",
+  "1 minute": "1 minuta",
+  "10 minutes": "10 minut",
+  "1 day": "1 dzień",
+  "2 days": "2 dni",
+  "3 days": "3 dni",
+  "4 days": "4 dni",
+  "5 days": "5 dni",
+  "6 days": "6 dni",
+  "9 days": "9 dni",
+  "18 days": "18 dni",
+  "36 days": "36 dni",
+  "72 days": "72 dni"
 }

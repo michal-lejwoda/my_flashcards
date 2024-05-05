@@ -74,5 +74,18 @@
   "select_deck": "Select deck",
   "change": "Change",
   "deck_name": "Deck name",
-  "reverse_and_learn": "Reverse and learn"
+  "reverse_and_learn": "Reverse and learn",
+  "reverse": "Reverse",
+  "1 minute": "1 minute",
+  "10 minutes": "10 minutes",
+  "1 day": "1 day",
+  "2 days": "2 days",
+  "3 days": "3 days",
+  "4 days": "4 days",
+  "5 days": "5 days",
+  "6 days": "6 days",
+  "9 days": "9 days",
+  "18 days": "18 days",
+  "36 days": "36 days",
+  "72 days": "72 days"
 }

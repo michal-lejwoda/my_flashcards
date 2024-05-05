@@ -35,7 +35,7 @@ class Word(TimeStampedModel):
     is_correct = models.BooleanField(default=True)
     next_learn = models.DateTimeField(default=timezone.now)
     user = models.ForeignKey(User, on_delete=models.CASCADE, default=None, null=True)
-    level = models.IntegerField(default=1, validators=[MaxValueValidator(6)])
+    level = models.IntegerField(default=0, validators=[MaxValueValidator(6)])
 
     def __str__(self):
         return "{} {}".format(self.front_side, self.user)
