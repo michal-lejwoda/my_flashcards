@@ -18,7 +18,7 @@ const LearnFlashcards = () => {
     const [wrongWordsToLearn, setWrongWordsToLearn] = useState<LearnObject[]>([])
     const {t} = useTranslation();
     const [reverse, setReverse] = useState(true)
-
+    console.log(location)
     function setInitData(wordsLearn: LearnObject[], wrongWordsLearn: LearnObject[]) {
         if (wrongWordsLearn.length > 0) {
 
@@ -74,14 +74,7 @@ const LearnFlashcards = () => {
 
 
     function getResultByKey(key: number): FlashcardsSet | undefined {
-        // console.log("key")
-        // console.log(key)
-        // console.log(POSSIBLE_RESULTS)
-        // console.log(POSSIBLE_RESULTS[key-1][key])
-        // @ts-expect-error Its working Normally
-        const result = POSSIBLE_RESULTS[key - 1][key];
-
-        console.log(result)
+        const result = POSSIBLE_RESULTS[key - 1];
         if (result) {
             return result;
         }
@@ -90,24 +83,19 @@ const LearnFlashcards = () => {
 
 
     const handleGoNext = (level: number, res_type: string) => {
-        console.log("handleGoNext")
         const resultKey = getResultByKey(level)
         if (resultKey) {
             // @ts-expect-error Same here
             const res = resultKey[res_type]
-
             const form = {
                 "result_type": res_type,
                 "level": level
             }
             if (res.correct) {
-                console.log("Prawda")
                 if (currentWord) {
-                    console.log("tu powinno wysyłac")
                     learnSingleWord(currentWord.id, token, form)
                 }
             } else {
-                console.log("falsz")
                 if (currentWord) {
                     learnSingleWord(currentWord.id, token, form)
                 }

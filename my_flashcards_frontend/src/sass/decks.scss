@@ -39,6 +39,14 @@
   &__table {
     width: 100%;
     border-collapse: collapse;
+    &--info{
+      display:flex;
+      justify-content: center;
+    }
+    &--name{
+      height: 100%;
+      cursor: pointer;
+    }
     table, th, td {
       border: 1px solid white;
       border-collapse: collapse;
@@ -68,6 +76,10 @@
   &__element{
     background-color: #3E4349;
     border-bottom: 2px solid white;
+    cursor: pointer;
+  }
+  &__button{
+    width:100%;
   }
 }
 

@@ -14,6 +14,8 @@ export interface DecksTable {
     correct: number;
     wrong: number;
     all: number;
+    num_of_wrong_words: number;
+    num_of_words_to_learn: number;
 }
 
 
@@ -332,6 +334,10 @@ export interface MainSearchFieldProps {
         (e: ChangeEvent<HTMLInputElement>): void;
     }
 
+}
+export interface LearnDoneModalInterface {
+    showLearnDone: boolean;
+    setShowLearnDone: Dispatch<SetStateAction<boolean>>;
 }
 
 
