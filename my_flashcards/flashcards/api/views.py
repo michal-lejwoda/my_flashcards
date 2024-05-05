@@ -207,9 +207,6 @@ class LearnWordViewSet(RetrieveModelMixin,UpdateModelMixin, GenericViewSet):
     def update(self, request, *args, **kwargs):
         result_type = request.data['result_type']
         level = request.data['level']
-        print("level")
-        print(level)
-        print(POSSIBLE_RESULTS[level])
         result = POSSIBLE_RESULTS[level][result_type]
         data = {"is_correct": result['correct'], "level": result['next_level'], "next_learn": timezone.now() + result['time']}
         partial = kwargs.pop('partial', False)
@@ -296,21 +293,6 @@ class LearnViewSet(CreateModelMixin, GenericViewSet):
         else:
             return Response(status=status.HTTP_400_BAD_REQUEST)
 
-        # if deck_serializer.is_valid():
-        #     # Jeśli dane są poprawne, uzyskaj zserializowane dane
-        #     serialized_data = deck_serializer.data
-        #
-        #     # Zwróć zserializowane dane jako odpowiedź
-        #     return Response(serialized_data, status=status.HTTP_200_OK)
-        # else:
-        #     # Jeśli dane są niepoprawne, obsłuż błąd
-        #     errors = deck_serializer.errors
-        #     return Response(errors, status=status.HTTP_400_BAD_REQUEST)
-
-        # print("type(user_history_instance)")
-        # print(type(user_history_instance))
-        # user_history_instance.correct_flashcards.add(*learned_data)
-        # TODO Back here
         headers = self.get_success_headers(serializer.data)
         return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
 
