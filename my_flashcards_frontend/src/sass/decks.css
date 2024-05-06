@@ -1,0 +1,97 @@
+.words__learn {
+  color: lightblue;
+}
+.words__wrong {
+  color: red;
+}
+.words__correct {
+  color: green;
+}
+.words__all {
+  color: white;
+}
+
+.decks {
+  margin-top: 2rem;
+  display: flex;
+  flex-direction: column;
+  align-content: center;
+  align-items: center;
+  text-align: center;
+}
+.decks__searchcontainer {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 1rem;
+  width: 100%;
+}
+.decks__searchcontainer input {
+  padding: 5px;
+  border: 2px solid white;
+  font-size: 1rem;
+  background-color: transparent;
+}
+.decks__table {
+  width: 100%;
+  border-collapse: collapse;
+}
+.decks__table--info {
+  display: flex;
+  justify-content: center;
+}
+.decks__table--name {
+  height: 100%;
+  cursor: pointer;
+}
+.decks__table table, .decks__table th, .decks__table td {
+  border: 1px solid white;
+  border-collapse: collapse;
+}
+
+.dropdown button {
+  color: white;
+  padding: 10px 15px;
+  border: none;
+  cursor: pointer;
+}
+
+.dropdown a {
+  display: block;
+  color: white;
+  text-decoration: none;
+  padding: 10px 15px;
+}
+
+.container {
+  position: relative;
+}
+
+.dropdown__element {
+  background-color: #3E4349;
+  border-bottom: 2px solid white;
+  cursor: pointer;
+}
+.dropdown__button {
+  width: 100%;
+}
+
+.dropdown .content {
+  display: none;
+  position: absolute;
+  background-color: hsl(0, 0%, 95%);
+  min-width: 100px;
+  box-shadow: 2px 2px 5px black;
+  top: 100%;
+  border: 2px solid white;
+}
+
+.content.open {
+  display: block;
+  z-index: 99;
+}
+
+.content {
+  right: 0%;
+}
+
+/*# sourceMappingURL=decks.css.map */

@@ -1,0 +1,16 @@
+.choose_and_learn__table {
+  width: 100%;
+  border-collapse: collapse;
+}
+.choose_and_learn__table table, .choose_and_learn__table th, .choose_and_learn__table td {
+  border: 1px solid white;
+  border-collapse: collapse;
+}
+.choose_and_learn__submit {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  margin-bottom: 1rem;
+}
+
+/*# sourceMappingURL=chooseandlearn.css.map */

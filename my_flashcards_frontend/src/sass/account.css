@@ -1,0 +1,201 @@
+.title {
+  margin-bottom: 1rem;
+}
+@media screen and (min-width: 500px) {
+  .title {
+    margin-bottom: 2rem;
+  }
+}
+
+.modal-content {
+  background-color: #1c1c1a !important;
+}
+
+.dangeroutline--button {
+  padding: 0.2rem;
+  font-size: 0.8rem;
+  background-color: darkred;
+  cursor: pointer;
+  border: 2px solid white;
+  font-weight: 600;
+  margin: 0.2rem;
+}
+@media screen and (min-width: 500px) {
+  .dangeroutline--button {
+    font-size: 1rem;
+    margin: 1rem;
+    padding: 0.5rem;
+    font-weight: 700;
+  }
+}
+
+.editoutline--button {
+  padding: 0.2rem;
+  font-size: 0.8rem;
+  background-color: darkgreen;
+  cursor: pointer;
+  border: 2px solid white;
+  font-weight: 600;
+  margin: 0.2rem;
+}
+@media screen and (min-width: 500px) {
+  .editoutline--button {
+    font-size: 1rem;
+    margin: 1rem;
+    padding: 0.5rem;
+    font-weight: 700;
+  }
+}
+
+.pagination {
+  margin-top: 1rem;
+  text-align: center;
+  width: 300px;
+  display: flex;
+  justify-content: center;
+}
+.pagination--number {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-left: 0.4rem;
+  margin-right: 0.4rem;
+}
+.pagination--select {
+  background-color: transparent;
+  margin-left: 1rem;
+}
+.pagination--button {
+  padding: 0.4rem;
+  border: 1px solid white;
+  background-color: transparent;
+  margin-right: 0.3rem;
+  cursor: pointer;
+}
+
+.async_select {
+  margin-bottom: 1rem;
+}
+
+.search_table {
+  margin-top: 2rem;
+  display: flex;
+  flex-direction: column;
+  align-content: center;
+  align-items: center;
+  text-align: center;
+  justify-content: center;
+}
+
+.errors {
+  text-align: start;
+}
+
+.MuiInputBase-input {
+  color: white !important;
+}
+
+.customTextField .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline {
+  border-color: white !important;
+  color: white !important;
+}
+
+.customTextField {
+  width: 100%;
+}
+
+.textFieldInput {
+  color: white !important;
+}
+.textFieldInput ::placeholder {
+  color: white !important;
+}
+
+.account {
+  min-width: 280px;
+}
+.account__button {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+}
+.account__title {
+  margin-top: 0.5rem;
+  margin-bottom: 1rem;
+}
+.account__body {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: flex-start;
+  margin-top: 2rem;
+}
+.account__options--button {
+  padding: 0.4rem 1rem;
+  font-weight: 800;
+  border: none;
+  border-radius: 10px;
+  white-space: normal;
+  width: 140px;
+}
+@media screen and (min-width: 500px) {
+  .account__options--button {
+    width: 170px;
+  }
+}
+.account__options--input {
+  width: 140px;
+}
+@media screen and (min-width: 500px) {
+  .account__options--input {
+    width: 170px;
+  }
+}
+.account__form {
+  padding-left: 0.5rem;
+  width: 400px;
+}
+.account__form--textfield {
+  margin-bottom: 1rem;
+}
+.account__form--remove {
+  color: rgb(138, 224, 1);
+  text-decoration: underline;
+  cursor: pointer;
+}
+.account__form--reset {
+  color: rgb(138, 224, 1);
+  text-decoration: underline;
+  cursor: pointer;
+}
+.account__header--title {
+  display: flex;
+  justify-content: center;
+}
+
+.form__message {
+  margin-top: 0.7rem;
+  margin-bottom: 0.7rem;
+}
+.form__error {
+  color: darkred;
+}
+
+.reset_password {
+  min-width: 280px;
+}
+.reset_password__title {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+.reset_password__body {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: flex-start;
+  margin-top: 2rem;
+}
+
+/*# sourceMappingURL=account.css.map */

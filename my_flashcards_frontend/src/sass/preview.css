@@ -1,0 +1,33 @@
+.preview {
+  text-align: center;
+}
+.preview__middle {
+  margin-top: 2rem;
+}
+.preview__search {
+  padding: 0.4rem;
+}
+.preview__buttons {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: flex-end;
+  margin-top: 2rem;
+}
+.preview__table {
+  display: flex;
+  justify-content: center;
+  margin-top: 2rem;
+  width: 100%;
+  border-collapse: collapse;
+}
+.preview__table td {
+  padding: 10px 5px 10px;
+}
+.preview__table table, .preview__table th, .preview__table td {
+  width: 100%;
+  border: 1px solid white;
+  border-collapse: collapse;
+}
+
+/*# sourceMappingURL=preview.css.map */
