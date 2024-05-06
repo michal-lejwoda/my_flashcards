@@ -126,16 +126,16 @@ msgid "This email address is already used"
 msgstr "Ten adres e-mail jest już w użyciu."
 
 msgid  "Password is too short(min 4 letters)"
-msgstr 'Hasło za krótkie (minimum 4 litery)'
+msgstr "Hasło za krótkie (minimum 4 litery)"
 
 msgid  "Password is too long(max 50 letters)"
-msgstr 'Hasło za długie (maksimum 50 liter)'
+msgstr "Hasło za długie (maksimum 50 liter)"
 
 msgid  "Username is too short(min 4 letters)"
-msgstr 'Nazwa użytkowanika jest za krótka (minimum 4 litery)'
+msgstr "Nazwa użytkowanika jest za krótka (minimum 4 litery)"
 
 msgid  "Username is too long(max 30 letters)"
-msgstr 'Nazwa użytkowanika jest za długa (maksimum 30 liter)'
+msgstr "Nazwa użytkowanika jest za długa (maksimum 30 liter)"
 
 msgid  "Email address is not correct"
 msgstr "Email jest nie poprawny"

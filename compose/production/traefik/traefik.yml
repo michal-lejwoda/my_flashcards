@@ -31,7 +31,7 @@ certificatesResolvers:
 http:
   routers:
     web-secure-router:
-      rule: 'Host(`reapm.pl`) || Host(`www.reapm.pl`)'
+      rule: 'Host(`language-flashcards.pl`) || Host(`www.language-flashcards.pl`)'
       entryPoints:
         - web-secure
       middlewares:
@@ -50,7 +50,7 @@ http:
         certResolver: letsencrypt
 
     web-media-router:
-      rule: '(Host(`reapm.pl`) || Host(`www.reapm.pl`)) && PathPrefix(`/media/`)'
+      rule: '(Host(`language-flashcards.pl`) || Host(`www.language-flashcards.pl`)) && PathPrefix(`/media/`)'
       entryPoints:
         - web-secure
       middlewares:
