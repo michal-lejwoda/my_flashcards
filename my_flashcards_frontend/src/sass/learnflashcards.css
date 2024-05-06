@@ -1,0 +1,59 @@
+.learnflashcards {
+  text-align: center;
+}
+.learnflashcards__buttons {
+  margin-top: 1rem;
+}
+.learnflashcards__translation {
+  margin-top: 4rem;
+}
+.learnflashcards__container {
+  border-radius: 20px;
+  min-height: 300px;
+  border: 2px solid white;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  word-break: break-word;
+  text-align: center;
+}
+.learnflashcards__howmany {
+  margin-top: 1rem;
+}
+.learnflashcards--wrong {
+  color: red;
+  margin-right: 0.2rem;
+  font-size: 1.2rem;
+  font-weight: 500;
+}
+.learnflashcards--normal {
+  color: cornflowerblue;
+  margin-left: 0.2rem;
+  font-size: 1.2rem;
+  font-weight: 500;
+}
+
+.translation__title {
+  padding-bottom: 1rem;
+}
+
+.buttons__results {
+  display: flex;
+  justify-content: center;
+}
+
+.singlebutton--correct {
+  color: cornflowerblue;
+}
+.singlebutton--wrong {
+  color: red;
+}
+.singlebutton__container {
+  display: flex;
+  flex-direction: column;
+}
+
+/*# sourceMappingURL=learnflashcards.css.map */
