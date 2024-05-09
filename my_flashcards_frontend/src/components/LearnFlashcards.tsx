@@ -135,8 +135,6 @@ const LearnFlashcards = () => {
             getData()
         }
     }, [])
-    console.log("wrongWordsToLearn")
-    console.log(wrongWordsToLearn)
 
     return (
         <div className="learnflashcards">

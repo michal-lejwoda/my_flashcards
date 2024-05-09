@@ -94,6 +94,9 @@
 .addfile {
   text-align: center;
 }
+.addfile__example {
+  border: 1px solid white;
+}
 .addfile__dropzone {
   padding: 2rem;
   border: 1px solid white;

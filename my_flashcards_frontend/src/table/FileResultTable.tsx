@@ -1,4 +1,4 @@
-import {FC, useContext, useEffect, useMemo} from "react";
+import {FC, useContext, useEffect, useMemo, useState} from "react";
 import {
     createColumnHelper,
     flexRender,
@@ -7,7 +7,7 @@ import {
     useReactTable
 } from "@tanstack/react-table";
 import {useTranslation} from "react-i18next";
-import {FileRowData, PropsFileData} from "../interfaces.tsx";
+import {ErrorResponse, FileRowData, PropsFileData} from "../interfaces.tsx";
 import {postDeckWithWords} from "../api.tsx";
 import AuthContext from "../context/AuthContext.tsx";
 import PaginationButtonReactTable from "../components/elements/pagination/PaginationButtonReactTable.tsx";
@@ -20,17 +20,38 @@ import InputField from "../components/elements/InputField.tsx";
 import {useFormik} from "formik";
 import {changeCreateDataFromFileValidation} from "../validation.tsx";
 import GreenButton from "../components/elements/GreenButton.tsx";
+import {useNavigate} from "react-router-dom";
 
 const columnHelper = createColumnHelper<FileRowData>()
 
 const FileResultTable: FC<PropsFileData> = ({fileData, setFileData, pagination, setPagination}) => {
     const {token} = useContext(AuthContext);
-    const handleSendData = () => {
+    const [errorData, setErrorData] = useState("")
+    const navigate = useNavigate();
+    const handleSendData = async () => {
+        setErrorData("")
         const data = {
             "name": values.deck,
             "rows": fileData
         }
-        postDeckWithWords(data, token)
+        try {
+            await postDeckWithWords(data, token)
+            await navigate("/")
+        } catch (err: unknown) {
+            const error = err as ErrorResponse;
+            if (
+                error.response &&
+                error.response.data &&
+                'name' in error.response.data &&
+                typeof error.response.data.name === 'string'
+            ) {
+                setErrorData(error.response.data.name);
+            } else {
+                setErrorData(t("problem_with_file_data"));
+            }
+        }
+
+
     }
     const {t} = useTranslation();
     const columns = useMemo(() => [
@@ -130,7 +151,6 @@ const FileResultTable: FC<PropsFileData> = ({fileData, setFileData, pagination, 
     };
 
     const handleChangePlace = (id: number) => {
-        // const pageindex = getState().pagination.pageIndex
         const tempFile = fileData.slice()
         for (const obj of tempFile) {
             if (obj.id === id) {
@@ -182,6 +202,7 @@ const FileResultTable: FC<PropsFileData> = ({fileData, setFileData, pagination, 
                     />
                     <div className="errors form__errors">
                         {errors.deck && <p className="form__error form__message">{errors.deck}</p>}
+                        {errorData && <p>{errorData}</p>}
                     </div>
                 </div>
                 <div className="file-result__button">

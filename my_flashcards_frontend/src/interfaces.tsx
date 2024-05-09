@@ -101,6 +101,15 @@ export interface ErrorResponse {
     };
 }
 
+export interface ErrorAddFileMessage{
+    status: string;
+    error: string;
+}
+
+export interface ErrorCreateFileMessage{
+    name: string;
+}
+
 export interface LoginError {
     username?: string[];
     password?: string[];
