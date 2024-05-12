@@ -23,7 +23,6 @@ import BrowseFlashcardsWords from "./components/BrowseFlashcardsWords.tsx";
 
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
-    // <React.StrictMode>
         <Suspense fallback="loading">
             <BrowserRouter>
                 <AuthProvider>
@@ -49,5 +48,4 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
                 </AuthProvider>
             </BrowserRouter>
         </Suspense>
-    // </React.StrictMode>,
 )
