@@ -31,8 +31,7 @@ def send_reset_password_to_mail(email: str):
         send_mail(
             _("Password Reset on Flashcards website"),
             message,
-            'postmaster@mail.language-flashcards.pl',
-            # settings.EMAIL_HOST_USER,
+            settings.EMAIL_HOST_USER,
             [email],
             html_message=message,
             fail_silently=False,
