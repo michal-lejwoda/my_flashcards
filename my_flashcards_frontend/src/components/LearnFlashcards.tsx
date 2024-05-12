@@ -18,7 +18,6 @@ const LearnFlashcards = () => {
     const [wrongWordsToLearn, setWrongWordsToLearn] = useState<LearnObject[]>([])
     const {t} = useTranslation();
     const [reverse, setReverse] = useState(true)
-    console.log(location)
     function setInitData(wordsLearn: LearnObject[], wrongWordsLearn: LearnObject[]) {
         if (wrongWordsLearn.length > 0) {
 
@@ -27,6 +26,7 @@ const LearnFlashcards = () => {
                 setCurrentWord(first_word)
                 setWrongWordsToLearn(wrongWordsLearn)
                 setWordsToLearn(wordsLearn);
+                return
             }
         }
         if (wordsLearn.length > 0) {
@@ -35,6 +35,7 @@ const LearnFlashcards = () => {
                 setCurrentWord(first_word)
                 setWrongWordsToLearn(wrongWordsLearn)
                 setWordsToLearn(wordsLearn);
+                return
             }
         }
     }
@@ -134,8 +135,6 @@ const LearnFlashcards = () => {
             getData()
         }
     }, [])
-    console.log("wrongWordsToLearn")
-    console.log(wrongWordsToLearn)
 
     return (
         <div className="learnflashcards">

@@ -1,6 +1,9 @@
 @import '../main.scss';
 .addfile {
   text-align: center;
+  &__example{
+    border: 1px solid white;
+  }
 
 
   &__dropzone {

@@ -89,5 +89,9 @@
   "36 days": "36 days",
   "72 days": "72 days",
   "info": "Info",
-  "name": "Name"
+  "name": "Name",
+  "change_all": "Change all",
+  "file_example": "File example",
+  "try_again": "Try Again",
+  "problem_with_file_data": "There is a problem with a file. Try load file again."
 }

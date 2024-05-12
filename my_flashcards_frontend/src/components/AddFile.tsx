@@ -3,7 +3,7 @@ import "../sass/addfile.css"
 import {useTranslation} from "react-i18next";
 import withAuth from "../context/withAuth.tsx";
 import {getTaskResult, postFile} from "../api.tsx";
-import {ErrorResponse, FileRowData, Response} from "../interfaces.tsx";
+import {ErrorAddFileMessage, ErrorResponse, FileRowData, Response} from "../interfaces.tsx";
 import {useContext, useState} from "react";
 import AuthContext from "../context/AuthContext.tsx";
 import FileResultTable from "../table/FileResultTable.tsx";
@@ -17,7 +17,8 @@ const AddFile = () => {
         pageIndex: 0,
         pageSize: 10,
     });
-    // TODO Back Here
+    const [errorFileData, setErrorFileData] = useState("")
+    const [loadingFileData, setLoadingFileData] = useState(false)
 
     async function executeForTwoMinutes(action: (task_id: string, token: string | null) => Promise<Response>, task_id: string, token: string | null): Promise<void> {
         return new Promise((resolve, reject) => {
@@ -25,11 +26,16 @@ const AddFile = () => {
                 try {
                     const response = await action(task_id, token);
                     if (response && response.status === 200 && response.data.message.result) {
+                        setLoadingFileData(false)
                         setFileData(response.data.message.result);
                         clearInterval(interval);
                         resolve();
                     }
-                } catch (error) {
+                } catch (err) {
+                    const error = err as ErrorResponse
+                    const errorMessage = error.response.data.message as ErrorAddFileMessage;
+                    setLoadingFileData(false)
+                    setErrorFileData(errorMessage.status)
                     clearInterval(interval);
                     reject(error);
                 }
@@ -49,14 +55,15 @@ const AddFile = () => {
         try {
             const post_file_data = await postFile(form, token)
             if (post_file_data.message && post_file_data.message.task_id) {
+                setLoadingFileData(true)
+                setErrorFileData("")
                 executeForTwoMinutes(() => getTaskResult(post_file_data.message.task_id, token), post_file_data.message.task_id, token);
             }
 
         } catch (err: unknown) {
             // #TODO Back HEre
-            const error = err as ErrorResponse
-            console.log("error")
-            console.log(error)
+            // const error = err as ErrorResponse
+            setErrorFileData(t("try_again"))
         }
     }
 
@@ -95,12 +102,35 @@ const AddFile = () => {
                     <p>{t('drag_and_drop_file')}(.txt, .docx)</p>
                 </div>
             </div>
+            <p></p>
+
             <p className="file-result__words-num">{t('max_size_file')}: 2mb</p>
             <div className="addfile__filename">{files}</div>
-            {fileData &&
-                <FileResultTable fileData={fileData} setFileData={setFileData} pagination={pagination}
-                                 setPagination={setPagination}/>
+
+            {!fileData &&
+                <>
+                    <p>{t("file_example")}</p>
+                    <img className="addfile__example" src="/public/example.png" alt="example"/>
+                </>
             }
+            {errorFileData !== "" ? (
+                <p>{errorFileData}</p>
+            ) : (
+                loadingFileData ? (
+                    <p>Loading...</p>
+                ) : (
+                    fileData && (
+                        <FileResultTable
+                            fileData={fileData}
+                            setFileData={setFileData}
+                            pagination={pagination}
+                            setPagination={setPagination}
+                        />
+                    )
+                )
+            )}
+
+
         </section>
     );
 };
