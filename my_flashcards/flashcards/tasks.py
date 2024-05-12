@@ -28,17 +28,16 @@ def send_reset_password_to_mail(email: str):
             "link": f"{url}/reset_password/{token}"
         }
         message = render_to_string('reset_password.html', context)
-        print("settings.EMAIL_HOST_USER")
-        print(settings.EMAIL_HOST_USER)
-        print(email)
+        print("settings.DJANGO_SERVER_EMAIL")
+        print(settings.DJANGO_SERVER_EMAIL)
         send_mail(
             _("Password Reset on Flashcards website"),
             message,
-            settings.EMAIL_HOST_USER,
+            settings.DJANGO_SERVER_EMAIL,
+            # settings.EMAIL_HOST_USER,
             [email],
             html_message=message,
             fail_silently=False,
         )
     except Token.DoesNotExist:
-        print("No token")
         pass
