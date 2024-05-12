@@ -22,13 +22,15 @@ def get_words_from_file(file):
 def send_reset_password_to_mail(email: str):
     try:
         token = Token.objects.get(user__email=email)
-        # url = settings.URL
-        url = "http://0.0.0.0:3000"
+        url = "https://language-flashcards.pl"
         context = {
             "email": email,
             "link": f"{url}/reset_password/{token}"
         }
         message = render_to_string('reset_password.html', context)
+        print("settings.EMAIL_HOST_USER")
+        print(settings.EMAIL_HOST_USER)
+        print(email)
         send_mail(
             _("Password Reset on Flashcards website"),
             message,
@@ -38,4 +40,5 @@ def send_reset_password_to_mail(email: str):
             fail_silently=False,
         )
     except Token.DoesNotExist:
+        print("No token")
         pass
