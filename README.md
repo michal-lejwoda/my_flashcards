@@ -1,7 +1,10 @@
 # Language Flashcards
 
 ### Demo: https://www.language-flashcards.pl
-### username: test_user password: test_user
+## Test Account
+
+### Login: test_user
+### Password: test_flashcards
 ## Technology stack
 
 ### DevOps
