@@ -15,6 +15,7 @@ import BackendErrorMessage from "./elements/errors/BackendErrorMessage.tsx";
 import {createWordValidation} from "../validation.tsx";
 import "../sass/create_word.css"
 import {customStyles} from "../customFunctions.tsx";
+import CreateDeckModal from "../modals/CreateDeckModal.tsx";
 
 const CreateComponent = () => {
     const {token} = useContext(AuthContext);
@@ -22,6 +23,7 @@ const CreateComponent = () => {
     const [deck, setDeck] = useState<DecksTable | null>(null)
     const [deckError, setDeckError] = useState<string | null>(null)
     const [createComponentError, setCreateComponentError] = useState<CreateComponentError | null>(null)
+    const [openCreateDeckModal, setOpenCreateDeckModal] = useState(false)
 
     const handleAddWord = async () => {
         if (deck !== null) {
@@ -69,7 +71,6 @@ const CreateComponent = () => {
             <CenteredTitle title={t("create")}/>
             <div className="create_word__container">
                 <CenteredForm handleSubmit={handleSubmit}>
-
                     <AsyncSelect
                         className="async_select"
                         cacheOptions
@@ -87,37 +88,42 @@ const CreateComponent = () => {
                             <ErrorMessage message={deckError}/>
                         )}
                     </div>
-
-
-                    <div className="">
-                        <div className="account__form--textfield">
-                            <InputField label={t("front_page")} type="text" name="front_side"
-                                        handleChange={handleChange}/>
-                            <div className="errors form__errors">
-                                {errors.front_side && <ErrorMessage message={errors.front_side}/>}
-                                {createComponentError && createComponentError.front_side && (
-                                    <BackendErrorMessage message={createComponentError.front_side}/>
-                                )}
-                            </div>
-                        </div>
-                        <div className="account__form--textfield">
-                            <InputField label={t("reverse_page")} type="text" name="front_side"
-                                        handleChange={handleChange}/>
-                            <div className="errors form__errors">
-                                {errors.back_side && <ErrorMessage message={errors.back_side}/>}
-                                {createComponentError && createComponentError.back_side && (
-                                    <BackendErrorMessage message={createComponentError.back_side}/>
-                                )}
-                                {createComponentError && createComponentError.non_field_errors && (
-                                    <BackendErrorMessage message={createComponentError.non_field_errors}/>
-                                )}
-                            </div>
-                        </div>
-                        <div className="account__button">
-                            <GreenButton message={t("add_word")}/>
-                        </div>
+                    <div className="account__button">
+                        <button className="greenoutline--button" onClick={(e) => {
+                            e.preventDefault();
+                            setOpenCreateDeckModal(true)
+                        }}>{t("create_deck")}</button>
                     </div>
+                        <div className="">
+                            <div className="account__form--textfield">
+                                <InputField label={t("front_page")} type="text" name="front_side"
+                                            handleChange={handleChange}/>
+                                <div className="errors form__errors">
+                                    {errors.front_side && <ErrorMessage message={errors.front_side}/>}
+                                    {createComponentError && createComponentError.front_side && (
+                                        <BackendErrorMessage message={createComponentError.front_side}/>
+                                    )}
+                                </div>
+                            </div>
+                            <div className="account__form--textfield">
+                                <InputField label={t("reverse_page")} type="text" name="front_side"
+                                            handleChange={handleChange}/>
+                                <div className="errors form__errors">
+                                    {errors.back_side && <ErrorMessage message={errors.back_side}/>}
+                                    {createComponentError && createComponentError.back_side && (
+                                        <BackendErrorMessage message={createComponentError.back_side}/>
+                                    )}
+                                    {createComponentError && createComponentError.non_field_errors && (
+                                        <BackendErrorMessage message={createComponentError.non_field_errors}/>
+                                    )}
+                                </div>
+                            </div>
+                            <div className="account__button">
+                                <GreenButton message={t("add_word")}/>
+                            </div>
+                        </div>
                 </CenteredForm>
+                <CreateDeckModal openCreateDeckModal={openCreateDeckModal} setOpenCreateDeckModal={setOpenCreateDeckModal}/>
             </div>
         </div>
     );

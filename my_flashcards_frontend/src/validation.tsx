@@ -35,3 +35,7 @@ export const createWordValidation = yup.object().shape({
 export const changeCreateDataFromFileValidation = yup.object().shape({
     deck: yup.string().min(2, () => i18next.t('field_at_least_2')).max(200, () => i18next.t('field_max_200')).required(() => i18next.t('fieldIsRequired')),
 })
+
+export const createDeckValidation = yup.object().shape({
+    name: yup.string().min(2, () => i18next.t('field_at_least_2')).max(200, () => i18next.t('field_max_200')).required(() => i18next.t('fieldIsRequired')),
+})

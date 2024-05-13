@@ -4,13 +4,13 @@ import {
     ChangeEmailData,
     ChangePasswordData, EditLearnWordObject,
     EditWordObject, handleDeleteUserData,
-    handleSendMailWithResetPasswordData,
+    handleSendMailWithResetPasswordData, PostDeckObject,
     SendDeckData
 } from "./interfaces.tsx";
 
 
 const instance = axios.create({
-    // baseURL: 'http://0.0.0.0:8000',
+    baseURL: 'http://0.0.0.0:8000',
     headers: {
         'Accept': 'application/json',
     }
@@ -91,11 +91,12 @@ export async function searchWordWithDeck(searchWord: string, token: string| null
     return response.data
 }
 
-export async function createDeck(form: FormData) {
+export async function createDeck(form: PostDeckObject, token: string| null) {
     const currentLanguage = i18n.language;
     const response = await instance.post(`/api/decks/`, form, {
         headers: {
             'Accept-Language': currentLanguage,
+            'Authorization': `Token ${token}`
         },
     });
     return response.data
