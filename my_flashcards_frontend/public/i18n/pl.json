@@ -93,5 +93,6 @@
   "change_all": "Zamień wszystkie",
   "file_example": "Przykład pliku",
   "try_again": "Spróbuj ponownie",
-  "problem_with_file_data": "Nastąpił problem z plikiem. Spróbuj załadować go ponownie."
+  "problem_with_file_data": "Nastąpił problem z plikiem. Spróbuj załadować go ponownie.",
+  "create_deck": "Stwórz talie"
 }

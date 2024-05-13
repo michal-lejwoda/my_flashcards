@@ -43,10 +43,10 @@ const Register = () => {
         form.append("password2", values.repeat_password)
         try {
             const register_data = await postRegister(form)
-            if (register_data.data && register_data.data.token) {
-                await setCookie('flashcard_user_auth', register_data.data.token, {'sameSite': 'lax'});
-                auth.setToken(register_data.data.token)
-                await navigate("/");
+            if (register_data.token) {
+                await setCookie('flashcard_user_auth', register_data.token, {'sameSite': 'lax'});
+                auth.setToken(register_data.token)
+                navigate("/");
             }
             // TODO Maybe Add some sort of exception
         } catch (err: unknown) {

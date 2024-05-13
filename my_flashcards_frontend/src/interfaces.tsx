@@ -130,6 +130,9 @@ export interface RegisterError {
     repeat_password?: string[]
     non_field_errors?: string[];
 }
+export interface CreateDeckError{
+    name?: string[]
+}
 
 export interface ChangeEmailError {
     email?: string[];
@@ -208,6 +211,10 @@ export interface EditLearnWordObject {
     level: number
 }
 
+export interface PostDeckObject{
+    name: string
+}
+
 export interface DecksTablewithPaginationProps {
     data: DecksResponseTable
     token: string | null
@@ -240,12 +247,16 @@ export interface SendDeckData {
     rows: FileRowData[]
 }
 
-// TODO Modify interface lated
 export interface EditModalProps {
     editId: number | null;
     show: boolean;
     setShowEdit: Dispatch<SetStateAction<boolean>>;
     handleSearchWithDeck: () => Promise<void>;
+}
+
+export interface CreateDeckModalProps{
+    openCreateDeckModal: boolean;
+    setOpenCreateDeckModal: Dispatch<SetStateAction<boolean>>;
 }
 
 export interface EditWordModalProps {

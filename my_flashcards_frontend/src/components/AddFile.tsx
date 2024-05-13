@@ -110,7 +110,7 @@ const AddFile = () => {
             {!fileData &&
                 <>
                     <p>{t("file_example")}</p>
-                    <img className="addfile__example" src="/public/example.png" alt="example"/>
+                    <img className="addfile__example" src="/example.png" alt="example"/>
                 </>
             }
             {errorFileData !== "" ? (

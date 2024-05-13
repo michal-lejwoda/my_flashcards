@@ -93,5 +93,6 @@
   "change_all": "Change all",
   "file_example": "File example",
   "try_again": "Try Again",
-  "problem_with_file_data": "There is a problem with a file. Try load file again."
+  "problem_with_file_data": "There is a problem with a file. Try load file again.",
+  "create_deck": "Create deck"
 }
