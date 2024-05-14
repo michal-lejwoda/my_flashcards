@@ -26,10 +26,12 @@ const CreateComponent = () => {
     const [openCreateDeckModal, setOpenCreateDeckModal] = useState(false)
 
     const handleAddWord = async () => {
+        setCreateComponentError(null)
         if (deck !== null) {
             try {
                 await createWordForDeck(deck.id, token, values)
                 setDeckError("")
+                resetForm()
             } catch (err: unknown) {
                 const error = err as ErrorResponse
                 setCreateComponentError(error.response.data)
@@ -59,7 +61,6 @@ const CreateComponent = () => {
         onSubmit: () => {
             if (deck !== null) {
                 handleAddWord()
-                resetForm()
             } else {
                 setDeckError(t("choose_deck"))
             }

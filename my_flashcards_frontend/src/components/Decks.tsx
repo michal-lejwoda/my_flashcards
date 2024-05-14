@@ -32,7 +32,7 @@ const Decks = () => {
     return (
         <div className="decks">
             <h1 className="title">{t("decks")}</h1>
-            {data && data.results && data.results.length > 0 ? (
+            {data && data.results && (
                 <DecksTablewithPagination
                     data={data}
                     token={token}
@@ -41,8 +41,6 @@ const Decks = () => {
                     setPageSize={setPageSize}
                     handleGetDecks={handleGetDecks}
                 />
-            ) : (
-                <p>Nie ma talii</p>
             )}
         </div>
     );
