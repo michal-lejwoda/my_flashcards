@@ -94,36 +94,41 @@ const CreateComponent = () => {
                             setOpenCreateDeckModal(true)
                         }}>{t("create_deck")}</button>
                     </div>
-                        <div className="">
-                            <div className="account__form--textfield">
-                                <InputField label={t("front_page")} type="text" name="front_side"
-                                            handleChange={handleChange}/>
-                                <div className="errors form__errors">
-                                    {errors.front_side && <ErrorMessage message={errors.front_side}/>}
-                                    {createComponentError && createComponentError.front_side && (
-                                        <BackendErrorMessage message={createComponentError.front_side}/>
-                                    )}
-                                </div>
-                            </div>
-                            <div className="account__form--textfield">
-                                <InputField label={t("reverse_page")} type="text" name="front_side"
-                                            handleChange={handleChange}/>
-                                <div className="errors form__errors">
-                                    {errors.back_side && <ErrorMessage message={errors.back_side}/>}
-                                    {createComponentError && createComponentError.back_side && (
-                                        <BackendErrorMessage message={createComponentError.back_side}/>
-                                    )}
-                                    {createComponentError && createComponentError.non_field_errors && (
-                                        <BackendErrorMessage message={createComponentError.non_field_errors}/>
-                                    )}
-                                </div>
-                            </div>
-                            <div className="account__button">
-                                <GreenButton message={t("add_word")}/>
+                    <div className="">
+                        <div className="account__form--textfield">
+                            <InputField label={t("front_page")} type="text" name="front_side"
+                                        handleChange={handleChange}
+                                        value={values.front_side}
+
+                            />
+                            <div className="errors form__errors">
+                                {errors.front_side && <ErrorMessage message={errors.front_side}/>}
+                                {createComponentError && createComponentError.front_side && (
+                                    <BackendErrorMessage message={createComponentError.front_side}/>
+                                )}
                             </div>
                         </div>
+                        <div className="account__form--textfield">
+                            <InputField label={t("reverse_page")} type="text" name="back_side"
+                                        handleChange={handleChange}
+                                        value={values.back_side}/>
+                            <div className="errors form__errors">
+                                {errors.back_side && <ErrorMessage message={errors.back_side}/>}
+                                {createComponentError && createComponentError.back_side && (
+                                    <BackendErrorMessage message={createComponentError.back_side}/>
+                                )}
+                                {createComponentError && createComponentError.non_field_errors && (
+                                    <BackendErrorMessage message={createComponentError.non_field_errors}/>
+                                )}
+                            </div>
+                        </div>
+                        <div className="account__button">
+                            <GreenButton message={t("add_word")}/>
+                        </div>
+                    </div>
                 </CenteredForm>
-                <CreateDeckModal openCreateDeckModal={openCreateDeckModal} setOpenCreateDeckModal={setOpenCreateDeckModal}/>
+                <CreateDeckModal openCreateDeckModal={openCreateDeckModal}
+                                 setOpenCreateDeckModal={setOpenCreateDeckModal}/>
             </div>
         </div>
     );

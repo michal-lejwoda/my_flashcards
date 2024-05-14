@@ -22,7 +22,7 @@ const Register = () => {
     const [, setCookie] = useCookies(['flashcard_user_auth']);
     const [registerError, setRegisterError] = useState<RegisterError | null>(null)
     const auth = useContext(AuthContext);
-    const {handleSubmit, handleChange, errors} = useFormik({
+    const {values, handleSubmit, handleChange, errors} = useFormik({
         initialValues: {
             username: '',
             email: '',
@@ -66,6 +66,7 @@ const Register = () => {
                             name="username"
                             type="text"
                             handleChange={handleChange}
+                            value={values.username}
                         />
                         <div className="errors form__errors">
                             {errors.username && <ErrorMessage message={errors.username}/>}
@@ -80,6 +81,7 @@ const Register = () => {
                             name="email"
                             type="email"
                             handleChange={handleChange}
+                            value={values.email}
                         />
                         <div className="errors form__errors">
                             {errors.email && <ErrorMessage message={errors.email}/>}
@@ -94,6 +96,7 @@ const Register = () => {
                             name="password"
                             type="password"
                             handleChange={handleChange}
+                            value={values.password}
                         />
                         <div className="errors form__errors">
                             {errors.password && <ErrorMessage message={errors.password}/>}
@@ -108,6 +111,7 @@ const Register = () => {
                             name="repeat_password"
                             type="password"
                             handleChange={handleChange}
+                            value={values.repeat_password}
                         />
                         <div className="errors form__errors">
                             {errors.repeat_password &&

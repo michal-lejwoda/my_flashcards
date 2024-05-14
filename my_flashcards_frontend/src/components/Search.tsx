@@ -2,7 +2,7 @@ import SearchTable from "../table/SearchTable.tsx";
 import {useContext, useEffect, useState} from "react";
 import {searchWordWithDeck} from "../api.tsx";
 import AuthContext from "../context/AuthContext.tsx";
-import {ErrorResponse, SearchWordsResponseTable} from "../interfaces.tsx";
+import {SearchWordsResponseTable} from "../interfaces.tsx";
 import withAuth from "../context/withAuth.tsx";
 import EditModal from "../modals/EditModal.tsx";
 import {useTranslation} from "react-i18next";
@@ -28,11 +28,8 @@ const Search = () => {
         try {
             const response = await searchWordWithDeck(searchWord, token, pageSize)
             setData(response)
-        } catch (err: unknown) {
-            const error = err as ErrorResponse
-            // TODO Backhere
-            console.log("error")
-            console.log(error)
+        } catch {
+            // Blank
         }
     }
     useEffect(() => {

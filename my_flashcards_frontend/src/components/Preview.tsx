@@ -3,7 +3,7 @@ import "../sass/preview.css"
 import AsyncSelect from 'react-select/async';
 import withAuth from "../context/withAuth.tsx";
 import {getDecks, getDeckWords} from "../api.tsx";
-import {DecksTable, ErrorResponse, WordResponseTable} from "../interfaces.tsx";
+import {DecksTable, WordResponseTable} from "../interfaces.tsx";
 import {useContext, useEffect, useState} from "react";
 import AuthContext from "../context/AuthContext.tsx";
 import WordTablewithPagination from "../table/WordTablewithPagination.tsx";
@@ -53,11 +53,8 @@ const Preview = () => {
         try {
             const get_decks = await getDeckWords(token, deck_id, search, pageSize)
             setData(get_decks)
-        } catch (err: unknown) {
-            // #TODO Back HEre
-            const error = err as ErrorResponse
-            console.log("error")
-            console.log(error)
+        } catch {
+            // Blank
         }
     }
     const refreshDeck = async () => {
@@ -95,7 +92,7 @@ const Preview = () => {
                                          setData={setData} pageSize={pageSize}
                                          setPageSize={setPageSize}
                                          deck_id={deck.id}
-                                         // deck_id={location.state.id}
+                    // deck_id={location.state.id}
                                          handleGetWords={handleGetWords}
                                          handleOpenEditModal={handleOpenEditModal}
                 />
