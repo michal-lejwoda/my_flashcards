@@ -95,5 +95,5 @@
   "try_again": "Try Again",
   "problem_with_file_data": "There is a problem with a file. Try load file again.",
   "create_deck": "Create deck",
-  "dont-have_any_decks": "You dont have any decks. Go to Create tab to create deck or words or just use Add File tab"
+  "dont_have_any_decks": "You dont have any decks. Go to Create tab to create deck or words or just use Add File tab"
 }

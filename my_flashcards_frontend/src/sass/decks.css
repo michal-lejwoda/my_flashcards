@@ -19,6 +19,10 @@
   align-items: center;
   text-align: center;
 }
+.decks__error {
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+}
 .decks__searchcontainer {
   display: flex;
   justify-content: flex-end;

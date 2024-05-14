@@ -38,13 +38,12 @@ const DecksTablewithPagination: React.FC<DecksTablewithPaginationProps> = ({
         setOpenDropdownId(openDropdownId === id ? null : id);
     };
     const handleGoToLearn = (id: number, wrong_words: number, words_to_learn: number, reverse: boolean) => {
-        if(wrong_words <= 0 && words_to_learn <=0){
+        if (wrong_words <= 0 && words_to_learn <= 0) {
             setShowLearnDone(true)
-        }else{
-            navigate('/learn', { state: { id: id, reverse: reverse } });
+        } else {
+            navigate('/learn', {state: {id: id, reverse: reverse}});
         }
     }
-
 
 
     const columns = [
@@ -52,7 +51,8 @@ const DecksTablewithPagination: React.FC<DecksTablewithPaginationProps> = ({
             header: () => <span>{t("name")}</span>,
             cell: info => {
                 return (
-                    <div className="decks__table--name" onClick={()=>handleGoToLearn(info.row.original.id, info.row.original.num_of_wrong_words, info.row.original.num_of_words_to_learn, false)}>
+                    <div className="decks__table--name"
+                         onClick={() => handleGoToLearn(info.row.original.id, info.row.original.num_of_wrong_words, info.row.original.num_of_words_to_learn, false)}>
                         {info.getValue()}
                     </div>
                 )
@@ -77,7 +77,8 @@ const DecksTablewithPagination: React.FC<DecksTablewithPaginationProps> = ({
             cell: (props) => {
                 return (
                     <div className="dropdown">
-                        <button className="dropdown__button" onClick={() => toggleDropdown(props.row.original.id)}>{t("actions")}</button>
+                        <button className="dropdown__button"
+                                onClick={() => toggleDropdown(props.row.original.id)}>{t("actions")}</button>
                         <div className={`container ${openDropdownId === props.row.original.id ? 'open' : ''}`}>
                             <div className={`content ${openDropdownId === props.row.original.id ? 'open' : ''}`}>
                                 <NavLink className="dropdown__element" to="/preview"
@@ -128,7 +129,9 @@ const DecksTablewithPagination: React.FC<DecksTablewithPaginationProps> = ({
                 {getHeaderGroups().map(headerGroup => (
                     <tr key={headerGroup.id}>
                         {headerGroup.headers.map(header => (
-                            <th key={header.id}>
+                            <th key={header.id} style={{
+                                width: header.column.getSize(),
+                            }}>
                                 {header.isPlaceholder
                                     ? null
                                     : flexRender(
@@ -156,6 +159,7 @@ const DecksTablewithPagination: React.FC<DecksTablewithPaginationProps> = ({
                 ))}
                 </tbody>
             </table>
+            {getRowModel().rows.length == 0 && <p className="decks__error">{t("dont_have_any_decks")}</p>}
             <Pagination>
                 {data.links.first_page_link &&
                     <PaginationButton link={data.links.first_page_link} token={token} message={'<<'} setData={setData}/>

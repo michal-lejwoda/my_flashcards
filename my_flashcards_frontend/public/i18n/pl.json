@@ -95,5 +95,5 @@
   "try_again": "Spróbuj ponownie",
   "problem_with_file_data": "Nastąpił problem z plikiem. Spróbuj załadować go ponownie.",
   "create_deck": "Stwórz talie",
-  "dont-have_any_decks": "Nie posiadasz żadnych talii. Przejdź do zakładki Stwórz aby stworzyć talie lub słowa lub po prostu użyj zakładki Dodaj Plik."
+  "dont_have_any_decks": "Nie posiadasz żadnych talii. Przejdź do zakładki Stwórz aby stworzyć talie lub słowa lub po prostu użyj zakładki Dodaj Plik."
 }
