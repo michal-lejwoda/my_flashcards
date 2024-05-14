@@ -100,6 +100,8 @@ class SingleDeckViewSet(ErrorHandlingMixin, RetrieveModelMixin, GenericViewSet):
     def all_words(self, request, pk=None):
         instance = self.get_object()
         serializer = SingleDeckSerializerAllWords(instance)
+        for i in serializer.data['words']:
+            i['is_correct'] = True
         return Response(serializer.data)
 
     @action(detail=True, methods=['DELETE'], permission_classes=[IsAuthenticated],
@@ -127,7 +129,7 @@ class SingleDeckViewSet(ErrorHandlingMixin, RetrieveModelMixin, GenericViewSet):
                 return self.handle_response(_("Word created"), status.HTTP_201_CREATED)
             else:
                 # TODO Back here
-                return self.handle_response(serializer.errors, status.HTTP_400_BAD_REQUEST)
+                return Response(serializer.errors, status.HTTP_400_BAD_REQUEST)
         except Deck.DoesNotExist:
             return self.handle_response(_("Deck does not exist"), status.HTTP_404_NOT_FOUND)
         except IntegrityError:

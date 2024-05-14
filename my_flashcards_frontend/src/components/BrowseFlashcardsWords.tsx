@@ -17,9 +17,14 @@ const BrowseFlashcardsWords = () => {
     const [wrongWordsToLearn, setWrongWordsToLearn] = useState<LearnObject[]>([])
 
     const handleGoNext = (result_type: boolean) => {
+        console.log("result_type")
+        console.log(result_type)
         if (currentWord) {
             if (!result_type) {
+                currentWord.is_correct = false
                 setWrongWordsToLearn(prevState => [...prevState, currentWord]);
+            } else if (wrongWordsToLearn.length == 0 && wordsToLearn.length == 0) {
+                navigate("/")
             }
         }
         getNextWord()
@@ -72,7 +77,11 @@ const BrowseFlashcardsWords = () => {
                     </div>
                 }
             </div>
-            <p><span>{wrongWordsToLearn.length}</span>/{wordsToLearn.length}</p>
+            <p className="learnflashcards__howmany"><span className="learnflashcards--wrong"
+                                                          style={{textDecoration: !currentWord?.is_correct ? 'underline' : 'none'}}>{!currentWord?.is_correct ? wrongWordsToLearn.length + 1 : wrongWordsToLearn.length}</span>/<span
+                className="learnflashcards--normal"
+                style={{textDecoration: currentWord?.is_correct ? 'underline' : 'none'}}>{currentWord?.is_correct ? wordsToLearn.length + 1 : wordsToLearn.length}</span>
+            </p>
 
             <div className="learnflashcards__buttons">
                 {reverse &&

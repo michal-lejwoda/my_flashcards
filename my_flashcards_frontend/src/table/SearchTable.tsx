@@ -113,6 +113,7 @@ const SearchTable: React.FC<SearchTableProps> = ({
                 ))}
                 </tbody>
             </table>
+            {getRowModel().rows.length == 0 && <p className="decks__error">{t("dont_have_any_words")}</p>}
             <Pagination>
                 {data.links.first_page_link &&
                     <PaginationButton link={data.links.first_page_link} token={token} message={'<<'} setData={setData}/>

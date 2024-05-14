@@ -75,7 +75,7 @@ const LearnFlashcards = () => {
 
 
     function getResultByKey(key: number): FlashcardsSet | undefined {
-        const result = POSSIBLE_RESULTS[key - 1];
+        const result = POSSIBLE_RESULTS[key];
         if (result) {
             return result;
         }
@@ -95,6 +95,9 @@ const LearnFlashcards = () => {
             if (res.correct) {
                 if (currentWord) {
                     learnSingleWord(currentWord.id, token, form)
+                }
+                if (wrongWordsToLearn.length == 0 && wordsToLearn.length == 0){
+                    navigate("/")
                 }
             } else {
                 if (currentWord) {
@@ -149,10 +152,11 @@ const LearnFlashcards = () => {
                 }
             </div>
             <p className="learnflashcards__howmany"><span className="learnflashcards--wrong"
-                                                          style={{textDecoration: !currentWord?.is_correct ? 'underline' : 'none'}}>{wrongWordsToLearn.length}</span>/<span
+                                                          style={{textDecoration: !currentWord?.is_correct ? 'underline' : 'none'}}>{!currentWord?.is_correct ? wrongWordsToLearn.length + 1 : wrongWordsToLearn.length}</span>/<span
                 className="learnflashcards--normal"
-                style={{textDecoration: currentWord?.is_correct ? 'underline' : 'none'}}>{wordsToLearn.length}</span>
+                style={{textDecoration: currentWord?.is_correct ? 'underline' : 'none'}}>{currentWord?.is_correct ? wordsToLearn.length + 1 : wordsToLearn.length}</span>
             </p>
+
 
             <div className="learnflashcards__buttons">
                 {reverse &&
