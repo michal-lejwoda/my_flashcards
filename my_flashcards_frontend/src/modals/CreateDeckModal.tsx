@@ -30,6 +30,8 @@ const CreateDeckModal: React.FC<CreateDeckModalProps> = ({openCreateDeckModal, s
     const handleCreateDeck = async () => {
         try {
             await createDeck(values, token)
+            setOpenCreateDeckModal(false)
+            location.reload()
 
         } catch (err: unknown) {
             const error = err as ErrorResponse
