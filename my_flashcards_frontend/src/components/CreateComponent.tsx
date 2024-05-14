@@ -128,7 +128,9 @@ const CreateComponent = () => {
                     </div>
                 </CenteredForm>
                 <CreateDeckModal openCreateDeckModal={openCreateDeckModal}
-                                 setOpenCreateDeckModal={setOpenCreateDeckModal}/>
+                                 setOpenCreateDeckModal={setOpenCreateDeckModal}
+
+                />
             </div>
         </div>
     );

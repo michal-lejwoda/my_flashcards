@@ -50,7 +50,14 @@
   }
 }
 
-
+.spinner{
+  width:100%;
+  height:100vh;
+  display:flex;
+  justify-content: center;
+  align-items: center;
+  align-content: center;
+}
 .editoutline--button {
   padding: 0.2rem;
   font-size: 0.8rem;

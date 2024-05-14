@@ -20,32 +20,44 @@ import ChooseAndLearn from "./components/ChooseAndLearn.tsx";
 import {AuthProvider} from "./context/AuthContext.tsx";
 import ResetPassword from "./components/ResetPassword.tsx";
 import BrowseFlashcardsWords from "./components/BrowseFlashcardsWords.tsx";
+import {Triangle} from "react-loader-spinner";
 
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
-        <Suspense fallback="loading">
-            <BrowserRouter>
-                <AuthProvider>
-                    <Navbar/>
-                    <div className="main">
-                        <Routes>
-                            <Route path="/" element={<Decks/>}/>
-                            <Route path="/reset-password" element={<ResetPassword/>}></Route>
-                            <Route path="/search" element={<Search/>}/>
-                            <Route path="/create" element={<CreateComponent/>}/>
-                            <Route path="/learn" element={<LearnFlashcards/>}/>
-                            <Route path="/browse" element={<BrowseFlashcardsWords/>} />
-                            <Route path="/add_file" element={<AddFile/>}/>
-                            <Route path="/login" element={<Login/>}/>
-                            <Route path="/register" element={<Register/>}/>
-                            <Route path="/account" element={<Account/>}></Route>
-                            <Route path="/preview" element={<Preview/>}></Route>
-                            <Route path="/choose_and_learn" element={<ChooseAndLearn/>}></Route>
-                        </Routes>
-                    </div>
-                    <Footer/>
+    <Suspense fallback={
+                    <div className="spinner">
+                        <Triangle
+                            visible={true}
+                            height="80"
+                            width="80"
+                            color="#4fa94d"
+                            // radius="9"
+                            wrapperStyle={{}}
+                            wrapperClass=""
+                        />
+                    </div>}>
+        <BrowserRouter>
+            <AuthProvider>
+                <Navbar/>
+                <div className="main">
+                    <Routes>
+                        <Route path="/" element={<Decks/>}/>
+                        <Route path="/reset-password" element={<ResetPassword/>}></Route>
+                        <Route path="/search" element={<Search/>}/>
+                        <Route path="/create" element={<CreateComponent/>}/>
+                        <Route path="/learn" element={<LearnFlashcards/>}/>
+                        <Route path="/browse" element={<BrowseFlashcardsWords/>}/>
+                        <Route path="/add_file" element={<AddFile/>}/>
+                        <Route path="/login" element={<Login/>}/>
+                        <Route path="/register" element={<Register/>}/>
+                        <Route path="/account" element={<Account/>}></Route>
+                        <Route path="/preview" element={<Preview/>}></Route>
+                        <Route path="/choose_and_learn" element={<ChooseAndLearn/>}></Route>
+                    </Routes>
+                </div>
+                <Footer/>
 
-                </AuthProvider>
-            </BrowserRouter>
-        </Suspense>
+            </AuthProvider>
+        </BrowserRouter>
+    </Suspense>
 )

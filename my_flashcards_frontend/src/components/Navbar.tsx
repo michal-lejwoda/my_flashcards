@@ -16,6 +16,10 @@ const Navbar = () => {
     const [, , removeCookie] = useCookies(['flashcard_user_auth']);
     const {token} = useContext(AuthContext);
     const auth = useContext(AuthContext);
+    const closeMenuAndLogout = () => {
+        setIsMobileNavOpen(false)
+        handleLogout()
+    }
     const handleLogout = () => {
         auth.setToken(null)
         removeCookie('flashcard_user_auth')
@@ -101,6 +105,26 @@ const Navbar = () => {
                     <NavLink className="navbar__item" onClick={() => setIsMobileNavOpen(false)} to="/add_file">
                         <li className="mobile__menu__element">{t("add_file")}</li>
                     </NavLink>
+                    {token &&
+                        <>
+                            <NavLink to="/account" className="navbar__item" onClick={() => setIsMobileNavOpen(false)}>
+                                <li className="mobile__menu__element">{t("account")}</li>
+                            </NavLink>
+                            <div className="navbar__item" onClick={closeMenuAndLogout}>
+                                <li className="mobile__menu__element">{t("logout")}</li>
+                            </div>
+                        </>
+                    }
+                    {!token &&
+                        <>
+                            <NavLink to="/login" className="navbar__item" onClick={() => setIsMobileNavOpen(false)}>
+                                <li className="mobile__menu__element">{t("login")}</li>
+                            </NavLink>
+                            <NavLink to="/register" className="navbar__item" onClick={() => setIsMobileNavOpen(false)}>
+                                <li className="mobile__menu__element">{t("register")}</li>
+                            </NavLink>
+                        </>
+                    }
                 </ul>
 
 

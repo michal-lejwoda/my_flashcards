@@ -32,14 +32,18 @@ const Decks = () => {
     return (
         <div className="decks">
             <h1 className="title">{t("decks")}</h1>
-            {data && data.results &&
-                <DecksTablewithPagination data={data} token={token}
-                                          setData={setData} pageSize={pageSize}
-                                          setPageSize={setPageSize}
-                                          handleGetDecks={handleGetDecks}
-
+            {data && data.results && data.results.length > 0 ? (
+                <DecksTablewithPagination
+                    data={data}
+                    token={token}
+                    setData={setData}
+                    pageSize={pageSize}
+                    setPageSize={setPageSize}
+                    handleGetDecks={handleGetDecks}
                 />
-            }
+            ) : (
+                <p>Nie ma talii</p>
+            )}
         </div>
     );
 };

@@ -257,6 +257,7 @@ export interface EditModalProps {
 export interface CreateDeckModalProps{
     openCreateDeckModal: boolean;
     setOpenCreateDeckModal: Dispatch<SetStateAction<boolean>>;
+
 }
 
 export interface EditWordModalProps {
