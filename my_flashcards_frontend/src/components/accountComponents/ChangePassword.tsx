@@ -54,6 +54,7 @@ const ChangePassword: React.FC<ChangePasswordProps> = ({setShowDeleteModal}) => 
                         name="old_password"
                         type="password"
                         handleChange={handleChange}
+                        value={values.old_password}
                     />
                     <div className="errors form__errors">
                         {errors.old_password && <ErrorMessage message={errors.old_password}/>}
@@ -67,6 +68,7 @@ const ChangePassword: React.FC<ChangePasswordProps> = ({setShowDeleteModal}) => 
                         name="new_password"
                         type="password"
                         handleChange={handleChange}
+                        value={values.new_password}
                     />
                     <div className="errors form__errors">
                         <div className="errors form__errors">
