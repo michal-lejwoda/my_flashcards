@@ -38,9 +38,8 @@ const EditModal: React.FC<EditModalProps> = ({editId, show, setShowEdit, handleS
             await editSingleWord(id, token, json_obj)
             await handleSearchWithDeck()
             await setShowEdit(false)
-        } catch (e) {
-            // TODO BAck HEre
-            console.log(e)
+        } catch {
+            // Blank
         }
 
 

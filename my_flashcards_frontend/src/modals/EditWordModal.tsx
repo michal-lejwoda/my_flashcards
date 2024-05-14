@@ -39,9 +39,8 @@ const EditWordModal: React.FC<EditWordModalProps> = ({editId, show, setShowEdit,
             await fetchEditData()
             await refreshDeck()
             await setShowEdit(false)
-        } catch (e) {
-            // TODO BAck HEre
-            console.log(e)
+        } catch {
+            // Blank
         }
 
 
@@ -61,9 +60,8 @@ const EditWordModal: React.FC<EditWordModalProps> = ({editId, show, setShowEdit,
             await editSingleWord(id, token, json_obj)
             await refreshDeck()
             await setShowEdit(false)
-        } catch (e) {
-            // TODO BAck HEre
-            console.log(e)
+        } catch {
+            // Blank
         }
     }
 
