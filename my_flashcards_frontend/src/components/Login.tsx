@@ -41,7 +41,7 @@ const Login = () => {
         }
     }
 
-    const {handleSubmit, handleChange, errors} = useFormik({
+    const {values, handleSubmit, handleChange, errors} = useFormik({
         initialValues: {
             username: '',
             password: '',
@@ -63,6 +63,7 @@ const Login = () => {
                             name="username"
                             type="text"
                             handleChange={handleChange}
+                            value={values.username}
                         />
                         <div className="errors form__errors">
                             {errors.username && <ErrorMessage message={errors.username}/>}
@@ -77,6 +78,7 @@ const Login = () => {
                             name="password"
                             type="password"
                             handleChange={handleChange}
+                            value={values.password}
                         />
                         <div className="errors form__errors">
                             {errors.password && <ErrorMessage message={errors.password}/>}

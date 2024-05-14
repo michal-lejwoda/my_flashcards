@@ -22,8 +22,6 @@ const WordTablewithPagination: React.FC<WordTablewithPaginationProps> = ({
                                                                              handleOpenEditModal
 
                                                                          }) => {
-    console.log("deck_id")
-    console.log(deck_id)
     const {t} = useTranslation();
     const [search, setSearch] = useState("")
     const handleChangeDataBasedOnPageSize = (pg_size: string) => {
@@ -36,14 +34,8 @@ const WordTablewithPagination: React.FC<WordTablewithPaginationProps> = ({
         handleGetWords(token, deck_id, search_word, pageSize)
     }
     const handleDeleteWord = async (id: number) => {
-        console.log("deck_id")
-        console.log(deck_id)
-        console.log("id")
-        console.log(id)
         await deleteWordFromDeckOnly(deck_id, id, token)
         handleGetWords(token, deck_id, search, Number(pageSize))
-
-        // await handleSearchWithDeck()
     }
 
 

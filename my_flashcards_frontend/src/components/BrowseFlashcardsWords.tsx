@@ -60,11 +60,6 @@ const BrowseFlashcardsWords = () => {
         }
     }
 
-    console.log("wrongWordsToLearn")
-    console.log(wrongWordsToLearn)
-    console.log("wordsToLearn")
-    console.log(wordsToLearn)
-
     return (
         <div className="learnflashcards">
             <h1 className="title">{t('learn')}</h1>

@@ -52,6 +52,7 @@ const CreateDeckModal: React.FC<CreateDeckModalProps> = ({openCreateDeckModal, s
                                 label={t("name")}
                                 type="text"
                                 name="name"
+                                value={values.name}
                             />
                             <div className="errors form__errors">
                                 {errors.name && <ErrorMessage message={errors.name}/>}

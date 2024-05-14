@@ -199,6 +199,7 @@ const FileResultTable: FC<PropsFileData> = ({fileData, setFileData, pagination, 
                         label={t("deck_name")}
                         type="text"
                         handleChange={handleChange}
+                        value={values.deck}
                     />
                     <div className="errors form__errors">
                         {errors.deck && <p className="form__error form__message">{errors.deck}</p>}

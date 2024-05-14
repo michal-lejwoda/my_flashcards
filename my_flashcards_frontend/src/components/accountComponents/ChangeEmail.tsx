@@ -49,10 +49,11 @@ const ChangeEmail = () => {
                 <CenteredForm handleSubmit={handleSubmit}>
                     <div className="account__form--textfield change_email__form--textfield">
                         <InputField
-                            label={t("current_password")}
+                            label={t("email")}
                             name="email"
                             type="email"
                             handleChange={handleChange}
+                            value={values.email}
                         />
                         <div className="errors form__errors">
                             {errors.email && <ErrorMessage message={errors.email}/>}
@@ -67,6 +68,7 @@ const ChangeEmail = () => {
                             name="password"
                             type="password"
                             handleChange={handleChange}
+                            value={values.password}
                         />
                         <div className="errors form__errors">
                             {errors.password && <ErrorMessage message={errors.password}/>}
