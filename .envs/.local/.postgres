@@ -2,6 +2,7 @@
 # ------------------------------------------------------------------------------
 POSTGRES_HOST=postgres
 POSTGRES_PORT=5432
+PGPORT=5432
 POSTGRES_DB=my_flashcards
 POSTGRES_USER=iDjHVTmPResDcVhnrEuzLQqAkVqayvof
 POSTGRES_PASSWORD=uQEi6d2kmWK0JCgnfxtAx2uCLg5UMymikQGzEZwNWWkiKjOTIG0qAavLKeWCeGTC
