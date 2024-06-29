@@ -26,13 +26,13 @@ services:
   postgres:
     build:
       context: .
-      dockerfile: ./compose/production/postgres/Dockerfile
+      dockerfile: ./compose/local/postgres/Dockerfile
     image: my_flashcards_production_postgres
     container_name: my_flashcards_local_postgres
     volumes:
       - my_flashcards_local_postgres_data:/var/lib/postgresql/data
       - my_flashcards_local_postgres_data_backups:/backups
-      - ./prod_backups:/prod_backups
+      - ./local_backups:/local_backups
     env_file:
       - ./.envs/.local/.postgres
 
