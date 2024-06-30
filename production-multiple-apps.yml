@@ -16,7 +16,7 @@ services:
       - postgres
       - redis
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://django/healthcheck/"]
+      test: [ "CMD", "curl", "-f", "https://www.language-flashcards.pl" ]
       interval: 30s
       timeout: 10s
       retries: 5
