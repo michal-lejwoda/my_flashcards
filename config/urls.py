@@ -11,8 +11,11 @@ from drf_spectacular.views import SpectacularAPIView
 from drf_spectacular.views import SpectacularSwaggerView
 from rest_framework.authtoken.views import obtain_auth_token
 
+from config import views
+
 urlpatterns = [
     path("", TemplateView.as_view(template_name="index.html"), name="index"),
+    path("healthcheck/", views.healthcheck, name='healthcheck'),
     path(
         "about/",
         TemplateView.as_view(template_name="pages/about.html"),
@@ -36,6 +39,7 @@ if settings.DEBUG:
 urlpatterns += [
     # API base url
     path("api/", include("config.api_router")),
+
     # DRF auth token
     path("api/login/", obtain_auth_token),
     path("api/schema/", SpectacularAPIView.as_view(), name="api-schema"),
