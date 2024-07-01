@@ -97,8 +97,8 @@ services:
     volumes:
       - "./my_flashcards_frontend/dist:/dist"
     ports:
-      - "80:80"
-      - "443:443"
+      - "81:80"
+      - "444:443"
     restart: always
     depends_on:
       - django
