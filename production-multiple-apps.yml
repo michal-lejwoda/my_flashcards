@@ -24,6 +24,8 @@ services:
       - ./.envs/.production/.django
       - ./.envs/.production/.postgres
     command: /start
+    networks:
+      - backend
 
 
   postgres:
@@ -37,6 +39,8 @@ services:
       - ./prod_backups:/prod_backups
     env_file:
       - ./.envs/.production/.postgres
+    networks:
+      - backend
 
 #  traefik:
 #    build:
@@ -55,6 +59,8 @@ services:
 
   redis:
     image: docker.io/redis:6
+    networks:
+      - backend
 
   celeryworker:
     <<: *django
@@ -66,6 +72,8 @@ services:
     depends_on:
       django:
         condition: service_healthy
+    networks:
+      - backend
 
   celerybeat:
     <<: *django
@@ -77,6 +85,8 @@ services:
     depends_on:
       django:
         condition: service_healthy
+    networks:
+      - backend
 
   flower:
     <<: *django
@@ -88,6 +98,8 @@ services:
     depends_on:
       django:
         condition: service_healthy
+    networks:
+      - backend
 
   nginx:
     image: nginx
@@ -96,10 +108,18 @@ services:
       dockerfile: ./compose/production/nginx/Dockerfile
     volumes:
       - "./my_flashcards_frontend/dist:/dist"
+    #TODO REMOVE It
     ports:
       - "81:80"
       - "444:443"
     restart: always
     depends_on:
       - django
+    networks:
+      - connector
+      - backend
+networks:
+  backend:
+  connector:
+    external: true
 
