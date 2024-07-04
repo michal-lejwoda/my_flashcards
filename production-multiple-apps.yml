@@ -15,15 +15,18 @@ services:
     depends_on:
       - postgres
       - redis
-    healthcheck:
-      test: [ "CMD", "curl", "-f", "https://www.language-flashcards.pl" ]
-      interval: 30s
-      timeout: 10s
-      retries: 5
+#    healthcheck:
+#      test: [ "CMD", "curl", "-f", "https://www.language-flashcards.pl" ]
+#      interval: 30s
+#      timeout: 10s
+#      retries: 5
     env_file:
       - ./.envs/.production/.django
       - ./.envs/.production/.postgres
     command: /start
+    networks:
+      - backend
+      - connector
 
 
   postgres:
@@ -37,24 +40,13 @@ services:
       - ./prod_backups:/prod_backups
     env_file:
       - ./.envs/.production/.postgres
-
-#  traefik:
-#    build:
-#      context: .
-#      dockerfile: ./compose/production/traefik/Dockerfile
-#    image: my_flashcards_production_traefik
-#    depends_on:
-#      - django
-#    volumes:
-#      - production_traefik:/etc/traefik/acme
-#    ports:
-#      - '0.0.0.0:80:80'
-#      - '0.0.0.0:443:443'
-#      - '0.0.0.0:5000:5000'
-#      - '0.0.0.0:5555:5555'
+    networks:
+      - backend
 
   redis:
     image: docker.io/redis:6
+    networks:
+      - backend
 
   celeryworker:
     <<: *django
@@ -63,9 +55,11 @@ services:
     env_file:
       - ./.envs/.production/.django
       - ./.envs/.production/.postgres
-    depends_on:
-      django:
-        condition: service_healthy
+#    depends_on:
+#      django:
+#        condition: service_healthy
+    networks:
+      - backend
 
   celerybeat:
     <<: *django
@@ -74,9 +68,11 @@ services:
     env_file:
       - ./.envs/.production/.django
       - ./.envs/.production/.postgres
-    depends_on:
-      django:
-        condition: service_healthy
+#    depends_on:
+#      django:
+#        condition: service_healthy
+    networks:
+      - backend
 
   flower:
     <<: *django
@@ -85,21 +81,31 @@ services:
     env_file:
       - ./.envs/.production/.django
       - ./.envs/.production/.postgres
-    depends_on:
-      django:
-        condition: service_healthy
+#    depends_on:
+#      django:
+#        condition: service_healthy
+    networks:
+      - backend
 
-  nginx:
-    image: nginx
-    build:
-      context: .
-      dockerfile: ./compose/production/nginx/Dockerfile
-    volumes:
-      - "./my_flashcards_frontend/dist:/dist"
-    ports:
-      - "80:80"
-      - "443:443"
-    restart: always
-    depends_on:
-      - django
+#  nginx:
+#    image: nginx
+#    build:
+#      context: .
+#      dockerfile: ./compose/production/nginx/Dockerfile
+#    volumes:
+#      - "./my_flashcards_frontend/dist:/dist"
+#    #TODO REMOVE It
+#    ports:
+#      - "81:80"
+#      - "444:443"
+#    restart: always
+#    depends_on:
+#      - django
+#    networks:
+#      - connector
+#      - backend
+networks:
+  backend:
+  connector:
+    external: true
 
