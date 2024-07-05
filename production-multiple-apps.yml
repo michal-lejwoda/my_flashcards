@@ -87,23 +87,7 @@ services:
     networks:
       - backend
 
-#  nginx:
-#    image: nginx
-#    build:
-#      context: .
-#      dockerfile: ./compose/production/nginx/Dockerfile
-#    volumes:
-#      - "./my_flashcards_frontend/dist:/dist"
-#    #TODO REMOVE It
-#    ports:
-#      - "81:80"
-#      - "444:443"
-#    restart: always
-#    depends_on:
-#      - django
-#    networks:
-#      - connector
-#      - backend
+
 networks:
   backend:
   connector:
