@@ -38,21 +38,6 @@ services:
     env_file:
       - ./.envs/.production/.postgres
 
-#  traefik:
-#    build:
-#      context: .
-#      dockerfile: ./compose/production/traefik/Dockerfile
-#    image: my_flashcards_production_traefik
-#    depends_on:
-#      - django
-#    volumes:
-#      - production_traefik:/etc/traefik/acme
-#    ports:
-#      - '0.0.0.0:80:80'
-#      - '0.0.0.0:443:443'
-#      - '0.0.0.0:5000:5000'
-#      - '0.0.0.0:5555:5555'
-
   redis:
     image: docker.io/redis:6
 
@@ -85,6 +70,7 @@ services:
     env_file:
       - ./.envs/.production/.django
       - ./.envs/.production/.postgres
+
     depends_on:
       django:
         condition: service_healthy
@@ -95,10 +81,10 @@ services:
       context: .
       dockerfile: ./compose/production/nginx/Dockerfile
     volumes:
-      - "./my_flashcards_frontend/dist:/dist"
+      - ./my_flashcards_frontend/dist:/dist
     ports:
-      - "80:80"
-      - "443:443"
+      - 80:80
+      - 443:443
     restart: always
     depends_on:
       - django
