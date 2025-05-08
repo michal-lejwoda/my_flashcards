@@ -22,7 +22,7 @@ class LanguageCategoryPage(Page):
         choices=LANGUAGE_CHOICES
     )
     image = models.ForeignKey(
-        'wagtailimages.Image',  # to ważne: stringowa referencja
+        'wagtailimages.Image',
         null=True,
         blank=True,
         on_delete=models.SET_NULL,
