@@ -49,7 +49,22 @@ class ExercisePage(Page):
         abstract = True
 
 class Group(Page):
-    image = models.ImageField()
+    image = models.ForeignKey(
+        'wagtailimages.Image',
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name='+'
+    )
+    is_children_group = models.BooleanField(default=True)
+    is_children_exercise = models.BooleanField(default=False)
+
+    content_panels = Page.content_panels + [
+        FieldPanel('title'),
+        FieldPanel('image'),
+        FieldPanel('is_children_group'),
+        FieldPanel('is_children_exercise'),
+    ]
 
 class ExamPage(Page):
     description = models.TextField(blank=True)
@@ -59,7 +74,6 @@ class ExamPage(Page):
     ]
 
 class MatchExercise(Page):
-
     description = models.TextField(help_text="Opisz ćwiczenie")
 
     pairs = StreamField([
