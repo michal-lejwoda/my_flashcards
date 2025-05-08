@@ -15,7 +15,7 @@ LANGUAGE_CHOICES = [
     ('pl', _('Polish')),
 ]
 
-class LanguagePage(Page):
+class LanguageCategoryPage(Page):
     language = models.CharField(
         max_length=2,
         choices=LANGUAGE_CHOICES
