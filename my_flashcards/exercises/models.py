@@ -1,12 +1,13 @@
 import django.utils.text
 from django.db import models
 from wagtail.admin.panels import FieldPanel
-from wagtail import blocks
+from wagtail import blocks, images
 
 from wagtail.fields import StreamField
 from wagtail.models import Page
 from wagtail.images.blocks import ImageChooserBlock
 from django.utils.translation import gettext as _
+
 
 
 LANGUAGE_CHOICES = [
@@ -20,10 +21,17 @@ class LanguageCategoryPage(Page):
         max_length=2,
         choices=LANGUAGE_CHOICES
     )
-    image = models.ImageField()
+    image = models.ForeignKey(
+        'wagtailimages.Image',  # to ważne: stringowa referencja
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name='+'
+    )
 
     content_panels = Page.content_panels + [
         FieldPanel('language'),
+        FieldPanel('image'),
     ]
 
 class ExercisePage(Page):
