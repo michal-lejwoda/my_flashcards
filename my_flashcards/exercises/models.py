@@ -1,14 +1,12 @@
-import django.utils.text
 from django.db import models
-from wagtail.admin.panels import FieldPanel
-from wagtail import blocks, images
-
-from wagtail.fields import StreamField
-from wagtail.models import Page
-from wagtail.images.blocks import ImageChooserBlock
 from django.utils.translation import gettext as _
+from modelcluster.fields import ParentalKey
 
-
+# # from docutils.utils.math.tex2mathml_extern import blahtexml
+from wagtail.admin.panels import FieldPanel, InlinePanel
+# from wagtail.images.blocks import ImageChooserBlock
+from wagtail.models import Page, Orderable
+# # from wagtailimages import Image
 
 LANGUAGE_CHOICES = [
     ('de', _('German')),
@@ -16,137 +14,156 @@ LANGUAGE_CHOICES = [
     ('pl', _('Polish')),
 ]
 
-class LanguageCategoryPage(Page):
-    language = models.CharField(
-        max_length=2,
-        choices=LANGUAGE_CHOICES
-    )
-    image = models.ForeignKey(
-        'wagtailimages.Image',
-        null=True,
-        blank=True,
-        on_delete=models.SET_NULL,
-        related_name='+'
-    )
-
+#Abstract classes
+class GroupBase(Page):
+    background_image = models.ForeignKey(
+            'wagtailimages.Image',
+            null=True,
+            blank=True,
+            on_delete=models.SET_NULL,
+            related_name='+'
+        )
+    background_image_with_text = models.ForeignKey(
+            'wagtailimages.Image',
+            null=True,
+            blank=True,
+            on_delete=models.SET_NULL,
+            related_name='+'
+        )
     content_panels = Page.content_panels + [
-        FieldPanel('language'),
-        FieldPanel('image'),
-    ]
-
-class ExercisePage(Page):
-    language = models.CharField(
-        max_length=2,
-        choices=LANGUAGE_CHOICES,
-        default='de'
-    )
-
-    content_panels = Page.content_panels + [
-        FieldPanel('language'),
+        FieldPanel('background_image'),
+        FieldPanel('background_image_with_text'),
     ]
 
     class Meta:
         abstract = True
 
-class Group(Page):
-    image = models.ForeignKey(
+
+class ExerciseBase(Page):
+    description = models.TextField()
+
+    content_panels = Page.content_panels + [
+        FieldPanel('description'),
+    ]
+
+
+#Normal classes
+class LanguageCategoryPage(Page):
+    language = models.CharField(
+        max_length=2,
+        choices=LANGUAGE_CHOICES
+    )
+    flag_image = models.ForeignKey(
         'wagtailimages.Image',
         null=True,
         blank=True,
         on_delete=models.SET_NULL,
         related_name='+'
     )
-    is_children_group = models.BooleanField(default=True)
-    is_children_exercise = models.BooleanField(default=False)
 
     content_panels = Page.content_panels + [
-        FieldPanel('title'),
-        FieldPanel('image'),
-        FieldPanel('is_children_group'),
-        FieldPanel('is_children_exercise'),
+        FieldPanel('language'),
+        FieldPanel('flag_image'),
     ]
+    subpage_types = ['MainGroup']
 
-class ExamPage(Page):
-    description = models.TextField(blank=True)
+
+class MainGroup(GroupBase):
+    parent_page_types = ['LanguageCategoryPage']
+    subpage_types = ['SubGroup']
+
+class SubGroup(GroupBase):
+    subpage_types = ['SubGroup', 'GroupExercise']
+
+
+
+class GroupExercise(Page):
+    introduction = models.TextField(blank=True)
 
     content_panels = Page.content_panels + [
-        FieldPanel('description'),
+        FieldPanel('introduction'),
+        InlinePanel('exercise_links', label='Exercises'),
     ]
 
-class MatchExercise(Page):
-    description = models.TextField(help_text="Opisz ćwiczenie")
-
-    pairs = StreamField([
-        ('pair',  blocks.ListBlock(
-            blocks.StructBlock([
-                ('left_item', blocks.CharBlock(max_length=255)),
-                ('right_item', blocks.CharBlock(max_length=255))
-            ])
-        ))
-    ], blank=True, use_json_field=True)
-
-    content_panels = Page.content_panels + [
-        FieldPanel('description'),
-        FieldPanel('pairs'),
-    ]
+    parent_page_types = ['SubGroup']
+    subpage_types = []
 
 
-class MatchExerciseTextWithImage(Page):
-    description = models.TextField()
-    pairs = StreamField(
-        [
-            ('pair', blocks.ListBlock(
-                blocks.StructBlock([
-                    ('left_item', blocks.CharBlock(max_length=255)),
-                    ('right_item', ImageChooserBlock())
-                ])
-            ))
-        ],
-        blank=True,
-        use_json_field=True
+class GroupExerciseItem(Orderable):
+    group = ParentalKey(
+        GroupExercise,
+        on_delete=models.CASCADE,
+        related_name='exercise_links',
+    )
+    exercise = models.ForeignKey(
+        'ExerciseBase',
+        on_delete=models.CASCADE,
+        related_name='+'
     )
 
-    content_panels = Page.content_panels + [
-        FieldPanel('description'),
-        FieldPanel('pairs'),
+    panels = [
+        FieldPanel('exercise'),
     ]
-
-class FillInTheBlanksExercise(Page):
-    description = models.TextField(help_text="Opis ćwiczenia")
-
-
-
-    content = StreamField([
-        ('paragraph', blocks.RichTextBlock()),
-        ('blank', blocks.ChoiceBlock(choices=[
-            ('option_1', 'Opcja 1'),
-            ('option_2', 'Opcja 2'),
-            ('option_3', 'Opcja 3'),
-        ], blank=True)),
-    ], blank=True,use_json_field=True)
-
-    content_panels = Page.content_panels + [
-        FieldPanel('description'),
-        FieldPanel('content'),
-    ]
-
-class GapFillFullTextExercise(Page):
-    description = models.TextField()
-    image = models.ImageField(null=True, blank=True)
-    text = models.TextField(help_text="Użyj placeholderów jak {{gap1}}, {{gap2}} itd.")
-
-    gaps = StreamField([
-        ('gap', blocks.StructBlock([
-            ('placeholder', blocks.CharBlock(help_text="Nazwa luki, np. gap1")),
-            ('options', blocks.ListBlock(blocks.CharBlock(), min_num=2, max_num=5)),
-            ('correct_answer', blocks.CharBlock(help_text="Poprawna odpowiedź")),
-        ]))
-    ], blank=True, use_json_field=True)
-
-    content_panels = Page.content_panels + [
-        FieldPanel('description'),
-        FieldPanel('text'),
-        FieldPanel('gaps'),
-    ]
+# class GroupExercise(Page):
+#     pass
+#
+# class ExerciseAbstract(Page):
+#     text = models.CharField()
 
 
+
+# class ExercisePage(Page):
+#     language = models.CharField(
+#         max_length=2,
+#         choices=LANGUAGE_CHOICES,
+#         default='de'
+#     )
+#
+#     content_panels = Page.content_panels + [
+#         FieldPanel('language'),
+#     ]
+#
+#     class Meta:
+#         abstract = True
+#
+# class Group(Page):
+#     image = models.ForeignKey(
+#         'wagtailimages.Image',
+#         null=True,
+#         blank=True,
+#         on_delete=models.SET_NULL,
+#         related_name='+'
+#     )
+#     is_children_group = models.BooleanField(default=True)
+#     is_children_exercise = models.BooleanField(default=False)
+#
+#     content_panels = Page.content_panels + [
+#         FieldPanel('title'),
+#         FieldPanel('image'),
+#         FieldPanel('is_children_group'),
+#         FieldPanel('is_children_exercise'),
+#     ]
+#
+#
+# class GroupWithNumberExercises(Page):
+#     pass
+#
+# class MainGroup(Page):
+#     background_url = ImageChooserBlock(null=True, blank=True)
+#     background_image = ImageChooserBlock(null=True, blank=True)
+#
+# class GroupExercisePage(Orderable):
+#     exercises = models.ManyToManyField(ExercisePage)
+#
+#
+# class ExerciseField(Page):
+#     pass
+#
+#
+# # class ExerciseDisplay(Page):
+# #     exercise = models.ForeignKey(ExercisePage)
+# #     score = models.IntegerField(default=0)
+# #     max_points = models.IntegerField(default=0)
+# #     user_tried = models.BooleanField(default=False)
+#
+#
