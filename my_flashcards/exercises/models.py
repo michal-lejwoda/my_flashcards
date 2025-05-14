@@ -1,14 +1,20 @@
 from django.db import models
 from django.utils.translation import gettext as _
 from modelcluster.fields import ParentalKey
-# # from docutils.utils.math.tex2mathml_extern import blahtexml
+from wagtail import blocks
 from wagtail.admin.panels import FieldPanel, InlinePanel
 from wagtail.fields import StreamField
-# from wagtail.images.blocks import ImageChooserBlock
+from wagtail.images.blocks import ImageChooserBlock
 from wagtail.models import Page, Orderable
-from wagtail import blocks, images
-# # from wagtailimages import Image
 
+#subpage_function
+def get_exercise_subpage_type():
+    from wagtail.models import Page
+    subclasses = ExerciseBase.__subclasses__()
+    return [f"{cls._meta.app_label}.{cls.__name__}" for cls in subclasses
+            if issubclass(cls, Page) and not cls._meta.abstract]
+
+# rest
 LANGUAGE_CHOICES = [
     ('de', _('German')),
     ('en', _('English')),
@@ -77,7 +83,40 @@ class MainGroup(GroupBase):
 class SubGroup(GroupBase):
     subpage_types = ['SubGroup', 'GroupExercise']
 
+#Important First exercises then Group Exercise
+class MatchExercise(ExerciseBase):
+    pairs = StreamField([
+        ('pair',  blocks.ListBlock(
+            blocks.StructBlock([
+                ('left_item', blocks.CharBlock(max_length=255)),
+                ('right_item', blocks.CharBlock(max_length=255))
+            ])
+        ))
+    ], blank=True, use_json_field=True)
 
+    content_panels = Page.content_panels + [
+        FieldPanel('description'),
+        FieldPanel('pairs'),
+    ]
+
+class MatchExerciseTextWithImage(ExerciseBase):
+    pairs = StreamField(
+        [
+            ('pair', blocks.ListBlock(
+                blocks.StructBlock([
+                    ('left_item', blocks.CharBlock(max_length=255)),
+                    ('right_item', ImageChooserBlock())
+                ])
+            ))
+        ],
+        blank=True,
+        use_json_field=True
+    )
+
+    content_panels = Page.content_panels + [
+        FieldPanel('description'),
+        FieldPanel('pairs'),
+    ]
 
 class GroupExercise(Page):
     introduction = models.TextField(blank=True)
@@ -88,7 +127,7 @@ class GroupExercise(Page):
     ]
 
     parent_page_types = ['SubGroup']
-    # subpage_types = ['GroupExerciseItem']
+    subpage_types = get_exercise_subpage_type()
 
 
 class GroupExerciseItem(Orderable):
@@ -108,81 +147,5 @@ class GroupExerciseItem(Orderable):
     ]
     subpage_types = ['MatchExercise']
 
-class MatchExercise(ExerciseBase):
-
-    pairs = StreamField([
-        ('pair',  blocks.ListBlock(
-            blocks.StructBlock([
-                ('left_item', blocks.CharBlock(max_length=255)),
-                ('right_item', blocks.CharBlock(max_length=255))
-            ])
-        ))
-    ], blank=True, use_json_field=True)
-
-    content_panels = Page.content_panels + [
-        FieldPanel('description'),
-        FieldPanel('pairs'),
-    ]
-# class GroupExercise(Page):
-#     pass
-#
-# class ExerciseAbstract(Page):
-#     text = models.CharField()
 
 
-
-# class ExercisePage(Page):
-#     language = models.CharField(
-#         max_length=2,
-#         choices=LANGUAGE_CHOICES,
-#         default='de'
-#     )
-#
-#     content_panels = Page.content_panels + [
-#         FieldPanel('language'),
-#     ]
-#
-#     class Meta:
-#         abstract = True
-#
-# class Group(Page):
-#     image = models.ForeignKey(
-#         'wagtailimages.Image',
-#         null=True,
-#         blank=True,
-#         on_delete=models.SET_NULL,
-#         related_name='+'
-#     )
-#     is_children_group = models.BooleanField(default=True)
-#     is_children_exercise = models.BooleanField(default=False)
-#
-#     content_panels = Page.content_panels + [
-#         FieldPanel('title'),
-#         FieldPanel('image'),
-#         FieldPanel('is_children_group'),
-#         FieldPanel('is_children_exercise'),
-#     ]
-#
-#
-# class GroupWithNumberExercises(Page):
-#     pass
-#
-# class MainGroup(Page):
-#     background_url = ImageChooserBlock(null=True, blank=True)
-#     background_image = ImageChooserBlock(null=True, blank=True)
-#
-# class GroupExercisePage(Orderable):
-#     exercises = models.ManyToManyField(ExercisePage)
-#
-#
-# class ExerciseField(Page):
-#     pass
-#
-#
-# # class ExerciseDisplay(Page):
-# #     exercise = models.ForeignKey(ExercisePage)
-# #     score = models.IntegerField(default=0)
-# #     max_points = models.IntegerField(default=0)
-# #     user_tried = models.BooleanField(default=False)
-#
-#
