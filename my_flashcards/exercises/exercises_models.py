@@ -12,9 +12,7 @@ from wagtail import blocks, images
 #         FieldPanel('description'),
 #     ]
 #
-from my_flashcards.exercises.models import ExerciseBase
-
-
+# from my_flashcards.exercises.models import ExerciseBase
 # class MatchExercise(ExerciseBase):
 #     description = models.TextField(help_text="Opisz ćwiczenie")
 #
@@ -31,6 +29,8 @@ from my_flashcards.exercises.models import ExerciseBase
 #         FieldPanel('description'),
 #         FieldPanel('pairs'),
 #     ]
+
+
 #
 #
 # class MatchExerciseTextWithImage(Page):

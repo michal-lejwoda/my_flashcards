@@ -1,11 +1,12 @@
 from django.db import models
 from django.utils.translation import gettext as _
 from modelcluster.fields import ParentalKey
-
 # # from docutils.utils.math.tex2mathml_extern import blahtexml
 from wagtail.admin.panels import FieldPanel, InlinePanel
+from wagtail.fields import StreamField
 # from wagtail.images.blocks import ImageChooserBlock
 from wagtail.models import Page, Orderable
+from wagtail import blocks, images
 # # from wagtailimages import Image
 
 LANGUAGE_CHOICES = [
@@ -45,6 +46,7 @@ class ExerciseBase(Page):
     content_panels = Page.content_panels + [
         FieldPanel('description'),
     ]
+    subpage_types = ['MatchExercise']
 
 
 #Normal classes
@@ -86,7 +88,7 @@ class GroupExercise(Page):
     ]
 
     parent_page_types = ['SubGroup']
-    subpage_types = []
+    # subpage_types = ['GroupExerciseItem']
 
 
 class GroupExerciseItem(Orderable):
@@ -103,6 +105,23 @@ class GroupExerciseItem(Orderable):
 
     panels = [
         FieldPanel('exercise'),
+    ]
+    subpage_types = ['MatchExercise']
+
+class MatchExercise(ExerciseBase):
+
+    pairs = StreamField([
+        ('pair',  blocks.ListBlock(
+            blocks.StructBlock([
+                ('left_item', blocks.CharBlock(max_length=255)),
+                ('right_item', blocks.CharBlock(max_length=255))
+            ])
+        ))
+    ], blank=True, use_json_field=True)
+
+    content_panels = Page.content_panels + [
+        FieldPanel('description'),
+        FieldPanel('pairs'),
     ]
 # class GroupExercise(Page):
 #     pass
