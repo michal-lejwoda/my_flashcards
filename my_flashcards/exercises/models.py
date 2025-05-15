@@ -1,12 +1,14 @@
 from django.db import models
 from django.utils.translation import gettext as _
 from modelcluster.fields import ParentalKey
+from django.contrib.auth import get_user_model
 from wagtail import blocks
 from wagtail.admin.panels import FieldPanel, InlinePanel
 from wagtail.fields import StreamField
 from wagtail.images.blocks import ImageChooserBlock
 from wagtail.models import Page, Orderable
 
+User = get_user_model()
 #subpage_function
 def get_exercise_subpage_type():
     from wagtail.models import Page
@@ -54,8 +56,23 @@ class ExerciseBase(Page):
     ]
     subpage_types = ['MatchExercise']
 
+    def check_answer(self, user, user_answers):
+        raise NotImplementedError("Classes should implement this method")
 
-#Normal classes
+    def save_attempt(self, user, answers, score, max_score):
+        attempt, created = ExerciseAttempt.objects.update_or_create(
+            user=user,
+            exercise=self,
+            defaults={
+                'score': score,
+                'max_score': max_score,
+                'completed': True
+            }
+        )
+        return attempt
+
+
+
 class LanguageCategoryPage(Page):
     language = models.CharField(
         max_length=2,
@@ -148,4 +165,21 @@ class GroupExerciseItem(Orderable):
     subpage_types = ['MatchExercise']
 
 
+class ExerciseAttempt(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='exercise_attempts')
+    exercise = models.ForeignKey('ExerciseBase', on_delete=models.CASCADE, related_name='attempts')
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    score = models.IntegerField(default=0)
+    max_score = models.IntegerField(default=0)
+    completed = models.BooleanField(default=False)
 
+    class Meta:
+        ordering = ['-created_at']
+
+
+class MatchExerciseAnswer(models.Model):
+    attempt = models.ForeignKey(ExerciseAttempt, on_delete=models.CASCADE, related_name='answers')
+    left_item_index = models.IntegerField()
+    right_item_index = models.IntegerField()
+    is_correct = models.BooleanField(default=False)
