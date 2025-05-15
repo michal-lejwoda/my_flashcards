@@ -1,18 +1,64 @@
+from rest_framework.fields import SerializerMethodField
 from wagtail.images.api.fields import ImageRenditionField
-from my_flashcards.exercises.models import LanguageCategoryPage
+from my_flashcards.exercises.models import LanguageCategoryPage, MainGroup, SubGroup
 from rest_framework import serializers
 
 
-class LanguageCategoryPageSerializer(serializers.ModelSerializer):
+class LanguageCategoryPageListSerializer(serializers.ModelSerializer):
     flag_image = ImageRenditionField('fill-600x400')
 
     class Meta:
         model = LanguageCategoryPage
         fields = ['id', 'title', 'language', 'flag_image']
-        # def get_number_of_childrens(self,obj):
-        #     return obj.get_children().live().count()
 
-#
+
+
+class LanguageCategoryPageDetailSerializer(serializers.ModelSerializer):
+    children = SerializerMethodField()
+
+    def get_children(self, obj):
+        children = obj.get_children().live().specific().type(MainGroup)
+        return MainGroupListSerializer(children, many=True).data
+
+    class Meta:
+        model = LanguageCategoryPage
+        fields = ['id', 'title', 'language', 'children']
+
+
+
+class MainGroupListSerializer(serializers.ModelSerializer):
+    background_image = ImageRenditionField('fill-600x400')
+    background_image_with_text = ImageRenditionField('fill-600x400')
+    class Meta:
+        model = MainGroup
+        fields = ['id', 'title', 'background_image', 'background_image_with_text']
+
+class MainGroupPageDetailSerializer(serializers.ModelSerializer):
+    children = SerializerMethodField()
+
+    def get_children(self, obj):
+        children = obj.get_children().live().specific()
+        return SubGroupListSerializer(children, many=True).data
+    class Meta:
+        model = MainGroup
+        fields = ['id', 'title', 'children']
+
+class SubGroupListSerializer(serializers.ModelSerializer):
+    background_image = ImageRenditionField('fill-600x400')
+    background_image_with_text = ImageRenditionField('fill-600x400')
+
+    class Meta:
+        model = SubGroup
+        fields = ['id', 'title', 'background_image', 'background_image_with_text']
+
+class SubGroupPageDetailSerializer(serializers.ModelSerializer):
+    children = SerializerMethodField()
+
+    def get_children(self, obj):
+        children = obj.get_children().live().specific()
+        return SubGroupListSerializer(children, many=True).data
+
+
 # class GroupSerializer(serializers.ModelSerializer):
 #     image = ImageRenditionField('fill-600x400')
 #     number_of_types = serializers.SerializerMethodField()

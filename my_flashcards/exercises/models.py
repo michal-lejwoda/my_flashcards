@@ -100,6 +100,14 @@ class MainGroup(GroupBase):
 class SubGroup(GroupBase):
     subpage_types = ['SubGroup', 'GroupExercise']
 
+class SubGroupWithSubGroups(GroupBase):
+    parent_page_types = ['MainGroup', 'SubGroupWithSubGroups']
+    subpage_types = ['SubGroupWithSubGroups', 'SubGroupWithExercises']
+
+class SubGroupWithExercises(GroupBase):
+    parent_page_types = ['MainGroup', 'SubGroupWithSubGroups']
+    subpage_types = ['GroupExercise']
+
 #Important First exercises then Group Exercise
 class MatchExercise(ExerciseBase):
     pairs = StreamField([
