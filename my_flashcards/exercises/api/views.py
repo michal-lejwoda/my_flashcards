@@ -3,8 +3,10 @@ from rest_framework.viewsets import GenericViewSet
 from wagtail.models import Page
 
 from my_flashcards.exercises.api.serializers import LanguageCategoryPageDetailSerializer, \
-    LanguageCategoryPageListSerializer, MainGroupListSerializer, MainGroupPageDetailSerializer
-from my_flashcards.exercises.models import LanguageCategoryPage, MainGroup
+    LanguageCategoryPageListSerializer, MainGroupListSerializer, MainGroupPageDetailSerializer, SubGroupListSerializer, \
+    GroupExerciseListSerializer
+from my_flashcards.exercises.models import LanguageCategoryPage, MainGroup, SubGroupWithSubGroups, \
+    MainGroupwithGroupExercises, MainGroupwithSubGroups
 
 
 # Create your views here.
@@ -28,5 +30,20 @@ class MainGroupViewSet(ListModelMixin, RetrieveModelMixin, GenericViewSet):
             return MainGroupPageDetailSerializer
         return MainGroupListSerializer
 
+class SubGroupwithSubGroupsViewSet(RetrieveModelMixin, GenericViewSet):
+    serializer_class = SubGroupListSerializer
+    queryset = Page.objects.type(SubGroupWithSubGroups).live()
+
+class SubGroupwithGroupExercisesViewSet(RetrieveModelMixin, GenericViewSet):
+    serializer_class = GroupExerciseListSerializer
+    queryset = Page.objects.type(SubGroupWithSubGroups).live()
+
+class MainGroupwithSubGroupsViewSet(RetrieveModelMixin, GenericViewSet):
+    serializer_class = SubGroupListSerializer
+    queryset = Page.objects.type(MainGroupwithSubGroups).live()
+
+class MainGroupwithGroupExerciseViewSet(RetrieveModelMixin, GenericViewSet):
+    serializer_class = GroupExerciseListSerializer
+    queryset = Page.objects.type(MainGroupwithGroupExercises).live()
 
 

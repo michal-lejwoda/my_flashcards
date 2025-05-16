@@ -101,12 +101,20 @@ class SubGroup(GroupBase):
     subpage_types = ['SubGroup', 'GroupExercise']
 
 class SubGroupWithSubGroups(GroupBase):
-    parent_page_types = ['MainGroup', 'SubGroupWithSubGroups']
-    subpage_types = ['SubGroupWithSubGroups', 'SubGroupWithExercises']
+    parent_page_types = ['MainGroupwithSubGroups', 'SubGroupWithSubGroups']
+    subpage_types = ['SubGroupWithSubGroups', 'SubGroupWithGroupExercises']
 
-class SubGroupWithExercises(GroupBase):
+class SubGroupWithGroupExercises(GroupBase):
     parent_page_types = ['MainGroup', 'SubGroupWithSubGroups']
     subpage_types = ['GroupExercise']
+
+class MainGroupwithGroupExercises(GroupBase):
+    parent_page_types = ['LanguageCategoryPage']
+    subpage_types = ['GroupExercise']
+
+class MainGroupwithSubGroups(GroupBase):
+    parent_page_types = ['LanguageCategoryPage']
+    subpage_types = ['SubGroupWithGroupExercises', 'SubGroupWithSubGroups']
 
 #Important First exercises then Group Exercise
 class MatchExercise(ExerciseBase):
@@ -151,7 +159,7 @@ class GroupExercise(Page):
         InlinePanel('exercise_links', label='Exercises'),
     ]
 
-    parent_page_types = ['SubGroup']
+    parent_page_types = ['SubGroupWithGroupExercises', 'MainGroupwithGroupExercises']
     subpage_types = get_exercise_subpage_type()
 
 

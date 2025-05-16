@@ -1,6 +1,6 @@
 from rest_framework.fields import SerializerMethodField
 from wagtail.images.api.fields import ImageRenditionField
-from my_flashcards.exercises.models import LanguageCategoryPage, MainGroup, SubGroup
+from my_flashcards.exercises.models import LanguageCategoryPage, MainGroup, SubGroup, GroupExercise
 from rest_framework import serializers
 
 
@@ -17,7 +17,7 @@ class LanguageCategoryPageDetailSerializer(serializers.ModelSerializer):
     children = SerializerMethodField()
 
     def get_children(self, obj):
-        children = obj.get_children().live().specific().type(MainGroup)
+        children = obj.get_children().live().specific()
         return MainGroupListSerializer(children, many=True).data
 
     class Meta:
@@ -51,6 +51,8 @@ class SubGroupListSerializer(serializers.ModelSerializer):
         model = SubGroup
         fields = ['id', 'title', 'background_image', 'background_image_with_text']
 
+
+
 class SubGroupPageDetailSerializer(serializers.ModelSerializer):
     children = SerializerMethodField()
 
@@ -59,23 +61,21 @@ class SubGroupPageDetailSerializer(serializers.ModelSerializer):
         return SubGroupListSerializer(children, many=True).data
 
 
-# class GroupSerializer(serializers.ModelSerializer):
-#     image = ImageRenditionField('fill-600x400')
-#     number_of_types = serializers.SerializerMethodField()
-#     number_of_exercises = serializers.SerializerMethodField()
-#
-#     def get_number_of_types(self, obj):
-#         if obj.is_children_group:
-#             return obj.get_children().live().count()
-#         return None
-#
-#     def get_number_of_exercises(self, obj):
-#         if not obj.is_children_exercise:
-#             return None
-#
-#         total = 0
-#         for child in obj.get_children().live():
-#             total += child.get_children().live().count()
-#         return total
-#
-#
+class SubGroupWithSubGroupsPageDetailSerializer(serializers.ModelSerializer):
+    def get_children(self, obj):
+        children = obj.get_children().live()
+        return SubGroupListSerializer(children, many=True).data
+
+
+class GroupExerciseListSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = GroupExercise
+        fields = ['introduction', 'exercise_links']
+
+
+class MainGroupWithGroupExercisePageDetailSerializer(serializers.ModelSerializer):
+    children = SerializerMethodField()
+
+    def get_children(self, obj):
+        children = obj.get_children().live().specific()
+        return GroupExerciseListSerializer(children, many=True).data
