@@ -6,7 +6,7 @@ from my_flashcards.exercises.api.serializers import LanguageCategoryPageDetailSe
     LanguageCategoryPageListSerializer, MainGroupListSerializer, MainGroupPageDetailSerializer, SubGroupListSerializer, \
     GroupExerciseListSerializer
 from my_flashcards.exercises.models import LanguageCategoryPage, MainGroup, SubGroupWithSubGroups, \
-    MainGroupwithGroupExercises, MainGroupwithSubGroups
+    MainGroupWithGroupExercises, MainGroupWithSubGroups
 
 
 # Create your views here.
@@ -40,10 +40,10 @@ class SubGroupwithGroupExercisesViewSet(RetrieveModelMixin, GenericViewSet):
 
 class MainGroupwithSubGroupsViewSet(RetrieveModelMixin, GenericViewSet):
     serializer_class = SubGroupListSerializer
-    queryset = Page.objects.type(MainGroupwithSubGroups).live()
+    queryset = Page.objects.type(MainGroupWithSubGroups).live()
 
 class MainGroupwithGroupExerciseViewSet(RetrieveModelMixin, GenericViewSet):
     serializer_class = GroupExerciseListSerializer
-    queryset = Page.objects.type(MainGroupwithGroupExercises).live()
+    queryset = Page.objects.type(MainGroupWithGroupExercises).live()
 
 

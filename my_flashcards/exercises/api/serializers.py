@@ -3,6 +3,12 @@ from wagtail.images.api.fields import ImageRenditionField
 from my_flashcards.exercises.models import LanguageCategoryPage, MainGroup, SubGroup, GroupExercise
 from rest_framework import serializers
 
+group_urls = {
+    "MainGroupWithSubGroups": "maingroup-with-subgroups",
+    "SubGroupwithSubGroups": "subgroup-with-subgroups",
+    "SubGroupWithGroupExercises": "subgroup-with-groupexercises",
+    "MainGroupWithGroupExercises": "maingroup-with-groupexercise"
+}
 
 class LanguageCategoryPageListSerializer(serializers.ModelSerializer):
     flag_image = ImageRenditionField('fill-600x400')
@@ -29,9 +35,16 @@ class LanguageCategoryPageDetailSerializer(serializers.ModelSerializer):
 class MainGroupListSerializer(serializers.ModelSerializer):
     background_image = ImageRenditionField('fill-600x400')
     background_image_with_text = ImageRenditionField('fill-600x400')
+    url = serializers.SerializerMethodField()
+
+    def get_url(self, obj):
+        name = group_urls[obj.__class__.__name__]
+        return "/api/{}/{}".format(name, obj.id)
+
+
     class Meta:
         model = MainGroup
-        fields = ['id', 'title', 'background_image', 'background_image_with_text']
+        fields = ['id', 'title','background_image', 'url', 'background_image_with_text']
 
 class MainGroupPageDetailSerializer(serializers.ModelSerializer):
     children = SerializerMethodField()

@@ -90,7 +90,7 @@ class LanguageCategoryPage(Page):
         FieldPanel('language'),
         FieldPanel('flag_image'),
     ]
-    subpage_types = ['MainGroup']
+    subpage_types = ['MainGroupWithSubGroups', 'MainGroupwithGroupExercises',]
 
 
 class MainGroup(GroupBase):
@@ -105,16 +105,18 @@ class SubGroupWithSubGroups(GroupBase):
     subpage_types = ['SubGroupWithSubGroups', 'SubGroupWithGroupExercises']
 
 class SubGroupWithGroupExercises(GroupBase):
-    parent_page_types = ['MainGroup', 'SubGroupWithSubGroups']
+    # parent_page_types = ['MainGroup', 'SubGroupWithSubGroups']
     subpage_types = ['GroupExercise']
 
-class MainGroupwithGroupExercises(GroupBase):
+class MainGroupWithGroupExercises(GroupBase):
     parent_page_types = ['LanguageCategoryPage']
     subpage_types = ['GroupExercise']
 
-class MainGroupwithSubGroups(GroupBase):
-    parent_page_types = ['LanguageCategoryPage']
-    subpage_types = ['SubGroupWithGroupExercises', 'SubGroupWithSubGroups']
+class MainGroupWithSubGroups(GroupBase):
+    # parent_page_types = ['LanguageCategoryPage']
+    subpage_types = ['SubGroupWithGroupExercises',
+                     'SubGroupWithSubGroups'
+                    ]
 
 #Important First exercises then Group Exercise
 class MatchExercise(ExerciseBase):
@@ -156,7 +158,7 @@ class GroupExercise(Page):
 
     content_panels = Page.content_panels + [
         FieldPanel('introduction'),
-        InlinePanel('exercise_links', label='Exercises'),
+        # InlinePanel('exercise_links', label='Exercises'),
     ]
 
     parent_page_types = ['SubGroupWithGroupExercises', 'MainGroupwithGroupExercises']
