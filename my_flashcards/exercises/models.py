@@ -2,6 +2,8 @@ from django.db import models
 from django.utils.translation import gettext as _
 from modelcluster.fields import ParentalKey
 from django.contrib.auth import get_user_model
+from rest_framework.exceptions import ValidationError
+from slugify import slugify
 from wagtail import blocks
 from wagtail.admin.panels import FieldPanel, InlinePanel
 from wagtail.fields import StreamField
@@ -23,8 +25,36 @@ LANGUAGE_CHOICES = [
     ('pl', _('Polish')),
 ]
 
+CHILDREN_CHOICES = [
+    ('MAIN_GROUP', 'Main group'),
+    ('SUB_GROUP', 'Sub group'),
+    ('GROUP_EXERCISE', 'Group exercise'),
+    ('EXERCISE', 'Exercise'),
+]
+class UniqueSlugAcrossGroupPagesMixin:
+    UNIQUE_SLUG_CLASSES = []
+
+    def generate_unique_slug(self, base_slug):
+        slug = base_slug
+        i = 1
+        while Page.objects.filter(slug=slug).exclude(id=self.id).specific().filter(
+            lambda p: isinstance(p, tuple(self.UNIQUE_SLUG_CLASSES))
+        ):
+            slug = f"{base_slug}-{i}"
+            i += 1
+        return slug
+
+    def clean(self):
+        if not self.slug:
+            base_slug = slugify(self.title)
+            self.slug = self.generate_unique_slug(base_slug)
+        else:
+            self.slug = self.generate_unique_slug(self.slug)
+
+        super().clean()
+
 #Abstract classes
-class GroupBase(Page):
+class GroupBase(Page, UniqueSlugAcrossGroupPagesMixin):
     background_image = models.ForeignKey(
             'wagtailimages.Image',
             null=True,
@@ -73,7 +103,8 @@ class ExerciseBase(Page):
 
 
 
-class LanguageCategoryPage(Page):
+class LanguageCategoryPage(Page, UniqueSlugAcrossGroupPagesMixin):
+
     language = models.CharField(
         max_length=2,
         choices=LANGUAGE_CHOICES
@@ -85,10 +116,17 @@ class LanguageCategoryPage(Page):
         on_delete=models.SET_NULL,
         related_name='+'
     )
+    child_type = models.CharField(
+    max_length=20,
+    choices=CHILDREN_CHOICES,
+    default='MAIN_GROUP'
+)
 
     content_panels = Page.content_panels + [
         FieldPanel('language'),
         FieldPanel('flag_image'),
+        FieldPanel('slug')
+
     ]
     subpage_types = ['MainGroupWithSubGroups', 'MainGroupwithGroupExercises',]
 
@@ -101,22 +139,52 @@ class SubGroup(GroupBase):
     subpage_types = ['SubGroup', 'GroupExercise']
 
 class SubGroupWithSubGroups(GroupBase):
+    child_type = models.CharField(
+        max_length=20,
+        choices=CHILDREN_CHOICES,
+        default='SUB_GROUP'
+    )
     parent_page_types = ['MainGroupwithSubGroups', 'SubGroupWithSubGroups']
     subpage_types = ['SubGroupWithSubGroups', 'SubGroupWithGroupExercises']
+    content_panels = GroupBase.content_panels + [
+        FieldPanel('child_type'),
+    ]
 
 class SubGroupWithGroupExercises(GroupBase):
-    # parent_page_types = ['MainGroup', 'SubGroupWithSubGroups']
+    child_type = models.CharField(
+        max_length=20,
+        choices=CHILDREN_CHOICES,
+        default='GROUP_EXERCISE'
+    )
     subpage_types = ['GroupExercise']
+    content_panels = GroupBase.content_panels + [
+        FieldPanel('child_type'),
+    ]
 
 class MainGroupWithGroupExercises(GroupBase):
+    child_type = models.CharField(
+        max_length=20,
+        choices=CHILDREN_CHOICES,
+        default='GROUP_EXERCISE'
+    )
     parent_page_types = ['LanguageCategoryPage']
     subpage_types = ['GroupExercise']
+    content_panels = GroupBase.content_panels + [
+        FieldPanel('child_type'),
+    ]
 
 class MainGroupWithSubGroups(GroupBase):
-    # parent_page_types = ['LanguageCategoryPage']
+    child_type = models.CharField(
+        max_length=20,
+        choices=CHILDREN_CHOICES,
+        default='SUB_GROUP'
+    )
     subpage_types = ['SubGroupWithGroupExercises',
                      'SubGroupWithSubGroups'
                     ]
+    content_panels = GroupBase.content_panels + [
+        FieldPanel('child_type'),
+    ]
 
 #Important First exercises then Group Exercise
 class MatchExercise(ExerciseBase):
@@ -201,3 +269,9 @@ class MatchExerciseAnswer(models.Model):
     left_item_index = models.IntegerField()
     right_item_index = models.IntegerField()
     is_correct = models.BooleanField(default=False)
+
+GroupBase.UNIQUE_SLUG_CLASSES = [
+    MainGroupWithSubGroups,
+    SubGroupWithGroupExercises,
+    GroupExercise,
+]
