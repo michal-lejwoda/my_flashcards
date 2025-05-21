@@ -27,6 +27,7 @@ urlpatterns = [
     path(settings.ADMIN_URL, admin.site.urls),
     # User management
     path("users/", include("my_flashcards.users.urls", namespace="users")),
+    path("", include("my_flashcards.exercises.urls", namespace="exercises")),
     path("accounts/", include("allauth.urls")),
     path('cms/', include(wagtailadmin_urls)),
     path('documents/', include(wagtaildocs_urls)),

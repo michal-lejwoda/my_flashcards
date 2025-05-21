@@ -8,9 +8,15 @@ from wagtail.models import Page
 from my_flashcards.exercises.api.serializers import LanguageCategoryPageDetailSerializer, \
     LanguageCategoryPageListSerializer, MainGroupListSerializer, MainGroupPageDetailSerializer, SubGroupListSerializer, \
     GroupExerciseListSerializer, MainGroupWithSubGroupsListSerializer, SubGroupWithGroupExercisesListSerializer, \
-    PageSerializer, SubGroupWithSubGroupsPageDetailSerializer, MainGroupWithGroupExercisePageDetailSerializer
+    PageSerializer, SubGroupWithSubGroupsPageDetailSerializer, MainGroupWithGroupExercisePageDetailSerializer, \
+    MatchExerciseSerializer, MatchExerciseTextWithImageSerializer
 from my_flashcards.exercises.models import LanguageCategoryPage, MainGroup, SubGroupWithSubGroups, \
-    MainGroupWithGroupExercises, MainGroupWithSubGroups, SubGroupWithGroupExercises
+    MainGroupWithGroupExercises, MainGroupWithSubGroups, SubGroupWithGroupExercises, ExerciseBase
+
+exercise_serializers = {
+    "MatchExercise": MatchExerciseSerializer,
+    "MatchExerciseTextWithImage": MatchExerciseTextWithImageSerializer
+}
 
 group_serializator = {
     "LanguageCategoryPage": LanguageCategoryPageDetailSerializer,
@@ -30,17 +36,6 @@ class LanguageCategoryViewSet(ListModelMixin, RetrieveModelMixin, GenericViewSet
             return LanguageCategoryPageDetailSerializer
         return LanguageCategoryPageListSerializer
 
-
-# class MainGroupViewSet(ListModelMixin, RetrieveModelMixin, GenericViewSet):
-#     serializer_class = MainGroupListSerializer
-#     queryset = Page.objects.type(MainGroup).live().specific()
-#
-#     def get_queryset(self):
-#         pass
-#     def get_serializer_class(self):
-#         if self.action == 'retrieve':
-#             return MainGroupPageDetailSerializer
-#         return MainGroupListSerializer
 
 class SubGroupwithSubGroupsViewSet(RetrieveModelMixin, GenericViewSet):
     serializer_class = SubGroupListSerializer
@@ -77,3 +72,28 @@ class PageBySlugViewSet(RetrieveModelMixin, GenericViewSet):
         return page
 
 
+class ExerciseViewSet(RetrieveModelMixin, GenericViewSet):
+    def get_object(self):
+        slug = self.kwargs.get('slug')
+        pk = self.kwargs.get('pk')
+
+        if not slug or not pk:
+            raise NotFound("Both 'id' and 'slug' must be provided in the URL.")
+
+        try:
+            page = Page.objects.live().specific().get(id=pk, slug=slug)
+        except Page.DoesNotExist:
+            raise NotFound("No page found matching both id and slug.")
+
+        return page
+
+    def get_serializer_class(self):
+        page = self.get_object()
+        try:
+
+            # subclasses = ExerciseBase.__subclasses__()
+            # print("subco", subclasses)
+            print("teasdads", exercise_serializers[page.__class__.__name__])
+            return exercise_serializers[page.__class__.__name__]
+        except KeyError:
+            raise NotFound(f"No serializer found for page type: {page.__class__.__name__}")

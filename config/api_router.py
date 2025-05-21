@@ -4,7 +4,7 @@ from rest_framework.routers import SimpleRouter
 
 from my_flashcards.exercises.api.views import LanguageCategoryViewSet, SubGroupwithSubGroupsViewSet, \
     SubGroupwithGroupExercisesViewSet, MainGroupwithSubGroupsViewSet, MainGroupwithGroupExerciseViewSet, \
-    PageBySlugViewSet
+    PageBySlugViewSet, ExerciseViewSet
 from my_flashcards.flashcards.api.views import DeckViewSet, SingleDeckViewSet, FileUploadViewSet, \
     CreateDeckFromMultipleDecksViewSet, WordViewSet, LearnViewSet, LearnWordViewSet
 from my_flashcards.users.api.views import UserViewSet, CustomAuthToken, RegistrationViewSet
@@ -26,5 +26,6 @@ router.register("subgroup-with-groupexercises",SubGroupwithGroupExercisesViewSet
 router.register("maingroup-with-subgroups",MainGroupwithSubGroupsViewSet, basename="maingroup-with-subgroups")
 router.register("maingroup-with-groupexercise", MainGroupwithGroupExerciseViewSet, basename="maingroup-with-groupexercise")
 router.register("page-by-slug", PageBySlugViewSet, basename="page-by-slug")
+# router.register("exercise", ExerciseViewSet, basename="exercise")
 app_name = "api"
 urlpatterns = router.urls

@@ -1,9 +1,11 @@
+import random
+
 from rest_framework.fields import SerializerMethodField
 from wagtail.images.api.fields import ImageRenditionField
 from wagtail.models import Page
 
 from my_flashcards.exercises.models import LanguageCategoryPage, MainGroup, SubGroup, GroupExercise, \
-    MainGroupWithSubGroups, SubGroupWithGroupExercises, ExerciseBase
+    MainGroupWithSubGroups, SubGroupWithGroupExercises, ExerciseBase, MatchExercise, MatchExerciseTextWithImage
 from rest_framework import serializers
 
 
@@ -15,6 +17,8 @@ group_urls = {
     "SubGroupWithGroupExercises": "subgroup-with-groupexercises",
     "MainGroupWithGroupExercises": "maingroup-with-groupexercise"
 }
+
+
 
 class LanguageCategoryPageListSerializer(serializers.ModelSerializer):
     flag_image = ImageRenditionField('fill-600x400')
@@ -154,3 +158,36 @@ class PageSerializer(serializers.ModelSerializer):
     class Meta:
         model = Page
         fields = ['id', 'title', 'slug']
+
+class MatchExerciseSerializer(serializers.ModelSerializer):
+    left_items = serializers.SerializerMethodField()
+    right_items = serializers.SerializerMethodField()
+
+    def get_left_items(self, obj):
+        left_items = []
+        for block in obj.pairs:
+            if block.block_type == 'pair':
+                for pair in block.value:
+                    left_items.append(pair.get('left_item'))
+
+        random.shuffle(left_items)
+        return left_items
+
+    def get_right_items(self, obj):
+        right_items = []
+        for block in obj.pairs:
+            if block.block_type == 'pair':
+                for pair in block.value:
+                    right_items.append(pair.get('right_item'))
+        random.shuffle(right_items)
+        return right_items
+
+    class Meta:
+        model = MatchExercise
+        fields = ['description', 'left_items', 'right_items']
+
+
+class MatchExerciseTextWithImageSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = MatchExerciseTextWithImage
+        fields = ['description', 'pairs']
