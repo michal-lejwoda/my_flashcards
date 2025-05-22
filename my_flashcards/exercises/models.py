@@ -289,7 +289,7 @@ class BlankOptionBlock(blocks.StructBlock):
 
 class FillInTextExercise(ExerciseBase):
     text_with_blanks = models.TextField(
-        help_text="Use {{1}}, {{2}}, {{3}} in empty places."
+        help_text="Use {{1}}, {{2}}, {{3}} in blanks."
     )
     blanks = StreamField(
         [('blank', BlankOptionBlock())],
