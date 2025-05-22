@@ -6,8 +6,9 @@ from wagtail.images.api.fields import ImageRenditionField
 from wagtail.models import Page
 
 from my_flashcards.exercises.models import (LanguageCategoryPage, MainGroup, SubGroup, GroupExercise, \
-    MainGroupWithSubGroups, SubGroupWithGroupExercises, ExerciseBase, MatchExercise, MatchExerciseTextWithImage,
-    FillInTextExerciseWithChoices)
+                                            MainGroupWithSubGroups, SubGroupWithGroupExercises, ExerciseBase,
+                                            MatchExercise, MatchExerciseTextWithImage,
+                                            FillInTextExerciseWithChoices, FillInTextExerciseWithPredefinedBlocks)
 from rest_framework import serializers
 
 
@@ -239,6 +240,14 @@ class FillInTextExerciseWithChoicesSerializer(serializers.ModelSerializer):
                 })
         return blanks
 
+
     class Meta:
         model = FillInTextExerciseWithChoices
         fields = ['description', 'text_with_blanks', 'blanks']
+
+
+class FillInTextExerciseWithPredefinedBlocksSerializer(serializers.ModelSerializer):
+    #TODO Start from here tomorrow
+    class Meta:
+        model = FillInTextExerciseWithPredefinedBlocks
+        fields = ['description', 'text_with_blanks', 'blocks']

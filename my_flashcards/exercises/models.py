@@ -5,6 +5,7 @@ from modelcluster.fields import ParentalKey
 from slugify import slugify
 from wagtail import blocks
 from wagtail.admin.panels import FieldPanel
+from wagtail.blocks import ListBlock, CharBlock
 from wagtail.fields import StreamField
 from wagtail.images.blocks import ImageChooserBlock
 from wagtail.models import Page, Orderable
@@ -334,6 +335,27 @@ class FillInTextExerciseWithChoices(ExerciseBase):
             "max_score": len(result_answers),
             "result_answers": result_answers
         }
+
+class FillInTextExerciseWithPredefinedBlocks(ExerciseBase):
+    text_with_blanks = models.TextField(
+        help_text="Use {{1}}, {{2}}, {{3}} in blanks."
+    )
+    options = StreamField(
+        [
+            ("options", blocks.ListBlock(
+                blocks.CharBlock(label="Option"),
+                label="List of possible option"
+            )),
+        ],
+        use_json_field=True,
+        blank=True,
+        max_num=1
+    )
+
+    content_panels = Page.content_panels + [
+        FieldPanel('text_with_blanks'),
+        FieldPanel('options'),
+    ]
 
 class GroupExercise(Page):
     introduction = models.TextField(blank=True)
