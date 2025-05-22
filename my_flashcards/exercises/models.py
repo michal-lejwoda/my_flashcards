@@ -303,6 +303,38 @@ class FillInTextExercise(ExerciseBase):
         FieldPanel('blanks'),
     ]
 
+    def check_answer(self, user, user_answers):
+        user_answer_map = {a['blank_id']: a['answer'] for a in user_answers}
+
+        result_answers = []
+        score = 0
+
+        for block in self.blanks:
+            if block.block_type == 'blank':
+                val = block.value
+                blank_id = val["blank_id"]
+                correct_answer = val["correct_answer"]
+                user_answer = user_answer_map.get(blank_id)
+
+                result = {
+                    "blank_id": blank_id,
+                    "provided_answer": user_answer,
+                    "correct_answer": correct_answer
+                }
+
+                if user_answer == correct_answer:
+                    result["correct"] = True
+                    score += 1
+                else:
+                    result["correct"] = False
+
+                result_answers.append(result)
+
+        return {
+            "score": score,
+            "max_score": len(result_answers),
+            "result_answers": result_answers
+        }
 
 class GroupExercise(Page):
     introduction = models.TextField(blank=True)
