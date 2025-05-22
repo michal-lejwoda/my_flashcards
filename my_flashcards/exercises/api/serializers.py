@@ -215,6 +215,20 @@ class MatchExerciseTextWithImageSerializer(serializers.ModelSerializer):
         fields = ['description', 'left_items', 'right_items']
 
 class FillInTextExerciseSerializer(serializers.ModelSerializer):
+    blanks = SerializerMethodField()
+
+    def get_blanks(self, obj):
+        blanks = []
+        for block in obj.blanks:
+            print("bloc12k", block.block_type)
+            if block.block_type == 'blank':
+                for blank in block.value:
+                    print("blaczek", blank)
+                    print("czx",blank.correct_answer)
+                    # blanks.append(blank.get('options'))
+                    #TODO BACK HERE
+        print("xzc",blanks)
+
     class Meta:
         model = FillInTextExercise
         fields = ['description', 'text_with_blanks', 'blanks']
