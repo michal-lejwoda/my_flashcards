@@ -1,6 +1,7 @@
 import random
 
 from rest_framework.fields import SerializerMethodField
+from wagtail.blocks.list_block import ListValue
 from wagtail.images.api.fields import ImageRenditionField
 from wagtail.models import Page
 
@@ -220,14 +221,22 @@ class FillInTextExerciseSerializer(serializers.ModelSerializer):
     def get_blanks(self, obj):
         blanks = []
         for block in obj.blanks:
-            print("bloc12k", block.block_type)
             if block.block_type == 'blank':
-                for blank in block.value:
-                    print("blaczek", blank)
-                    print("czx",blank.correct_answer)
-                    # blanks.append(blank.get('options'))
-                    #TODO BACK HERE
-        print("xzc",blanks)
+                val = block.value
+                val_options = val['options']
+                if isinstance(val_options, ListValue):
+                    options = list(val_options)
+                elif isinstance(val_options, list):
+                    options = val_options
+                else:
+                    # TODO fallback
+                    options = [val_options]
+                blanks.append({
+                    "blank_id": val['blank_id'],
+                    "options": options,
+                    "correct_answer": val['correct_answer']
+                })
+        return blanks
 
     class Meta:
         model = FillInTextExercise
