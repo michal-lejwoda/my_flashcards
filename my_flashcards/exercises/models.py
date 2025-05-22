@@ -1,11 +1,10 @@
+from django.contrib.auth import get_user_model
 from django.db import models
 from django.utils.translation import gettext as _
 from modelcluster.fields import ParentalKey
-from django.contrib.auth import get_user_model
-from rest_framework.exceptions import ValidationError
 from slugify import slugify
 from wagtail import blocks
-from wagtail.admin.panels import FieldPanel, InlinePanel
+from wagtail.admin.panels import FieldPanel
 from wagtail.fields import StreamField
 from wagtail.images.blocks import ImageChooserBlock
 from wagtail.models import Page, Orderable
@@ -287,7 +286,7 @@ class BlankOptionBlock(blocks.StructBlock):
         label = "Answers for blank"
 
 
-class FillInTextExercise(ExerciseBase):
+class FillInTextExerciseWithChoices(ExerciseBase):
     text_with_blanks = models.TextField(
         help_text="Use {{1}}, {{2}}, {{3}} in blanks."
     )
