@@ -201,6 +201,29 @@ class MatchExercise(ExerciseBase):
         FieldPanel('description'),
         FieldPanel('pairs'),
     ]
+    def check_answer(self, user, user_answers):
+        correct_answers = []
+        for block in self.pairs:
+            if block.block_type == 'pair':
+                for pair in block.value:
+                    left_item = pair.get('left_item')
+                    right_item = pair.get('right_item')
+                    correct_answers.append({
+                        'left_item': left_item,
+                        'right_item': right_item
+                    })
+        score = 0
+        result_answers = []
+        for answer in user_answers:
+            if answer in correct_answers:
+                answer['correct'] = True
+                result_answers.append(answer)
+                score += 1
+            else:
+                answer['correct'] = False
+                result_answers.append(answer)
+        max_score = len(correct_answers)
+        return {"score": score, "max_score": max_score, "result_answers": result_answers}
 
 class MatchExerciseTextWithImage(ExerciseBase):
     pairs = StreamField(
