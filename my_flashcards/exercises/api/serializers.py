@@ -188,6 +188,28 @@ class MatchExerciseSerializer(serializers.ModelSerializer):
 
 
 class MatchExerciseTextWithImageSerializer(serializers.ModelSerializer):
+    left_items = serializers.SerializerMethodField()
+    right_items = serializers.SerializerMethodField()
+
+    def get_left_items(self, obj):
+        left_items = []
+        for block in obj.pairs:
+            if block.block_type == 'pair':
+                for pair in block.value:
+                    left_items.append({"id": pair.get('left_item').id, "url": pair.get('left_item').get_rendition('fill-600x400').url})
+        print("left_przed", left_items)
+        random.shuffle(left_items)
+        return left_items
+
+    def get_right_items(self, obj):
+        right_items = []
+        for block in obj.pairs:
+            if block.block_type == 'pair':
+                for pair in block.value:
+                    right_items.append(pair.get('right_item'))
+        random.shuffle(right_items)
+        return right_items
+
     class Meta:
         model = MatchExerciseTextWithImage
-        fields = ['description', 'pairs']
+        fields = ['description', 'left_items', 'right_items']

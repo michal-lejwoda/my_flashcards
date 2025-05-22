@@ -96,7 +96,6 @@ class ExerciseViewSet(RetrieveModelMixin, CreateModelMixin, GenericViewSet):
 
     def get_serializer_class(self):
         page = self.get_object()
-        print("akcja", self.action)
         try:
             return exercise_serializers[page.__class__.__name__]
         except KeyError:
@@ -105,7 +104,6 @@ class ExerciseViewSet(RetrieveModelMixin, CreateModelMixin, GenericViewSet):
     def create(self, request, *args, **kwargs):
         page = self.get_object()
         answers = request.data.get('answers')
-
         try:
             result = page.check_answer(request.user, answers)
             return Response(result, status=status.HTTP_200_OK)
