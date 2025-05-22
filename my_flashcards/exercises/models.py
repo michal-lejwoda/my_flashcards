@@ -267,6 +267,43 @@ class MatchExerciseTextWithImage(ExerciseBase):
         max_score = len(correct_answers)
         return {"score": score, "max_score": max_score, "result_answers": result_answers}
 
+class BlankOptionBlock(blocks.StructBlock):
+    blank_id = blocks.IntegerBlock(help_text="Blank number, ie. 1 for {{1}}")
+    options = blocks.ListBlock(
+        blocks.CharBlock(), help_text="List of possible options"
+    )
+    correct_answer = blocks.CharBlock(help_text="True Answer")
+
+    def clean(self, value):
+        errors = {}
+        if value['correct_answer'] not in value['options']:
+            errors['correct_answer'] = "True answer must be one of the option."
+        if errors:
+            raise blocks.StreamBlockValidationError(errors)
+        return super().clean(value)
+
+    class Meta:
+        icon = "list-ul"
+        label = "Answers for blank"
+
+
+class FillInTextExercise(ExerciseBase):
+    text_with_blanks = models.TextField(
+        help_text="Use {{1}}, {{2}}, {{3}} in empty places."
+    )
+    blanks = StreamField(
+        [('blank', BlankOptionBlock())],
+        use_json_field=True,
+        blank=True,
+    )
+
+    content_panels = Page.content_panels + [
+        FieldPanel('description'),
+        FieldPanel('text_with_blanks'),
+        FieldPanel('blanks'),
+    ]
+
+
 class GroupExercise(Page):
     introduction = models.TextField(blank=True)
 

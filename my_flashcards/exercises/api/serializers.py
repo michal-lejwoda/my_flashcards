@@ -5,7 +5,7 @@ from wagtail.images.api.fields import ImageRenditionField
 from wagtail.models import Page
 
 from my_flashcards.exercises.models import LanguageCategoryPage, MainGroup, SubGroup, GroupExercise, \
-    MainGroupWithSubGroups, SubGroupWithGroupExercises, ExerciseBase, MatchExercise, MatchExerciseTextWithImage
+    MainGroupWithSubGroups, SubGroupWithGroupExercises, ExerciseBase, MatchExercise, MatchExerciseTextWithImage,FillInTextExercise
 from rest_framework import serializers
 
 
@@ -213,3 +213,8 @@ class MatchExerciseTextWithImageSerializer(serializers.ModelSerializer):
     class Meta:
         model = MatchExerciseTextWithImage
         fields = ['description', 'left_items', 'right_items']
+
+class FillInTextExerciseSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = FillInTextExercise
+        fields = ['description', 'text_with_blanks', 'blanks']
