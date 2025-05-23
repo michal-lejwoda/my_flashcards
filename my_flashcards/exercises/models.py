@@ -457,6 +457,7 @@ class ConjugationExercise(ExerciseBase):
     ], use_json_field=True, blank=True)
 
     content_panels = Page.content_panels + [
+        FieldPanel('description'),
         FieldPanel('instruction'),
         FieldPanel('person_set'),
         FieldPanel('conjugation_rows'),
