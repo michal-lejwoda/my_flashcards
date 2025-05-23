@@ -463,20 +463,20 @@ class ConjugationExercise(ExerciseBase):
         FieldPanel('conjugation_rows'),
     ]
 
-    def save(self, *args, **kwargs):
-        if self.person_set and not self.conjugation_rows:
-            rows = []
-            for person in PERSON_SETS.get(self.person_set, []):
-                rows.append({
-                    'type': 'row',
-                    'value': {
-                        'person_label': person,
-                        'correct_form': '',
-                        'is_pre_filled': False
-                    }
-                })
-            self.conjugation_rows = rows
-        super().save(*args, **kwargs)
+    # def save(self, *args, **kwargs):
+    #     if self.person_set and not self.conjugation_rows:
+    #         rows = []
+    #         for person in PERSON_SETS.get(self.person_set, []):
+    #             rows.append({
+    #                 'type': 'row',
+    #                 'value': {
+    #                     'person_label': person,
+    #                     'correct_form': '',
+    #                     'is_pre_filled': False
+    #                 }
+    #             })
+    #         self.conjugation_rows = rows
+    #     super().save(*args, **kwargs)
 
 class GroupExercise(Page):
     introduction = models.TextField(blank=True)
