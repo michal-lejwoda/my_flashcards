@@ -14,7 +14,7 @@ from my_flashcards.exercises.api.serializers import LanguageCategoryPageDetailSe
     MatchExerciseSerializer, MatchExerciseTextWithImageSerializer, FillInTextExerciseWithChoicesSerializer, \
     FillInTextExerciseWithPredefinedBlocksSerializer, \
     FillInTextExerciseWithPredefinedBlocksWithImageDecorationSerializer, \
-    FillInTextExerciseWithChoicesWithImageDecorationSerializer
+    FillInTextExerciseWithChoicesWithImageDecorationSerializer, ConjugationExerciseSerializer
 from my_flashcards.exercises.models import LanguageCategoryPage, MainGroup, SubGroupWithSubGroups, \
     MainGroupWithGroupExercises, MainGroupWithSubGroups, SubGroupWithGroupExercises, ExerciseBase
 
@@ -24,7 +24,8 @@ exercise_serializers = {
     "FillInTextExercise": FillInTextExerciseWithChoicesSerializer,
     "FillInTextExerciseWithPredefinedBlocks": FillInTextExerciseWithPredefinedBlocksSerializer,
     "FillInTextExerciseWithPredefinedBlocksWithImageDecoration": FillInTextExerciseWithPredefinedBlocksWithImageDecorationSerializer,
-    "FillInTextExerciseWithChoicesWithImageDecoration": FillInTextExerciseWithChoicesWithImageDecorationSerializer
+    "FillInTextExerciseWithChoicesWithImageDecoration": FillInTextExerciseWithChoicesWithImageDecorationSerializer,
+    "ConjugationExercise": ConjugationExerciseSerializer
 }
 
 

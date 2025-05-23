@@ -8,7 +8,8 @@ from wagtail.models import Page
 from my_flashcards.exercises.models import (LanguageCategoryPage, MainGroup, SubGroup, GroupExercise, \
                                             MainGroupWithSubGroups, SubGroupWithGroupExercises, ExerciseBase,
                                             MatchExercise, MatchExerciseTextWithImage,
-                                            FillInTextExerciseWithChoices, FillInTextExerciseWithPredefinedBlocks)
+                                            FillInTextExerciseWithChoices, FillInTextExerciseWithPredefinedBlocks,
+                                            ConjugationExercise)
 from rest_framework import serializers
 
 
@@ -287,3 +288,22 @@ class FillInTextExerciseWithPredefinedBlocksWithImageDecorationSerializer(FillIn
 
     class Meta(FillInTextExerciseWithPredefinedBlocksSerializer.Meta):
         fields = FillInTextExerciseWithPredefinedBlocksSerializer.Meta.fields + ['image']
+
+
+class ConjugationExerciseSerializer(serializers.ModelSerializer):
+    conjugation_rows = serializers.SerializerMethodField()
+
+    def get_conjugation_rows(self, obj):
+        all_rows = []
+        for row in obj.conjugation_rows:
+            print("row", row)
+            values = row.value
+            print("values4342", values)
+            print("ptsd", values['person_label'])
+            print("correct_form", values['correct_form'])
+            print("is_pre_filled", values['is_pre_filled'])
+            all_rows.append({"person_label": values['person_label'], "correct_form": values['correct_form'], "is_pre_filled": values['is_pre_filled']})
+        return all_rows
+    class Meta:
+        model = ConjugationExercise
+        fields = ['instruction', 'description', 'conjugation_rows']

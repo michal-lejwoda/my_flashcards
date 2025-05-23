@@ -464,7 +464,6 @@ class ConjugationExercise(ExerciseBase):
     ]
 
     def save(self, *args, **kwargs):
-        # Auto-fill only if person_set selected and conjugation_rows is empty
         if self.person_set and not self.conjugation_rows:
             rows = []
             for person in PERSON_SETS.get(self.person_set, []):
