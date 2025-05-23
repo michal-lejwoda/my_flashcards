@@ -11,14 +11,16 @@ from my_flashcards.exercises.api.serializers import LanguageCategoryPageDetailSe
     LanguageCategoryPageListSerializer, MainGroupListSerializer, MainGroupPageDetailSerializer, SubGroupListSerializer, \
     GroupExerciseListSerializer, MainGroupWithSubGroupsListSerializer, SubGroupWithGroupExercisesListSerializer, \
     PageSerializer, SubGroupWithSubGroupsPageDetailSerializer, MainGroupWithGroupExercisePageDetailSerializer, \
-    MatchExerciseSerializer, MatchExerciseTextWithImageSerializer, FillInTextExerciseWithChoicesSerializer
+    MatchExerciseSerializer, MatchExerciseTextWithImageSerializer, FillInTextExerciseWithChoicesSerializer, \
+    FillInTextExerciseWithPredefinedBlocksSerializer
 from my_flashcards.exercises.models import LanguageCategoryPage, MainGroup, SubGroupWithSubGroups, \
     MainGroupWithGroupExercises, MainGroupWithSubGroups, SubGroupWithGroupExercises, ExerciseBase
 
 exercise_serializers = {
     "MatchExercise": MatchExerciseSerializer,
     "MatchExerciseTextWithImage": MatchExerciseTextWithImageSerializer,
-    "FillInTextExercise": FillInTextExerciseWithChoicesSerializer
+    "FillInTextExercise": FillInTextExerciseWithChoicesSerializer,
+    "FillInTextExerciseWithPredefinedBlocks": FillInTextExerciseWithPredefinedBlocksSerializer
 }
 
 # exercise_post_serializers = {

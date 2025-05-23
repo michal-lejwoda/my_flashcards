@@ -343,8 +343,11 @@ class FillInTextExerciseWithPredefinedBlocks(ExerciseBase):
     options = StreamField(
         [
             ("options", blocks.ListBlock(
-                blocks.CharBlock(label="Option"),
-                label="List of possible option"
+                blocks.StructBlock([
+                    ("blank_id", blocks.IntegerBlock(help_text="Blank number (ie. 1 for {{1}})")),
+                    ("text", blocks.CharBlock(label="Option")),
+                ]),
+                label="Lista możliwych opcji"
             )),
         ],
         use_json_field=True,
@@ -353,8 +356,9 @@ class FillInTextExerciseWithPredefinedBlocks(ExerciseBase):
     )
 
     content_panels = Page.content_panels + [
+        FieldPanel('description'),
         FieldPanel('text_with_blanks'),
-        FieldPanel('options'),
+        FieldPanel('options')
     ]
 
 class GroupExercise(Page):

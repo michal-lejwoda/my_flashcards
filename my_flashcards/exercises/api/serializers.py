@@ -248,6 +248,25 @@ class FillInTextExerciseWithChoicesSerializer(serializers.ModelSerializer):
 
 class FillInTextExerciseWithPredefinedBlocksSerializer(serializers.ModelSerializer):
     #TODO Start from here tomorrow
+    correct_answers = SerializerMethodField()
+    blocks = SerializerMethodField()
+
+    def get_blocks(self, obj):
+        blocks = []
+        for option in obj.options:
+            values = option.value
+            for element in values:
+                blocks.append({"blank_id": element['blank_id'], 'text': element['text']})
+        random.shuffle(blocks)
+        return blocks
+
+    def get_correct_answers(self, obj):
+        correct_answers = []
+        for option in obj.options:
+            values = option.value
+            for element in values:
+                correct_answers.append({"blank_id": element['blank_id'], 'text': element['text']})
+        return correct_answers
     class Meta:
         model = FillInTextExerciseWithPredefinedBlocks
-        fields = ['description', 'text_with_blanks', 'blocks']
+        fields = ['description', 'text_with_blanks', 'correct_answers', 'blocks']
