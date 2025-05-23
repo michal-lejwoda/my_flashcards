@@ -296,12 +296,7 @@ class ConjugationExerciseSerializer(serializers.ModelSerializer):
     def get_conjugation_rows(self, obj):
         all_rows = []
         for row in obj.conjugation_rows:
-            print("row", row)
             values = row.value
-            print("values4342", values)
-            print("ptsd", values['person_label'])
-            print("correct_form", values['correct_form'])
-            print("is_pre_filled", values['is_pre_filled'])
             all_rows.append({"person_label": values['person_label'], "correct_form": values['correct_form'], "is_pre_filled": values['is_pre_filled']})
         return all_rows
     class Meta:
