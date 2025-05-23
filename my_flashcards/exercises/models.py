@@ -450,9 +450,9 @@ class ConjugationExercise(ExerciseBase):
 
     conjugation_rows = StreamField([
         ('row', blocks.StructBlock([
-            ('person_label', blocks.CharBlock(label="Osoba")),
-            ('correct_form', blocks.CharBlock(label="Forma", required=False)),
-            ('is_pre_filled', blocks.BooleanBlock(label="Uzupełnione wcześniej?", required=False)),
+            ('person_label', blocks.CharBlock(label="Person")),
+            ('correct_form', blocks.CharBlock(label="Form", required=False)),
+            ('is_pre_filled', blocks.BooleanBlock(label="Is prefilled?", required=False)),
         ]))
     ], use_json_field=True, blank=True)
 
@@ -463,20 +463,35 @@ class ConjugationExercise(ExerciseBase):
         FieldPanel('conjugation_rows'),
     ]
 
-    # def save(self, *args, **kwargs):
-    #     if self.person_set and not self.conjugation_rows:
-    #         rows = []
-    #         for person in PERSON_SETS.get(self.person_set, []):
-    #             rows.append({
-    #                 'type': 'row',
-    #                 'value': {
-    #                     'person_label': person,
-    #                     'correct_form': '',
-    #                     'is_pre_filled': False
-    #                 }
-    #             })
-    #         self.conjugation_rows = rows
-    #     super().save(*args, **kwargs)
+    def check_answer(self, user, user_answers):
+        user_answer_map = {a['person_label']: a['answer'] for a in user_answers}
+        result_answers = []
+        score = 0
+        for block in self.conjugation_rows:
+            values = block.value
+            person_label = values['person_label']
+            correct_answer = values["correct_form"]
+            user_answer = user_answer_map.get(person_label)
+
+            result = {
+                "person_label": person_label,
+                "provided_answer": user_answer,
+                "correct_answer": correct_answer
+            }
+
+            if user_answer == correct_answer:
+                result["correct"] = True
+                score += 1
+            else:
+                result["correct"] = False
+
+            result_answers.append(result)
+
+        return {
+            "score": score,
+            "max_score": len(result_answers),
+            "result_answers": result_answers
+        }
 
 class GroupExercise(Page):
     introduction = models.TextField(blank=True)
