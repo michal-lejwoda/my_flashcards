@@ -345,9 +345,9 @@ class FillInTextExerciseWithPredefinedBlocks(ExerciseBase):
             ("options", blocks.ListBlock(
                 blocks.StructBlock([
                     ("blank_id", blocks.IntegerBlock(help_text="Blank number (ie. 1 for {{1}})")),
-                    ("text", blocks.CharBlock(label="Option")),
+                    ("answer", blocks.CharBlock(label="Option")),
                 ]),
-                label="Lista możliwych opcji"
+                label="List of possible options"
             )),
         ],
         use_json_field=True,
@@ -360,6 +360,37 @@ class FillInTextExerciseWithPredefinedBlocks(ExerciseBase):
         FieldPanel('text_with_blanks'),
         FieldPanel('options')
     ]
+    def check_answer(self, user, user_answers):
+        user_answer_map = {a['blank_id']: a['answer'] for a in user_answers}
+        result_answers = []
+        score = 0
+        for block in self.options:
+            if block.block_type == 'options':
+                values = block.value
+                for val in values:
+                    blank_id = val["blank_id"]
+                    correct_answer = val["answer"]
+                    user_answer = user_answer_map.get(blank_id)
+
+                    result = {
+                        "block_id": blank_id,
+                        "provided_answer": user_answer,
+                        "correct_answer": correct_answer
+                    }
+
+                    if user_answer == correct_answer:
+                        result["correct"] = True
+                        score += 1
+                    else:
+                        result["correct"] = False
+
+                    result_answers.append(result)
+
+        return {
+            "score": score,
+            "max_score": len(result_answers),
+            "result_answers": result_answers
+        }
 
 class GroupExercise(Page):
     introduction = models.TextField(blank=True)
