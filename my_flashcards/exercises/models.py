@@ -428,6 +428,56 @@ class FillInTextExerciseWithPredefinedBlocksWithImageDecoration(FillInTextExerci
         FieldPanel('image'),
     ]
 
+
+PERSON_SETS = {
+    'de_basic': ['ich', 'du', 'er/sie/es', 'wir', 'ihr', 'sie/Sie'],
+    'en_basic': ['I', 'you', 'he/she/it', 'we', 'you (pl)', 'they'],
+}
+
+
+class ConjugationExercise(ExerciseBase):
+    instruction = models.TextField(blank=True)
+
+    person_set = models.CharField(
+        max_length=50,
+        choices=[
+            ('', '--- wybierz ---'),
+            ('de_basic', 'Niemiecki (ich, du, ...)'),
+            ('en_basic', 'Angielski (I, you, ...)'),
+        ],
+        blank=True
+    )
+
+    conjugation_rows = StreamField([
+        ('row', blocks.StructBlock([
+            ('person_label', blocks.CharBlock(label="Osoba")),
+            ('correct_form', blocks.CharBlock(label="Forma", required=False)),
+            ('is_pre_filled', blocks.BooleanBlock(label="Uzupełnione wcześniej?", required=False)),
+        ]))
+    ], use_json_field=True, blank=True)
+
+    content_panels = Page.content_panels + [
+        FieldPanel('instruction'),
+        FieldPanel('person_set'),
+        FieldPanel('conjugation_rows'),
+    ]
+
+    def save(self, *args, **kwargs):
+        # Auto-fill only if person_set selected and conjugation_rows is empty
+        if self.person_set and not self.conjugation_rows:
+            rows = []
+            for person in PERSON_SETS.get(self.person_set, []):
+                rows.append({
+                    'type': 'row',
+                    'value': {
+                        'person_label': person,
+                        'correct_form': '',
+                        'is_pre_filled': False
+                    }
+                })
+            self.conjugation_rows = rows
+        super().save(*args, **kwargs)
+
 class GroupExercise(Page):
     introduction = models.TextField(blank=True)
 
