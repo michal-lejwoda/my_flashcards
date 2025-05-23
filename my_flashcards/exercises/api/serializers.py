@@ -271,13 +271,19 @@ class FillInTextExerciseWithPredefinedBlocksSerializer(serializers.ModelSerializ
         fields = ['description', 'text_with_blanks', 'correct_answers', 'blocks']
 
 class FillInTextExerciseWithChoicesWithImageDecorationSerializer(FillInTextExerciseWithChoicesSerializer):
-    image = serializers.ImageField(source="image.file.url", read_only=True)
+    image = serializers.SerializerMethodField(read_only=True)
+
+    def get_image(self, obj):
+        return obj.image.file.url if obj.image else None
 
     class Meta(FillInTextExerciseWithChoicesSerializer.Meta):
         fields = FillInTextExerciseWithChoicesSerializer.Meta.fields + ['image']
 
 class FillInTextExerciseWithPredefinedBlocksWithImageDecorationSerializer(FillInTextExerciseWithPredefinedBlocksSerializer):
-    image = serializers.ImageField(source="image.file.url", read_only=True)
+    image = serializers.SerializerMethodField(read_only=True)
+
+    def get_image(self, obj):
+        return obj.image.file.url if obj.image else None
 
     class Meta(FillInTextExerciseWithPredefinedBlocksSerializer.Meta):
         fields = FillInTextExerciseWithPredefinedBlocksSerializer.Meta.fields + ['image']

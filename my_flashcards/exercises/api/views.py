@@ -113,5 +113,3 @@ class ExerciseViewSet(RetrieveModelMixin, CreateModelMixin, GenericViewSet):
         except NotImplementedError:
             return Response({'detail': 'This exercise does not implement answer checking.'},
                             status=status.HTTP_400_BAD_REQUEST)
-
-
