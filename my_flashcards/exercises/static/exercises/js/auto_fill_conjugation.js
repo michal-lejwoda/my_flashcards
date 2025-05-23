@@ -16,7 +16,7 @@
       const inputs_person_label = streamField.querySelectorAll('[data-contentpath="person_label"] input');
        inputs_person_label.forEach((input) => {
   input.setAttribute('data-to-delete', 'true');
-  const blockElement = input.closest('[data-contentpath^="conjugation_rows"]'); // znajdź kontener bloku
+  const blockElement = input.closest('[data-contentpath^="conjugation_rows"]');
   if (blockElement) {
     const button_to_delete = blockElement.querySelector('button[title="Delete"][type="button"]');
     if (button_to_delete) {
