@@ -12,11 +12,23 @@ from wagtail.models import Page, Orderable
 
 User = get_user_model()
 #subpage_function
+def get_all_subclasses(cls):
+    subclasses = cls.__subclasses__()
+    all_subclasses = []
+    for subclass in subclasses:
+        all_subclasses.append(subclass)
+        all_subclasses.extend(get_all_subclasses(subclass))
+    return all_subclasses
+
 def get_exercise_subpage_type():
     from wagtail.models import Page
-    subclasses = ExerciseBase.__subclasses__()
-    return [f"{cls._meta.app_label}.{cls.__name__}" for cls in subclasses
-            if issubclass(cls, Page) and not cls._meta.abstract]
+    subclasses = get_all_subclasses(ExerciseBase)
+    return [
+        f"{cls._meta.app_label}.{cls.__name__}"
+        for cls in subclasses
+        if issubclass(cls, Page) and not cls._meta.abstract
+    ]
+
 
 # rest
 LANGUAGE_CHOICES = [
@@ -336,6 +348,18 @@ class FillInTextExerciseWithChoices(ExerciseBase):
             "result_answers": result_answers
         }
 
+class FillInTextExerciseWithChoicesWithImageDecoration(FillInTextExerciseWithChoices):
+    image = models.ForeignKey(
+        'wagtailimages.Image',
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name='+'
+    )
+    content_panels = FillInTextExerciseWithChoices.content_panels + [
+        FieldPanel('image'),
+    ]
+
 class FillInTextExerciseWithPredefinedBlocks(ExerciseBase):
     text_with_blanks = models.TextField(
         help_text="Use {{1}}, {{2}}, {{3}} in blanks."
@@ -391,6 +415,18 @@ class FillInTextExerciseWithPredefinedBlocks(ExerciseBase):
             "max_score": len(result_answers),
             "result_answers": result_answers
         }
+
+class FillInTextExerciseWithPredefinedBlocksWithImageDecoration(FillInTextExerciseWithPredefinedBlocks):
+    image = models.ForeignKey(
+        'wagtailimages.Image',
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name='+'
+    )
+    content_panels = FillInTextExerciseWithPredefinedBlocks.content_panels + [
+        FieldPanel('image'),
+    ]
 
 class GroupExercise(Page):
     introduction = models.TextField(blank=True)
