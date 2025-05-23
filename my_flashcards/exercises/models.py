@@ -441,7 +441,7 @@ class ConjugationExercise(ExerciseBase):
     person_set = models.CharField(
         max_length=50,
         choices=[
-            ('', '--- wybierz ---'),
+            ('', '--- select ---'),
             ('de_basic', 'Niemiecki (ich, du, ...)'),
             ('en_basic', 'Angielski (I, you, ...)'),
         ],
