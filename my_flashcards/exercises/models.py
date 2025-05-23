@@ -471,21 +471,23 @@ class ConjugationExercise(ExerciseBase):
             values = block.value
             person_label = values['person_label']
             correct_answer = values["correct_form"]
-            user_answer = user_answer_map.get(person_label)
+            is_pre_filled = values["is_pre_filled"]
+            if not is_pre_filled:
+                user_answer = user_answer_map.get(person_label)
 
-            result = {
-                "person_label": person_label,
-                "provided_answer": user_answer,
-                "correct_answer": correct_answer
-            }
+                result = {
+                    "person_label": person_label,
+                    "provided_answer": user_answer,
+                    "correct_answer": correct_answer
+                }
 
-            if user_answer == correct_answer:
-                result["correct"] = True
-                score += 1
-            else:
-                result["correct"] = False
+                if user_answer == correct_answer:
+                    result["correct"] = True
+                    score += 1
+                else:
+                    result["correct"] = False
 
-            result_answers.append(result)
+                result_answers.append(result)
 
         return {
             "score": score,
