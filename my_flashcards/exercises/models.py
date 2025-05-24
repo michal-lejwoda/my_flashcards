@@ -10,6 +10,8 @@ from wagtail.fields import StreamField
 from wagtail.images.blocks import ImageChooserBlock
 from wagtail.models import Page, Orderable
 
+from my_flashcards.exercises.validators import validate_mp3
+
 User = get_user_model()
 #subpage_function
 def get_all_subclasses(cls):
@@ -495,8 +497,42 @@ class ConjugationExercise(ExerciseBase):
             "result_answers": result_answers
         }
 
+class ListenOptionToChoose(blocks.StructBlock):
+    question = blocks.TextBlock(required=False, help_text="Optional question")
+    options = blocks.ListBlock(
+        blocks.CharBlock(), help_text="List of possible options"
+    )
+    correct_answer = blocks.CharBlock(help_text="True Answer")
+
+    def clean(self, value):
+        errors = {}
+        if value['correct_answer'] not in value['options']:
+            errors['correct_answer'] = "True answer must be one of the option."
+        if errors:
+            raise blocks.StreamBlockValidationError(errors)
+        return super().clean(value)
+
+
+def audio_upload_path(instance, filename):
+    return f"audio/{filename}"
+
 class ListenExerciseWithOptionsToChoose(ExerciseBase):
-    pass
+    audio = models.FileField(
+        upload_to=audio_upload_path,
+        help_text="Upload mp3 file",
+        validators=[validate_mp3]
+    )
+    exercises = StreamField(
+        [('options', ListenOptionToChoose())],
+        use_json_field=True,
+        blank=True,
+    )
+    content_panels = Page.content_panels + [
+        FieldPanel('audio'),
+        FieldPanel('description'),
+        FieldPanel('exercises'),
+    ]
+
 
 class ListenWithManyOptionsToChooseToSingleExercise(ExerciseBase):
     pass

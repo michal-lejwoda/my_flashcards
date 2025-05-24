@@ -1,5 +1,6 @@
 import random
 
+from rest_framework import serializers
 from rest_framework.fields import SerializerMethodField
 from wagtail.blocks.list_block import ListValue
 from wagtail.images.api.fields import ImageRenditionField
@@ -13,9 +14,6 @@ from my_flashcards.exercises.models import (LanguageCategoryPage, MainGroup, Sub
                                             ListenWithManyOptionsToChooseToSingleExercise,
                                             ChooseExerciseDependsOnMultipleTexts, ChooseExerciseDependsOnSingleText,
                                             MultipleExercises)
-from rest_framework import serializers
-
-
 
 group_urls = {
     "LanguageCategoryPage": "maingroup-with-subgroups",
@@ -307,9 +305,11 @@ class ConjugationExerciseSerializer(serializers.ModelSerializer):
         fields = ['instruction', 'description', 'conjugation_rows']
 
 class ListenExerciseWithOptionsToChooseSerializer(serializers.ModelSerializer):
+    audio = serializers.FileField(read_only=True)
+
     class Meta:
         model = ListenExerciseWithOptionsToChoose
-        fields = []
+        fields = ['audio', 'exercises', 'description']
 class ListenWithManyOptionsToChooseToSingleExerciseSerializer(serializers.ModelSerializer):
     class Meta:
         model = ListenWithManyOptionsToChooseToSingleExercise
