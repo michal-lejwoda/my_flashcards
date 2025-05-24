@@ -549,6 +549,7 @@ class ListenExerciseWithOptionsToChoose(ExerciseBase):
                 block.value['question_id'] = str(question_counter)
                 question_counter += 1
 
+
     def check_answer(self, user, user_answers):
         user_answer_map = {a['question_id']: a['answer'] for a in user_answers}
         result_answers = []
@@ -580,6 +581,7 @@ class ListenExerciseWithOptionsToChoose(ExerciseBase):
         }
 
 
+
 class ListenWithManyOptionsToChooseToSingleExercise(ExerciseBase):
     pass
 
@@ -587,7 +589,59 @@ class ChooseExerciseDependsOnMultipleTexts(ExerciseBase):
     pass
 
 class ChooseExerciseDependsOnSingleText(ExerciseBase):
-    pass
+    text = models.TextField(blank=True)
+    exercises = StreamField(
+        [('options', ListenOptionToChoose())],
+        use_json_field=True,
+        blank=True,
+    )
+
+    content_panels = Page.content_panels + [
+        FieldPanel('text'),
+        FieldPanel('description'),
+        FieldPanel('exercises'),
+    ]
+
+    def save(self, *args, **kwargs):
+        self._auto_number_questions()
+        super().save(*args, **kwargs)
+
+    def _auto_number_questions(self):
+        question_counter = 1
+        for block in self.exercises:
+            if block.block_type == 'options':
+                block.value['question_id'] = str(question_counter)
+                question_counter += 1
+
+    def check_answer(self, user, user_answers):
+        user_answer_map = {a['question_id']: a['answer'] for a in user_answers}
+        result_answers = []
+        score = 0
+        for block in self.exercises:
+            values = block.value
+            question_id = values['question_id']
+            correct_answer = values["correct_answer"]
+            user_answer = user_answer_map.get(question_id)
+
+            result = {
+                "person_label": question_id,
+                "provided_answer": user_answer,
+                "correct_answer": correct_answer
+            }
+
+            if user_answer == correct_answer:
+                result["correct"] = True
+                score += 1
+            else:
+                result["correct"] = False
+
+            result_answers.append(result)
+
+        return {
+            "score": score,
+            "max_score": len(result_answers),
+            "result_answers": result_answers
+        }
 
 class MultipleExercises(ExerciseBase):
     pass
