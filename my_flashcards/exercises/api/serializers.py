@@ -315,7 +315,7 @@ class ListenExerciseWithOptionsToChooseSerializer(serializers.ModelSerializer):
             options = []
             for option in values['options']:
                 options.append(option)
-            result = {'question': values['question'], 'options': options,  'correct_answer': values['correct_answer']}
+            result = {'question': values['question'], 'question_id': values['question_id'], 'options': options,  'correct_answer': values['correct_answer']}
             all_exercises.append(result)
         return all_exercises
 

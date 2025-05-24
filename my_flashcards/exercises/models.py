@@ -9,8 +9,6 @@ from wagtail.admin.panels import FieldPanel
 from wagtail.fields import StreamField
 from wagtail.images.blocks import ImageChooserBlock
 from wagtail.models import Page, Orderable
-
-
 from my_flashcards.exercises.validators import validate_mp3
 
 User = get_user_model()
