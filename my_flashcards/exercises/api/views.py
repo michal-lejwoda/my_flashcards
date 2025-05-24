@@ -14,7 +14,10 @@ from my_flashcards.exercises.api.serializers import LanguageCategoryPageDetailSe
     MatchExerciseSerializer, MatchExerciseTextWithImageSerializer, FillInTextExerciseWithChoicesSerializer, \
     FillInTextExerciseWithPredefinedBlocksSerializer, \
     FillInTextExerciseWithPredefinedBlocksWithImageDecorationSerializer, \
-    FillInTextExerciseWithChoicesWithImageDecorationSerializer, ConjugationExerciseSerializer
+    FillInTextExerciseWithChoicesWithImageDecorationSerializer, ConjugationExerciseSerializer, \
+    ListenExerciseWithOptionsToChooseSerializer, ListenWithManyOptionsToChooseToSingleExerciseSerializer, \
+    MultipleExercisesSerializer, ChooseExerciseDependsOnSingleTextSerializer, \
+    ChooseExerciseDependsOnMultipleTextsSerializer
 from my_flashcards.exercises.models import LanguageCategoryPage, MainGroup, SubGroupWithSubGroups, \
     MainGroupWithGroupExercises, MainGroupWithSubGroups, SubGroupWithGroupExercises, ExerciseBase
 
@@ -25,7 +28,12 @@ exercise_serializers = {
     "FillInTextExerciseWithPredefinedBlocks": FillInTextExerciseWithPredefinedBlocksSerializer,
     "FillInTextExerciseWithPredefinedBlocksWithImageDecoration": FillInTextExerciseWithPredefinedBlocksWithImageDecorationSerializer,
     "FillInTextExerciseWithChoicesWithImageDecoration": FillInTextExerciseWithChoicesWithImageDecorationSerializer,
-    "ConjugationExercise": ConjugationExerciseSerializer
+    "ConjugationExercise": ConjugationExerciseSerializer,
+    "ListenExerciseWithOptionsToChoose": ListenExerciseWithOptionsToChooseSerializer,
+    "ListenWithManyOptionsToChooseToSingleExercise": ListenWithManyOptionsToChooseToSingleExerciseSerializer,
+    "ChooseExerciseDependsOnMultipleTexts": ChooseExerciseDependsOnMultipleTextsSerializer,
+    "ChooseExerciseDependsOnSingleText": ChooseExerciseDependsOnSingleTextSerializer,
+    "MultipleExercises": MultipleExercisesSerializer
 }
 
 

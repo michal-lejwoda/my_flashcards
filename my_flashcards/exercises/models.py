@@ -495,6 +495,21 @@ class ConjugationExercise(ExerciseBase):
             "result_answers": result_answers
         }
 
+class ListenExerciseWithOptionsToChoose(ExerciseBase):
+    pass
+
+class ListenWithManyOptionsToChooseToSingleExercise(ExerciseBase):
+    pass
+
+class ChooseExerciseDependsOnMultipleTexts(ExerciseBase):
+    pass
+
+class ChooseExerciseDependsOnSingleText(ExerciseBase):
+    pass
+
+class MultipleExercises(ExerciseBase):
+    pass
+
 class GroupExercise(Page):
     introduction = models.TextField(blank=True)
 

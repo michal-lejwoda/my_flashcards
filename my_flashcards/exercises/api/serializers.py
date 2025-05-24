@@ -9,7 +9,10 @@ from my_flashcards.exercises.models import (LanguageCategoryPage, MainGroup, Sub
                                             MainGroupWithSubGroups, SubGroupWithGroupExercises, ExerciseBase,
                                             MatchExercise, MatchExerciseTextWithImage,
                                             FillInTextExerciseWithChoices, FillInTextExerciseWithPredefinedBlocks,
-                                            ConjugationExercise)
+                                            ConjugationExercise, ListenExerciseWithOptionsToChoose,
+                                            ListenWithManyOptionsToChooseToSingleExercise,
+                                            ChooseExerciseDependsOnMultipleTexts, ChooseExerciseDependsOnSingleText,
+                                            MultipleExercises)
 from rest_framework import serializers
 
 
@@ -302,3 +305,27 @@ class ConjugationExerciseSerializer(serializers.ModelSerializer):
     class Meta:
         model = ConjugationExercise
         fields = ['instruction', 'description', 'conjugation_rows']
+
+class ListenExerciseWithOptionsToChooseSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ListenExerciseWithOptionsToChoose
+        fields = []
+class ListenWithManyOptionsToChooseToSingleExerciseSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ListenWithManyOptionsToChooseToSingleExercise
+        fields = []
+
+class ChooseExerciseDependsOnMultipleTextsSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ChooseExerciseDependsOnMultipleTexts
+        fields = []
+
+class ChooseExerciseDependsOnSingleTextSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ChooseExerciseDependsOnSingleText
+        fields = []
+
+class MultipleExercisesSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = MultipleExercises
+        fields = []
