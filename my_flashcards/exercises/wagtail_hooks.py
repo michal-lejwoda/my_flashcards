@@ -8,3 +8,7 @@ def editor_js():
         '<script src="{}"></script>',
         static('exercises/js/auto_fill_conjugation.js')
     )
+
+@hooks.register("insert_global_admin_css")
+def global_admin_css():
+    return format_html('<link rel="stylesheet" href="{}">', static("exercises/css/admin.css"))

@@ -1,3 +1,4 @@
+from django import forms
 from django.contrib.auth import get_user_model
 from django.db import models
 from django.utils.translation import gettext as _
@@ -5,10 +6,10 @@ from modelcluster.fields import ParentalKey
 from slugify import slugify
 from wagtail import blocks
 from wagtail.admin.panels import FieldPanel
-from wagtail.blocks import ListBlock, CharBlock
 from wagtail.fields import StreamField
 from wagtail.images.blocks import ImageChooserBlock
 from wagtail.models import Page, Orderable
+
 
 from my_flashcards.exercises.validators import validate_mp3
 
@@ -498,6 +499,11 @@ class ConjugationExercise(ExerciseBase):
         }
 
 class ListenOptionToChoose(blocks.StructBlock):
+    #Hidden using css
+    question_id = blocks.CharBlock(
+        required=False,
+        help_text="Ukryte ID pytania"
+    )
     question = blocks.TextBlock(required=False, help_text="Optional question")
     options = blocks.ListBlock(
         blocks.CharBlock(), help_text="List of possible options"
@@ -511,6 +517,8 @@ class ListenOptionToChoose(blocks.StructBlock):
         if errors:
             raise blocks.StreamBlockValidationError(errors)
         return super().clean(value)
+
+
 
 
 def audio_upload_path(instance, filename):
@@ -532,6 +540,16 @@ class ListenExerciseWithOptionsToChoose(ExerciseBase):
         FieldPanel('description'),
         FieldPanel('exercises'),
     ]
+    def save(self, *args, **kwargs):
+        self._auto_number_questions()
+        super().save(*args, **kwargs)
+
+    def _auto_number_questions(self):
+        question_counter = 1
+        for block in self.exercises:
+            if block.block_type == 'options':
+                block.value['question_id'] = str(question_counter)
+                question_counter += 1
 
 
 class ListenWithManyOptionsToChooseToSingleExercise(ExerciseBase):
