@@ -324,9 +324,24 @@ class ListenExerciseWithOptionsToChooseSerializer(serializers.ModelSerializer):
         fields = ['audio', 'exercises', 'description']
 
 class ListenWithManyOptionsToChooseToSingleExerciseSerializer(serializers.ModelSerializer):
+    exercises = serializers.SerializerMethodField()
+    def get_exercises(self, obj):
+        all_exercises = []
+        for exercise in obj.exercises:
+            values = exercise.value
+            options = list(values['options'])  # opcjonalnie, można skrócić
+            result = {
+                'question': values.get('question'),
+                'text': values.get('text'),
+                'question_id': values.get('question_id'),
+                'options': options,
+                'correct_answers': values.get('correct_answers'),  # <-- zmiana tutaj
+            }
+            all_exercises.append(result)
+        return all_exercises
     class Meta:
         model = ListenWithManyOptionsToChooseToSingleExercise
-        fields = []
+        fields = ['title','description','exercises']
 
 class ChooseExerciseDependsOnMultipleTextsSerializer(serializers.ModelSerializer):
     exercises = serializers.SerializerMethodField()

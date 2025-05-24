@@ -100,7 +100,6 @@ THIRD_PARTY_APPS = [
     'modelcluster',
     'taggit',
 ]
-
 LOCAL_APPS = [
     "my_flashcards.users",
     "my_flashcards.flashcards",

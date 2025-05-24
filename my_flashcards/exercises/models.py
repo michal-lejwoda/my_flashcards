@@ -6,6 +6,7 @@ from modelcluster.fields import ParentalKey
 from slugify import slugify
 from wagtail import blocks
 from wagtail.admin.panels import FieldPanel
+from wagtail.documents.blocks import DocumentChooserBlock
 from wagtail.fields import StreamField
 from wagtail.images.blocks import ImageChooserBlock
 from wagtail.models import Page, Orderable
@@ -496,6 +497,44 @@ class ConjugationExercise(ExerciseBase):
             "result_answers": result_answers
         }
 
+class MultipleOptionToChoose(blocks.StructBlock):
+    question_id = blocks.CharBlock(
+        required=False,
+        help_text="Ukryte ID pytania"
+    )
+    question = blocks.TextBlock(required=False, help_text="Optional question")
+    options = blocks.ListBlock(
+        blocks.CharBlock(), help_text="List of possible options"
+    )
+    correct_answers = blocks.ListBlock(
+        blocks.CharBlock(), help_text="Lista poprawnych odpowiedzi"
+    )
+
+    def clean(self, value):
+        errors = {}
+        invalid_answers = [ans for ans in value['correct_answers'] if ans not in value['options']]
+        if invalid_answers:
+            errors['correct_answers'] = (
+                f"Te odpowiedzi nie są wśród opcji: {', '.join(invalid_answers)}"
+            )
+        if errors:
+            raise blocks.StreamBlockValidationError(errors)
+        return super().clean(value)
+
+def audio_upload_path(instance, filename):
+    return f"audio/{filename}"
+
+# class MP3OnlyFileBlock(FileBlock):
+#     def clean(self, value):
+#         value = super().clean(value)
+#         if value and not value.name.lower().endswith('.mp3'):
+#             raise blocks.StreamBlockValidationError("Plik musi być w formacie MP3.")
+#         return value
+
+#TODO BACK HERE
+class MultipleOptionToChooseWithAudio(MultipleOptionToChoose):
+    audio = DocumentChooserBlock(help_text="Wybierz plik audio (.mp3)", validators=[validate_mp3])
+
 class ListenOptionToChoose(blocks.StructBlock):
     #Hidden using css
     question_id = blocks.CharBlock(
@@ -516,13 +555,20 @@ class ListenOptionToChoose(blocks.StructBlock):
             raise blocks.StreamBlockValidationError(errors)
         return super().clean(value)
 
+
+
+class ListenOptionToChooseWithAudio(ListenOptionToChoose):
+    audio = models.FileField(
+        upload_to=audio_upload_path,
+        help_text="Upload mp3 file",
+        validators=[validate_mp3]
+    )
+
 class ListenOptionToChooseWithText(ListenOptionToChoose):
     text = blocks.TextBlock(required=False, help_text="text")
 
 
 
-def audio_upload_path(instance, filename):
-    return f"audio/{filename}"
 
 class ListenExerciseWithOptionsToChoose(ExerciseBase):
     audio = models.FileField(
@@ -584,9 +630,61 @@ class ListenExerciseWithOptionsToChoose(ExerciseBase):
 
 
 
-class ListenWithManyOptionsToChooseToSingleExercise(ListenOptionToChooseWithText):
-    #TODO LAST ONE TO DO
-    pass
+class ListenWithManyOptionsToChooseToSingleExercise(ExerciseBase):
+    exercises = StreamField(
+        [('options', MultipleOptionToChooseWithAudio())],
+        use_json_field=True,
+        blank=True,
+    )
+    content_panels = Page.content_panels + [
+        FieldPanel('description'),
+        FieldPanel('exercises'),
+    ]
+
+    def save(self, *args, **kwargs):
+        self._auto_number_questions()
+        super().save(*args, **kwargs)
+
+    def _auto_number_questions(self):
+        question_counter = 1
+        for block in self.exercises:
+            if block.block_type == 'options':
+                block.value['question_id'] = str(question_counter)
+                question_counter += 1
+
+    def check_answer(self, user, user_answers):
+        user_answer_map = {a['question_id']: a['answer'] for a in user_answers}
+        result_answers = []
+        score = 0
+
+        for block in self.exercises:
+            values = block.value
+            question_id = values['question_id']
+            correct_answers = values['correct_answers']  # lista
+            user_answer = user_answer_map.get(question_id)
+
+            if not isinstance(user_answer, list):
+                user_answer = [user_answer] if user_answer is not None else []
+
+            is_correct = set(user_answer) == set(correct_answers)
+
+            result = {
+                "person_label": question_id,
+                "provided_answer": user_answer,
+                "correct_answer": correct_answers,
+                "correct": is_correct
+            }
+
+            if is_correct:
+                score += 1
+
+            result_answers.append(result)
+
+        return {
+            "score": score,
+            "max_score": len(result_answers),
+            "result_answers": result_answers
+        }
 
 class ChooseExerciseDependsOnMultipleTexts(ExerciseBase):
     exercises = StreamField(
