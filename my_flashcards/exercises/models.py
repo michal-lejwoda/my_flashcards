@@ -549,6 +549,36 @@ class ListenExerciseWithOptionsToChoose(ExerciseBase):
                 block.value['question_id'] = str(question_counter)
                 question_counter += 1
 
+    def check_answer(self, user, user_answers):
+        user_answer_map = {a['question_id']: a['answer'] for a in user_answers}
+        result_answers = []
+        score = 0
+        for block in self.exercises:
+            values = block.value
+            question_id = values['question_id']
+            correct_answer = values["correct_answer"]
+            user_answer = user_answer_map.get(question_id)
+
+            result = {
+                "person_label": question_id,
+                "provided_answer": user_answer,
+                "correct_answer": correct_answer
+            }
+
+            if user_answer == correct_answer:
+                result["correct"] = True
+                score += 1
+            else:
+                result["correct"] = False
+
+            result_answers.append(result)
+
+        return {
+            "score": score,
+            "max_score": len(result_answers),
+            "result_answers": result_answers
+        }
+
 
 class ListenWithManyOptionsToChooseToSingleExercise(ExerciseBase):
     pass
