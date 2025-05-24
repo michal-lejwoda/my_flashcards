@@ -306,10 +306,23 @@ class ConjugationExerciseSerializer(serializers.ModelSerializer):
 
 class ListenExerciseWithOptionsToChooseSerializer(serializers.ModelSerializer):
     audio = serializers.FileField(read_only=True)
+    exercises = serializers.SerializerMethodField()
+
+    def get_exercises(self, obj):
+        all_exercises = []
+        for exercise in obj.exercises:
+            values = exercise.value
+            options = []
+            for option in values['options']:
+                options.append(option)
+            result = {'question': values['question'], 'options': options,  'correct_answer': values['correct_answer']}
+            all_exercises.append(result)
+        return all_exercises
 
     class Meta:
         model = ListenExerciseWithOptionsToChoose
         fields = ['audio', 'exercises', 'description']
+
 class ListenWithManyOptionsToChooseToSingleExerciseSerializer(serializers.ModelSerializer):
     class Meta:
         model = ListenWithManyOptionsToChooseToSingleExercise
