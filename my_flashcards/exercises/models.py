@@ -11,6 +11,7 @@ from wagtail.fields import StreamField
 from wagtail.images.blocks import ImageChooserBlock
 from wagtail.models import Page, Orderable
 from my_flashcards.exercises.validators import validate_mp3
+from wagtailmedia.blocks import AudioChooserBlock
 
 User = get_user_model()
 #subpage_function
@@ -533,7 +534,10 @@ def audio_upload_path(instance, filename):
 
 #TODO BACK HERE
 class MultipleOptionToChooseWithAudio(MultipleOptionToChoose):
-    audio = DocumentChooserBlock(help_text="Wybierz plik audio (.mp3)", validators=[validate_mp3])
+    audio = AudioChooserBlock(
+        help_text="Wybierz plik audio (.mp3)",
+        required=False
+    )
 
 class ListenOptionToChoose(blocks.StructBlock):
     #Hidden using css
@@ -653,33 +657,38 @@ class ListenWithManyOptionsToChooseToSingleExercise(ExerciseBase):
                 question_counter += 1
 
     def check_answer(self, user, user_answers):
-        user_answer_map = {a['question_id']: a['answer'] for a in user_answers}
+        user_answer_map = {a['question_id']: a['answers'] for a in user_answers}
         result_answers = []
         score = 0
 
         for block in self.exercises:
             values = block.value
             question_id = values['question_id']
-            correct_answers = values['correct_answers']  # lista
+            correct_answers = values['correct_answers']
             user_answer = user_answer_map.get(question_id)
-
             if not isinstance(user_answer, list):
                 user_answer = [user_answer] if user_answer is not None else []
-
             is_correct = set(user_answer) == set(correct_answers)
-
             result = {
                 "person_label": question_id,
                 "provided_answer": user_answer,
-                "correct_answer": correct_answers,
+                "correct_answer": list(correct_answers),
                 "correct": is_correct
             }
+            print("result", result)
 
             if is_correct:
                 score += 1
 
             result_answers.append(result)
-
+        print("result_answer", result_answers)
+        print("bplaps[dlasdsaasd")
+        print(len(result_answers))
+        print("xcvxcvcx", {
+            "score": score,
+            "max_score": len(result_answers),
+            "result_answers": result_answers
+        })
         return {
             "score": score,
             "max_score": len(result_answers),
@@ -729,7 +738,6 @@ class ChooseExerciseDependsOnMultipleTexts(ExerciseBase):
                 score += 1
             else:
                 result["correct"] = False
-
             result_answers.append(result)
 
         return {

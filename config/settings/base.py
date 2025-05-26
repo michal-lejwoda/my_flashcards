@@ -96,6 +96,7 @@ THIRD_PARTY_APPS = [
     'wagtail.search',
     'wagtail.admin',
     'wagtail',
+    'wagtailmedia',
 
     'modelcluster',
     'taggit',
