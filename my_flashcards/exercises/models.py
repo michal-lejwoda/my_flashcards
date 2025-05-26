@@ -1,4 +1,3 @@
-from django import forms
 from django.contrib.auth import get_user_model
 from django.db import models
 from django.utils.translation import gettext as _
@@ -6,12 +5,12 @@ from modelcluster.fields import ParentalKey
 from slugify import slugify
 from wagtail import blocks
 from wagtail.admin.panels import FieldPanel
-from wagtail.documents.blocks import DocumentChooserBlock
 from wagtail.fields import StreamField
 from wagtail.images.blocks import ImageChooserBlock
 from wagtail.models import Page, Orderable
-from my_flashcards.exercises.validators import validate_mp3
 from wagtailmedia.blocks import AudioChooserBlock
+
+from my_flashcards.exercises.validators import validate_mp3
 
 User = get_user_model()
 #subpage_function
@@ -119,7 +118,6 @@ class ExerciseBase(Page):
 
 
 class LanguageCategoryPage(Page, UniqueSlugAcrossGroupPagesMixin):
-
     language = models.CharField(
         max_length=2,
         choices=LANGUAGE_CHOICES
@@ -675,20 +673,10 @@ class ListenWithManyOptionsToChooseToSingleExercise(ExerciseBase):
                 "correct_answer": list(correct_answers),
                 "correct": is_correct
             }
-            print("result", result)
-
             if is_correct:
                 score += 1
 
             result_answers.append(result)
-        print("result_answer", result_answers)
-        print("bplaps[dlasdsaasd")
-        print(len(result_answers))
-        print("xcvxcvcx", {
-            "score": score,
-            "max_score": len(result_answers),
-            "result_answers": result_answers
-        })
         return {
             "score": score,
             "max_score": len(result_answers),
