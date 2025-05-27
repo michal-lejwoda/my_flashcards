@@ -10,6 +10,7 @@ from wagtail.images.blocks import ImageChooserBlock
 from wagtail.models import Page, Orderable
 from wagtailmedia.blocks import AudioChooserBlock
 
+from my_flashcards.exercises.utils import check_user_answers, check_user_answers_another_option
 from my_flashcards.exercises.validators import validate_mp3
 
 User = get_user_model()
@@ -225,18 +226,7 @@ class MatchExercise(ExerciseBase):
                         'left_item': left_item,
                         'right_item': right_item
                     })
-        score = 0
-        result_answers = []
-        for answer in user_answers:
-            if answer in correct_answers:
-                answer['correct'] = True
-                result_answers.append(answer)
-                score += 1
-            else:
-                answer['correct'] = False
-                result_answers.append(answer)
-        max_score = len(correct_answers)
-        return {"score": score, "max_score": max_score, "result_answers": result_answers}
+        return check_user_answers(user_answers, correct_answers)
 
 class MatchExerciseTextWithImage(ExerciseBase):
     pairs = StreamField(
@@ -267,18 +257,7 @@ class MatchExerciseTextWithImage(ExerciseBase):
                         'left_item': left_item,
                         'right_item': right_item
                     })
-        score = 0
-        result_answers = []
-        for answer in user_answers:
-            if answer in correct_answers:
-                answer['correct'] = True
-                result_answers.append(answer)
-                score += 1
-            else:
-                answer['correct'] = False
-                result_answers.append(answer)
-        max_score = len(correct_answers)
-        return {"score": score, "max_score": max_score, "result_answers": result_answers}
+        return check_user_answers(user_answers, correct_answers)
 
 class BlankOptionBlock(blocks.StructBlock):
     blank_id = blocks.IntegerBlock(help_text="Blank number, ie. 1 for {{1}}")
@@ -602,33 +581,34 @@ class ListenExerciseWithOptionsToChoose(ExerciseBase):
 
     def check_answer(self, user, user_answers):
         user_answer_map = {a['question_id']: a['answer'] for a in user_answers}
-        result_answers = []
-        score = 0
-        for block in self.exercises:
-            values = block.value
-            question_id = values['question_id']
-            correct_answer = values["correct_answer"]
-            user_answer = user_answer_map.get(question_id)
-
-            result = {
-                "person_label": question_id,
-                "provided_answer": user_answer,
-                "correct_answer": correct_answer
-            }
-
-            if user_answer == correct_answer:
-                result["correct"] = True
-                score += 1
-            else:
-                result["correct"] = False
-
-            result_answers.append(result)
-
-        return {
-            "score": score,
-            "max_score": len(result_answers),
-            "result_answers": result_answers
-        }
+        return check_user_answers_another_option(user_answer_map, self.exercises)
+        # result_answers = []
+        # score = 0
+        # for block in self.exercises:
+        #     values = block.value
+        #     question_id = values['question_id']
+        #     correct_answer = values["correct_answer"]
+        #     user_answer = user_answer_map.get(question_id)
+        #
+        #     result = {
+        #         "person_label": question_id,
+        #         "provided_answer": user_answer,
+        #         "correct_answer": correct_answer
+        #     }
+        #
+        #     if user_answer == correct_answer:
+        #         result["correct"] = True
+        #         score += 1
+        #     else:
+        #         result["correct"] = False
+        #
+        #     result_answers.append(result)
+        #
+        # return {
+        #     "score": score,
+        #     "max_score": len(result_answers),
+        #     "result_answers": result_answers
+        # }
 
 
 
@@ -707,32 +687,33 @@ class ChooseExerciseDependsOnMultipleTexts(ExerciseBase):
 
     def check_answer(self, user, user_answers):
         user_answer_map = {a['question_id']: a['answer'] for a in user_answers}
-        result_answers = []
-        score = 0
-        for block in self.exercises:
-            values = block.value
-            question_id = values['question_id']
-            correct_answer = values["correct_answer"]
-            user_answer = user_answer_map.get(question_id)
-
-            result = {
-                "person_label": question_id,
-                "provided_answer": user_answer,
-                "correct_answer": correct_answer
-            }
-
-            if user_answer == correct_answer:
-                result["correct"] = True
-                score += 1
-            else:
-                result["correct"] = False
-            result_answers.append(result)
-
-        return {
-            "score": score,
-            "max_score": len(result_answers),
-            "result_answers": result_answers
-        }
+        return check_user_answers_another_option(user_answer_map, self.exercises)
+        # result_answers = []
+        # score = 0
+        # for block in self.exercises:
+        #     values = block.value
+        #     question_id = values['question_id']
+        #     correct_answer = values["correct_answer"]
+        #     user_answer = user_answer_map.get(question_id)
+        #
+        #     result = {
+        #         "person_label": question_id,
+        #         "provided_answer": user_answer,
+        #         "correct_answer": correct_answer
+        #     }
+        #
+        #     if user_answer == correct_answer:
+        #         result["correct"] = True
+        #         score += 1
+        #     else:
+        #         result["correct"] = False
+        #     result_answers.append(result)
+        #
+        # return {
+        #     "score": score,
+        #     "max_score": len(result_answers),
+        #     "result_answers": result_answers
+        # }
 
 
 class ChooseExerciseDependsOnSingleText(ExerciseBase):
@@ -762,33 +743,34 @@ class ChooseExerciseDependsOnSingleText(ExerciseBase):
 
     def check_answer(self, user, user_answers):
         user_answer_map = {a['question_id']: a['answer'] for a in user_answers}
-        result_answers = []
-        score = 0
-        for block in self.exercises:
-            values = block.value
-            question_id = values['question_id']
-            correct_answer = values["correct_answer"]
-            user_answer = user_answer_map.get(question_id)
-
-            result = {
-                "person_label": question_id,
-                "provided_answer": user_answer,
-                "correct_answer": correct_answer
-            }
-
-            if user_answer == correct_answer:
-                result["correct"] = True
-                score += 1
-            else:
-                result["correct"] = False
-
-            result_answers.append(result)
-
-        return {
-            "score": score,
-            "max_score": len(result_answers),
-            "result_answers": result_answers
-        }
+        return check_user_answers_another_option(user_answer_map, self.exercises)
+        # result_answers = []
+        # score = 0
+        # for block in self.exercises:
+        #     values = block.value
+        #     question_id = values['question_id']
+        #     correct_answer = values["correct_answer"]
+        #     user_answer = user_answer_map.get(question_id)
+        #
+        #     result = {
+        #         "person_label": question_id,
+        #         "provided_answer": user_answer,
+        #         "correct_answer": correct_answer
+        #     }
+        #
+        #     if user_answer == correct_answer:
+        #         result["correct"] = True
+        #         score += 1
+        #     else:
+        #         result["correct"] = False
+        #
+        #     result_answers.append(result)
+        #
+        # return {
+        #     "score": score,
+        #     "max_score": len(result_answers),
+        #     "result_answers": result_answers
+        # }
 
 class MultipleExercises(ExerciseBase):
     pass
