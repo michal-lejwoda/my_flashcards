@@ -10,10 +10,16 @@ from wagtail.images.blocks import ImageChooserBlock
 from wagtail.models import Page, Orderable
 from wagtailmedia.blocks import AudioChooserBlock
 
+from my_flashcards.exercises.mixins import UniqueSlugAcrossGroupPagesMixin
 from my_flashcards.exercises.utils import check_user_answers, check_user_answers_another_option
 from my_flashcards.exercises.validators import validate_mp3
 
 User = get_user_model()
+#audio path
+def audio_upload_path(instance, filename):
+    return f"audio/{filename}"
+
+
 #subpage_function
 def get_all_subclasses(cls):
     subclasses = cls.__subclasses__()
@@ -24,7 +30,7 @@ def get_all_subclasses(cls):
     return all_subclasses
 
 def get_exercise_subpage_type():
-    from wagtail.models import Page
+    # from wagtail.models import Page
     subclasses = get_all_subclasses(ExerciseBase)
     return [
         f"{cls._meta.app_label}.{cls.__name__}"
@@ -46,27 +52,27 @@ CHILDREN_CHOICES = [
     ('GROUP_EXERCISE', 'Group exercise'),
     ('EXERCISE', 'Exercise'),
 ]
-class UniqueSlugAcrossGroupPagesMixin:
-    UNIQUE_SLUG_CLASSES = []
-
-    def generate_unique_slug(self, base_slug):
-        slug = base_slug
-        i = 1
-        while Page.objects.filter(slug=slug).exclude(id=self.id).specific().filter(
-            lambda p: isinstance(p, tuple(self.UNIQUE_SLUG_CLASSES))
-        ):
-            slug = f"{base_slug}-{i}"
-            i += 1
-        return slug
-
-    def clean(self):
-        if not self.slug:
-            base_slug = slugify(self.title)
-            self.slug = self.generate_unique_slug(base_slug)
-        else:
-            self.slug = self.generate_unique_slug(self.slug)
-
-        super().clean()
+# class UniqueSlugAcrossGroupPagesMixin:
+#     UNIQUE_SLUG_CLASSES = []
+#
+#     def generate_unique_slug(self, base_slug):
+#         slug = base_slug
+#         i = 1
+#         while Page.objects.filter(slug=slug).exclude(id=self.id).specific().filter(
+#             lambda p: isinstance(p, tuple(self.UNIQUE_SLUG_CLASSES))
+#         ):
+#             slug = f"{base_slug}-{i}"
+#             i += 1
+#         return slug
+#
+#     def clean(self):
+#         if not self.slug:
+#             base_slug = slugify(self.title)
+#             self.slug = self.generate_unique_slug(base_slug)
+#         else:
+#             self.slug = self.generate_unique_slug(self.slug)
+#
+#         super().clean()
 
 #Abstract classes
 class GroupBase(Page, UniqueSlugAcrossGroupPagesMixin):
@@ -105,6 +111,7 @@ class ExerciseBase(Page):
         raise NotImplementedError("Classes should implement this method")
 
     def save_attempt(self, user, answers, score, max_score):
+        #TODO LATER
         attempt, created = ExerciseAttempt.objects.update_or_create(
             user=user,
             exercise=self,
@@ -246,6 +253,7 @@ class MatchExerciseTextWithImage(ExerciseBase):
         FieldPanel('description'),
         FieldPanel('pairs'),
     ]
+    #TODO FIX IT
     def check_answer(self, user, user_answers):
         correct_answers = []
         for block in self.pairs:
@@ -294,7 +302,7 @@ class FillInTextExerciseWithChoices(ExerciseBase):
         FieldPanel('text_with_blanks'),
         FieldPanel('blanks'),
     ]
-
+    #TODO CLEAN IT
     def check_answer(self, user, user_answers):
         user_answer_map = {a['blank_id']: a['answer'] for a in user_answers}
 
@@ -364,6 +372,7 @@ class FillInTextExerciseWithPredefinedBlocks(ExerciseBase):
         FieldPanel('text_with_blanks'),
         FieldPanel('options')
     ]
+    #TODO Clean it
     def check_answer(self, user, user_answers):
         user_answer_map = {a['blank_id']: a['answer'] for a in user_answers}
         result_answers = []
@@ -442,7 +451,7 @@ class ConjugationExercise(ExerciseBase):
         FieldPanel('person_set'),
         FieldPanel('conjugation_rows'),
     ]
-
+    #TODO Clean it
     def check_answer(self, user, user_answers):
         user_answer_map = {a['person_label']: a['answer'] for a in user_answers}
         result_answers = []
@@ -487,7 +496,7 @@ class MultipleOptionToChoose(blocks.StructBlock):
     correct_answers = blocks.ListBlock(
         blocks.CharBlock(), help_text="Lista poprawnych odpowiedzi"
     )
-
+    #TODO FIX It
     def clean(self, value):
         errors = {}
         invalid_answers = [ans for ans in value['correct_answers'] if ans not in value['options']]
@@ -499,15 +508,7 @@ class MultipleOptionToChoose(blocks.StructBlock):
             raise blocks.StreamBlockValidationError(errors)
         return super().clean(value)
 
-def audio_upload_path(instance, filename):
-    return f"audio/{filename}"
 
-# class MP3OnlyFileBlock(FileBlock):
-#     def clean(self, value):
-#         value = super().clean(value)
-#         if value and not value.name.lower().endswith('.mp3'):
-#             raise blocks.StreamBlockValidationError("Plik musi być w formacie MP3.")
-#         return value
 
 #TODO BACK HERE
 class MultipleOptionToChooseWithAudio(MultipleOptionToChoose):
@@ -578,7 +579,7 @@ class ListenExerciseWithOptionsToChoose(ExerciseBase):
                 block.value['question_id'] = str(question_counter)
                 question_counter += 1
 
-
+    #TODO Work with it
     def check_answer(self, user, user_answers):
         user_answer_map = {a['question_id']: a['answer'] for a in user_answers}
         return check_user_answers_another_option(user_answer_map, self.exercises)
