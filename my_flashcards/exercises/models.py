@@ -510,16 +510,6 @@ class ListenExerciseWithOptionsToChoose(ExerciseBase,AutoNumberedQuestionsMixin)
         FieldPanel('description'),
         FieldPanel('exercises'),
     ]
-    # def save(self, *args, **kwargs):
-    #     self._auto_number_questions()
-    #     super().save(*args, **kwargs)
-    #
-    # def _auto_number_questions(self):
-    #     question_counter = 1
-    #     for block in self.exercises:
-    #         if block.block_type == 'options':
-    #             block.value['question_id'] = str(question_counter)
-    #             question_counter += 1
 
     #TODO Work with it
     def check_answer(self, user, user_answers):
@@ -536,17 +526,6 @@ class ListenWithManyOptionsToChooseToSingleExercise(ExerciseBase, AutoNumberedQu
         FieldPanel('description'),
         FieldPanel('exercises'),
     ]
-
-    # def save(self, *args, **kwargs):
-    #     self._auto_number_questions()
-    #     super().save(*args, **kwargs)
-    #
-    # def _auto_number_questions(self):
-    #     question_counter = 1
-    #     for block in self.exercises:
-    #         if block.block_type == 'options':
-    #             block.value['question_id'] = str(question_counter)
-    #             question_counter += 1
 
     def check_answer(self, user, user_answers):
         user_answer_map = {a['question_id']: a['answers'] for a in user_answers}
@@ -587,17 +566,6 @@ class ChooseExerciseDependsOnMultipleTexts(ExerciseBase, AutoNumberedQuestionsMi
         FieldPanel('description'),
         FieldPanel('exercises'),
     ]
-    # def save(self, *args, **kwargs):
-    #     self._auto_number_questions()
-    #     super().save(*args, **kwargs)
-    #
-    # def _auto_number_questions(self):
-    #     question_counter = 1
-    #     for block in self.exercises:
-    #         if block.block_type == 'options':
-    #             block.value['question_id'] = str(question_counter)
-    #             question_counter += 1
-
 
     def check_answer(self, user, user_answers):
         user_answer_map = {a['question_id']: a['answer'] for a in user_answers}
@@ -617,17 +585,6 @@ class ChooseExerciseDependsOnSingleText(ExerciseBase, AutoNumberedQuestionsMixin
         FieldPanel('description'),
         FieldPanel('exercises'),
     ]
-
-    # def save(self, *args, **kwargs):
-    #     self._auto_number_questions()
-    #     super().save(*args, **kwargs)
-    #
-    # def _auto_number_questions(self):
-    #     question_counter = 1
-    #     for block in self.exercises:
-    #         if block.block_type == 'options':
-    #             block.value['question_id'] = str(question_counter)
-    #             question_counter += 1
 
     def check_answer(self, user, user_answers):
         user_answer_map = {a['question_id']: a['answer'] for a in user_answers}
