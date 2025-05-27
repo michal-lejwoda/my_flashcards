@@ -1,8 +1,6 @@
 from django.contrib.auth import get_user_model
 from django.db import models
-from django.utils.translation import gettext as _
 from modelcluster.fields import ParentalKey
-from slugify import slugify
 from wagtail import blocks
 from wagtail.admin.panels import FieldPanel
 from wagtail.fields import StreamField
@@ -11,7 +9,7 @@ from wagtail.models import Page, Orderable
 from wagtailmedia.blocks import AudioChooserBlock
 
 from my_flashcards.exercises.choices import LANGUAGE_CHOICES, CHILDREN_CHOICES, PERSON_SETS
-from my_flashcards.exercises.mixins import UniqueSlugAcrossGroupPagesMixin
+from my_flashcards.exercises.mixins import UniqueSlugAcrossGroupPagesMixin, AutoNumberedQuestionsMixin
 from my_flashcards.exercises.utils import check_user_answers, check_user_answers_another_option, audio_upload_path
 from my_flashcards.exercises.validators import validate_mp3
 
@@ -496,7 +494,7 @@ class ListenOptionToChooseWithAudio(ListenOptionToChoose):
 class ListenOptionToChooseWithText(ListenOptionToChoose):
     text = blocks.TextBlock(required=False, help_text="text")
 
-class ListenExerciseWithOptionsToChoose(ExerciseBase):
+class ListenExerciseWithOptionsToChoose(ExerciseBase,AutoNumberedQuestionsMixin):
     audio = models.FileField(
         upload_to=audio_upload_path,
         help_text="Upload mp3 file",
@@ -512,23 +510,23 @@ class ListenExerciseWithOptionsToChoose(ExerciseBase):
         FieldPanel('description'),
         FieldPanel('exercises'),
     ]
-    def save(self, *args, **kwargs):
-        self._auto_number_questions()
-        super().save(*args, **kwargs)
-
-    def _auto_number_questions(self):
-        question_counter = 1
-        for block in self.exercises:
-            if block.block_type == 'options':
-                block.value['question_id'] = str(question_counter)
-                question_counter += 1
+    # def save(self, *args, **kwargs):
+    #     self._auto_number_questions()
+    #     super().save(*args, **kwargs)
+    #
+    # def _auto_number_questions(self):
+    #     question_counter = 1
+    #     for block in self.exercises:
+    #         if block.block_type == 'options':
+    #             block.value['question_id'] = str(question_counter)
+    #             question_counter += 1
 
     #TODO Work with it
     def check_answer(self, user, user_answers):
         user_answer_map = {a['question_id']: a['answer'] for a in user_answers}
         return check_user_answers_another_option(user_answer_map, self.exercises)
 
-class ListenWithManyOptionsToChooseToSingleExercise(ExerciseBase):
+class ListenWithManyOptionsToChooseToSingleExercise(ExerciseBase, AutoNumberedQuestionsMixin):
     exercises = StreamField(
         [('options', MultipleOptionToChooseWithAudio())],
         use_json_field=True,
@@ -539,16 +537,16 @@ class ListenWithManyOptionsToChooseToSingleExercise(ExerciseBase):
         FieldPanel('exercises'),
     ]
 
-    def save(self, *args, **kwargs):
-        self._auto_number_questions()
-        super().save(*args, **kwargs)
-
-    def _auto_number_questions(self):
-        question_counter = 1
-        for block in self.exercises:
-            if block.block_type == 'options':
-                block.value['question_id'] = str(question_counter)
-                question_counter += 1
+    # def save(self, *args, **kwargs):
+    #     self._auto_number_questions()
+    #     super().save(*args, **kwargs)
+    #
+    # def _auto_number_questions(self):
+    #     question_counter = 1
+    #     for block in self.exercises:
+    #         if block.block_type == 'options':
+    #             block.value['question_id'] = str(question_counter)
+    #             question_counter += 1
 
     def check_answer(self, user, user_answers):
         user_answer_map = {a['question_id']: a['answers'] for a in user_answers}
@@ -579,7 +577,7 @@ class ListenWithManyOptionsToChooseToSingleExercise(ExerciseBase):
             "result_answers": result_answers
         }
 
-class ChooseExerciseDependsOnMultipleTexts(ExerciseBase):
+class ChooseExerciseDependsOnMultipleTexts(ExerciseBase, AutoNumberedQuestionsMixin):
     exercises = StreamField(
         [('options', ListenOptionToChooseWithText())],
         use_json_field=True,
@@ -589,16 +587,16 @@ class ChooseExerciseDependsOnMultipleTexts(ExerciseBase):
         FieldPanel('description'),
         FieldPanel('exercises'),
     ]
-    def save(self, *args, **kwargs):
-        self._auto_number_questions()
-        super().save(*args, **kwargs)
-
-    def _auto_number_questions(self):
-        question_counter = 1
-        for block in self.exercises:
-            if block.block_type == 'options':
-                block.value['question_id'] = str(question_counter)
-                question_counter += 1
+    # def save(self, *args, **kwargs):
+    #     self._auto_number_questions()
+    #     super().save(*args, **kwargs)
+    #
+    # def _auto_number_questions(self):
+    #     question_counter = 1
+    #     for block in self.exercises:
+    #         if block.block_type == 'options':
+    #             block.value['question_id'] = str(question_counter)
+    #             question_counter += 1
 
 
     def check_answer(self, user, user_answers):
@@ -606,7 +604,7 @@ class ChooseExerciseDependsOnMultipleTexts(ExerciseBase):
         return check_user_answers_another_option(user_answer_map, self.exercises)
 
 
-class ChooseExerciseDependsOnSingleText(ExerciseBase):
+class ChooseExerciseDependsOnSingleText(ExerciseBase, AutoNumberedQuestionsMixin):
     text = models.TextField(blank=True)
     exercises = StreamField(
         [('options', ListenOptionToChoose())],
@@ -620,16 +618,16 @@ class ChooseExerciseDependsOnSingleText(ExerciseBase):
         FieldPanel('exercises'),
     ]
 
-    def save(self, *args, **kwargs):
-        self._auto_number_questions()
-        super().save(*args, **kwargs)
-
-    def _auto_number_questions(self):
-        question_counter = 1
-        for block in self.exercises:
-            if block.block_type == 'options':
-                block.value['question_id'] = str(question_counter)
-                question_counter += 1
+    # def save(self, *args, **kwargs):
+    #     self._auto_number_questions()
+    #     super().save(*args, **kwargs)
+    #
+    # def _auto_number_questions(self):
+    #     question_counter = 1
+    #     for block in self.exercises:
+    #         if block.block_type == 'options':
+    #             block.value['question_id'] = str(question_counter)
+    #             question_counter += 1
 
     def check_answer(self, user, user_answers):
         user_answer_map = {a['question_id']: a['answer'] for a in user_answers}
