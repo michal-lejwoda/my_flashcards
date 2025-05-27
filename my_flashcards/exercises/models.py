@@ -10,7 +10,7 @@ from wagtail.images.blocks import ImageChooserBlock
 from wagtail.models import Page, Orderable
 from wagtailmedia.blocks import AudioChooserBlock
 
-from my_flashcards.exercises.choices import LANGUAGE_CHOICES, CHILDREN_CHOICES
+from my_flashcards.exercises.choices import LANGUAGE_CHOICES, CHILDREN_CHOICES, PERSON_SETS
 from my_flashcards.exercises.mixins import UniqueSlugAcrossGroupPagesMixin
 from my_flashcards.exercises.utils import check_user_answers, check_user_answers_another_option, audio_upload_path
 from my_flashcards.exercises.validators import validate_mp3
@@ -378,23 +378,12 @@ class FillInTextExerciseWithPredefinedBlocksWithImageDecoration(FillInTextExerci
         FieldPanel('image'),
     ]
 
-
-PERSON_SETS = {
-    'de_basic': ['ich', 'du', 'er/sie/es', 'wir', 'ihr', 'sie/Sie'],
-    'en_basic': ['I', 'you', 'he/she/it', 'we', 'you (pl)', 'they'],
-}
-
-
 class ConjugationExercise(ExerciseBase):
     instruction = models.TextField(blank=True)
 
     person_set = models.CharField(
         max_length=50,
-        choices=[
-            ('', '--- select ---'),
-            ('de_basic', 'Niemiecki (ich, du, ...)'),
-            ('en_basic', 'Angielski (I, you, ...)'),
-        ],
+        choices=PERSON_SETS,
         blank=True
     )
 
@@ -470,7 +459,6 @@ class MultipleOptionToChoose(blocks.StructBlock):
         return super().clean(value)
 
 
-
 #TODO BACK HERE
 class MultipleOptionToChooseWithAudio(MultipleOptionToChoose):
     audio = AudioChooserBlock(
@@ -498,8 +486,6 @@ class ListenOptionToChoose(blocks.StructBlock):
             raise blocks.StreamBlockValidationError(errors)
         return super().clean(value)
 
-
-
 class ListenOptionToChooseWithAudio(ListenOptionToChoose):
     audio = models.FileField(
         upload_to=audio_upload_path,
@@ -509,9 +495,6 @@ class ListenOptionToChooseWithAudio(ListenOptionToChoose):
 
 class ListenOptionToChooseWithText(ListenOptionToChoose):
     text = blocks.TextBlock(required=False, help_text="text")
-
-
-
 
 class ListenExerciseWithOptionsToChoose(ExerciseBase):
     audio = models.FileField(
@@ -544,35 +527,6 @@ class ListenExerciseWithOptionsToChoose(ExerciseBase):
     def check_answer(self, user, user_answers):
         user_answer_map = {a['question_id']: a['answer'] for a in user_answers}
         return check_user_answers_another_option(user_answer_map, self.exercises)
-        # result_answers = []
-        # score = 0
-        # for block in self.exercises:
-        #     values = block.value
-        #     question_id = values['question_id']
-        #     correct_answer = values["correct_answer"]
-        #     user_answer = user_answer_map.get(question_id)
-        #
-        #     result = {
-        #         "person_label": question_id,
-        #         "provided_answer": user_answer,
-        #         "correct_answer": correct_answer
-        #     }
-        #
-        #     if user_answer == correct_answer:
-        #         result["correct"] = True
-        #         score += 1
-        #     else:
-        #         result["correct"] = False
-        #
-        #     result_answers.append(result)
-        #
-        # return {
-        #     "score": score,
-        #     "max_score": len(result_answers),
-        #     "result_answers": result_answers
-        # }
-
-
 
 class ListenWithManyOptionsToChooseToSingleExercise(ExerciseBase):
     exercises = StreamField(
@@ -650,32 +604,6 @@ class ChooseExerciseDependsOnMultipleTexts(ExerciseBase):
     def check_answer(self, user, user_answers):
         user_answer_map = {a['question_id']: a['answer'] for a in user_answers}
         return check_user_answers_another_option(user_answer_map, self.exercises)
-        # result_answers = []
-        # score = 0
-        # for block in self.exercises:
-        #     values = block.value
-        #     question_id = values['question_id']
-        #     correct_answer = values["correct_answer"]
-        #     user_answer = user_answer_map.get(question_id)
-        #
-        #     result = {
-        #         "person_label": question_id,
-        #         "provided_answer": user_answer,
-        #         "correct_answer": correct_answer
-        #     }
-        #
-        #     if user_answer == correct_answer:
-        #         result["correct"] = True
-        #         score += 1
-        #     else:
-        #         result["correct"] = False
-        #     result_answers.append(result)
-        #
-        # return {
-        #     "score": score,
-        #     "max_score": len(result_answers),
-        #     "result_answers": result_answers
-        # }
 
 
 class ChooseExerciseDependsOnSingleText(ExerciseBase):
@@ -706,33 +634,6 @@ class ChooseExerciseDependsOnSingleText(ExerciseBase):
     def check_answer(self, user, user_answers):
         user_answer_map = {a['question_id']: a['answer'] for a in user_answers}
         return check_user_answers_another_option(user_answer_map, self.exercises)
-        # result_answers = []
-        # score = 0
-        # for block in self.exercises:
-        #     values = block.value
-        #     question_id = values['question_id']
-        #     correct_answer = values["correct_answer"]
-        #     user_answer = user_answer_map.get(question_id)
-        #
-        #     result = {
-        #         "person_label": question_id,
-        #         "provided_answer": user_answer,
-        #         "correct_answer": correct_answer
-        #     }
-        #
-        #     if user_answer == correct_answer:
-        #         result["correct"] = True
-        #         score += 1
-        #     else:
-        #         result["correct"] = False
-        #
-        #     result_answers.append(result)
-        #
-        # return {
-        #     "score": score,
-        #     "max_score": len(result_answers),
-        #     "result_answers": result_answers
-        # }
 
 class MultipleExercises(ExerciseBase):
     pass
@@ -742,7 +643,6 @@ class GroupExercise(Page):
 
     content_panels = Page.content_panels + [
         FieldPanel('introduction'),
-        # InlinePanel('exercise_links', label='Exercises'),
     ]
 
     parent_page_types = ['SubGroupWithGroupExercises', 'MainGroupwithGroupExercises']

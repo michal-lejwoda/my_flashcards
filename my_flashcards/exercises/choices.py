@@ -12,3 +12,9 @@ CHILDREN_CHOICES = [
     ('GROUP_EXERCISE', 'Group exercise'),
     ('EXERCISE', 'Exercise'),
 ]
+
+PERSON_SETS = [
+    ('', '--- select ---'),
+    ('de_basic', 'Niemiecki (ich, du, ...)'),
+    ('en_basic', 'Angielski (I, you, ...)'),
+]
