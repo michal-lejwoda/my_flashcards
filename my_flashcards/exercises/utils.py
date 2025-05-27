@@ -1,3 +1,6 @@
+def audio_upload_path(instance, filename):
+    return f"audio/{filename}"
+
 def check_user_answers(user_answers, correct_answers):
     score = 0
     result_answers = []

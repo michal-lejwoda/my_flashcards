@@ -10,15 +10,12 @@ from wagtail.images.blocks import ImageChooserBlock
 from wagtail.models import Page, Orderable
 from wagtailmedia.blocks import AudioChooserBlock
 
+from my_flashcards.exercises.choices import LANGUAGE_CHOICES, CHILDREN_CHOICES
 from my_flashcards.exercises.mixins import UniqueSlugAcrossGroupPagesMixin
-from my_flashcards.exercises.utils import check_user_answers, check_user_answers_another_option
+from my_flashcards.exercises.utils import check_user_answers, check_user_answers_another_option, audio_upload_path
 from my_flashcards.exercises.validators import validate_mp3
 
 User = get_user_model()
-#audio path
-def audio_upload_path(instance, filename):
-    return f"audio/{filename}"
-
 
 #subpage_function
 def get_all_subclasses(cls):
@@ -38,41 +35,6 @@ def get_exercise_subpage_type():
         if issubclass(cls, Page) and not cls._meta.abstract
     ]
 
-
-# rest
-LANGUAGE_CHOICES = [
-    ('de', _('German')),
-    ('en', _('English')),
-    ('pl', _('Polish')),
-]
-
-CHILDREN_CHOICES = [
-    ('MAIN_GROUP', 'Main group'),
-    ('SUB_GROUP', 'Sub group'),
-    ('GROUP_EXERCISE', 'Group exercise'),
-    ('EXERCISE', 'Exercise'),
-]
-# class UniqueSlugAcrossGroupPagesMixin:
-#     UNIQUE_SLUG_CLASSES = []
-#
-#     def generate_unique_slug(self, base_slug):
-#         slug = base_slug
-#         i = 1
-#         while Page.objects.filter(slug=slug).exclude(id=self.id).specific().filter(
-#             lambda p: isinstance(p, tuple(self.UNIQUE_SLUG_CLASSES))
-#         ):
-#             slug = f"{base_slug}-{i}"
-#             i += 1
-#         return slug
-#
-#     def clean(self):
-#         if not self.slug:
-#             base_slug = slugify(self.title)
-#             self.slug = self.generate_unique_slug(base_slug)
-#         else:
-#             self.slug = self.generate_unique_slug(self.slug)
-#
-#         super().clean()
 
 #Abstract classes
 class GroupBase(Page, UniqueSlugAcrossGroupPagesMixin):
@@ -122,7 +84,6 @@ class ExerciseBase(Page):
             }
         )
         return attempt
-
 
 
 class LanguageCategoryPage(Page, UniqueSlugAcrossGroupPagesMixin):
