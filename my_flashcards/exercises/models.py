@@ -10,28 +10,11 @@ from wagtailmedia.blocks import AudioChooserBlock
 
 from my_flashcards.exercises.choices import LANGUAGE_CHOICES, CHILDREN_CHOICES, PERSON_SETS
 from my_flashcards.exercises.mixins import UniqueSlugAcrossGroupPagesMixin, AutoNumberedQuestionsMixin
-from my_flashcards.exercises.utils import check_user_answers, check_user_answers_another_option, audio_upload_path
+from my_flashcards.exercises.utils import check_user_answers, check_user_answers_another_option, audio_upload_path, \
+    get_exercise_subpage_type
 from my_flashcards.exercises.validators import validate_mp3
 
 User = get_user_model()
-
-#subpage_function
-def get_all_subclasses(cls):
-    subclasses = cls.__subclasses__()
-    all_subclasses = []
-    for subclass in subclasses:
-        all_subclasses.append(subclass)
-        all_subclasses.extend(get_all_subclasses(subclass))
-    return all_subclasses
-
-def get_exercise_subpage_type():
-    # from wagtail.models import Page
-    subclasses = get_all_subclasses(ExerciseBase)
-    return [
-        f"{cls._meta.app_label}.{cls.__name__}"
-        for cls in subclasses
-        if issubclass(cls, Page) and not cls._meta.abstract
-    ]
 
 
 #Abstract classes

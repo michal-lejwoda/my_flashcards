@@ -1,6 +1,30 @@
+#subpage_function
+
+def get_all_subclasses(cls):
+    subclasses = cls.__subclasses__()
+    all_subclasses = []
+    for subclass in subclasses:
+        all_subclasses.append(subclass)
+        all_subclasses.extend(get_all_subclasses(subclass))
+    print("get_all_suybss", all_subclasses)
+    return all_subclasses
+
+def get_exercise_subpage_type():
+    from wagtail.models import Page
+    from my_flashcards.exercises.models import ExerciseBase
+    subclasses = get_all_subclasses(ExerciseBase)
+    return [
+        f"{cls._meta.app_label}.{cls.__name__}"
+        for cls in subclasses
+        if issubclass(cls, Page) and not cls._meta.abstract
+    ]
+
+#audio
 def audio_upload_path(instance, filename):
     return f"audio/{filename}"
 
+
+#check users answers
 def check_user_answers(user_answers, correct_answers):
     score = 0
     result_answers = []
