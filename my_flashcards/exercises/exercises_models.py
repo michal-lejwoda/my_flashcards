@@ -1,93 +1,517 @@
+from django.contrib.auth import get_user_model
 from django.db import models
+from modelcluster.fields import ParentalKey
+from wagtail import blocks
 from wagtail.admin.panels import FieldPanel
 from wagtail.fields import StreamField
-# from wagtail.images.blocks import ImageChooserBlock
-from wagtail.models import Page
-from wagtail import blocks, images
-#
-# class ExamPage(Page):
-#     description = models.TextField(blank=True)
-#
-#     content_panels = Page.content_panels + [
-#         FieldPanel('description'),
-#     ]
-#
+from wagtail.images.blocks import ImageChooserBlock
+from wagtail.models import Page, Orderable
+from wagtailmedia.blocks import AudioChooserBlock
+from my_flashcards.exercises.choices import PERSON_SETS
+from my_flashcards.exercises.mixins import AutoNumberedQuestionsMixin
 # from my_flashcards.exercises.models import ExerciseBase
-# class MatchExercise(ExerciseBase):
-#     description = models.TextField(help_text="Opisz ćwiczenie")
-#
-#     pairs = StreamField([
-#         ('pair',  blocks.ListBlock(
-#             blocks.StructBlock([
-#                 ('left_item', blocks.CharBlock(max_length=255)),
-#                 ('right_item', blocks.CharBlock(max_length=255))
-#             ])
-#         ))
-#     ], blank=True, use_json_field=True)
-#
-#     content_panels = Page.content_panels + [
-#         FieldPanel('description'),
-#         FieldPanel('pairs'),
-#     ]
+from my_flashcards.exercises.utils import check_user_answers, check_user_answers_another_option, audio_upload_path, \
+    get_exercise_subpage_type
+from my_flashcards.exercises.validators import validate_mp3
+
+User = get_user_model()
+
+class ExerciseBase(Page):
+    description = models.TextField()
+
+    content_panels = Page.content_panels + [
+        FieldPanel('description'),
+    ]
+    subpage_types = ['MatchExercise']
+
+    def check_answer(self, user, user_answers):
+        raise NotImplementedError("Classes should implement this method")
+
+    def save_attempt(self, user, answers, score, max_score):
+        #TODO LATER
+        attempt, created = ExerciseAttempt.objects.update_or_create(
+            user=user,
+            exercise=self,
+            defaults={
+                'score': score,
+                'max_score': max_score,
+                'completed': True
+            }
+        )
+        return attempt
+
+class MatchExercise(ExerciseBase):
+    pairs = StreamField([
+        ('pair',  blocks.ListBlock(
+            blocks.StructBlock([
+                ('left_item', blocks.CharBlock(max_length=255)),
+                ('right_item', blocks.CharBlock(max_length=255))
+            ])
+        ))
+    ], blank=True, use_json_field=True)
+
+    content_panels = Page.content_panels + [
+        FieldPanel('description'),
+        FieldPanel('pairs'),
+    ]
+    def check_answer(self, user, user_answers):
+        correct_answers = []
+        for block in self.pairs:
+            if block.block_type == 'pair':
+                for pair in block.value:
+                    left_item = pair.get('left_item')
+                    right_item = pair.get('right_item')
+                    correct_answers.append({
+                        'left_item': left_item,
+                        'right_item': right_item
+                    })
+        return check_user_answers(user_answers, correct_answers)
+
+class MatchExerciseTextWithImage(ExerciseBase):
+    pairs = StreamField(
+        [
+            ('pair', blocks.ListBlock(
+                blocks.StructBlock([
+                    ('left_item', ImageChooserBlock()),
+                    ('right_item', blocks.CharBlock(max_length=255))
+                ])
+            ))
+        ],
+        blank=True,
+        use_json_field=True
+    )
+
+    content_panels = Page.content_panels + [
+        FieldPanel('description'),
+        FieldPanel('pairs'),
+    ]
+    #TODO FIX IT
+    def check_answer(self, user, user_answers):
+        correct_answers = []
+        for block in self.pairs:
+            if block.block_type == 'pair':
+                for pair in block.value:
+                    left_item = pair.get('left_item').id
+                    right_item = pair.get('right_item')
+                    correct_answers.append({
+                        'left_item': left_item,
+                        'right_item': right_item
+                    })
+        return check_user_answers(user_answers, correct_answers)
+
+class BlankOptionBlock(blocks.StructBlock):
+    blank_id = blocks.IntegerBlock(help_text="Blank number, ie. 1 for {{1}}")
+    options = blocks.ListBlock(
+        blocks.CharBlock(), help_text="List of possible options"
+    )
+    correct_answer = blocks.CharBlock(help_text="True Answer")
+
+    def clean(self, value):
+        errors = {}
+        if value['correct_answer'] not in value['options']:
+            errors['correct_answer'] = "True answer must be one of the option."
+        if errors:
+            raise blocks.StreamBlockValidationError(errors)
+        return super().clean(value)
+
+    class Meta:
+        icon = "list-ul"
+        label = "Answers for blank"
 
 
-#
-#
-# class MatchExerciseTextWithImage(Page):
-#     description = models.TextField()
-#     pairs = StreamField(
-#         [
-#             ('pair', blocks.ListBlock(
-#                 blocks.StructBlock([
-#                     ('left_item', blocks.CharBlock(max_length=255)),
-#                     ('right_item', ImageChooserBlock())
-#                 ])
-#             ))
-#         ],
-#         blank=True,
-#         use_json_field=True
-#     )
-#
-#     content_panels = Page.content_panels + [
-#         FieldPanel('description'),
-#         FieldPanel('pairs'),
-#     ]
-#
-# class FillInTheBlanksExercise(Page):
-#     description = models.TextField(help_text="Opis ćwiczenia")
-#
-#
-#
-#     content = StreamField([
-#         ('paragraph', blocks.RichTextBlock()),
-#         ('blank', blocks.ChoiceBlock(choices=[
-#             ('option_1', 'Opcja 1'),
-#             ('option_2', 'Opcja 2'),
-#             ('option_3', 'Opcja 3'),
-#         ], blank=True)),
-#     ], blank=True,use_json_field=True)
-#
-#     content_panels = Page.content_panels + [
-#         FieldPanel('description'),
-#         FieldPanel('content'),
-#     ]
-#
-# class GapFillFullTextExercise(Page):
-#     description = models.TextField()
-#     image = models.ImageField(null=True, blank=True)
-#     text = models.TextField(help_text="Użyj placeholderów jak {{gap1}}, {{gap2}} itd.")
-#
-#     gaps = StreamField([
-#         ('gap', blocks.StructBlock([
-#             ('placeholder', blocks.CharBlock(help_text="Nazwa luki, np. gap1")),
-#             ('options', blocks.ListBlock(blocks.CharBlock(), min_num=2, max_num=5)),
-#             ('correct_answer', blocks.CharBlock(help_text="Poprawna odpowiedź")),
-#         ]))
-#     ], blank=True, use_json_field=True)
-#
-#     content_panels = Page.content_panels + [
-#         FieldPanel('description'),
-#         FieldPanel('text'),
-#         FieldPanel('gaps'),
-#     ]
-#
+class FillInTextExerciseWithChoices(ExerciseBase):
+    text_with_blanks = models.TextField(
+        help_text="Use {{1}}, {{2}}, {{3}} in blanks."
+    )
+    blanks = StreamField(
+        [('blank', BlankOptionBlock())],
+        use_json_field=True,
+        blank=True,
+    )
+
+    content_panels = Page.content_panels + [
+        FieldPanel('description'),
+        FieldPanel('text_with_blanks'),
+        FieldPanel('blanks'),
+    ]
+    #TODO CLEAN IT
+    def check_answer(self, user, user_answers):
+        user_answer_map = {a['blank_id']: a['answer'] for a in user_answers}
+
+        result_answers = []
+        score = 0
+
+        for block in self.blanks:
+            if block.block_type == 'blank':
+                val = block.value
+                blank_id = val["blank_id"]
+                correct_answer = val["correct_answer"]
+                user_answer = user_answer_map.get(blank_id)
+
+                result = {
+                    "blank_id": blank_id,
+                    "provided_answer": user_answer,
+                    "correct_answer": correct_answer
+                }
+
+                if user_answer == correct_answer:
+                    result["correct"] = True
+                    score += 1
+                else:
+                    result["correct"] = False
+
+                result_answers.append(result)
+
+        return {
+            "score": score,
+            "max_score": len(result_answers),
+            "result_answers": result_answers
+        }
+
+class FillInTextExerciseWithChoicesWithImageDecoration(FillInTextExerciseWithChoices):
+    image = models.ForeignKey(
+        'wagtailimages.Image',
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name='+'
+    )
+    content_panels = FillInTextExerciseWithChoices.content_panels + [
+        FieldPanel('image'),
+    ]
+
+class FillInTextExerciseWithPredefinedBlocks(ExerciseBase):
+    text_with_blanks = models.TextField(
+        help_text="Use {{1}}, {{2}}, {{3}} in blanks."
+    )
+    options = StreamField(
+        [
+            ("options", blocks.ListBlock(
+                blocks.StructBlock([
+                    ("blank_id", blocks.IntegerBlock(help_text="Blank number (ie. 1 for {{1}})")),
+                    ("answer", blocks.CharBlock(label="Option")),
+                ]),
+                label="List of possible options"
+            )),
+        ],
+        use_json_field=True,
+        blank=True,
+        max_num=1
+    )
+
+    content_panels = Page.content_panels + [
+        FieldPanel('description'),
+        FieldPanel('text_with_blanks'),
+        FieldPanel('options')
+    ]
+    #TODO Clean it
+    def check_answer(self, user, user_answers):
+        user_answer_map = {a['blank_id']: a['answer'] for a in user_answers}
+        result_answers = []
+        score = 0
+        for block in self.options:
+            if block.block_type == 'options':
+                values = block.value
+                for val in values:
+                    blank_id = val["blank_id"]
+                    correct_answer = val["answer"]
+                    user_answer = user_answer_map.get(blank_id)
+
+                    result = {
+                        "block_id": blank_id,
+                        "provided_answer": user_answer,
+                        "correct_answer": correct_answer
+                    }
+
+                    if user_answer == correct_answer:
+                        result["correct"] = True
+                        score += 1
+                    else:
+                        result["correct"] = False
+
+                    result_answers.append(result)
+
+        return {
+            "score": score,
+            "max_score": len(result_answers),
+            "result_answers": result_answers
+        }
+
+class FillInTextExerciseWithPredefinedBlocksWithImageDecoration(FillInTextExerciseWithPredefinedBlocks):
+    image = models.ForeignKey(
+        'wagtailimages.Image',
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name='+'
+    )
+    content_panels = FillInTextExerciseWithPredefinedBlocks.content_panels + [
+        FieldPanel('image'),
+    ]
+
+class ConjugationExercise(ExerciseBase):
+    instruction = models.TextField(blank=True)
+
+    person_set = models.CharField(
+        max_length=50,
+        choices=PERSON_SETS,
+        blank=True
+    )
+
+    conjugation_rows = StreamField([
+        ('row', blocks.StructBlock([
+            ('person_label', blocks.CharBlock(label="Person")),
+            ('correct_form', blocks.CharBlock(label="Form", required=False)),
+            ('is_pre_filled', blocks.BooleanBlock(label="Is prefilled?", required=False)),
+        ]))
+    ], use_json_field=True, blank=True)
+
+    content_panels = Page.content_panels + [
+        FieldPanel('description'),
+        FieldPanel('instruction'),
+        FieldPanel('person_set'),
+        FieldPanel('conjugation_rows'),
+    ]
+    #TODO Clean it
+    def check_answer(self, user, user_answers):
+        user_answer_map = {a['person_label']: a['answer'] for a in user_answers}
+        result_answers = []
+        score = 0
+        for block in self.conjugation_rows:
+            values = block.value
+            person_label = values['person_label']
+            correct_answer = values["correct_form"]
+            is_pre_filled = values["is_pre_filled"]
+            if not is_pre_filled:
+                user_answer = user_answer_map.get(person_label)
+
+                result = {
+                    "person_label": person_label,
+                    "provided_answer": user_answer,
+                    "correct_answer": correct_answer
+                }
+
+                if user_answer == correct_answer:
+                    result["correct"] = True
+                    score += 1
+                else:
+                    result["correct"] = False
+
+                result_answers.append(result)
+
+        return {
+            "score": score,
+            "max_score": len(result_answers),
+            "result_answers": result_answers
+        }
+
+class MultipleOptionToChoose(blocks.StructBlock):
+    question_id = blocks.CharBlock(
+        required=False,
+        help_text="Ukryte ID pytania"
+    )
+    question = blocks.TextBlock(required=False, help_text="Optional question")
+    options = blocks.ListBlock(
+        blocks.CharBlock(), help_text="List of possible options"
+    )
+    correct_answers = blocks.ListBlock(
+        blocks.CharBlock(), help_text="Lista poprawnych odpowiedzi"
+    )
+    #TODO FIX It
+    def clean(self, value):
+        errors = {}
+        invalid_answers = [ans for ans in value['correct_answers'] if ans not in value['options']]
+        if invalid_answers:
+            errors['correct_answers'] = (
+                f"Te odpowiedzi nie są wśród opcji: {', '.join(invalid_answers)}"
+            )
+        if errors:
+            raise blocks.StreamBlockValidationError(errors)
+        return super().clean(value)
+
+
+#TODO BACK HERE
+class MultipleOptionToChooseWithAudio(MultipleOptionToChoose):
+    audio = AudioChooserBlock(
+        help_text="Wybierz plik audio (.mp3)",
+        required=False
+    )
+
+class ListenOptionToChoose(blocks.StructBlock):
+    #Hidden using css
+    question_id = blocks.CharBlock(
+        required=False,
+        help_text="Ukryte ID pytania"
+    )
+    question = blocks.TextBlock(required=False, help_text="Optional question")
+    options = blocks.ListBlock(
+        blocks.CharBlock(), help_text="List of possible options"
+    )
+    correct_answer = blocks.CharBlock(help_text="True Answer")
+
+    def clean(self, value):
+        errors = {}
+        if value['correct_answer'] not in value['options']:
+            errors['correct_answer'] = "True answer must be one of the option."
+        if errors:
+            raise blocks.StreamBlockValidationError(errors)
+        return super().clean(value)
+
+class ListenOptionToChooseWithAudio(ListenOptionToChoose):
+    audio = models.FileField(
+        upload_to=audio_upload_path,
+        help_text="Upload mp3 file",
+        validators=[validate_mp3]
+    )
+
+class ListenOptionToChooseWithText(ListenOptionToChoose):
+    text = blocks.TextBlock(required=False, help_text="text")
+
+class ListenExerciseWithOptionsToChoose(ExerciseBase,AutoNumberedQuestionsMixin):
+    audio = models.FileField(
+        upload_to=audio_upload_path,
+        help_text="Upload mp3 file",
+        validators=[validate_mp3]
+    )
+    exercises = StreamField(
+        [('options', ListenOptionToChoose())],
+        use_json_field=True,
+        blank=True,
+    )
+    content_panels = Page.content_panels + [
+        FieldPanel('audio'),
+        FieldPanel('description'),
+        FieldPanel('exercises'),
+    ]
+
+    #TODO Work with it
+    def check_answer(self, user, user_answers):
+        user_answer_map = {a['question_id']: a['answer'] for a in user_answers}
+        return check_user_answers_another_option(user_answer_map, self.exercises)
+
+class ListenWithManyOptionsToChooseToSingleExercise(ExerciseBase, AutoNumberedQuestionsMixin):
+    exercises = StreamField(
+        [('options', MultipleOptionToChooseWithAudio())],
+        use_json_field=True,
+        blank=True,
+    )
+    content_panels = Page.content_panels + [
+        FieldPanel('description'),
+        FieldPanel('exercises'),
+    ]
+
+    def check_answer(self, user, user_answers):
+        user_answer_map = {a['question_id']: a['answers'] for a in user_answers}
+        result_answers = []
+        score = 0
+
+        for block in self.exercises:
+            values = block.value
+            question_id = values['question_id']
+            correct_answers = values['correct_answers']
+            user_answer = user_answer_map.get(question_id)
+            if not isinstance(user_answer, list):
+                user_answer = [user_answer] if user_answer is not None else []
+            is_correct = set(user_answer) == set(correct_answers)
+            result = {
+                "person_label": question_id,
+                "provided_answer": user_answer,
+                "correct_answer": list(correct_answers),
+                "correct": is_correct
+            }
+            if is_correct:
+                score += 1
+
+            result_answers.append(result)
+        return {
+            "score": score,
+            "max_score": len(result_answers),
+            "result_answers": result_answers
+        }
+
+class ChooseExerciseDependsOnMultipleTexts(ExerciseBase, AutoNumberedQuestionsMixin):
+    exercises = StreamField(
+        [('options', ListenOptionToChooseWithText())],
+        use_json_field=True,
+        blank=True,
+    )
+    content_panels = Page.content_panels + [
+        FieldPanel('description'),
+        FieldPanel('exercises'),
+    ]
+
+    def check_answer(self, user, user_answers):
+        user_answer_map = {a['question_id']: a['answer'] for a in user_answers}
+        return check_user_answers_another_option(user_answer_map, self.exercises)
+
+
+class ChooseExerciseDependsOnSingleText(ExerciseBase, AutoNumberedQuestionsMixin):
+    text = models.TextField(blank=True)
+    exercises = StreamField(
+        [('options', ListenOptionToChoose())],
+        use_json_field=True,
+        blank=True,
+    )
+
+    content_panels = Page.content_panels + [
+        FieldPanel('text'),
+        FieldPanel('description'),
+        FieldPanel('exercises'),
+    ]
+
+    def check_answer(self, user, user_answers):
+        user_answer_map = {a['question_id']: a['answer'] for a in user_answers}
+        return check_user_answers_another_option(user_answer_map, self.exercises)
+
+class MultipleExercises(ExerciseBase):
+    pass
+
+class GroupExercise(Page):
+    introduction = models.TextField(blank=True)
+
+    content_panels = Page.content_panels + [
+        FieldPanel('introduction'),
+    ]
+
+    parent_page_types = ['SubGroupWithGroupExercises', 'MainGroupwithGroupExercises']
+    subpage_types = get_exercise_subpage_type()
+
+
+class GroupExerciseItem(Orderable):
+    group = ParentalKey(
+        GroupExercise,
+        on_delete=models.CASCADE,
+        related_name='exercise_links',
+    )
+    exercise = models.ForeignKey(
+        'ExerciseBase',
+        on_delete=models.CASCADE,
+        related_name='+'
+    )
+
+    panels = [
+        FieldPanel('exercise'),
+    ]
+    subpage_types = ['MatchExercise']
+
+
+class ExerciseAttempt(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='exercise_attempts')
+    exercise = models.ForeignKey('ExerciseBase', on_delete=models.CASCADE, related_name='attempts')
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    score = models.IntegerField(default=0)
+    max_score = models.IntegerField(default=0)
+    completed = models.BooleanField(default=False)
+
+    class Meta:
+        ordering = ['-created_at']
+
+
+class MatchExerciseAnswer(models.Model):
+    attempt = models.ForeignKey(ExerciseAttempt, on_delete=models.CASCADE, related_name='answers')
+    left_item_index = models.IntegerField()
+    right_item_index = models.IntegerField()
+    is_correct = models.BooleanField(default=False)
+
+

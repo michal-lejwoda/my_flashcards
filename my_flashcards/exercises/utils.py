@@ -1,5 +1,7 @@
-#subpage_function
+from wagtail.models import Page
 
+
+#subpage_function
 def get_all_subclasses(cls):
     subclasses = cls.__subclasses__()
     all_subclasses = []
@@ -10,8 +12,7 @@ def get_all_subclasses(cls):
     return all_subclasses
 
 def get_exercise_subpage_type():
-    from wagtail.models import Page
-    from my_flashcards.exercises.models import ExerciseBase
+    from my_flashcards.exercises.exercises_models import ExerciseBase
     subclasses = get_all_subclasses(ExerciseBase)
     return [
         f"{cls._meta.app_label}.{cls.__name__}"

@@ -7,7 +7,8 @@ from wagtail.images.api.fields import ImageRenditionField
 from wagtail.models import Page
 
 from my_flashcards.exercises.models import (LanguageCategoryPage, MainGroup, SubGroup, GroupExercise, \
-                                            MainGroupWithSubGroups, SubGroupWithGroupExercises, ExerciseBase,
+                                            MainGroupWithSubGroups, SubGroupWithGroupExercises)
+from my_flashcards.exercises.exercises_models import (ExerciseBase,
                                             MatchExercise, MatchExerciseTextWithImage,
                                             FillInTextExerciseWithChoices, FillInTextExerciseWithPredefinedBlocks,
                                             ConjugationExercise, ListenExerciseWithOptionsToChoose,
