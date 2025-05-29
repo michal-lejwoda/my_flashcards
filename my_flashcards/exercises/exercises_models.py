@@ -9,12 +9,14 @@ from wagtail.models import Page, Orderable
 from wagtailmedia.blocks import AudioChooserBlock
 from my_flashcards.exercises.choices import PERSON_SETS
 from my_flashcards.exercises.mixins import AutoNumberedQuestionsMixin
-# from my_flashcards.exercises.models import ExerciseBase
-from my_flashcards.exercises.utils import check_user_answers, check_user_answers_another_option, audio_upload_path, \
+from my_flashcards.exercises.utils import check_user_answers, check_user_answers_another_option,  \
     get_exercise_subpage_type
 from my_flashcards.exercises.validators import validate_mp3
 
 User = get_user_model()
+
+def audio_upload_path(instance, filename):
+    return f"audio/{filename}"
 
 class ExerciseBase(Page):
     description = models.TextField()

@@ -9,6 +9,9 @@ from my_flashcards.exercises.mixins import UniqueSlugAcrossGroupPagesMixin
 
 User = get_user_model()
 
+def audio_upload_path(instance, filename):
+    return f"audio/{filename}"
+
 
 #Abstract classes
 class GroupBase(Page, UniqueSlugAcrossGroupPagesMixin):

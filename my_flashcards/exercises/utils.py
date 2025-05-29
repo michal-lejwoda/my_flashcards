@@ -20,9 +20,8 @@ def get_exercise_subpage_type():
         if issubclass(cls, Page) and not cls._meta.abstract
     ]
 
+
 #audio
-def audio_upload_path(instance, filename):
-    return f"audio/{filename}"
 
 
 #check users answers
