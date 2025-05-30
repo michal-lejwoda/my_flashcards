@@ -7,6 +7,8 @@ from wagtail.fields import StreamField
 from wagtail.images.blocks import ImageChooserBlock
 from wagtail.models import Page, Orderable
 from wagtailmedia.blocks import AudioChooserBlock
+
+from my_flashcards.exercises.checks import MatchExercisesCheck
 from my_flashcards.exercises.choices import PERSON_SETS
 from my_flashcards.exercises.mixins import AutoNumberedQuestionsMixin
 from my_flashcards.exercises.utils import check_user_answers, check_user_answers_another_option,  \
@@ -17,25 +19,6 @@ User = get_user_model()
 
 def audio_upload_path(instance, filename):
     return f"audio/{filename}"
-
-class MatchExercisesCheck:
-    @staticmethod
-    def check_pair_exercises(pairs):
-        correct_answers = []
-        for block in pairs:
-            if block.block_type != 'pair':
-                continue
-            for pair in block.value:
-                left = pair.get('left_item')
-                right = pair.get('right_item')
-                if left is None or right is None:
-                    continue
-                correct_answers.append({
-                    'left_item': left.id,
-                    'right_item': right
-                })
-        return correct_answers
-
 
 class ExerciseBase(Page):
     description = models.TextField()
