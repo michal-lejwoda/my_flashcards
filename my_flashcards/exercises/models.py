@@ -38,31 +38,6 @@ class GroupBase(Page, UniqueSlugAcrossGroupPagesMixin):
         abstract = True
 
 
-# class ExerciseBase(Page):
-#     description = models.TextField()
-#
-#     content_panels = Page.content_panels + [
-#         FieldPanel('description'),
-#     ]
-#     subpage_types = ['MatchExercise']
-#
-#     def check_answer(self, user, user_answers):
-#         raise NotImplementedError("Classes should implement this method")
-#
-#     def save_attempt(self, user, answers, score, max_score):
-#         #TODO LATER
-#         attempt, created = ExerciseAttempt.objects.update_or_create(
-#             user=user,
-#             exercise=self,
-#             defaults={
-#                 'score': score,
-#                 'max_score': max_score,
-#                 'completed': True
-#             }
-#         )
-#         return attempt
-
-
 class LanguageCategoryPage(Page, UniqueSlugAcrossGroupPagesMixin):
     language = models.CharField(
         max_length=2,
