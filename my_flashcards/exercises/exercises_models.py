@@ -11,6 +11,7 @@ from wagtailmedia.blocks import AudioChooserBlock
 from my_flashcards.exercises.checks import MatchExercisesCheck
 from my_flashcards.exercises.choices import PERSON_SETS
 from my_flashcards.exercises.mixins import AutoNumberedQuestionsMixin
+from my_flashcards.exercises.structures import BlankOptionBlock, MultipleOptionToChoose, ListenOptionToChoose
 from my_flashcards.exercises.utils import check_user_answers, check_user_answers_another_option,  \
     get_exercise_subpage_type
 from my_flashcards.exercises.validators import validate_mp3
@@ -85,24 +86,7 @@ class MatchExerciseTextWithImage(ExerciseBase, MatchExercisesCheck):
         correct_answers = self.check_pair_exercises(self.pairs)
         return check_user_answers(user_answers, correct_answers)
 
-class BlankOptionBlock(blocks.StructBlock):
-    blank_id = blocks.IntegerBlock(help_text="Blank number, ie. 1 for {{1}}")
-    options = blocks.ListBlock(
-        blocks.CharBlock(), help_text="List of possible options"
-    )
-    correct_answer = blocks.CharBlock(help_text="True Answer")
 
-    def clean(self, value):
-        errors = {}
-        if value['correct_answer'] not in value['options']:
-            errors['correct_answer'] = "True answer must be one of the option."
-        if errors:
-            raise blocks.StreamBlockValidationError(errors)
-        return super().clean(value)
-
-    class Meta:
-        icon = "list-ul"
-        label = "Answers for blank"
 
 
 class FillInTextExerciseWithChoices(ExerciseBase):
@@ -128,25 +112,24 @@ class FillInTextExerciseWithChoices(ExerciseBase):
         score = 0
 
         for block in self.blanks:
-            if block.block_type == 'blank':
-                val = block.value
-                blank_id = val["blank_id"]
-                correct_answer = val["correct_answer"]
-                user_answer = user_answer_map.get(blank_id)
+            if block.block_type != 'blank':
+                continue
 
-                result = {
-                    "blank_id": blank_id,
-                    "provided_answer": user_answer,
-                    "correct_answer": correct_answer
-                }
+            val = block.value
+            blank_id = val.get("blank_id")
+            correct_answer = val.get("correct_answer")
+            user_answer = user_answer_map.get(blank_id)
 
-                if user_answer == correct_answer:
-                    result["correct"] = True
-                    score += 1
-                else:
-                    result["correct"] = False
+            is_correct = user_answer == correct_answer
+            if is_correct:
+                score += 1
 
-                result_answers.append(result)
+            result_answers.append({
+                "blank_id": blank_id,
+                "provided_answer": user_answer,
+                "correct_answer": correct_answer,
+                "correct": is_correct
+            })
 
         return {
             "score": score,
@@ -195,27 +178,26 @@ class FillInTextExerciseWithPredefinedBlocks(ExerciseBase):
         user_answer_map = {a['blank_id']: a['answer'] for a in user_answers}
         result_answers = []
         score = 0
+
         for block in self.options:
-            if block.block_type == 'options':
-                values = block.value
-                for val in values:
-                    blank_id = val["blank_id"]
-                    correct_answer = val["answer"]
-                    user_answer = user_answer_map.get(blank_id)
+            if block.block_type != 'options':
+                continue
 
-                    result = {
-                        "block_id": blank_id,
-                        "provided_answer": user_answer,
-                        "correct_answer": correct_answer
-                    }
+            for val in block.value:
+                blank_id = val.get("blank_id")
+                correct_answer = val.get("answer")
+                user_answer = user_answer_map.get(blank_id)
 
-                    if user_answer == correct_answer:
-                        result["correct"] = True
-                        score += 1
-                    else:
-                        result["correct"] = False
+                is_correct = user_answer == correct_answer
+                if is_correct:
+                    score += 1
 
-                    result_answers.append(result)
+                result_answers.append({
+                    "block_id": blank_id,
+                    "provided_answer": user_answer,
+                    "correct_answer": correct_answer,
+                    "correct": is_correct
+                })
 
         return {
             "score": score,
@@ -291,29 +273,7 @@ class ConjugationExercise(ExerciseBase):
             "result_answers": result_answers
         }
 
-class MultipleOptionToChoose(blocks.StructBlock):
-    question_id = blocks.CharBlock(
-        required=False,
-        help_text="Ukryte ID pytania"
-    )
-    question = blocks.TextBlock(required=False, help_text="Optional question")
-    options = blocks.ListBlock(
-        blocks.CharBlock(), help_text="List of possible options"
-    )
-    correct_answers = blocks.ListBlock(
-        blocks.CharBlock(), help_text="Lista poprawnych odpowiedzi"
-    )
-    #TODO FIX It
-    def clean(self, value):
-        errors = {}
-        invalid_answers = [ans for ans in value['correct_answers'] if ans not in value['options']]
-        if invalid_answers:
-            errors['correct_answers'] = (
-                f"Te odpowiedzi nie są wśród opcji: {', '.join(invalid_answers)}"
-            )
-        if errors:
-            raise blocks.StreamBlockValidationError(errors)
-        return super().clean(value)
+
 
 
 #TODO BACK HERE
@@ -323,25 +283,7 @@ class MultipleOptionToChooseWithAudio(MultipleOptionToChoose):
         required=False
     )
 
-class ListenOptionToChoose(blocks.StructBlock):
-    #Hidden using css
-    question_id = blocks.CharBlock(
-        required=False,
-        help_text="Ukryte ID pytania"
-    )
-    question = blocks.TextBlock(required=False, help_text="Optional question")
-    options = blocks.ListBlock(
-        blocks.CharBlock(), help_text="List of possible options"
-    )
-    correct_answer = blocks.CharBlock(help_text="True Answer")
 
-    def clean(self, value):
-        errors = {}
-        if value['correct_answer'] not in value['options']:
-            errors['correct_answer'] = "True answer must be one of the option."
-        if errors:
-            raise blocks.StreamBlockValidationError(errors)
-        return super().clean(value)
 
 class ListenOptionToChooseWithAudio(ListenOptionToChoose):
     audio = models.FileField(
@@ -392,23 +334,29 @@ class ListenWithManyOptionsToChooseToSingleExercise(ExerciseBase, AutoNumberedQu
         score = 0
 
         for block in self.exercises:
+            if block.block_type != 'exercise':
+                continue
+
             values = block.value
-            question_id = values['question_id']
-            correct_answers = values['correct_answers']
+            question_id = values.get('question_id')
+            correct_answers = values.get('correct_answers', [])
             user_answer = user_answer_map.get(question_id)
+
             if not isinstance(user_answer, list):
                 user_answer = [user_answer] if user_answer is not None else []
+
             is_correct = set(user_answer) == set(correct_answers)
-            result = {
+
+            result_answers.append({
                 "person_label": question_id,
                 "provided_answer": user_answer,
-                "correct_answer": list(correct_answers),
+                "correct_answer": correct_answers,
                 "correct": is_correct
-            }
+            })
+
             if is_correct:
                 score += 1
 
-            result_answers.append(result)
         return {
             "score": score,
             "max_score": len(result_answers),
