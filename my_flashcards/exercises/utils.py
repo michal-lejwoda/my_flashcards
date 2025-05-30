@@ -8,7 +8,6 @@ def get_all_subclasses(cls):
     for subclass in subclasses:
         all_subclasses.append(subclass)
         all_subclasses.extend(get_all_subclasses(subclass))
-    print("get_all_suybss", all_subclasses)
     return all_subclasses
 
 def get_exercise_subpage_type():
