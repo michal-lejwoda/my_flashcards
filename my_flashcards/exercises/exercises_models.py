@@ -18,6 +18,25 @@ User = get_user_model()
 def audio_upload_path(instance, filename):
     return f"audio/{filename}"
 
+class MatchExercisesCheck:
+    @staticmethod
+    def check_pair_exercises(pairs):
+        correct_answers = []
+        for block in pairs:
+            if block.block_type != 'pair':
+                continue
+            for pair in block.value:
+                left = pair.get('left_item')
+                right = pair.get('right_item')
+                if left is None or right is None:
+                    continue
+                correct_answers.append({
+                    'left_item': left.id,
+                    'right_item': right
+                })
+        return correct_answers
+
+
 class ExerciseBase(Page):
     description = models.TextField()
 
@@ -42,7 +61,7 @@ class ExerciseBase(Page):
         )
         return attempt
 
-class MatchExercise(ExerciseBase):
+class MatchExercise(ExerciseBase, MatchExercisesCheck):
     pairs = StreamField([
         ('pair',  blocks.ListBlock(
             blocks.StructBlock([
@@ -57,19 +76,10 @@ class MatchExercise(ExerciseBase):
         FieldPanel('pairs'),
     ]
     def check_answer(self, user, user_answers):
-        correct_answers = []
-        for block in self.pairs:
-            if block.block_type == 'pair':
-                for pair in block.value:
-                    left_item = pair.get('left_item')
-                    right_item = pair.get('right_item')
-                    correct_answers.append({
-                        'left_item': left_item,
-                        'right_item': right_item
-                    })
+        correct_answers = self.check_pair_exercises(self.pairs)
         return check_user_answers(user_answers, correct_answers)
 
-class MatchExerciseTextWithImage(ExerciseBase):
+class MatchExerciseTextWithImage(ExerciseBase, MatchExercisesCheck):
     pairs = StreamField(
         [
             ('pair', blocks.ListBlock(
@@ -89,16 +99,7 @@ class MatchExerciseTextWithImage(ExerciseBase):
     ]
     #TODO FIX IT
     def check_answer(self, user, user_answers):
-        correct_answers = []
-        for block in self.pairs:
-            if block.block_type == 'pair':
-                for pair in block.value:
-                    left_item = pair.get('left_item').id
-                    right_item = pair.get('right_item')
-                    correct_answers.append({
-                        'left_item': left_item,
-                        'right_item': right_item
-                    })
+        correct_answers = self.check_pair_exercises(self.pairs)
         return check_user_answers(user_answers, correct_answers)
 
 class BlankOptionBlock(blocks.StructBlock):
