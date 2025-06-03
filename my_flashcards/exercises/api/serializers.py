@@ -14,7 +14,7 @@ from my_flashcards.exercises.exercises_models import (ExerciseBase,
                                             ConjugationExercise, ListenExerciseWithOptionsToChoose,
                                             ListenWithManyOptionsToChooseToSingleExercise,
                                             ChooseExerciseDependsOnMultipleTexts, ChooseExerciseDependsOnSingleText,
-                                            # MultipleExercises
+                                            MultipleExercises
                                                       )
 
 group_urls = {
@@ -386,7 +386,11 @@ class ChooseExerciseDependsOnSingleTextSerializer(serializers.ModelSerializer):
         model = ChooseExerciseDependsOnSingleText
         fields = ['text', 'exercises', 'description']
 
-# class MultipleExercisesSerializer(serializers.ModelSerializer):
-#     class Meta:
-#         model = MultipleExercises
-#         fields = []
+class MultipleExercisesSerializer(serializers.ModelSerializer):
+    exercises = serializers.SerializerMethodField()
+
+    def get_exercises(self, obj):
+        print("obj.exercise_items", obj.exercise_items)
+    class Meta:
+        model = MultipleExercises
+        fields = ['exercises']

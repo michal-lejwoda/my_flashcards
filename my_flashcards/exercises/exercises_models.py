@@ -285,7 +285,6 @@ class MultipleOptionToChooseWithAudio(MultipleOptionToChoose):
     )
 
 
-
 class ListenOptionToChooseWithAudio(ListenOptionToChoose):
     audio = models.FileField(
         upload_to=audio_upload_path,
@@ -431,6 +430,7 @@ class MultipleExercises(ExerciseBase):
 
     content_panels = Page.content_panels + [
         FieldPanel('introduction'),
+        FieldPanel('description'),
         FieldPanel('execution_mode'),
         FieldPanel('show_results_immediately'),
         FieldPanel('passing_score_percentage'),

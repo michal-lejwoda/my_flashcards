@@ -7,17 +7,22 @@ from rest_framework.viewsets import GenericViewSet
 from wagtail.models import Page
 
 from my_flashcards.exercises.api.serializers import (LanguageCategoryPageDetailSerializer, \
-    LanguageCategoryPageListSerializer, SubGroupListSerializer, \
-    GroupExerciseListSerializer, MainGroupWithSubGroupsListSerializer, SubGroupWithGroupExercisesListSerializer, \
-    PageSerializer, SubGroupWithSubGroupsPageDetailSerializer, MainGroupWithGroupExercisePageDetailSerializer, \
-    MatchExerciseSerializer, MatchExerciseTextWithImageSerializer, FillInTextExerciseWithChoicesSerializer, \
-    FillInTextExerciseWithPredefinedBlocksSerializer, \
-    FillInTextExerciseWithPredefinedBlocksWithImageDecorationSerializer, \
-    FillInTextExerciseWithChoicesWithImageDecorationSerializer, ConjugationExerciseSerializer, \
-    ListenExerciseWithOptionsToChooseSerializer, ListenWithManyOptionsToChooseToSingleExerciseSerializer, \
-    # MultipleExercisesSerializer,
+                                                     LanguageCategoryPageListSerializer, SubGroupListSerializer, \
+                                                     GroupExerciseListSerializer, MainGroupWithSubGroupsListSerializer,
+                                                     SubGroupWithGroupExercisesListSerializer, \
+                                                     PageSerializer, SubGroupWithSubGroupsPageDetailSerializer,
+                                                     MainGroupWithGroupExercisePageDetailSerializer, \
+                                                     MatchExerciseSerializer, MatchExerciseTextWithImageSerializer,
+                                                     FillInTextExerciseWithChoicesSerializer, \
+                                                     FillInTextExerciseWithPredefinedBlocksSerializer, \
+                                                     FillInTextExerciseWithPredefinedBlocksWithImageDecorationSerializer, \
+                                                     FillInTextExerciseWithChoicesWithImageDecorationSerializer,
+                                                     ConjugationExerciseSerializer, \
+                                                     ListenExerciseWithOptionsToChooseSerializer,
+                                                     ListenWithManyOptionsToChooseToSingleExerciseSerializer, \
                                                      ChooseExerciseDependsOnSingleTextSerializer, \
-    ChooseExerciseDependsOnMultipleTextsSerializer)
+                                                     ChooseExerciseDependsOnMultipleTextsSerializer,
+                                                     MultipleExercisesSerializer)
 from my_flashcards.exercises.models import LanguageCategoryPage, SubGroupWithSubGroups, \
     MainGroupWithGroupExercises, MainGroupWithSubGroups, SubGroupWithGroupExercises
 
@@ -33,7 +38,7 @@ exercise_serializers = {
     "ListenWithManyOptionsToChooseToSingleExercise": ListenWithManyOptionsToChooseToSingleExerciseSerializer,
     "ChooseExerciseDependsOnMultipleTexts": ChooseExerciseDependsOnMultipleTextsSerializer,
     "ChooseExerciseDependsOnSingleText": ChooseExerciseDependsOnSingleTextSerializer,
-    # "MultipleExercises": MultipleExercisesSerializer
+    "MultipleExercises": MultipleExercisesSerializer
 }
 
 
