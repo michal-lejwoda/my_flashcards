@@ -390,7 +390,37 @@ class MultipleExercisesSerializer(serializers.ModelSerializer):
     exercises = serializers.SerializerMethodField()
 
     def get_exercises(self, obj):
-        print("obj.exercise_items", obj.exercise_items)
+        serialized_exercises = []
+        for element in obj.exercise_items.all():
+            specific_exercise = element.exercise.specific
+            class_name = specific_exercise.__class__.__name__
+
+            serializer_class = exercise_serializers.get(class_name)
+            if serializer_class:
+                serializer = serializer_class(specific_exercise, context=self.context)
+                serialized_exercises.append(serializer.data)
+            else:
+                serialized_exercises.append({
+                    "error": f"Lack of serializator for class {class_name}"
+                })
+
+        return serialized_exercises
+
     class Meta:
         model = MultipleExercises
         fields = ['exercises']
+
+exercise_serializers = {
+    "MatchExercise": MatchExerciseSerializer,
+    "MatchExerciseTextWithImage": MatchExerciseTextWithImageSerializer,
+    "FillInTextExercise": FillInTextExerciseWithChoicesSerializer,
+    "FillInTextExerciseWithPredefinedBlocks": FillInTextExerciseWithPredefinedBlocksSerializer,
+    "FillInTextExerciseWithPredefinedBlocksWithImageDecoration": FillInTextExerciseWithPredefinedBlocksWithImageDecorationSerializer,
+    "FillInTextExerciseWithChoicesWithImageDecoration": FillInTextExerciseWithChoicesWithImageDecorationSerializer,
+    "ConjugationExercise": ConjugationExerciseSerializer,
+    "ListenExerciseWithOptionsToChoose": ListenExerciseWithOptionsToChooseSerializer,
+    "ListenWithManyOptionsToChooseToSingleExercise": ListenWithManyOptionsToChooseToSingleExerciseSerializer,
+    "ChooseExerciseDependsOnMultipleTexts": ChooseExerciseDependsOnMultipleTextsSerializer,
+    "ChooseExerciseDependsOnSingleText": ChooseExerciseDependsOnSingleTextSerializer,
+    "MultipleExercises": MultipleExercisesSerializer
+}

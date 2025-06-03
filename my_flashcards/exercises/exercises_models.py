@@ -434,7 +434,7 @@ class MultipleExercises(ExerciseBase):
         FieldPanel('execution_mode'),
         FieldPanel('show_results_immediately'),
         FieldPanel('passing_score_percentage'),
-        InlinePanel('exercise_items', label="Ćwiczenia"),
+        InlinePanel('exercise_items', label="Exercises"),
     ]
 
 
