@@ -6,7 +6,7 @@ from rest_framework.response import Response
 from rest_framework.viewsets import GenericViewSet
 from wagtail.models import Page
 
-from my_flashcards.exercises.api.serializers import LanguageCategoryPageDetailSerializer, \
+from my_flashcards.exercises.api.serializers import (LanguageCategoryPageDetailSerializer, \
     LanguageCategoryPageListSerializer, SubGroupListSerializer, \
     GroupExerciseListSerializer, MainGroupWithSubGroupsListSerializer, SubGroupWithGroupExercisesListSerializer, \
     PageSerializer, SubGroupWithSubGroupsPageDetailSerializer, MainGroupWithGroupExercisePageDetailSerializer, \
@@ -15,8 +15,9 @@ from my_flashcards.exercises.api.serializers import LanguageCategoryPageDetailSe
     FillInTextExerciseWithPredefinedBlocksWithImageDecorationSerializer, \
     FillInTextExerciseWithChoicesWithImageDecorationSerializer, ConjugationExerciseSerializer, \
     ListenExerciseWithOptionsToChooseSerializer, ListenWithManyOptionsToChooseToSingleExerciseSerializer, \
-    MultipleExercisesSerializer, ChooseExerciseDependsOnSingleTextSerializer, \
-    ChooseExerciseDependsOnMultipleTextsSerializer
+    # MultipleExercisesSerializer,
+                                                     ChooseExerciseDependsOnSingleTextSerializer, \
+    ChooseExerciseDependsOnMultipleTextsSerializer)
 from my_flashcards.exercises.models import LanguageCategoryPage, SubGroupWithSubGroups, \
     MainGroupWithGroupExercises, MainGroupWithSubGroups, SubGroupWithGroupExercises
 
@@ -32,7 +33,7 @@ exercise_serializers = {
     "ListenWithManyOptionsToChooseToSingleExercise": ListenWithManyOptionsToChooseToSingleExerciseSerializer,
     "ChooseExerciseDependsOnMultipleTexts": ChooseExerciseDependsOnMultipleTextsSerializer,
     "ChooseExerciseDependsOnSingleText": ChooseExerciseDependsOnSingleTextSerializer,
-    "MultipleExercises": MultipleExercisesSerializer
+    # "MultipleExercises": MultipleExercisesSerializer
 }
 
 

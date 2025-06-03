@@ -29,9 +29,14 @@ class GroupBase(Page, UniqueSlugAcrossGroupPagesMixin):
             on_delete=models.SET_NULL,
             related_name='+'
         )
+    is_displayed = models.BooleanField(default=True)
+    is_multi = models.BooleanField(default=False)
+
     content_panels = Page.content_panels + [
         FieldPanel('background_image'),
         FieldPanel('background_image_with_text'),
+        FieldPanel('is_displayed'),
+        FieldPanel('is_multi'),
     ]
 
     class Meta:

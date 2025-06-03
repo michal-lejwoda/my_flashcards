@@ -14,7 +14,8 @@ from my_flashcards.exercises.exercises_models import (ExerciseBase,
                                             ConjugationExercise, ListenExerciseWithOptionsToChoose,
                                             ListenWithManyOptionsToChooseToSingleExercise,
                                             ChooseExerciseDependsOnMultipleTexts, ChooseExerciseDependsOnSingleText,
-                                            MultipleExercises)
+                                            # MultipleExercises
+                                                      )
 
 group_urls = {
     "LanguageCategoryPage": "maingroup-with-subgroups",
@@ -385,7 +386,7 @@ class ChooseExerciseDependsOnSingleTextSerializer(serializers.ModelSerializer):
         model = ChooseExerciseDependsOnSingleText
         fields = ['text', 'exercises', 'description']
 
-class MultipleExercisesSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = MultipleExercises
-        fields = []
+# class MultipleExercisesSerializer(serializers.ModelSerializer):
+#     class Meta:
+#         model = MultipleExercises
+#         fields = []

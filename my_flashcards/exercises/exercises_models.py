@@ -1,8 +1,9 @@
 from django.contrib.auth import get_user_model
 from django.db import models
-from modelcluster.fields import ParentalKey
+from modelcluster.fields import ParentalKey, ParentalManyToManyField
+from modelcluster.models import ClusterableModel
 from wagtail import blocks
-from wagtail.admin.panels import FieldPanel
+from wagtail.admin.panels import FieldPanel, InlinePanel
 from wagtail.fields import StreamField
 from wagtail.images.blocks import ImageChooserBlock
 from wagtail.models import Page, Orderable
@@ -276,10 +277,10 @@ class ConjugationExercise(ExerciseBase):
 
 
 
-#TODO BACK HERE
+
 class MultipleOptionToChooseWithAudio(MultipleOptionToChoose):
     audio = AudioChooserBlock(
-        help_text="Wybierz plik audio (.mp3)",
+        help_text="Upload mp3 file",
         required=False
     )
 
@@ -397,14 +398,88 @@ class ChooseExerciseDependsOnSingleText(ExerciseBase, AutoNumberedQuestionsMixin
         user_answer_map = {a['question_id']: a['answer'] for a in user_answers}
         return check_user_answers_another_option(user_answer_map, self.exercises)
 
-class MultipleExercises(ExerciseBase):
-    pass
 
-class GroupExercise(Page):
-    introduction = models.TextField(blank=True)
+class MultipleExercises(ExerciseBase):
+    introduction = models.TextField(
+        blank=True,
+        help_text="Introduction to the set of exercises"
+    )
+
+    EXECUTION_MODES = [
+        ('sequential', 'Sequential'),
+        ('random', 'Random order'),
+        ('all_at_once', 'All at once'),
+    ]
+
+    execution_mode = models.CharField(
+        max_length=20,
+        choices=EXECUTION_MODES,
+        default='sequential',
+        help_text="Method of performing exercises"
+    )
+
+
+    show_results_immediately = models.BooleanField(
+        default=True,
+        help_text="Show results after every exercise"
+    )
+
+    passing_score_percentage = models.IntegerField(
+        default=70,
+        help_text="Minimum percentage of points required to pass (0-100)"
+    )
 
     content_panels = Page.content_panels + [
         FieldPanel('introduction'),
+        FieldPanel('execution_mode'),
+        FieldPanel('show_results_immediately'),
+        FieldPanel('passing_score_percentage'),
+        InlinePanel('exercise_items', label="Ćwiczenia"),
+    ]
+
+
+class MultipleExercisesItem(Orderable):
+    multiple_exercises = ParentalKey(
+        MultipleExercises,
+        on_delete=models.CASCADE,
+        related_name='exercise_items',
+    )
+
+    exercise = models.ForeignKey(
+        'ExerciseBase',
+        on_delete=models.CASCADE,
+        related_name='multiple_exercise_items'
+    )
+
+    is_optional = models.BooleanField(
+        default=False,
+        help_text="Is exercise optional?"
+    )
+
+    weight = models.IntegerField(
+        default=1,
+        help_text="Weight of this exercise in the final grade"
+    )
+
+    panels = [
+        FieldPanel('exercise'),
+        FieldPanel('is_optional'),
+        FieldPanel('weight'),
+    ]
+
+    class Meta:
+        verbose_name = "Exercise in the set"
+        verbose_name_plural = "Exercises in the set"
+
+class GroupExercise(Page):
+    introduction = models.TextField(blank=True)
+    is_displayed = models.BooleanField(default=True)
+    is_multi = models.BooleanField(default=False)
+
+    content_panels = Page.content_panels + [
+        FieldPanel('introduction'),
+        FieldPanel('is_displayed'),
+        FieldPanel('is_multi'),
     ]
 
     parent_page_types = ['SubGroupWithGroupExercises', 'MainGroupwithGroupExercises']
