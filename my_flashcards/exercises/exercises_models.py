@@ -24,11 +24,17 @@ def audio_upload_path(instance, filename):
 
 class ExerciseBase(Page):
     description = models.TextField()
+    type = models.CharField(max_length=255, null=True, default="ExerciseBase")
 
     content_panels = Page.content_panels + [
+        FieldPanel('type'),
         FieldPanel('description'),
     ]
     subpage_types = ['MatchExercise']
+
+    def save(self, *args, **kwargs):
+        self.type = self.__class__.__name__
+        super().save(*args, **kwargs)
 
     def check_answer(self, user, user_answers):
         raise NotImplementedError("Classes should implement this method")
@@ -56,8 +62,7 @@ class MatchExercise(ExerciseBase, MatchExercisesCheck):
         ))
     ], blank=True, use_json_field=True)
 
-    content_panels = Page.content_panels + [
-        FieldPanel('description'),
+    content_panels = ExerciseBase.content_panels + [
         FieldPanel('pairs'),
     ]
     def check_answer(self, user, user_answers):
@@ -78,8 +83,7 @@ class MatchExerciseTextWithImage(ExerciseBase, MatchExercisesCheck):
         use_json_field=True
     )
 
-    content_panels = Page.content_panels + [
-        FieldPanel('description'),
+    content_panels = ExerciseBase.content_panels + [
         FieldPanel('pairs'),
     ]
     #TODO FIX IT
@@ -100,8 +104,7 @@ class FillInTextExerciseWithChoices(ExerciseBase):
         blank=True,
     )
 
-    content_panels = Page.content_panels + [
-        FieldPanel('description'),
+    content_panels = ExerciseBase.content_panels + [
         FieldPanel('text_with_blanks'),
         FieldPanel('blanks'),
     ]
@@ -169,8 +172,7 @@ class FillInTextExerciseWithPredefinedBlocks(ExerciseBase):
         max_num=1
     )
 
-    content_panels = Page.content_panels + [
-        FieldPanel('description'),
+    content_panels = ExerciseBase.content_panels + [
         FieldPanel('text_with_blanks'),
         FieldPanel('options')
     ]
@@ -206,21 +208,21 @@ class FillInTextExerciseWithPredefinedBlocks(ExerciseBase):
             "result_answers": result_answers
         }
 
-class FillInTextExerciseWithPredefinedBlocksWithImageDecoration(FillInTextExerciseWithPredefinedBlocks):
-    image = models.ForeignKey(
-        'wagtailimages.Image',
-        null=True,
-        blank=True,
-        on_delete=models.SET_NULL,
-        related_name='+'
-    )
-    content_panels = FillInTextExerciseWithPredefinedBlocks.content_panels + [
-        FieldPanel('image'),
-    ]
+# class FillInTextExerciseWithPredefinedBlocksWithImageDecoration(FillInTextExerciseWithPredefinedBlocks):
+#     image = models.ForeignKey(
+#         'wagtailimages.Image',
+#         null=True,
+#         blank=True,
+#         on_delete=models.SET_NULL,
+#         related_name='+'
+#     )
+#
+#     content_panels = FillInTextExerciseWithPredefinedBlocks.content_panels + [
+#         FieldPanel('image'),
+#     ]
 
 class ConjugationExercise(ExerciseBase):
     instruction = models.TextField(blank=True)
-
     person_set = models.CharField(
         max_length=50,
         choices=PERSON_SETS,
@@ -235,8 +237,7 @@ class ConjugationExercise(ExerciseBase):
         ]))
     ], use_json_field=True, blank=True)
 
-    content_panels = Page.content_panels + [
-        FieldPanel('description'),
+    content_panels = ExerciseBase.content_panels + [
         FieldPanel('instruction'),
         FieldPanel('person_set'),
         FieldPanel('conjugation_rows'),
@@ -306,13 +307,11 @@ class ListenExerciseWithOptionsToChoose(ExerciseBase,AutoNumberedQuestionsMixin)
         use_json_field=True,
         blank=True,
     )
-    content_panels = Page.content_panels + [
+    content_panels = ExerciseBase.content_panels + [
         FieldPanel('audio'),
-        FieldPanel('description'),
         FieldPanel('exercises'),
     ]
 
-    #TODO Work with it
     def check_answer(self, user, user_answers):
         user_answer_map = {a['question_id']: a['answer'] for a in user_answers}
         return check_user_answers_another_option(user_answer_map, self.exercises)
@@ -323,8 +322,7 @@ class ListenWithManyOptionsToChooseToSingleExercise(ExerciseBase, AutoNumberedQu
         use_json_field=True,
         blank=True,
     )
-    content_panels = Page.content_panels + [
-        FieldPanel('description'),
+    content_panels = ExerciseBase.content_panels + [
         FieldPanel('exercises'),
     ]
 
@@ -369,8 +367,7 @@ class ChooseExerciseDependsOnMultipleTexts(ExerciseBase, AutoNumberedQuestionsMi
         use_json_field=True,
         blank=True,
     )
-    content_panels = Page.content_panels + [
-        FieldPanel('description'),
+    content_panels = ExerciseBase.content_panels + [
         FieldPanel('exercises'),
     ]
 
@@ -387,9 +384,8 @@ class ChooseExerciseDependsOnSingleText(ExerciseBase, AutoNumberedQuestionsMixin
         blank=True,
     )
 
-    content_panels = Page.content_panels + [
+    content_panels = ExerciseBase.content_panels + [
         FieldPanel('text'),
-        FieldPanel('description'),
         FieldPanel('exercises'),
     ]
 
@@ -428,9 +424,8 @@ class MultipleExercises(ExerciseBase):
         help_text="Minimum percentage of points required to pass (0-100)"
     )
 
-    content_panels = Page.content_panels + [
+    content_panels = ExerciseBase.content_panels + [
         FieldPanel('introduction'),
-        FieldPanel('description'),
         FieldPanel('execution_mode'),
         FieldPanel('show_results_immediately'),
         FieldPanel('passing_score_percentage'),
