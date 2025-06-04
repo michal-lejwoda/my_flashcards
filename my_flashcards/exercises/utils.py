@@ -20,9 +20,6 @@ def get_exercise_subpage_type():
     ]
 
 
-#audio
-
-
 #check users answers
 def check_user_answers(user_answers, correct_answers):
     score = 0

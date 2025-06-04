@@ -437,6 +437,14 @@ class MultipleExercises(ExerciseBase):
         InlinePanel('exercise_items', label="Exercises"),
     ]
 
+    def check_single_exercise(self, user, user_answers):
+
+        pass
+
+    def check_answer(self, user, user_answers):
+        user_answer_map = {a['question_id']: a['answer'] for a in user_answers}
+        return check_user_answers_another_option(user_answer_map, self.exercises)
+
 
 class MultipleExercisesItem(Orderable):
     multiple_exercises = ParentalKey(
