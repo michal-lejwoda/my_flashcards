@@ -191,7 +191,7 @@ class MatchExerciseSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = MatchExercise
-        fields = ['description', 'left_items', 'right_items']
+        fields = ['id','description', 'left_items', 'right_items']
 
 
 class MatchExerciseTextWithImageSerializer(serializers.ModelSerializer):
@@ -204,7 +204,6 @@ class MatchExerciseTextWithImageSerializer(serializers.ModelSerializer):
             if block.block_type == 'pair':
                 for pair in block.value:
                     left_items.append({"id": pair.get('left_item').id, "url": pair.get('left_item').get_rendition('fill-600x400').url})
-        print("left_przed", left_items)
         random.shuffle(left_items)
         return left_items
 
@@ -219,7 +218,7 @@ class MatchExerciseTextWithImageSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = MatchExerciseTextWithImage
-        fields = ['description', 'left_items', 'right_items']
+        fields = ['id','description', 'left_items', 'right_items']
 
 class FillInTextExerciseWithChoicesSerializer(serializers.ModelSerializer):
     blanks = SerializerMethodField()
@@ -247,7 +246,7 @@ class FillInTextExerciseWithChoicesSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = FillInTextExerciseWithChoices
-        fields = ['description', 'text_with_blanks', 'blanks']
+        fields = ['id','description', 'text_with_blanks', 'blanks']
 
 
 class FillInTextExerciseWithPredefinedBlocksSerializer(serializers.ModelSerializer):
@@ -272,7 +271,7 @@ class FillInTextExerciseWithPredefinedBlocksSerializer(serializers.ModelSerializ
         return correct_answers
     class Meta:
         model = FillInTextExerciseWithPredefinedBlocks
-        fields = ['description', 'text_with_blanks', 'correct_answers', 'blocks']
+        fields = ['id','description', 'text_with_blanks', 'correct_answers', 'blocks']
 
 class FillInTextExerciseWithChoicesWithImageDecorationSerializer(FillInTextExerciseWithChoicesSerializer):
     image = serializers.SerializerMethodField(read_only=True)
@@ -304,7 +303,7 @@ class ConjugationExerciseSerializer(serializers.ModelSerializer):
         return all_rows
     class Meta:
         model = ConjugationExercise
-        fields = ['instruction', 'description', 'conjugation_rows']
+        fields = ['id','instruction', 'description', 'conjugation_rows']
 
 class ListenExerciseWithOptionsToChooseSerializer(serializers.ModelSerializer):
     audio = serializers.FileField(read_only=True)
@@ -323,7 +322,7 @@ class ListenExerciseWithOptionsToChooseSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = ListenExerciseWithOptionsToChoose
-        fields = ['audio', 'exercises', 'description']
+        fields = ['id','audio', 'exercises', 'description']
 
 class ListenWithManyOptionsToChooseToSingleExerciseSerializer(serializers.ModelSerializer):
     exercises = serializers.SerializerMethodField()
@@ -346,7 +345,7 @@ class ListenWithManyOptionsToChooseToSingleExerciseSerializer(serializers.ModelS
         return all_exercises
     class Meta:
         model = ListenWithManyOptionsToChooseToSingleExercise
-        fields = ['title','description','exercises']
+        fields = ['id','title','description','exercises']
 
 class ChooseExerciseDependsOnMultipleTextsSerializer(serializers.ModelSerializer):
     exercises = serializers.SerializerMethodField()
@@ -366,7 +365,7 @@ class ChooseExerciseDependsOnMultipleTextsSerializer(serializers.ModelSerializer
 
     class Meta:
         model = ChooseExerciseDependsOnMultipleTexts
-        fields = ['title','description','exercises']
+        fields = ['id','title','description','exercises']
 
 class ChooseExerciseDependsOnSingleTextSerializer(serializers.ModelSerializer):
     exercises = serializers.SerializerMethodField()
@@ -384,7 +383,7 @@ class ChooseExerciseDependsOnSingleTextSerializer(serializers.ModelSerializer):
         return all_exercises
     class Meta:
         model = ChooseExerciseDependsOnSingleText
-        fields = ['text', 'exercises', 'description']
+        fields = ['id','text', 'exercises', 'description']
 
 class MultipleExercisesSerializer(serializers.ModelSerializer):
     exercises = serializers.SerializerMethodField()
@@ -408,7 +407,7 @@ class MultipleExercisesSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = MultipleExercises
-        fields = ['exercises']
+        fields = ['id','exercises']
 
 exercise_serializers = {
     "MatchExercise": MatchExerciseSerializer,
