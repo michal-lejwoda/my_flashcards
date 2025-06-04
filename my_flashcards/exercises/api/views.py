@@ -120,7 +120,11 @@ class ExerciseViewSet(RetrieveModelMixin, CreateModelMixin, GenericViewSet):
 
     def create(self, request, *args, **kwargs):
         page = self.get_object()
-        answers = request.data.get('answers')
+        exercise_type = request.data.get('type')
+        if exercise_type == "MultipleExercises":
+            answers = request.data.get('exercises')
+        else:
+            answers = request.data.get('answers')
         try:
             result = page.check_answer(request.user, answers)
             return Response(result, status=status.HTTP_200_OK)

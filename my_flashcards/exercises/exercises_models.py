@@ -1,3 +1,4 @@
+from django.apps import apps
 from django.contrib.auth import get_user_model
 from django.db import models
 from modelcluster.fields import ParentalKey, ParentalManyToManyField
@@ -432,15 +433,19 @@ class MultipleExercises(ExerciseBase):
         InlinePanel('exercise_items', label="Exercises"),
     ]
 
-    def check_single_exercise(self, user, user_answers):
-        pass
-
     def check_answer(self, user, user_answers):
-        for exercise in user_answers['exercises']:
-            pass
-        # user_answer_map = {a['question_id']: a['answer'] for a in user_answers}
-        # return check_user_answers_another_option(user_answer_map, self.exercises)
-        return None
+        answers = []
+        score = 0
+        max_score = 0
+        for exercise in user_answers:
+            model_class = apps.get_model('exercises', exercise['type'])
+            instance = model_class.objects.get(id=exercise['id'])
+            res = instance.check_answer(user, exercise['answers'])
+            score += res['score']
+            max_score += res['max_score']
+            answers.append(res)
+        result = {"answers": answers, "score": score, "max_score": max_score}
+        return result
 
 class MultipleExercisesItem(Orderable):
     multiple_exercises = ParentalKey(
