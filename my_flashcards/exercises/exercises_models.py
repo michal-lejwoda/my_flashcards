@@ -1,8 +1,7 @@
 from django.apps import apps
 from django.contrib.auth import get_user_model
 from django.db import models
-from modelcluster.fields import ParentalKey, ParentalManyToManyField
-from modelcluster.models import ClusterableModel
+from modelcluster.fields import ParentalKey
 from wagtail import blocks
 from wagtail.admin.panels import FieldPanel, InlinePanel
 from wagtail.fields import StreamField
@@ -11,12 +10,12 @@ from wagtail.models import Page, Orderable
 from wagtailmedia.blocks import AudioChooserBlock
 
 from my_flashcards.exercises.blocks import HeaderImageBlock, TwoColumnBlock, SpacerBlock, TextContentBlock, \
-    AudioContentBlock, EmbeddedExerciseBlock
+    AudioContentBlock
 from my_flashcards.exercises.checks import MatchExercisesCheck
 from my_flashcards.exercises.choices import PERSON_SETS
 from my_flashcards.exercises.mixins import AutoNumberedQuestionsMixin, LayoutMixin
 from my_flashcards.exercises.structures import BlankOptionBlock, MultipleOptionToChoose, ListenOptionToChoose
-from my_flashcards.exercises.utils import check_user_answers, check_user_answers_another_option,  \
+from my_flashcards.exercises.utils import check_user_answers, check_user_answers_another_option, \
     get_exercise_subpage_type
 from my_flashcards.exercises.validators import validate_mp3
 

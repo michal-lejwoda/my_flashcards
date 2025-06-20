@@ -2,6 +2,7 @@ import random
 
 from rest_framework import serializers
 from rest_framework.fields import SerializerMethodField
+from wagtail.blocks import StreamValue
 from wagtail.blocks.list_block import ListValue
 from wagtail.images.api.fields import ImageRenditionField
 from wagtail.models import Page
@@ -169,6 +170,8 @@ class PageSerializer(serializers.ModelSerializer):
 class MatchExerciseSerializer(serializers.ModelSerializer):
     left_items = serializers.SerializerMethodField()
     right_items = serializers.SerializerMethodField()
+    before_layout_config = serializers.SerializerMethodField()
+    after_layout_config = serializers.SerializerMethodField()
 
     def get_left_items(self, obj):
         left_items = []
@@ -189,14 +192,23 @@ class MatchExerciseSerializer(serializers.ModelSerializer):
         random.shuffle(right_items)
         return right_items
 
+    def get_before_layout_config(self, obj):
+        return obj.before_layout_config.get_prep_value()
+
+    def get_after_layout_config(self, obj):
+        return obj.after_layout_config.get_prep_value()
+
+
     class Meta:
         model = MatchExercise
-        fields = ['id', 'type','description', 'left_items', 'right_items']
-
+        fields = ['id', 'type','description', 'left_items', 'right_items', 'before_layout_config', 'after_layout_config']
+        read_only_fields = ['before_layout_config', 'after_layout_config']
 
 class MatchExerciseTextWithImageSerializer(serializers.ModelSerializer):
     left_items = serializers.SerializerMethodField()
     right_items = serializers.SerializerMethodField()
+    before_layout_config = serializers.SerializerMethodField()
+    after_layout_config = serializers.SerializerMethodField()
 
     def get_left_items(self, obj):
         left_items = []
@@ -216,12 +228,21 @@ class MatchExerciseTextWithImageSerializer(serializers.ModelSerializer):
         random.shuffle(right_items)
         return right_items
 
+    def get_before_layout_config(self, obj):
+        return obj.before_layout_config.get_prep_value()
+
+    def get_after_layout_config(self, obj):
+        return obj.after_layout_config.get_prep_value()
+
     class Meta:
         model = MatchExerciseTextWithImage
-        fields = ['id', 'type','description', 'left_items', 'right_items']
+        fields = ['id', 'type','description', 'left_items', 'right_items', 'before_layout_config', 'after_layout_config']
+        read_only_fields = ['before_layout_config', 'after_layout_config']
 
 class FillInTextExerciseWithChoicesSerializer(serializers.ModelSerializer):
     blanks = SerializerMethodField()
+    before_layout_config = serializers.SerializerMethodField()
+    after_layout_config = serializers.SerializerMethodField()
 
     def get_blanks(self, obj):
         blanks = []
@@ -243,15 +264,22 @@ class FillInTextExerciseWithChoicesSerializer(serializers.ModelSerializer):
                 })
         return blanks
 
+    def get_before_layout_config(self, obj):
+        return obj.before_layout_config.get_prep_value()
+
+    def get_after_layout_config(self, obj):
+        return obj.after_layout_config.get_prep_value()
 
     class Meta:
         model = FillInTextExerciseWithChoices
-        fields = ['id', 'type','description', 'text_with_blanks', 'blanks']
-
+        fields = ['id', 'type','description', 'text_with_blanks', 'blanks', 'before_layout_config', 'after_layout_config']
+        read_only_fields = ['before_layout_config', 'after_layout_config']
 
 class FillInTextExerciseWithPredefinedBlocksSerializer(serializers.ModelSerializer):
     correct_answers = SerializerMethodField()
     blocks = SerializerMethodField()
+    before_layout_config = serializers.SerializerMethodField()
+    after_layout_config = serializers.SerializerMethodField()
 
     def get_blocks(self, obj):
         blocks = []
@@ -269,9 +297,17 @@ class FillInTextExerciseWithPredefinedBlocksSerializer(serializers.ModelSerializ
             for element in values:
                 correct_answers.append({"blank_id": element['blank_id'], 'answer': element['answer']})
         return correct_answers
+
+    def get_before_layout_config(self, obj):
+        return obj.before_layout_config.get_prep_value()
+
+    def get_after_layout_config(self, obj):
+        return obj.after_layout_config.get_prep_value()
+
     class Meta:
         model = FillInTextExerciseWithPredefinedBlocks
-        fields = ['id', 'type','description', 'text_with_blanks', 'correct_answers', 'blocks']
+        fields = ['id', 'type','description', 'text_with_blanks', 'correct_answers', 'blocks', 'before_layout_config', 'after_layout_config']
+        read_only_fields = ['before_layout_config', 'after_layout_config']
 
 class FillInTextExerciseWithChoicesWithImageDecorationSerializer(FillInTextExerciseWithChoicesSerializer):
     image = serializers.SerializerMethodField(read_only=True)
@@ -291,9 +327,10 @@ class FillInTextExerciseWithPredefinedBlocksWithImageDecorationSerializer(FillIn
     class Meta(FillInTextExerciseWithPredefinedBlocksSerializer.Meta):
         fields = FillInTextExerciseWithPredefinedBlocksSerializer.Meta.fields + ['image']
 
-
 class ConjugationExerciseSerializer(serializers.ModelSerializer):
     conjugation_rows = serializers.SerializerMethodField()
+    before_layout_config = serializers.SerializerMethodField()
+    after_layout_config = serializers.SerializerMethodField()
 
     def get_conjugation_rows(self, obj):
         all_rows = []
@@ -301,13 +338,23 @@ class ConjugationExerciseSerializer(serializers.ModelSerializer):
             values = row.value
             all_rows.append({"person_label": values['person_label'], "correct_form": values['correct_form'], "is_pre_filled": values['is_pre_filled']})
         return all_rows
+
+    def get_before_layout_config(self, obj):
+        return obj.before_layout_config.get_prep_value()
+
+    def get_after_layout_config(self, obj):
+        return obj.after_layout_config.get_prep_value()
+
     class Meta:
         model = ConjugationExercise
-        fields = ['id', 'type','instruction', 'description', 'conjugation_rows']
+        fields = ['id', 'type','instruction', 'description', 'conjugation_rows', 'before_layout_config', 'after_layout_config']
+        read_only_fields = ['before_layout_config', 'after_layout_config']
 
 class ListenExerciseWithOptionsToChooseSerializer(serializers.ModelSerializer):
     audio = serializers.FileField(read_only=True)
     exercises = serializers.SerializerMethodField()
+    before_layout_config = serializers.SerializerMethodField()
+    after_layout_config = serializers.SerializerMethodField()
 
     def get_exercises(self, obj):
         all_exercises = []
@@ -320,12 +367,21 @@ class ListenExerciseWithOptionsToChooseSerializer(serializers.ModelSerializer):
             all_exercises.append(result)
         return all_exercises
 
+    def get_before_layout_config(self, obj):
+        return obj.before_layout_config.get_prep_value()
+
+    def get_after_layout_config(self, obj):
+        return obj.after_layout_config.get_prep_value()
+
     class Meta:
         model = ListenExerciseWithOptionsToChoose
-        fields = ['id', 'type','audio', 'exercises', 'description']
+        fields = ['id', 'type','audio', 'exercises', 'description', 'before_layout_config', 'after_layout_config']
+        read_only_fields = ['before_layout_config', 'after_layout_config']
 
 class ListenWithManyOptionsToChooseToSingleExerciseSerializer(serializers.ModelSerializer):
     exercises = serializers.SerializerMethodField()
+    before_layout_config = serializers.SerializerMethodField()
+    after_layout_config = serializers.SerializerMethodField()
 
     def get_exercises(self, obj):
         all_exercises = []
@@ -343,12 +399,22 @@ class ListenWithManyOptionsToChooseToSingleExerciseSerializer(serializers.ModelS
             }
             all_exercises.append(result)
         return all_exercises
+
+    def get_before_layout_config(self, obj):
+        return obj.before_layout_config.get_prep_value()
+
+    def get_after_layout_config(self, obj):
+        return obj.after_layout_config.get_prep_value()
+
     class Meta:
         model = ListenWithManyOptionsToChooseToSingleExercise
-        fields = ['id', 'type','title','description','exercises']
+        fields = ['id', 'type','title','description','exercises', 'before_layout_config', 'after_layout_config']
+        read_only_fields = ['before_layout_config', 'after_layout_config']
 
 class ChooseExerciseDependsOnMultipleTextsSerializer(serializers.ModelSerializer):
     exercises = serializers.SerializerMethodField()
+    before_layout_config = serializers.SerializerMethodField()
+    after_layout_config = serializers.SerializerMethodField()
 
     def get_exercises(self, obj):
         all_exercises = []
@@ -363,12 +429,21 @@ class ChooseExerciseDependsOnMultipleTextsSerializer(serializers.ModelSerializer
             all_exercises.append(result)
         return all_exercises
 
+    def get_before_layout_config(self, obj):
+        return obj.before_layout_config.get_prep_value()
+
+    def get_after_layout_config(self, obj):
+        return obj.after_layout_config.get_prep_value()
+
     class Meta:
         model = ChooseExerciseDependsOnMultipleTexts
-        fields = ['id', 'type','title','description','exercises']
+        fields = ['id', 'type','title','description','exercises', 'before_layout_config', 'after_layout_config']
+        read_only_fields = ['before_layout_config', 'after_layout_config']
 
 class ChooseExerciseDependsOnSingleTextSerializer(serializers.ModelSerializer):
     exercises = serializers.SerializerMethodField()
+    before_layout_config = serializers.SerializerMethodField()
+    after_layout_config = serializers.SerializerMethodField()
 
     def get_exercises(self, obj):
         all_exercises = []
@@ -381,10 +456,19 @@ class ChooseExerciseDependsOnSingleTextSerializer(serializers.ModelSerializer):
                       'correct_answer': values['correct_answer']}
             all_exercises.append(result)
         return all_exercises
+
+    def get_before_layout_config(self, obj):
+        return obj.before_layout_config.get_prep_value()
+
+    def get_after_layout_config(self, obj):
+        return obj.after_layout_config.get_prep_value()
+
     class Meta:
         model = ChooseExerciseDependsOnSingleText
-        fields = ['id', 'type','text', 'exercises', 'description']
+        fields = ['id', 'type','text', 'exercises', 'description', 'before_layout_config', 'after_layout_config']
+        read_only_fields = ['before_layout_config', 'after_layout_config']
 
+#TODO WORK WITH IT LATER
 class MultipleExercisesSerializer(serializers.ModelSerializer):
     exercises = serializers.SerializerMethodField()
 
