@@ -29,7 +29,7 @@ from my_flashcards.exercises.models import LanguageCategoryPage, SubGroupWithSub
 exercise_serializers = {
     "MatchExercise": MatchExerciseSerializer,
     "MatchExerciseTextWithImage": MatchExerciseTextWithImageSerializer,
-    "FillInTextExercise": FillInTextExerciseWithChoicesSerializer,
+    "FillInTextExerciseWithChoices": FillInTextExerciseWithChoicesSerializer,
     "FillInTextExerciseWithPredefinedBlocks": FillInTextExerciseWithPredefinedBlocksSerializer,
     "FillInTextExerciseWithPredefinedBlocksWithImageDecoration": FillInTextExerciseWithPredefinedBlocksWithImageDecorationSerializer,
     "FillInTextExerciseWithChoicesWithImageDecoration": FillInTextExerciseWithChoicesWithImageDecorationSerializer,

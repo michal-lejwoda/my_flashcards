@@ -10,9 +10,11 @@ from wagtail.images.blocks import ImageChooserBlock
 from wagtail.models import Page, Orderable
 from wagtailmedia.blocks import AudioChooserBlock
 
+from my_flashcards.exercises.blocks import HeaderImageBlock, TwoColumnBlock, SpacerBlock, TextContentBlock, \
+    AudioContentBlock, EmbeddedExerciseBlock
 from my_flashcards.exercises.checks import MatchExercisesCheck
 from my_flashcards.exercises.choices import PERSON_SETS
-from my_flashcards.exercises.mixins import AutoNumberedQuestionsMixin
+from my_flashcards.exercises.mixins import AutoNumberedQuestionsMixin, LayoutMixin
 from my_flashcards.exercises.structures import BlankOptionBlock, MultipleOptionToChoose, ListenOptionToChoose
 from my_flashcards.exercises.utils import check_user_answers, check_user_answers_another_option,  \
     get_exercise_subpage_type
@@ -52,17 +54,10 @@ class ExerciseBase(Page):
                 'detailed_results': detailed_results or {}
             }
         )
-
-        UserAnswer.objects.filter(attempt=attempt).delete()
-
-        self._save_detailed_answers(attempt, answers, detailed_results)
-
         return attempt
 
-    def _save_detailed_answers(self, attempt, user_answers, detailed_results):
-        pass
 
-class MatchExercise(ExerciseBase, MatchExercisesCheck):
+class MatchExercise(ExerciseBase, MatchExercisesCheck, LayoutMixin):
     pairs = StreamField([
         ('pair',  blocks.ListBlock(
             blocks.StructBlock([
@@ -74,7 +69,7 @@ class MatchExercise(ExerciseBase, MatchExercisesCheck):
 
     content_panels = ExerciseBase.content_panels + [
         FieldPanel('pairs'),
-    ]
+    ] + LayoutMixin.layout_panels
 
     def check_answer(self, user, user_answers):
         correct_answers = self.check_pair_exercises(self.pairs)
@@ -83,19 +78,8 @@ class MatchExercise(ExerciseBase, MatchExercisesCheck):
 
         return result
 
-    def _save_detailed_answers(self, attempt, user_answers, detailed_results):
-        if 'result_answers' in detailed_results:
-            for i, answer_data in enumerate(detailed_results['result_answers']):
-                UserAnswer.objects.create(
-                    attempt=attempt,
-                    question_identifier=f"pair_{i}",
-                    user_response=user_answers.get(i, '') if isinstance(user_answers, dict) else '',
-                    correct_answer=answer_data.get('correct_answer', ''),
-                    is_correct=answer_data.get('correct', False),
-                    question_type='match_pair'
-                )
 
-class MatchExerciseTextWithImage(ExerciseBase, MatchExercisesCheck):
+class MatchExerciseTextWithImage(ExerciseBase, MatchExercisesCheck, LayoutMixin):
     pairs = StreamField(
         [
             ('pair', blocks.ListBlock(
@@ -111,13 +95,16 @@ class MatchExerciseTextWithImage(ExerciseBase, MatchExercisesCheck):
 
     content_panels = ExerciseBase.content_panels + [
         FieldPanel('pairs'),
-    ]
-    #TODO FIX IT
+    ] + LayoutMixin.layout_panels
+
     def check_answer(self, user, user_answers):
         correct_answers = self.check_pair_exercises(self.pairs)
-        return check_user_answers(user_answers, correct_answers)
+        print("correct_answers", correct_answers)
+        result = check_user_answers(user_answers, correct_answers)
+        self.save_attempt(user, user_answers, result['score'], result['max_score'], result)
+        return result
 
-class FillInTextExerciseWithChoices(ExerciseBase):
+class FillInTextExerciseWithChoices(ExerciseBase, LayoutMixin):
     text_with_blanks = models.TextField(
         help_text="Use {{1}}, {{2}}, {{3}} in blanks."
     )
@@ -130,7 +117,7 @@ class FillInTextExerciseWithChoices(ExerciseBase):
     content_panels = ExerciseBase.content_panels + [
         FieldPanel('text_with_blanks'),
         FieldPanel('blanks'),
-    ]
+    ] + LayoutMixin.layout_panels
 
     def check_answer(self, user, user_answers):
         user_answer_map = {a['blank_id']: a['answer'] for a in user_answers}
@@ -168,17 +155,17 @@ class FillInTextExerciseWithChoices(ExerciseBase):
 
         return result
 
-    def _save_detailed_answers(self, attempt, user_answers, detailed_results):
-        if 'result_answers' in detailed_results:
-            for answer_data in detailed_results['result_answers']:
-                UserAnswer.objects.create(
-                    attempt=attempt,
-                    question_identifier=f"blank_{answer_data['blank_id']}",
-                    user_response=answer_data['provided_answer'],
-                    correct_answer=answer_data['correct_answer'],
-                    is_correct=answer_data['correct'],
-                    question_type='fill_blank'
-                )
+    # def _save_detailed_answers(self, attempt, user_answers, detailed_results):
+    #     if 'result_answers' in detailed_results:
+    #         for answer_data in detailed_results['result_answers']:
+    #             UserAnswer.objects.create(
+    #                 attempt=attempt,
+    #                 question_identifier=f"blank_{answer_data['blank_id']}",
+    #                 user_response=answer_data['provided_answer'],
+    #                 correct_answer=answer_data['correct_answer'],
+    #                 is_correct=answer_data['correct'],
+    #                 question_type='fill_blank'
+    #             )
 
 class FillInTextExerciseWithChoicesWithImageDecoration(FillInTextExerciseWithChoices):
     image = models.ForeignKey(
@@ -192,7 +179,7 @@ class FillInTextExerciseWithChoicesWithImageDecoration(FillInTextExerciseWithCho
         FieldPanel('image'),
     ]
 
-class FillInTextExerciseWithPredefinedBlocks(ExerciseBase):
+class FillInTextExerciseWithPredefinedBlocks(ExerciseBase, LayoutMixin):
     text_with_blanks = models.TextField(
         help_text="Use {{1}}, {{2}}, {{3}} in blanks."
     )
@@ -214,8 +201,8 @@ class FillInTextExerciseWithPredefinedBlocks(ExerciseBase):
     content_panels = ExerciseBase.content_panels + [
         FieldPanel('text_with_blanks'),
         FieldPanel('options')
-    ]
-    #TODO Clean it
+    ] + LayoutMixin.layout_panels
+
     def check_answer(self, user, user_answers):
         user_answer_map = {a['blank_id']: a['answer'] for a in user_answers}
         result_answers = []
@@ -240,14 +227,19 @@ class FillInTextExerciseWithPredefinedBlocks(ExerciseBase):
                     "correct_answer": correct_answer,
                     "correct": is_correct
                 })
-
+        #TODO Clean it up
+        self.save_attempt(user, user_answers, score, len(result_answers), {
+            "score": score,
+            "max_score": len(result_answers),
+            "result_answers": result_answers
+        })
         return {
             "score": score,
             "max_score": len(result_answers),
             "result_answers": result_answers
         }
 
-class ConjugationExercise(ExerciseBase):
+class ConjugationExercise(ExerciseBase, LayoutMixin):
     instruction = models.TextField(blank=True)
     person_set = models.CharField(
         max_length=50,
@@ -267,7 +259,7 @@ class ConjugationExercise(ExerciseBase):
         FieldPanel('instruction'),
         FieldPanel('person_set'),
         FieldPanel('conjugation_rows'),
-    ]
+    ] + LayoutMixin.layout_panels
 
     def check_answer(self, user, user_answers):
         user_answer_map = {a['person_label']: a['answer'] for a in user_answers}
@@ -318,12 +310,13 @@ class ConjugationExercise(ExerciseBase):
                     is_correct=answer_data['correct'],
                     question_type='conjugation'
                 )
-
+### TODO MOve to structures
 class MultipleOptionToChooseWithAudio(MultipleOptionToChoose):
     audio = AudioChooserBlock(
         help_text="Upload mp3 file",
         required=False
     )
+    #TODO CXECK THIS One
 
 class ListenOptionToChooseWithAudio(ListenOptionToChoose):
     audio = models.FileField(
@@ -331,11 +324,13 @@ class ListenOptionToChooseWithAudio(ListenOptionToChoose):
         help_text="Upload mp3 file",
         validators=[validate_mp3]
     )
+    #TODO  Check this one
 
 class ListenOptionToChooseWithText(ListenOptionToChoose):
     text = blocks.TextBlock(required=False, help_text="text")
-
-class ListenExerciseWithOptionsToChoose(ExerciseBase,AutoNumberedQuestionsMixin):
+    # TODO  Check this one
+###
+class ListenExerciseWithOptionsToChoose(ExerciseBase,AutoNumberedQuestionsMixin, LayoutMixin):
     audio = models.FileField(
         upload_to=audio_upload_path,
         help_text="Upload mp3 file",
@@ -349,13 +344,15 @@ class ListenExerciseWithOptionsToChoose(ExerciseBase,AutoNumberedQuestionsMixin)
     content_panels = ExerciseBase.content_panels + [
         FieldPanel('audio'),
         FieldPanel('exercises'),
-    ]
+    ] + LayoutMixin.layout_panels
 
     def check_answer(self, user, user_answers):
         user_answer_map = {a['question_id']: a['answer'] for a in user_answers}
-        return check_user_answers_another_option(user_answer_map, self.exercises)
+        result =  check_user_answers_another_option(user_answer_map, self.exercises)
+        self.save_attempt(user, user_answers, result['score'], result['max_score'], result)
+        return result
 
-class ListenWithManyOptionsToChooseToSingleExercise(ExerciseBase, AutoNumberedQuestionsMixin):
+class ListenWithManyOptionsToChooseToSingleExercise(ExerciseBase, AutoNumberedQuestionsMixin, LayoutMixin):
     exercises = StreamField(
         [('options', MultipleOptionToChooseWithAudio())],
         use_json_field=True,
@@ -363,44 +360,40 @@ class ListenWithManyOptionsToChooseToSingleExercise(ExerciseBase, AutoNumberedQu
     )
     content_panels = ExerciseBase.content_panels + [
         FieldPanel('exercises'),
-    ]
+    ] + LayoutMixin.layout_panels
 
     def check_answer(self, user, user_answers):
         user_answer_map = {a['question_id']: a['answers'] for a in user_answers}
         result_answers = []
         score = 0
-
+        max_score = 0
         for block in self.exercises:
-            if block.block_type != 'exercise':
-                continue
-
+            max_score += 1
             values = block.value
             question_id = values.get('question_id')
             correct_answers = values.get('correct_answers', [])
             user_answer = user_answer_map.get(question_id)
-
             if not isinstance(user_answer, list):
                 user_answer = [user_answer] if user_answer is not None else []
-
             is_correct = set(user_answer) == set(correct_answers)
-
             result_answers.append({
                 "person_label": question_id,
                 "provided_answer": user_answer,
-                "correct_answer": correct_answers,
+                "correct_answer": list(correct_answers),
                 "correct": is_correct
             })
-
             if is_correct:
                 score += 1
-
-        return {
+        result = {
             "score": score,
-            "max_score": len(result_answers),
+            "max_score": max_score,
             "result_answers": result_answers
         }
+        # TODO Comeback here
+        self.save_attempt(user, user_answers, score, max_score, result)
+        return result
 
-class ChooseExerciseDependsOnMultipleTexts(ExerciseBase, AutoNumberedQuestionsMixin):
+class ChooseExerciseDependsOnMultipleTexts(ExerciseBase, AutoNumberedQuestionsMixin, LayoutMixin):
     exercises = StreamField(
         [('options', ListenOptionToChooseWithText())],
         use_json_field=True,
@@ -408,14 +401,13 @@ class ChooseExerciseDependsOnMultipleTexts(ExerciseBase, AutoNumberedQuestionsMi
     )
     content_panels = ExerciseBase.content_panels + [
         FieldPanel('exercises'),
-    ]
+    ] + LayoutMixin.layout_panels
 
     def check_answer(self, user, user_answers):
         user_answer_map = {a['question_id']: a['answer'] for a in user_answers}
         return check_user_answers_another_option(user_answer_map, self.exercises)
 
-
-class ChooseExerciseDependsOnSingleText(ExerciseBase, AutoNumberedQuestionsMixin):
+class ChooseExerciseDependsOnSingleText(ExerciseBase, AutoNumberedQuestionsMixin, LayoutMixin):
     text = models.TextField(blank=True)
     exercises = StreamField(
         [('options', ListenOptionToChoose())],
@@ -426,14 +418,44 @@ class ChooseExerciseDependsOnSingleText(ExerciseBase, AutoNumberedQuestionsMixin
     content_panels = ExerciseBase.content_panels + [
         FieldPanel('text'),
         FieldPanel('exercises'),
-    ]
+    ] + LayoutMixin.layout_panels
 
     def check_answer(self, user, user_answers):
         user_answer_map = {a['question_id']: a['answer'] for a in user_answers}
-        return check_user_answers_another_option(user_answer_map, self.exercises)
+        result = check_user_answers_another_option(user_answer_map, self.exercises)
+        self.save_attempt(user, user_answers, result['score'], result['max_score'], result)
+        return result
 
+#TODO WORK WITH IT
+class FlexibleExercisePage(ExerciseBase, LayoutMixin):
+    layout_config = StreamField([
+        ('header_image', HeaderImageBlock()),
+        ('text_content', TextContentBlock()),
+        ('audio_content', AudioContentBlock()),
+        ('two_column', TwoColumnBlock()),
+        ('spacer', SpacerBlock()),
+    ], use_json_field=True, blank=True)
 
-class MultipleExercises(ExerciseBase):
+    embedded_exercise = models.ForeignKey(
+        'ExerciseBase',
+        on_delete=models.CASCADE,
+        null=True,
+        blank=True,
+        related_name='embedded_in_flexible_pages',
+        help_text="Main exercise for this page"
+    )
+
+    content_panels = ExerciseBase.content_panels + [
+        FieldPanel('layout_config'),
+        FieldPanel('embedded_exercise'),
+    ] + LayoutMixin.layout_panels
+
+    def check_answer(self, user, user_answers):
+        if self.embedded_exercise:
+            return self.embedded_exercise.specific.check_answer(user, user_answers)
+        return {"score": 0, "max_score": 0, "result_answers": []}
+
+class MultipleExercises(ExerciseBase, LayoutMixin):
     introduction = models.TextField(
         blank=True,
         help_text="Introduction to the set of exercises"
@@ -452,7 +474,6 @@ class MultipleExercises(ExerciseBase):
         help_text="Method of performing exercises"
     )
 
-
     show_results_immediately = models.BooleanField(
         default=True,
         help_text="Show results after every exercise"
@@ -469,7 +490,7 @@ class MultipleExercises(ExerciseBase):
         FieldPanel('show_results_immediately'),
         FieldPanel('passing_score_percentage'),
         InlinePanel('exercise_items', label="Exercises"),
-    ]
+    ] + LayoutMixin.layout_panels
 
     def check_answer(self, user, user_answers):
         answers = []
@@ -478,10 +499,11 @@ class MultipleExercises(ExerciseBase):
         for exercise in user_answers:
             model_class = apps.get_model('exercises', exercise['type'])
             instance = model_class.objects.get(id=exercise['id'])
-            res = instance.check_answer(user, exercise['answers'])
-            score += res['score']
-            max_score += res['max_score']
-            answers.append(res)
+            result = instance.check_answer(user, exercise['answers'])
+            score += result['score']
+            max_score += result['max_score']
+            answers.append(result)
+            self.save_attempt(user, user_answers, result['score'], result['max_score'], result)
         result = {"answers": answers, "score": score, "max_score": max_score}
         return result
 
@@ -532,7 +554,6 @@ class GroupExercise(Page):
     parent_page_types = ['SubGroupWithGroupExercises', 'MainGroupwithGroupExercises']
     subpage_types = get_exercise_subpage_type()
 
-
 class GroupExerciseItem(Orderable):
     group = ParentalKey(
         GroupExercise,
@@ -549,7 +570,6 @@ class GroupExerciseItem(Orderable):
         FieldPanel('exercise'),
     ]
     subpage_types = ['MatchExercise']
-
 
 class ExerciseAttempt(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='exercise_attempts')
@@ -571,7 +591,7 @@ class ExerciseAttempt(models.Model):
             return 0
         return round((self.score / self.max_score) * 100, 2)
 
-
+# TODO REMOVE LATER
 class UserAnswer(models.Model):
     attempt = models.ForeignKey(ExerciseAttempt, on_delete=models.CASCADE, related_name='user_answers')
     question_identifier = models.CharField(max_length=255)
@@ -582,4 +602,6 @@ class UserAnswer(models.Model):
 
     class Meta:
         ordering = ['question_identifier']
+
+
 

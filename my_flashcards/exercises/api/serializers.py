@@ -412,7 +412,7 @@ class MultipleExercisesSerializer(serializers.ModelSerializer):
 exercise_serializers = {
     "MatchExercise": MatchExerciseSerializer,
     "MatchExerciseTextWithImage": MatchExerciseTextWithImageSerializer,
-    "FillInTextExercise": FillInTextExerciseWithChoicesSerializer,
+    "FillInTextExerciseWithChoices": FillInTextExerciseWithChoicesSerializer,
     "FillInTextExerciseWithPredefinedBlocks": FillInTextExerciseWithPredefinedBlocksSerializer,
     "FillInTextExerciseWithPredefinedBlocksWithImageDecoration": FillInTextExerciseWithPredefinedBlocksWithImageDecorationSerializer,
     "FillInTextExerciseWithChoicesWithImageDecoration": FillInTextExerciseWithChoicesWithImageDecorationSerializer,
