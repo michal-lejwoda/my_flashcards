@@ -40,18 +40,27 @@ class ExerciseBase(Page):
     def check_answer(self, user, user_answers):
         raise NotImplementedError("Classes should implement this method")
 
-    def save_attempt(self, user, answers, score, max_score):
-        #TODO LATER
+    def save_attempt(self, user, answers, score, max_score, detailed_results=None):
         attempt, created = ExerciseAttempt.objects.update_or_create(
             user=user,
             exercise=self,
             defaults={
                 'score': score,
                 'max_score': max_score,
-                'completed': True
+                'completed': True,
+                'raw_user_answers': answers,
+                'detailed_results': detailed_results or {}
             }
         )
+
+        UserAnswer.objects.filter(attempt=attempt).delete()
+
+        self._save_detailed_answers(attempt, answers, detailed_results)
+
         return attempt
+
+    def _save_detailed_answers(self, attempt, user_answers, detailed_results):
+        pass
 
 class MatchExercise(ExerciseBase, MatchExercisesCheck):
     pairs = StreamField([
@@ -66,9 +75,25 @@ class MatchExercise(ExerciseBase, MatchExercisesCheck):
     content_panels = ExerciseBase.content_panels + [
         FieldPanel('pairs'),
     ]
+
     def check_answer(self, user, user_answers):
         correct_answers = self.check_pair_exercises(self.pairs)
-        return check_user_answers(user_answers, correct_answers)
+        result = check_user_answers(user_answers, correct_answers)
+        self.save_attempt(user, user_answers, result['score'], result['max_score'], result)
+
+        return result
+
+    def _save_detailed_answers(self, attempt, user_answers, detailed_results):
+        if 'result_answers' in detailed_results:
+            for i, answer_data in enumerate(detailed_results['result_answers']):
+                UserAnswer.objects.create(
+                    attempt=attempt,
+                    question_identifier=f"pair_{i}",
+                    user_response=user_answers.get(i, '') if isinstance(user_answers, dict) else '',
+                    correct_answer=answer_data.get('correct_answer', ''),
+                    is_correct=answer_data.get('correct', False),
+                    question_type='match_pair'
+                )
 
 class MatchExerciseTextWithImage(ExerciseBase, MatchExercisesCheck):
     pairs = StreamField(
@@ -92,9 +117,6 @@ class MatchExerciseTextWithImage(ExerciseBase, MatchExercisesCheck):
         correct_answers = self.check_pair_exercises(self.pairs)
         return check_user_answers(user_answers, correct_answers)
 
-
-
-
 class FillInTextExerciseWithChoices(ExerciseBase):
     text_with_blanks = models.TextField(
         help_text="Use {{1}}, {{2}}, {{3}} in blanks."
@@ -109,7 +131,7 @@ class FillInTextExerciseWithChoices(ExerciseBase):
         FieldPanel('text_with_blanks'),
         FieldPanel('blanks'),
     ]
-    #TODO CLEAN IT
+
     def check_answer(self, user, user_answers):
         user_answer_map = {a['blank_id']: a['answer'] for a in user_answers}
 
@@ -136,11 +158,27 @@ class FillInTextExerciseWithChoices(ExerciseBase):
                 "correct": is_correct
             })
 
-        return {
+        result = {
             "score": score,
             "max_score": len(result_answers),
             "result_answers": result_answers
         }
+
+        self.save_attempt(user, user_answers, score, len(result_answers), result)
+
+        return result
+
+    def _save_detailed_answers(self, attempt, user_answers, detailed_results):
+        if 'result_answers' in detailed_results:
+            for answer_data in detailed_results['result_answers']:
+                UserAnswer.objects.create(
+                    attempt=attempt,
+                    question_identifier=f"blank_{answer_data['blank_id']}",
+                    user_response=answer_data['provided_answer'],
+                    correct_answer=answer_data['correct_answer'],
+                    is_correct=answer_data['correct'],
+                    question_type='fill_blank'
+                )
 
 class FillInTextExerciseWithChoicesWithImageDecoration(FillInTextExerciseWithChoices):
     image = models.ForeignKey(
@@ -209,19 +247,6 @@ class FillInTextExerciseWithPredefinedBlocks(ExerciseBase):
             "result_answers": result_answers
         }
 
-# class FillInTextExerciseWithPredefinedBlocksWithImageDecoration(FillInTextExerciseWithPredefinedBlocks):
-#     image = models.ForeignKey(
-#         'wagtailimages.Image',
-#         null=True,
-#         blank=True,
-#         on_delete=models.SET_NULL,
-#         related_name='+'
-#     )
-#
-#     content_panels = FillInTextExerciseWithPredefinedBlocks.content_panels + [
-#         FieldPanel('image'),
-#     ]
-
 class ConjugationExercise(ExerciseBase):
     instruction = models.TextField(blank=True)
     person_set = models.CharField(
@@ -243,16 +268,18 @@ class ConjugationExercise(ExerciseBase):
         FieldPanel('person_set'),
         FieldPanel('conjugation_rows'),
     ]
-    #TODO Clean it
+
     def check_answer(self, user, user_answers):
         user_answer_map = {a['person_label']: a['answer'] for a in user_answers}
         result_answers = []
         score = 0
+
         for block in self.conjugation_rows:
             values = block.value
             person_label = values['person_label']
             correct_answer = values["correct_form"]
             is_pre_filled = values["is_pre_filled"]
+
             if not is_pre_filled:
                 user_answer = user_answer_map.get(person_label)
 
@@ -270,22 +297,33 @@ class ConjugationExercise(ExerciseBase):
 
                 result_answers.append(result)
 
-        return {
+        result = {
             "score": score,
             "max_score": len(result_answers),
             "result_answers": result_answers
         }
 
+        self.save_attempt(user, user_answers, score, len(result_answers), result)
 
+        return result
 
-
+    def _save_detailed_answers(self, attempt, user_answers, detailed_results):
+        if 'result_answers' in detailed_results:
+            for answer_data in detailed_results['result_answers']:
+                UserAnswer.objects.create(
+                    attempt=attempt,
+                    question_identifier=f"person_{answer_data['person_label']}",
+                    user_response=answer_data['provided_answer'],
+                    correct_answer=answer_data['correct_answer'],
+                    is_correct=answer_data['correct'],
+                    question_type='conjugation'
+                )
 
 class MultipleOptionToChooseWithAudio(MultipleOptionToChoose):
     audio = AudioChooserBlock(
         help_text="Upload mp3 file",
         required=False
     )
-
 
 class ListenOptionToChooseWithAudio(ListenOptionToChoose):
     audio = models.FileField(
@@ -521,15 +559,27 @@ class ExerciseAttempt(models.Model):
     score = models.IntegerField(default=0)
     max_score = models.IntegerField(default=0)
     completed = models.BooleanField(default=False)
+    raw_user_answers = models.JSONField(default=dict, blank=True)
+    detailed_results = models.JSONField(default=dict, blank=True)
 
     class Meta:
         ordering = ['-created_at']
 
+    @property
+    def percentage_score(self):
+        if self.max_score == 0:
+            return 0
+        return round((self.score / self.max_score) * 100, 2)
 
-class MatchExerciseAnswer(models.Model):
-    attempt = models.ForeignKey(ExerciseAttempt, on_delete=models.CASCADE, related_name='answers')
-    left_item_index = models.IntegerField()
-    right_item_index = models.IntegerField()
+
+class UserAnswer(models.Model):
+    attempt = models.ForeignKey(ExerciseAttempt, on_delete=models.CASCADE, related_name='user_answers')
+    question_identifier = models.CharField(max_length=255)
+    user_response = models.JSONField()
+    correct_answer = models.JSONField()
     is_correct = models.BooleanField(default=False)
+    question_type = models.CharField(max_length=100)
 
+    class Meta:
+        ordering = ['question_identifier']
 
