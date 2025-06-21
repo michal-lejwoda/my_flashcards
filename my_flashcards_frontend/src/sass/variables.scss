@@ -8,19 +8,20 @@ $font-body: 'Inter', sans-serif;
 $font-button: 'Poppins', sans-serif;
 $font-navbar: 'Raleway', sans-serif;
 
-// Text colors
-$color-bg-dark: #213555;
-//$color-bg-dark: #131D4F;
-$color-bg-medium: #3E5879;
-$color-bg-light: #D8C4B6;
+// background colors
+$color-bg-dark: #d4a373;
+$color-bg-medium: #faedcd;
+$color-bg-light: #ccd5ae;
+$color-bg-green-light: #e9edc9;
 
 // Text colors
-$color-text-primary: #F5EFE7;
+$color-text-primary: #fefae0;
 $color-text-muted: lighten($color-text-primary, 15%);
 $color-heading: $color-bg-light;
+$color-text-error: #9d0208;
 
 // Accent
-$color-accent: #D8C4B6;
+$color-accent: #ccd5ae;
 $color-accent-hover: darken($color-accent, 10%);
 
 // Buttons

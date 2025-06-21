@@ -6,7 +6,7 @@ nav {
   top: 0;
   width: 100%;
   background-color: variables.$color-bg-dark;
-  border-bottom: 2px solid white;
+  border-bottom: 2px solid variables.$color-bg-medium;
   text-decoration: none;
   font-family: variables.$font-navbar;
   z-index: 1000;
@@ -15,31 +15,34 @@ nav {
 
 
 .navbar {
+
   &__desktop {
     display: none;
+    height: 60px;
     flex-direction: row;
     justify-content: space-around;
-    @include breakpoint(tablet) {
+
+    @include breakpoint(laptop) {
       display: flex;
     }
   }
   &__select{
     background-color: variables.$color-bg-dark;
-    :hover{
-      color: white;
-    }
+    color: variables.$color-text-primary;
+    cursor: pointer;
   }
   &__mobile{
     position: sticky;
     display:flex;
     justify-content: space-between;
+    height: 60px;
   }
   &__item{
     text-decoration: none;
     color: variables.$color-text-primary;
     :hover{
       cursor: pointer;
-      color: variables.$color-accent-hover;
+      color: variables.$color-bg-light;
     }
   }
 }
@@ -48,12 +51,17 @@ nav {
   &__toggle{
     padding-left: 2rem;
     cursor: pointer;
+    display:flex;
+    justify-content: center;
+    align-content: center;
+    align-items: center;
+    color: variables.$color-bg-medium;
     :hover{
       cursor: pointer;
     }
   }
   &__menu{
-    margin-top:2rem;
+    margin-top:70px;
     position: absolute;
     display: flex;
     flex-direction: column;
@@ -64,7 +72,7 @@ nav {
     &__element{
       border-bottom: 2px solid white;
       padding: 1rem;
-      background-color: #1c1c1a;
+      background-color: variables.$color-bg-dark;
 
     }
   }
@@ -73,10 +81,11 @@ nav {
       border: none;
       font-size: 1.2rem;
       margin-right: 2rem;
+      color: variables.$color-text-primary;
     }
 
   }
-  @include breakpoint(tablet) {
+  @include breakpoint(laptop) {
       display: none;
     }
 }

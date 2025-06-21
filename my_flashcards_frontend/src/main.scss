@@ -24,7 +24,9 @@
     }
   }
 }
-
+html, body{
+  height:100%;
+}
 .title {
   margin-bottom: 1rem;
   @include breakpoint("mobilebig") {
@@ -175,14 +177,16 @@
 .greenoutline--button{
   margin-top: 1rem;
   padding: 0.5rem;
-  border: 2px solid #8ae001;
+  border: 2px solid variables.$color-bg-light;
+  color: variables.$color-bg-green-light;
   font-weight: 700;
+  border-radius: 10px;
 
 }
 .greenoutline--button:hover{
-  background-color: #8ae001;
+  background-color: lighten(variables.$color-bg-dark, 5%);
 }
 button{
-  background-color: #1c1c1a;
+  background-color: variables.$color-bg-dark;
 }
 
