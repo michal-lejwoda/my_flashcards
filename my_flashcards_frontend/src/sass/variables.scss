@@ -1,0 +1,39 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Raleway:wght@500&display=swap');
+
+$font-heading: 'Playfair Display', serif;
+$font-body: 'Inter', sans-serif;
+$font-button: 'Poppins', sans-serif;
+$font-navbar: 'Raleway', sans-serif;
+
+// Text colors
+$color-bg-dark: #213555;
+//$color-bg-dark: #131D4F;
+$color-bg-medium: #3E5879;
+$color-bg-light: #D8C4B6;
+
+// Text colors
+$color-text-primary: #F5EFE7;
+$color-text-muted: lighten($color-text-primary, 15%);
+$color-heading: $color-bg-light;
+
+// Accent
+$color-accent: #D8C4B6;
+$color-accent-hover: darken($color-accent, 10%);
+
+// Buttons
+$button-bg: $color-accent;
+$button-bg-hover: $color-accent-hover;
+$button-text: $color-bg-dark;
+
+// Inputs
+$input-border: lighten($color-bg-medium, 10%);
+$input-bg: $color-bg-medium;
+$input-text: $color-text-primary;
+$input-placeholder: lighten($color-text-primary, 30%);
+
+// Others
+$border-radius: 8px;
+$transition: 0.2s ease-in-out;

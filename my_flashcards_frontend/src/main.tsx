@@ -1,7 +1,6 @@
 import {Suspense} from 'react'
 import ReactDOM from 'react-dom/client'
 import {BrowserRouter, Route, Routes,} from "react-router-dom";
-import './index.css'
 import './main.css'
 import LearnFlashcards from "./components/LearnFlashcards.tsx";
 import Footer from "./components/Footer.tsx";

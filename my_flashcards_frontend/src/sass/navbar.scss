@@ -1,16 +1,18 @@
+@use "variables";
 @import "settings.scss";
 
 nav {
   position: sticky;
   top: 0;
   width: 100%;
-  background-color: #1c1c1a;
-  padding-top: 1rem;
-  padding-bottom: 0.4rem;
+  background-color: variables.$color-bg-dark;
   border-bottom: 2px solid white;
   text-decoration: none;
+  font-family: variables.$font-navbar;
   z-index: 1000;
 }
+
+
 
 .navbar {
   &__desktop {
@@ -22,7 +24,7 @@ nav {
     }
   }
   &__select{
-    background-color: #1c1c1c;
+    background-color: variables.$color-bg-dark;
     :hover{
       color: white;
     }
@@ -34,9 +36,10 @@ nav {
   }
   &__item{
     text-decoration: none;
+    color: variables.$color-text-primary;
     :hover{
       cursor: pointer;
-      color: #8ae001;
+      color: variables.$color-accent-hover;
     }
   }
 }
@@ -69,7 +72,6 @@ nav {
     &--select {
       border: none;
       font-size: 1.2rem;
-      //padding: 5px;
       margin-right: 2rem;
     }
 
@@ -83,13 +85,16 @@ nav {
   &__menu {
     display: flex;
     flex-direction: row;
-    list-style-type: none
+    list-style-type: none;
+    margin: 0;
   }
 }
 
 .menu {
   &__element {
     padding: 15px 15px 15px;
+    font-size: 1.2rem;
+    //color: variables.$color-text-primary;
   }
 
   &__language {

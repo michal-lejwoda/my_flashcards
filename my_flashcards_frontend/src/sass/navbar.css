@@ -1,12 +1,15 @@
+@import url("https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Raleway:wght@500&display=swap");
 nav {
   position: sticky;
   top: 0;
   width: 100%;
-  background-color: #1c1c1a;
-  padding-top: 1rem;
-  padding-bottom: 0.4rem;
+  background-color: #213555;
   border-bottom: 2px solid white;
   text-decoration: none;
+  font-family: "Raleway", sans-serif;
   z-index: 1000;
 }
 
@@ -21,7 +24,7 @@ nav {
   }
 }
 .navbar__select {
-  background-color: #1c1c1c;
+  background-color: #213555;
 }
 .navbar__select :hover {
   color: white;
@@ -33,10 +36,11 @@ nav {
 }
 .navbar__item {
   text-decoration: none;
+  color: #F5EFE7;
 }
 .navbar__item :hover {
   cursor: pointer;
-  color: #8ae001;
+  color: rgb(198.2410714286, 169.1339285714, 148.7589285714);
 }
 
 .mobile__toggle {
@@ -76,10 +80,12 @@ nav {
   display: flex;
   flex-direction: row;
   list-style-type: none;
+  margin: 0;
 }
 
 .menu__element {
   padding: 15px 15px 15px;
+  font-size: 1.2rem;
 }
 .menu__language--select {
   border: none;

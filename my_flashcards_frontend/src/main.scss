@@ -1,3 +1,6 @@
+
+@use './sass/variables';
+
 @mixin breakpoint($point) {
   @if $point == mobilebig {
     @media screen and (min-width: 500px) {
@@ -122,3 +125,64 @@
 .errors {
   text-align: start;
 }
+
+
+//
+
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    //color:white;
+}
+
+#root {
+  width: 100%;
+  background-color: variables.$color-bg-dark;
+  min-height: 102vh;
+  display: flex;
+  flex-direction: column;
+
+}
+.main{
+  padding: 2rem 1rem 1rem;
+}
+
+.standard-button{
+  padding: 0.5rem 1rem 0.5rem;
+  margin-right: 0.2rem;
+  margin-bottom: 0.5rem;
+
+}
+.textfield__label{
+  color:white !important;
+}
+.textfield__input{
+  margin-bottom: 2rem !important;
+  width: 100%;
+  color: white !important;
+
+  fieldset{
+    border-color: white !important;
+    color: white !important;
+
+  }
+  fieldset:hover{
+    border-color: white !important;
+  }
+}
+.greenoutline--button{
+  margin-top: 1rem;
+  padding: 0.5rem;
+  border: 2px solid #8ae001;
+  font-weight: 700;
+
+}
+.greenoutline--button:hover{
+  background-color: #8ae001;
+}
+button{
+  background-color: #1c1c1a;
+}
+
