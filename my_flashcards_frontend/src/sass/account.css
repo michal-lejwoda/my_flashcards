@@ -191,7 +191,37 @@ button {
 }
 
 .account {
-  min-width: 280px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-width: 350px;
+}
+.account__section {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+.account__image {
+  display: none;
+}
+@media screen and (min-width: 900px) {
+  .account__image {
+    width: 50%;
+    display: flex;
+    justify-content: center;
+    align-content: center;
+  }
+  .account__image img {
+    height: 400px;
+  }
+}
+@media screen and (min-width: 900px) and (min-width: 1200px) {
+  .account__image {
+    min-width: 600px;
+  }
+  .account__image img {
+    height: 600px;
+  }
 }
 .account__button {
   width: 100%;
@@ -211,6 +241,7 @@ button {
   justify-content: center;
   align-items: flex-start;
   margin-top: 2rem;
+  height: 400px;
 }
 .account__options--button {
   padding: 0.4rem 1rem;
@@ -219,6 +250,7 @@ button {
   border-radius: 10px;
   white-space: normal;
   width: 140px;
+  color: #fefae0;
 }
 @media screen and (min-width: 500px) {
   .account__options--button {
@@ -236,24 +268,31 @@ button {
 .account__form {
   padding-left: 0.5rem;
   width: 400px;
+  color: #faedcd;
+  font-size: 1.1rem;
 }
 .account__form--textfield {
   margin-bottom: 1rem;
   margin-top: 1rem;
 }
 .account__form--remove {
-  color: rgb(138, 224, 1);
   text-decoration: underline;
   cursor: pointer;
+  color: #ccd5ae;
+  font-weight: 600;
+  font-size: 1.2rem;
 }
 .account__form--reset {
-  color: rgb(138, 224, 1);
-  text-decoration: underline;
+  font-weight: 600;
   cursor: pointer;
+  color: #ccd5ae;
+  font-size: 1.2rem;
 }
 .account__header--title {
   display: flex;
   justify-content: center;
+  color: #fefae0;
+  font-family: "Playfair Display", serif;
 }
 
 .form__message {
