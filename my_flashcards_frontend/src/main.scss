@@ -33,9 +33,38 @@ html, body{
     margin-bottom: 2rem;
   }
 }
-
+//.close-button-gold{
+//  color: red !important;
+//}
 .modal-content {
-  background-color: #1c1c1a !important;
+  background-color: variables.$color-bg-medium !important;
+}
+.modal-header {
+  color: variables.$color-bg-dark;
+  border-bottom: 1px solid variables.$color-bg-dark !important;
+}
+.modal-body{
+    .MuiInputBase-input {
+    color: variables.$color-bg-dark !important;
+  }
+  .MuiFormLabel-root{
+    color: variables.$color-bg-dark !important;;
+  }
+  .customTextField .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline {
+    border-color: variables.$color-bg-dark !important;
+    color: variables.$color-bg-dark !important;
+  }
+.textFieldInput {
+  color: red !important;
+
+  ::placeholder {
+    color: red !important;
+  }
+}
+}
+
+.modal-footer{
+  border-top: 1px solid variables.$color-bg-dark !important;
 }
 
 .dangeroutline--button {

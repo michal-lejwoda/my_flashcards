@@ -1,9 +1,30 @@
 @import '../main.scss';
 .create_word{
   display:flex;
-  flex-direction: column;
+  flex-direction: row;
   justify-content: center;
   align-items: center;
+  &__image{
+    display:none;
+
+    @include breakpoint("laptop") {
+    width: 50%;
+    display:flex;
+    justify-content: center;
+    align-content: center;
+      img{
+      height: 500px;
+    }
+      @include breakpoint("desktop") {
+        min-width: 600px;
+        img{
+      height: 600px;
+    }
+      }
+      }
+  }
+
+
   &__container{
     @include breakpoint("mobilebig") {
       width: 500px;

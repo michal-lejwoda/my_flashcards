@@ -16,7 +16,33 @@ html, body {
 }
 
 .modal-content {
-  background-color: #1c1c1a !important;
+  background-color: #faedcd !important;
+}
+
+.modal-header {
+  color: #d4a373;
+  border-bottom: 1px solid #d4a373 !important;
+}
+
+.modal-body .MuiInputBase-input {
+  color: #d4a373 !important;
+}
+.modal-body .MuiFormLabel-root {
+  color: #d4a373 !important;
+}
+.modal-body .customTextField .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline {
+  border-color: #d4a373 !important;
+  color: #d4a373 !important;
+}
+.modal-body .textFieldInput {
+  color: red !important;
+}
+.modal-body .textFieldInput ::placeholder {
+  color: red !important;
+}
+
+.modal-footer {
+  border-top: 1px solid #d4a373 !important;
 }
 
 .dangeroutline--button {
@@ -168,9 +194,31 @@ button {
 
 .create_word {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   justify-content: center;
   align-items: center;
+}
+.create_word__image {
+  display: none;
+}
+@media screen and (min-width: 900px) {
+  .create_word__image {
+    width: 50%;
+    display: flex;
+    justify-content: center;
+    align-content: center;
+  }
+  .create_word__image img {
+    height: 500px;
+  }
+}
+@media screen and (min-width: 900px) and (min-width: 1200px) {
+  .create_word__image {
+    min-width: 600px;
+  }
+  .create_word__image img {
+    height: 600px;
+  }
 }
 @media screen and (min-width: 500px) {
   .create_word__container {

@@ -69,8 +69,11 @@ const CreateComponent = () => {
 
     return (
         <div className="create_word">
-            <CenteredTitle title={t("create")}/>
+            <div className="create_word__image">
+                <img src="public/create_deck.svg" alt=""/>
+            </div>
             <div className="create_word__container">
+                <CenteredTitle title={t("create")}/>
                 <CenteredForm handleSubmit={handleSubmit}>
                     <AsyncSelect
                         className="async_select"
