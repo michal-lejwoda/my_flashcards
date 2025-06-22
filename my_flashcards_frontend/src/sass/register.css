@@ -2,6 +2,10 @@
 @import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Raleway:wght@500&display=swap");
+html, body {
+  height: 100%;
+}
+
 .title {
   margin-bottom: 1rem;
 }
@@ -112,7 +116,7 @@
 
 #root {
   width: 100%;
-  background-color: #213555;
+  background-color: #d4a373;
   min-height: 102vh;
   display: flex;
   flex-direction: column;
@@ -148,38 +152,91 @@
 .greenoutline--button {
   margin-top: 1rem;
   padding: 0.5rem;
-  border: 2px solid #8ae001;
+  border: 2px solid #ccd5ae;
+  color: #e9edc9;
   font-weight: 700;
+  border-radius: 10px;
 }
 
 .greenoutline--button:hover {
-  background-color: #8ae001;
+  background-color: rgb(217.9918032787, 175.8196721311, 134.5081967213);
 }
 
 button {
-  background-color: #1c1c1a;
+  background-color: #d4a373;
 }
 
 .register {
   display: flex;
+  flex-direction: row;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  min-height: 500px;
+}
+.register__image {
+  display: none;
+}
+@media screen and (min-width: 900px) {
+  .register__image {
+    width: 50%;
+    display: flex;
+    justify-content: center;
+    align-content: center;
+  }
+  .register__image img {
+    height: 450px;
+  }
+}
+@media screen and (min-width: 900px) and (min-width: 1200px) {
+  .register__image {
+    min-width: 600px;
+  }
+  .register__image img {
+    height: 600px;
+  }
+}
+.register__container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.register__container form {
+  width: 100%;
+}
+@media screen and (min-width: 900px) {
+  .register__container {
+    min-width: 400px;
+  }
+}
+@media screen and (min-width: 1200px) {
+  .register__container {
+    min-width: 550px;
+  }
+}
+.register__container__inputs {
+  display: flex;
   flex-direction: column;
   justify-content: center;
-  text-align: center;
   align-items: center;
+  width: 600px;
+}
+@media screen and (min-width: 900px) {
+  .register__container__inputs {
+    min-width: 400px;
+  }
+}
+@media screen and (min-width: 1200px) {
+  .register__container__inputs {
+    min-width: 550px;
+  }
 }
 .register__submit {
   display: flex;
   justify-content: flex-end;
 }
-@media screen and (min-width: 500px) {
-  .register__container {
-    width: 500px;
-  }
-}
-@media screen and (min-width: 700px) {
-  .register__container {
-    width: 600px;
-  }
+.register__container {
+  width: 100%;
 }
 
 /*# sourceMappingURL=register.css.map */

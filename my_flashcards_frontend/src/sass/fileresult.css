@@ -2,6 +2,10 @@
 @import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Raleway:wght@500&display=swap");
+html, body {
+  height: 100%;
+}
+
 .title {
   margin-bottom: 1rem;
 }
@@ -112,7 +116,7 @@
 
 #root {
   width: 100%;
-  background-color: #213555;
+  background-color: #d4a373;
   min-height: 102vh;
   display: flex;
   flex-direction: column;
@@ -148,16 +152,18 @@
 .greenoutline--button {
   margin-top: 1rem;
   padding: 0.5rem;
-  border: 2px solid #8ae001;
+  border: 2px solid #ccd5ae;
+  color: #e9edc9;
   font-weight: 700;
+  border-radius: 10px;
 }
 
 .greenoutline--button:hover {
-  background-color: #8ae001;
+  background-color: rgb(217.9918032787, 175.8196721311, 134.5081967213);
 }
 
 button {
-  background-color: #1c1c1a;
+  background-color: #d4a373;
 }
 
 .file-result {
