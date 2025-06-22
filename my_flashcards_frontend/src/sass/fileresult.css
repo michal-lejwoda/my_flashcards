@@ -107,6 +107,8 @@ html, body {
 .pagination--select {
   background-color: transparent;
   margin-left: 1rem;
+  color: #fefae0;
+  cursor: pointer;
 }
 .pagination--button {
   padding: 0.4rem;
@@ -114,6 +116,7 @@ html, body {
   background-color: transparent;
   margin-right: 0.3rem;
   cursor: pointer;
+  color: #fefae0;
 }
 
 .async_select {

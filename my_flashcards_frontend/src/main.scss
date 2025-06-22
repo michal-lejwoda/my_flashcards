@@ -128,6 +128,8 @@ html, body{
   &--select {
     background-color: transparent;
     margin-left: 1rem;
+    color: variables.$color-text-primary;
+    cursor: pointer;
   }
 
   &--button {
@@ -136,6 +138,7 @@ html, body{
     background-color: transparent;
     margin-right: 0.3rem;
     cursor: pointer;
+    color: variables.$color-text-primary;
   }
 }
 
