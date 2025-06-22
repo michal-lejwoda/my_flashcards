@@ -2,6 +2,10 @@
 @import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Raleway:wght@500&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Raleway:wght@500&display=swap");
 html, body {
   height: 100%;
 }
@@ -197,10 +201,27 @@ button {
 
 .search {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   justify-content: center;
   text-align: center;
-  align-items: center;
+}
+.search__container {
+  margin-top: 2rem;
+}
+.search__image {
+  display: none;
+}
+@media screen and (min-width: 1200px) {
+  .search__image {
+    width: 50%;
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    min-width: 600px;
+  }
+  .search__image img {
+    height: 600px;
+  }
 }
 .search__body {
   width: 100%;
@@ -225,10 +246,15 @@ button {
 }
 .search_table__table {
   border-collapse: collapse;
+  color: #faedcd;
 }
 .search_table__table table, .search_table__table th, .search_table__table td {
   border: 1px solid white;
   border-collapse: collapse;
+}
+
+.pagination {
+  color: #faedcd;
 }
 
 /*# sourceMappingURL=search.css.map */

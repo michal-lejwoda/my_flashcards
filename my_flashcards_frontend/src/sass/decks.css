@@ -30,6 +30,7 @@
 .decks__error {
   margin-top: 1rem;
   margin-bottom: 1rem;
+  color: #faedcd;
 }
 .decks__searchcontainer {
   display: flex;
