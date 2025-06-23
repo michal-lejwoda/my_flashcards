@@ -30,8 +30,12 @@ const Decks = () => {
 
 
     return (
-        <div className="decks">
-            <h1 className="title">{t("decks")}</h1>
+        <section className="decks__section">
+            <div className="decks__image">
+                <img src="public/list.svg" alt=""/>
+            </div>
+            <div className="decks__container">
+            <h1 className="decks__container__title">{t("decks")}</h1>
             {data && data.results && (
                 <DecksTablewithPagination
                     data={data}
@@ -43,6 +47,7 @@ const Decks = () => {
                 />
             )}
         </div>
+        </section>
     );
 };
 

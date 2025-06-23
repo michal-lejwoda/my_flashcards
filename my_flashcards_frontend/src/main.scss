@@ -1,3 +1,6 @@
+
+@use './sass/variables';
+
 @mixin breakpoint($point) {
   @if $point == mobilebig {
     @media screen and (min-width: 500px) {
@@ -21,16 +24,47 @@
     }
   }
 }
-
+html, body{
+  height:100%;
+}
 .title {
   margin-bottom: 1rem;
   @include breakpoint("mobilebig") {
     margin-bottom: 2rem;
   }
 }
-
+//.close-button-gold{
+//  color: red !important;
+//}
 .modal-content {
-  background-color: #1c1c1a !important;
+  background-color: variables.$color-bg-medium !important;
+}
+.modal-header {
+  color: variables.$color-bg-dark;
+  border-bottom: 1px solid variables.$color-bg-dark !important;
+}
+.modal-body{
+    .MuiInputBase-input {
+    color: variables.$color-bg-dark !important;
+  }
+  .MuiFormLabel-root{
+    color: variables.$color-bg-dark !important;;
+  }
+  .customTextField .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline {
+    border-color: variables.$color-bg-dark !important;
+    color: variables.$color-bg-dark !important;
+  }
+.textFieldInput {
+  color: red !important;
+
+  ::placeholder {
+    color: red !important;
+  }
+}
+}
+
+.modal-footer{
+  border-top: 1px solid variables.$color-bg-dark !important;
 }
 
 .dangeroutline--button {
@@ -46,9 +80,21 @@
     margin: 1rem;
     padding: 0.5rem;
     font-weight: 700;
-
   }
 }
+
+.button-darker{
+  padding: 0.5rem;
+  font-size: 0.8rem;
+  background-color: variables.$button-bg;
+  cursor: pointer;
+  border: 2px solid variables.$color-bg-light;
+  color: variables.$color-text-primary;
+  border-radius: 5px;
+  font-weight: 600;
+  margin: 0.2rem;
+}
+
 
 .spinner{
   width:100%;
@@ -94,6 +140,8 @@
   &--select {
     background-color: transparent;
     margin-left: 1rem;
+    color: variables.$color-text-primary;
+    cursor: pointer;
   }
 
   &--button {
@@ -102,6 +150,7 @@
     background-color: transparent;
     margin-right: 0.3rem;
     cursor: pointer;
+    color: variables.$color-text-primary;
   }
 }
 
@@ -122,3 +171,68 @@
 .errors {
   text-align: start;
 }
+
+
+//
+
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    //color:white;
+}
+
+#root {
+  width: 100%;
+  background-color: variables.$color-bg-dark;
+  min-height: 102vh;
+  display: flex;
+  flex-direction: column;
+
+}
+.main{
+  padding: 2rem 1rem 1rem;
+}
+
+.standard-button{
+  padding: 0.5rem 1rem 0.5rem;
+  margin-right: 0.2rem;
+  margin-bottom: 0.5rem;
+
+}
+.textfield__label{
+  color:white !important;
+}
+.textfield__input{
+  margin-bottom: 2rem !important;
+  width: 100%;
+  color: white !important;
+
+  fieldset{
+    border-color: white !important;
+    color: white !important;
+
+  }
+  fieldset:hover{
+    border-color: white !important;
+  }
+}
+.greenoutline--button{
+  margin-top: 1rem;
+  padding: 0.5rem;
+  border: 2px solid variables.$color-bg-light;
+  color: variables.$color-bg-green-light;
+  font-weight: 700;
+  border-radius: 10px;
+  &--mb{
+    margin-bottom: 1rem;
+  }
+}
+.greenoutline--button:hover{
+  background-color: lighten(variables.$color-bg-dark, 5%);
+}
+button{
+  background-color: variables.$color-bg-dark;
+}
+

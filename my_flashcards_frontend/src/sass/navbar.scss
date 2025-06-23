@@ -1,42 +1,48 @@
+@use "variables";
 @import "settings.scss";
 
 nav {
   position: sticky;
   top: 0;
   width: 100%;
-  background-color: #1c1c1a;
-  padding-top: 1rem;
-  padding-bottom: 0.4rem;
-  border-bottom: 2px solid white;
+  background-color: variables.$color-bg-dark;
+  border-bottom: 2px solid variables.$color-bg-medium;
   text-decoration: none;
+  font-family: variables.$font-navbar;
   z-index: 1000;
 }
 
+
+
 .navbar {
+
   &__desktop {
     display: none;
+    height: 60px;
     flex-direction: row;
     justify-content: space-around;
-    @include breakpoint(tablet) {
+
+    @include breakpoint(laptop) {
       display: flex;
     }
   }
   &__select{
-    background-color: #1c1c1c;
-    :hover{
-      color: white;
-    }
+    background-color: variables.$color-bg-dark;
+    color: variables.$color-text-primary;
+    cursor: pointer;
   }
   &__mobile{
     position: sticky;
     display:flex;
     justify-content: space-between;
+    height: 60px;
   }
   &__item{
     text-decoration: none;
+    color: variables.$color-text-primary;
     :hover{
       cursor: pointer;
-      color: #8ae001;
+      color: variables.$color-bg-light;
     }
   }
 }
@@ -45,12 +51,17 @@ nav {
   &__toggle{
     padding-left: 2rem;
     cursor: pointer;
+    display:flex;
+    justify-content: center;
+    align-content: center;
+    align-items: center;
+    color: variables.$color-bg-medium;
     :hover{
       cursor: pointer;
     }
   }
   &__menu{
-    margin-top:2rem;
+    margin-top:70px;
     position: absolute;
     display: flex;
     flex-direction: column;
@@ -61,7 +72,7 @@ nav {
     &__element{
       border-bottom: 2px solid white;
       padding: 1rem;
-      background-color: #1c1c1a;
+      background-color: variables.$color-bg-dark;
 
     }
   }
@@ -69,12 +80,12 @@ nav {
     &--select {
       border: none;
       font-size: 1.2rem;
-      //padding: 5px;
       margin-right: 2rem;
+      color: variables.$color-text-primary;
     }
 
   }
-  @include breakpoint(tablet) {
+  @include breakpoint(laptop) {
       display: none;
     }
 }
@@ -83,13 +94,16 @@ nav {
   &__menu {
     display: flex;
     flex-direction: row;
-    list-style-type: none
+    list-style-type: none;
+    margin: 0;
   }
 }
 
 .menu {
   &__element {
     padding: 15px 15px 15px;
+    font-size: 1.2rem;
+    //color: variables.$color-text-primary;
   }
 
   &__language {

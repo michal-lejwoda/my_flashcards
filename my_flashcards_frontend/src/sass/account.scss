@@ -1,12 +1,14 @@
+@use 'variables';
 @import '../main.scss';
 
+
 .MuiInputBase-input {
-  color: white !important;
+  color: variables.$color-text-primary !important;
 }
 
 .customTextField .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline {
-  border-color: white !important;
-  color: white !important;
+  border-color: variables.$color-bg-light !important;
+  color: variables.$color-bg-light !important;
 }
 
 .customTextField {
@@ -14,15 +16,44 @@
 }
 
 .textFieldInput {
-  color: white !important;
+  color: variables.$color-bg-light !important;
 
   ::placeholder {
-    color: white !important;
+    color: variables.$color-bg-light !important;
   }
 }
 
 .account {
-  min-width: 280px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+
+  &__section{
+    display:flex;
+    flex-direction: row;
+    justify-content: center;
+  }
+
+  min-width: 350px;
+  &__image{
+    display:none;
+    @include breakpoint("laptop") {
+    width: 50%;
+    display:flex;
+    justify-content: center;
+    align-content: center;
+      img{
+      height: 400px;
+    }
+      @include breakpoint("desktop") {
+        min-width: 600px;
+        img{
+      height: 600px;
+    }
+      }
+      }
+  }
+
   &__button{
     width: 100%;
     display:flex;
@@ -32,6 +63,8 @@
   &__title {
     margin-top: 0.5rem;
     margin-bottom: 1rem;
+    color: variables.$color-text-primary;
+    font-family: variables.$font-heading;
   }
 
   &__body {
@@ -40,6 +73,7 @@
     justify-content: center;
     align-items: flex-start;
     margin-top: 2rem;
+    height: 400px;
   }
 
   &__options {
@@ -50,6 +84,7 @@
       border-radius: 10px;
       white-space: normal;
       width: 140px;
+      color: variables.$color-text-primary;
       @include breakpoint("mobilebig") {
         width: 170px;
       }
@@ -66,24 +101,32 @@
   &__form {
 
     padding-left: 0.5rem;
-    //min-width: 120px;
     width: 400px;
+    color: variables.$color-bg-medium;
+    font-size: 1.1rem;
 
     &--textfield {
       margin-bottom: 1rem;
       margin-top: 1rem;
+
     }
 
     &--remove {
-      color: rgb(138, 224, 1);
+      //color: rgb(138, 224, 1);
       text-decoration: underline;
       cursor: pointer;
+      color: variables.$color-bg-light;
+      font-weight: 600;
+      font-size: 1.2rem;
     }
 
     &--reset {
-      color: rgb(138, 224, 1);
-      text-decoration: underline;
+      //color: rgb(138, 224, 1);
+      //text-decoration: underline;
+      font-weight: 600;
       cursor: pointer;
+      color: variables.$color-bg-light;
+      font-size: 1.2rem;
     }
   }
 
@@ -91,6 +134,8 @@
     &--title {
       display: flex;
       justify-content: center;
+      color: variables.$color-text-primary;
+      font-family: variables.$font-heading;
     }
   }
 }
@@ -102,7 +147,7 @@
   }
 
   &__error {
-    color: darkred;
+    color: variables.$color-text-error;
   }
 }
 

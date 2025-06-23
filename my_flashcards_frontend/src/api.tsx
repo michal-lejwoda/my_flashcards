@@ -10,7 +10,8 @@ import {
 
 
 const instance = axios.create({
-    // baseURL: 'http://0.0.0.0:8000',
+    // TODO Use it only local
+    baseURL: 'http://0.0.0.0:8000',
     headers: {
         'Accept': 'application/json',
     }

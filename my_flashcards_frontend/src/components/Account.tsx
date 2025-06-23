@@ -15,6 +15,9 @@ const Account = () => {
     };
     return (
         <section className="account__section ">
+            <div className="account__image">
+                <img src="public/forgot_password.svg" alt=""/>
+            </div>
             <div className="account">
                 <div className="account__header">
                     <h1 className="account__header--title">{t("account_settings")}</h1>
@@ -22,13 +25,13 @@ const Account = () => {
                 <div className="account__body">
                     <div className="account__options">
                         <div className="account__options--input">
-                            <button className="account__options--button" style={{backgroundColor: clickedButton === 'CHANGE_EMAIL' ? '#8ae001' : '#1c1c1a'}}
+                            <button className="account__options--button" style={{backgroundColor: clickedButton === 'CHANGE_EMAIL' ? '#b8865e' : '#cb9e6c'}}
                                     onClick={() => handleClick('CHANGE_EMAIL')}>{t("change_email")}
                             </button>
                         </div>
                         <div className="account__options--input">
                             <button className="account__options--button"
-                                style={{backgroundColor: clickedButton === 'CHANGE_PASSWORD' ? '#8ae001' : '#1c1c1a'}}
+                                style={{backgroundColor: clickedButton === 'CHANGE_PASSWORD' ? '#b8865e' : '#cb9e6c'}}
                                 onClick={() => handleClick('CHANGE_PASSWORD')}>{t("change_password")}</button>
                         </div>
                     </div>

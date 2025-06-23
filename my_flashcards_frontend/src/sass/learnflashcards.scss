@@ -29,14 +29,14 @@
   }
 
   &--wrong {
-    color: red;
+    color: #b85c5c;
     margin-right: 0.2rem;
     font-size: 1.2rem;
     font-weight: 500
   }
 
   &--normal {
-    color: cornflowerblue;
+    color: #6c9a8b;
     margin-left: 0.2rem;
     font-size: 1.2rem;
     font-weight: 500
@@ -59,11 +59,11 @@
 
 .singlebutton {
   &--correct {
-    color: cornflowerblue;
+    color: #1b4332;
   }
 
   &--wrong {
-    color: red;
+    color: #720026;
   }
 
   &__container {

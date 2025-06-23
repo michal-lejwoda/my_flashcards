@@ -1,11 +1,28 @@
+@use 'variables';
 @import '../main.scss';
 
 .search {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   justify-content: center;
   text-align: center;
-  align-items: center;
+  &__container{
+    margin-top: 2rem;
+  }
+
+  &__image{
+    display:none;
+      @include breakpoint("desktop") {
+        width: 50%;
+        display:flex;
+        justify-content: center;
+        align-content: center;
+        min-width: 600px;
+        img{
+      height: 600px;
+    }
+      }
+  }
   &__body{
     width: 100%;
   }
@@ -29,10 +46,14 @@
   &__table {
     //width: 100%;
     border-collapse: collapse;
+    color: variables.$color-bg-medium;
 
     table, th, td {
-      border: 1px solid white;
+      border: 1px solid variables.$color-bg-light;
       border-collapse: collapse;
     }
   }
+}
+.pagination{
+  color: variables.$color-bg-medium;
 }

@@ -1,8 +1,39 @@
+@use "variables";
 @import '../main.scss';
+
 .addfile {
   text-align: center;
+  display:flex;
+  flex-direction: row;
+  justify-content: center;
+  &__container{
+    color: variables.$color-text-primary;
+    .title{
+      font-family: variables.$font-heading;
+    }
+  }
+    &__image{
+    display:none;
+
+    @include breakpoint("laptop") {
+    width: 50%;
+    display:flex;
+    justify-content: center;
+    align-content: center;
+      img{
+      height: 500px;
+    }
+      @include breakpoint("desktop") {
+        min-width: 600px;
+        img{
+      height: 600px;
+    }
+      }
+      }
+  }
+
   &__example{
-    border: 1px solid white;
+    border: 1px solid variables.$color-bg-light;
   }
 
 
@@ -11,7 +42,7 @@
       width: 600px;
     }
     padding: 2rem;
-    border: 1px solid white;
+    border: 1px solid variables.$color-bg-light;
     cursor: pointer;
   }
 

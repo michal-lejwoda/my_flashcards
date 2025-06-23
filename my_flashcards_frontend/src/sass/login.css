@@ -1,3 +1,11 @@
+@import url("https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Raleway:wght@500&display=swap");
+html, body {
+  height: 100%;
+}
+
 .title {
   margin-bottom: 1rem;
 }
@@ -8,7 +16,33 @@
 }
 
 .modal-content {
-  background-color: #1c1c1a !important;
+  background-color: #faedcd !important;
+}
+
+.modal-header {
+  color: #d4a373;
+  border-bottom: 1px solid #d4a373 !important;
+}
+
+.modal-body .MuiInputBase-input {
+  color: #d4a373 !important;
+}
+.modal-body .MuiFormLabel-root {
+  color: #d4a373 !important;
+}
+.modal-body .customTextField .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline {
+  border-color: #d4a373 !important;
+  color: #d4a373 !important;
+}
+.modal-body .textFieldInput {
+  color: red !important;
+}
+.modal-body .textFieldInput ::placeholder {
+  color: red !important;
+}
+
+.modal-footer {
+  border-top: 1px solid #d4a373 !important;
 }
 
 .dangeroutline--button {
@@ -27,6 +61,18 @@
     padding: 0.5rem;
     font-weight: 700;
   }
+}
+
+.button-darker {
+  padding: 0.5rem;
+  font-size: 0.8rem;
+  background-color: #b8865e;
+  cursor: pointer;
+  border: 2px solid #ccd5ae;
+  color: #fefae0;
+  border-radius: 5px;
+  font-weight: 600;
+  margin: 0.2rem;
 }
 
 .spinner {
@@ -73,6 +119,8 @@
 .pagination--select {
   background-color: transparent;
   margin-left: 1rem;
+  color: #fefae0;
+  cursor: pointer;
 }
 .pagination--button {
   padding: 0.4rem;
@@ -80,6 +128,7 @@
   background-color: transparent;
   margin-right: 0.3rem;
   cursor: pointer;
+  color: #fefae0;
 }
 
 .async_select {
@@ -100,20 +149,137 @@
   text-align: start;
 }
 
-.login {
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+#root {
+  width: 100%;
+  background-color: #d4a373;
+  min-height: 102vh;
   display: flex;
   flex-direction: column;
+}
+
+.main {
+  padding: 2rem 1rem 1rem;
+}
+
+.standard-button {
+  padding: 0.5rem 1rem 0.5rem;
+  margin-right: 0.2rem;
+  margin-bottom: 0.5rem;
+}
+
+.textfield__label {
+  color: white !important;
+}
+
+.textfield__input {
+  margin-bottom: 2rem !important;
+  width: 100%;
+  color: white !important;
+}
+.textfield__input fieldset {
+  border-color: white !important;
+  color: white !important;
+}
+.textfield__input fieldset:hover {
+  border-color: white !important;
+}
+
+.greenoutline--button {
+  margin-top: 1rem;
+  padding: 0.5rem;
+  border: 2px solid #ccd5ae;
+  color: #e9edc9;
+  font-weight: 700;
+  border-radius: 10px;
+}
+.greenoutline--button--mb {
+  margin-bottom: 1rem;
+}
+
+.greenoutline--button:hover {
+  background-color: rgb(217.9918032787, 175.8196721311, 134.5081967213);
+}
+
+button {
+  background-color: #d4a373;
+}
+
+.login {
+  display: flex;
   justify-content: center;
-  text-align: center;
+  flex-direction: row;
+  width: 100%;
+  height: 100%;
+  min-height: 500px;
+}
+.login__image {
+  display: none;
+}
+@media screen and (min-width: 900px) {
+  .login__image {
+    width: 50%;
+    display: flex;
+    justify-content: center;
+    align-content: center;
+  }
+  .login__image img {
+    height: 500px;
+  }
+}
+@media screen and (min-width: 900px) and (min-width: 1200px) {
+  .login__image {
+    min-width: 600px;
+  }
+  .login__image img {
+    height: 600px;
+  }
+}
+.login__container {
+  width: 100%;
+  display: flex;
+  justify-content: center;
   align-items: center;
+}
+@media screen and (min-width: 900px) {
+  .login__container {
+    min-width: 400px;
+  }
+}
+@media screen and (min-width: 1200px) {
+  .login__container {
+    min-width: 550px;
+  }
+}
+.login__container__inputs {
+  width: 100%;
+}
+@media screen and (min-width: 900px) {
+  .login__container__inputs {
+    min-width: 400px;
+  }
+}
+@media screen and (min-width: 1200px) {
+  .login__container__inputs {
+    min-width: 550px;
+  }
 }
 .login__submit {
   display: flex;
   justify-content: flex-end;
 }
+.login__container {
+  width: 100%;
+}
 @media screen and (min-width: 500px) {
   .login__container {
     width: 500px;
+    max-width: 600px;
   }
 }
 @media screen and (min-width: 700px) {

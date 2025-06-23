@@ -53,7 +53,7 @@
   "update": "Uaktualnij",
   "current_password": "Obecne hasło",
   "new_password": "Nowe hasło",
-  "account_not_sure": "Nie jesteś pewny swojego obecnego hasła? Możesz je",
+  "account_not_sure": "Nie jesteś pewny swojego obecnego hasła?",
   "reset_it": "Zresetuj",
   "if_email_exists": "Jeśli email znajduje się w bazie to została wysłana na niego wiadomość",
   "reset_password_error": "Wystąpił błąd. Spróbuj ponownie później",

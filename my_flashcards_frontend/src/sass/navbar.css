@@ -1,53 +1,63 @@
+@import url("https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Raleway:wght@500&display=swap");
 nav {
   position: sticky;
   top: 0;
   width: 100%;
-  background-color: #1c1c1a;
-  padding-top: 1rem;
-  padding-bottom: 0.4rem;
-  border-bottom: 2px solid white;
+  background-color: #d4a373;
+  border-bottom: 2px solid #faedcd;
   text-decoration: none;
+  font-family: "Raleway", sans-serif;
   z-index: 1000;
 }
 
 .navbar__desktop {
   display: none;
+  height: 60px;
   flex-direction: row;
   justify-content: space-around;
 }
-@media screen and (min-width: 700px) {
+@media screen and (min-width: 900px) {
   .navbar__desktop {
     display: flex;
   }
 }
 .navbar__select {
-  background-color: #1c1c1c;
-}
-.navbar__select :hover {
-  color: white;
+  background-color: #d4a373;
+  color: #fefae0;
+  cursor: pointer;
 }
 .navbar__mobile {
   position: sticky;
   display: flex;
   justify-content: space-between;
+  height: 60px;
 }
 .navbar__item {
   text-decoration: none;
+  color: #fefae0;
 }
 .navbar__item :hover {
   cursor: pointer;
-  color: #8ae001;
+  color: #ccd5ae;
 }
 
 .mobile__toggle {
   padding-left: 2rem;
   cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-content: center;
+  align-items: center;
+  color: #faedcd;
 }
 .mobile__toggle :hover {
   cursor: pointer;
 }
 .mobile__menu {
-  margin-top: 2rem;
+  margin-top: 70px;
   position: absolute;
   display: flex;
   flex-direction: column;
@@ -59,14 +69,15 @@ nav {
 .mobile__menu__element {
   border-bottom: 2px solid white;
   padding: 1rem;
-  background-color: #1c1c1a;
+  background-color: #d4a373;
 }
 .mobile__language--select {
   border: none;
   font-size: 1.2rem;
   margin-right: 2rem;
+  color: #fefae0;
 }
-@media screen and (min-width: 700px) {
+@media screen and (min-width: 900px) {
   .mobile {
     display: none;
   }
@@ -76,10 +87,12 @@ nav {
   display: flex;
   flex-direction: row;
   list-style-type: none;
+  margin: 0;
 }
 
 .menu__element {
   padding: 15px 15px 15px;
+  font-size: 1.2rem;
 }
 .menu__language--select {
   border: none;

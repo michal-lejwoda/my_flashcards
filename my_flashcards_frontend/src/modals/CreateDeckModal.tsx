@@ -45,7 +45,7 @@ const CreateDeckModal: React.FC<CreateDeckModalProps> = ({openCreateDeckModal, s
                 <CenteredForm handleSubmit={handleSubmit}>
                     <Modal.Header>
                         <Modal.Title>{t("create_deck")}</Modal.Title>
-                        <CloseButton onClick={() => setOpenCreateDeckModal(false)} variant="white"/>
+                        <CloseButton  className="close-button-gold" onClick={() => setOpenCreateDeckModal(false)}/>
                     </Modal.Header>
                     <Modal.Body>
                         <div className="account__form--textfield">

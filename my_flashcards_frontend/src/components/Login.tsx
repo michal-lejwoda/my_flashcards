@@ -54,8 +54,12 @@ const Login = () => {
     });
     return (
         <div className="login">
-            <CenteredTitle title={t('login')}/>
+            <div className="login__image">
+                <img src="public/login_page.svg" alt=""/>
+            </div>
             <div className="login__container">
+                <div className="login__container__inputs">
+                <CenteredTitle title={t('login')}/>
                 <CenteredForm handleSubmit={handleSubmit}>
                     <div className="account__form--textfield">
                         <InputField
@@ -95,6 +99,7 @@ const Login = () => {
                     </div>
                 </CenteredForm>
             </div>
+                </div>
         </div>
     );
 };

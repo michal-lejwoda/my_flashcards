@@ -9,5 +9,5 @@ COPY my_flashcards_frontend .
 #RUN chmod +x ./start_trainer_frontend
 
 RUN npm install
-CMD ["npm", "run", "build"]
+#CMD ["npm", "run", "build"]
 CMD ["npm", "run", "dev"]

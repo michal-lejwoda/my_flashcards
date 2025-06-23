@@ -3,14 +3,46 @@ export const customStyles = {
         singleValue: provided => ({
             ...provided,
             color: 'white',
-            backgroundColor: '#1c1c1a',
+            backgroundColor: 'transparent',
             zIndex: 1,
         }),
+         // @ts-expect-error Custom styles
+        dropdownIndicator: (provided, state) => ({
+            ...provided,
+              color: state.isFocused ? '#e9edc9' : '#ccd5ae',
+              '&:hover': {
+                color: '#b8865e',
+              },
+        }),
+    // @ts-expect-error Custom styles
+    noOptionsMessage: (provided) => ({
+  ...provided,
+  color: '#e9edc9',
+  backgroundColor: 'transparent',
+  padding: 10,
+  fontStyle: 'italic',
+  textAlign: 'center',
+}),
+    // @ts-expect-error Custom styles
+    loadingMessage: (provided) => ({
+  ...provided,
+  color: '#e9edc9',
+  backgroundColor: 'transparent',
+  padding: 10,
+  textAlign: 'center',
+  fontStyle: 'italic',
+}),
+    // @ts-expect-error Custom styles
+    loadingIndicator: (provided) => ({
+  ...provided,
+  color: '#e9edc9',
+}),
+
         // @ts-expect-error Custom styles
         menu: provided => ({
             ...provided,
             color: 'white',
-            backgroundColor: '#1c1c1a',
+            backgroundColor: '#d4a373',
             zIndex: 2,
         }),
         // @ts-expect-error Custom styles
@@ -20,12 +52,16 @@ export const customStyles = {
             zIndex: 1,
         }),
         // @ts-expect-error Custom styles
-        control: provided => ({
-            ...provided,
-            color: 'white',
-            backgroundColor: '1c1c1c1c',
-            // zIndex: 1
-        }),
+        control: (provided, state) => ({
+    ...provided,
+    color: 'white',
+    backgroundColor: 'transparent',
+    borderColor: state.isFocused ? '#ccd5ae' : '#ccd5ae',
+    boxShadow: state.isFocused ? '0 0 0 1px #e9edc9' : 'none',
+    '&:hover': {
+        borderColor: state.isFocused ? '#e9edc9' : '#e9edc9',
+    }
+}),
         // @ts-expect-error Custom styles
         input: provided => ({
             ...provided,
@@ -37,6 +73,6 @@ export const customStyles = {
         option: (base, {isFocused, isSelected}) => ({
             ...base,
             zIndex: 1,
-            backgroundColor: isSelected ? "DodgerBlue" : isFocused ? "grey" : undefined
+            backgroundColor: isSelected ? "#b8865e" : isFocused ? "#cb9e6c" : undefined
         })
     }
