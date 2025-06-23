@@ -31,6 +31,10 @@
     display:flex;
 
   }
+  .content.open{
+    border: 1px solid variables.$color-bg-green-light;
+  }
+
   &__image{
     display:none;
       @include breakpoint("desktop") {
@@ -114,8 +118,8 @@
 }
 .dropdown{
   &__element{
-    background-color: #3E4349;
-    border-bottom: 2px solid white;
+    background-color: variables.$color-bg-dark;
+    border-bottom: 2px solid variables.$color-bg-light;
     cursor: pointer;
   }
   &__button{

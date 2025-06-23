@@ -239,6 +239,9 @@ button {
 .decks__section {
   display: flex;
 }
+.decks .content.open {
+  border: 1px solid #e9edc9;
+}
 .decks__image {
   display: none;
 }
@@ -318,8 +321,8 @@ button {
 }
 
 .dropdown__element {
-  background-color: #3E4349;
-  border-bottom: 2px solid white;
+  background-color: #d4a373;
+  border-bottom: 2px solid #ccd5ae;
   cursor: pointer;
 }
 .dropdown__button {
