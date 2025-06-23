@@ -207,7 +207,7 @@ html, body {
 }
 
 .greenoutline--button:hover {
-  background-color: rgb(217.9918032787, 175.8196721311, 134.5081967213);
+  background-color: #dab087;
 }
 
 button {
@@ -239,6 +239,11 @@ button {
   flex-direction: column;
   justify-content: center;
   min-width: 350px;
+}
+.account__title {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
 }
 .account__section {
   display: flex;
