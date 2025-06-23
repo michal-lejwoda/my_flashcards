@@ -67,6 +67,18 @@ html, body {
   }
 }
 
+.button-darker {
+  padding: 0.5rem;
+  font-size: 0.8rem;
+  background-color: #b8865e;
+  cursor: pointer;
+  border: 2px solid #ccd5ae;
+  color: #fefae0;
+  border-radius: 5px;
+  font-weight: 600;
+  margin: 0.2rem;
+}
+
 .spinner {
   width: 100%;
   height: 100vh;
@@ -190,6 +202,9 @@ html, body {
   font-weight: 700;
   border-radius: 10px;
 }
+.greenoutline--button--mb {
+  margin-bottom: 1rem;
+}
 
 .greenoutline--button:hover {
   background-color: rgb(217.9918032787, 175.8196721311, 134.5081967213);
@@ -234,11 +249,11 @@ button {
   }
 }
 .addfile__example {
-  border: 1px solid white;
+  border: 1px solid #ccd5ae;
 }
 .addfile__dropzone {
   padding: 2rem;
-  border: 1px solid white;
+  border: 1px solid #ccd5ae;
   cursor: pointer;
 }
 @media screen and (min-width: 900px) {

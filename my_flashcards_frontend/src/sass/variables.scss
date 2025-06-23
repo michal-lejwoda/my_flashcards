@@ -25,7 +25,8 @@ $color-accent: #ccd5ae;
 $color-accent-hover: darken($color-accent, 10%);
 
 // Buttons
-$button-bg: $color-accent;
+$button-bg: #b8865e;
+$button-bg-lighter: #cb9e6c;
 $button-bg-hover: $color-accent-hover;
 $button-text: $color-bg-dark;
 

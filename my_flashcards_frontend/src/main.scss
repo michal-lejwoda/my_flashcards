@@ -80,9 +80,21 @@ html, body{
     margin: 1rem;
     padding: 0.5rem;
     font-weight: 700;
-
   }
 }
+
+.button-darker{
+  padding: 0.5rem;
+  font-size: 0.8rem;
+  background-color: variables.$button-bg;
+  cursor: pointer;
+  border: 2px solid variables.$color-bg-light;
+  color: variables.$color-text-primary;
+  border-radius: 5px;
+  font-weight: 600;
+  margin: 0.2rem;
+}
+
 
 .spinner{
   width:100%;
@@ -213,7 +225,9 @@ html, body{
   color: variables.$color-bg-green-light;
   font-weight: 700;
   border-radius: 10px;
-
+  &--mb{
+    margin-bottom: 1rem;
+  }
 }
 .greenoutline--button:hover{
   background-color: lighten(variables.$color-bg-dark, 5%);

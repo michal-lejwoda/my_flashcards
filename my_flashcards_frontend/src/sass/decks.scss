@@ -2,7 +2,7 @@
 @import '../main.scss';
 .words {
   &__learn {
-    color: lightblue;
+    color: variables.$color-text-primary;
   }
 
   &__wrong {
@@ -70,7 +70,7 @@
 
     input{
       padding: 5px;
-      border: 2px solid white;
+      border: 2px solid variables.$color-bg-light;
       font-size: 1rem;
       background-color: transparent;
       color: variables.$color-bg-medium;
@@ -88,7 +88,7 @@
       cursor: pointer;
     }
     table, th, td {
-      border: 1px solid white;
+      border: 1px solid variables.$color-bg-light;
       border-collapse: collapse;
     }
   }
@@ -141,3 +141,20 @@
   right: 0%;
 }
 
+button.pagination--button{
+  border: 1px solid variables.$color-bg-light;
+}
+
+select.pagination--select {
+  border: 1px solid variables.$color-bg-light;
+  padding: 8px;
+  border-radius: 4px;
+  background-color: transparent;
+  transition: box-shadow 0.2s, border 0.2s;
+}
+
+select.pagination--select:focus {
+  border-color: variables.$color-bg-light;
+  box-shadow: 0 0 5px variables.$color-bg-green-light;
+  outline: none;
+}
