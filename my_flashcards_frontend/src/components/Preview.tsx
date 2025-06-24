@@ -84,7 +84,8 @@ const Preview = () => {
             />
             <div className="preview__middle">
                 <div className="preview__buttons">
-                    <button className="standard-button">{t('learn')}</button>
+                    {/*TODO ADD Logic*/}
+                    <button className="greenoutline--button">{t('learn')}</button>
                 </div>
             </div>
             {data && data.results && deck &&

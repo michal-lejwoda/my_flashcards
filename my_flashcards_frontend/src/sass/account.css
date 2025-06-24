@@ -206,6 +206,10 @@ html, body {
   margin-bottom: 1rem;
 }
 
+.button--mr {
+  margin-top: 0;
+}
+
 .greenoutline--button:hover {
   background-color: #dab087;
 }

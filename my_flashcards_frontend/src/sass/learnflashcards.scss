@@ -1,5 +1,7 @@
+@use 'variables';
 .learnflashcards {
   text-align: center;
+  color: variables.$color-text-primary;
 
   &__buttons {
     margin-top: 1rem;
@@ -60,14 +62,18 @@
 .singlebutton {
   &--correct {
     color: #1b4332;
+    margin: 0;
   }
 
   &--wrong {
     color: #720026;
+    margin: 0;
   }
 
   &__container {
     display: flex;
     flex-direction: column;
+    margin-right: 1rem;
   }
 }
+

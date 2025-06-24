@@ -1,5 +1,10 @@
+@use 'variables';
 .preview{
   text-align: center;
+  .title{
+    color: variables.$color-bg-medium;
+    font-family: variables.$font-heading;
+  }
   &__middle{
     margin-top: 2rem;
   }
