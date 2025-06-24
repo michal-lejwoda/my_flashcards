@@ -7,7 +7,7 @@ import {DecksTable, WordResponseTable} from "../interfaces.tsx";
 import {useContext, useEffect, useState} from "react";
 import AuthContext from "../context/AuthContext.tsx";
 import WordTablewithPagination from "../table/WordTablewithPagination.tsx";
-import {useLocation} from "react-router-dom";
+import {useLocation, useNavigate} from "react-router-dom";
 import EditWordModal from "../modals/EditWordModal.tsx";
 import {customStyles} from "../customFunctions.tsx";
 
@@ -15,6 +15,7 @@ const Preview = () => {
     const location = useLocation();
     const {t} = useTranslation();
     const {token} = useContext(AuthContext);
+    const navigate = useNavigate();
     const [deck, setDeck] = useState<DecksTable | null>(null)
     const [data, setData] = useState<WordResponseTable | null>(null)
     const [pageSize, setPageSize] = useState(10)
@@ -24,6 +25,11 @@ const Preview = () => {
         const result = await getDecks(token, inputValue, 10)
         return result.results
     }
+    const moveToLearn = () => {
+    if (deck !== null){
+        navigate('/learn', { state: { id: deck.id, reverse: false } });
+    }
+}
     const handleOpenEditModal = (id: number) => {
         setEditIt(id)
         setShowEdit(true)
@@ -89,7 +95,7 @@ const Preview = () => {
             <div className="preview__middle">
                 <div className="preview__buttons">
                     {/*TODO ADD Logic*/}
-                    <button className="greenoutline--button">{t('learn')}</button>
+                    <button onClick={moveToLearn} className="greenoutline--button">{t('learn')}</button>
                 </div>
             </div>
             {data && data.results && deck &&
