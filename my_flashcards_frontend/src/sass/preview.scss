@@ -1,6 +1,23 @@
 @use 'variables';
+@import '../main.scss';
 .preview{
   text-align: center;
+  display:flex;
+  flex-direction: row;
+  justify-content: center;
+  &__image{
+    display:none;
+      @include breakpoint("desktop") {
+        width: 50%;
+        display:flex;
+        justify-content: center;
+        align-content: center;
+        min-width: 600px;
+        img{
+      height: 600px;
+    }
+      }
+  }
   .title{
     color: variables.$color-bg-medium;
     font-family: variables.$font-heading;

@@ -18,6 +18,7 @@ const LearnFlashcards = () => {
     const [wrongWordsToLearn, setWrongWordsToLearn] = useState<LearnObject[]>([])
     const {t} = useTranslation();
     const [reverse, setReverse] = useState(true)
+
     function setInitData(wordsLearn: LearnObject[], wrongWordsLearn: LearnObject[]) {
         if (wrongWordsLearn.length > 0) {
 
@@ -96,7 +97,7 @@ const LearnFlashcards = () => {
                 if (currentWord) {
                     learnSingleWord(currentWord.id, token, form)
                 }
-                if (wrongWordsToLearn.length == 0 && wordsToLearn.length == 0){
+                if (wrongWordsToLearn.length == 0 && wordsToLearn.length == 0) {
                     navigate("/")
                 }
             } else {
@@ -141,56 +142,62 @@ const LearnFlashcards = () => {
 
     return (
         <div className="learnflashcards">
-            <h1 className="title">{t('learn')}</h1>
-            <div className="learnflashcards__container">
-                <p>{location.state.reverse ? currentWord?.back_side : currentWord?.front_side}</p>
-                {!reverse &&
-                    <div className="learnflashcards__translation">
-                        <p className="translation__title">{t('translation')}</p>
-                        <p>{location.state.reverse ? currentWord?.front_side : currentWord?.back_side}</p>
-                    </div>
-                }
+            <div className="preview__image">
+                <img src="public/search.svg" alt=""/>
             </div>
-            <p className="learnflashcards__howmany"><span className="learnflashcards--wrong"
-                                                          style={{textDecoration: !currentWord?.is_correct ? 'underline' : 'none'}}>{!currentWord?.is_correct ? wrongWordsToLearn.length + 1 : wrongWordsToLearn.length}</span>/<span
-                className="learnflashcards--normal"
-                style={{textDecoration: currentWord?.is_correct ? 'underline' : 'none'}}>{currentWord?.is_correct ? wordsToLearn.length + 1 : wordsToLearn.length}</span>
-            </p>
+            <div className="learnflashcards__all_containers">
+                <h1 className="title">{t('learn')}</h1>
+                <div className="learnflashcards__container">
+
+                    <p>{location.state.reverse ? currentWord?.back_side : currentWord?.front_side}</p>
+                    {!reverse &&
+                        <div className="learnflashcards__translation">
+                            <p className="translation__title">{t('translation')}</p>
+                            <p>{location.state.reverse ? currentWord?.front_side : currentWord?.back_side}</p>
+                        </div>
+                    }
+                </div>
+                <div className="learnflashcards__howmany"><span className="learnflashcards--wrong"
+                                                              style={{textDecoration: !currentWord?.is_correct ? 'underline' : 'none'}}>{!currentWord?.is_correct ? wrongWordsToLearn.length + 1 : wrongWordsToLearn.length}</span><span className="learnflashcards--italics">/</span><span
+                    className="learnflashcards--normal"
+                    style={{textDecoration: currentWord?.is_correct ? 'underline' : 'none'}}>{currentWord?.is_correct ? wordsToLearn.length + 1 : wordsToLearn.length}</span>
+                </div>
 
 
-            <div className="learnflashcards__buttons">
-                {reverse &&
-                    <div className="buttons__reverse">
-                        <button className="greenoutline--button" onClick={() => setReverse(false)}>{t("reverse")}</button>
-                    </div>
-                }
-                {!reverse && currentWord &&
-                    <div className="buttons__results">
-                        <div className="singlebutton__container">
-                            <p className={POSSIBLE_RESULTS[currentWord.level]['AGAIN'].correct ? "singlebutton--correct" : "singlebutton--wrong"}>{t(POSSIBLE_RESULTS[currentWord.level]['AGAIN'].text)}</p>
-                            <button className="greenoutline--button button--mr"
-                                    onClick={() => handleGoNext(currentWord.level, "AGAIN")}>{t("again")}</button>
+                <div className="learnflashcards__buttons">
+                    {reverse &&
+                        <div className="buttons__reverse">
+                            <button className="greenoutline--button"
+                                    onClick={() => setReverse(false)}>{t("reverse")}</button>
                         </div>
-                        <div className="singlebutton__container">
-                            <p className={POSSIBLE_RESULTS[currentWord.level]['HARD'].correct ? "singlebutton--correct" : "singlebutton--wrong"}>{t(POSSIBLE_RESULTS[currentWord.level]['HARD'].text)}</p>
-                            <button className="greenoutline--button button--mr"
-                                    onClick={() => handleGoNext(currentWord.level, "HARD")}>{t("hard")}</button>
-                        </div>
-                        <div className="singlebutton__container">
-                            <p className={POSSIBLE_RESULTS[currentWord.level]['MEDIUM'].correct ? "singlebutton--correct" : "singlebutton--wrong"}>{t(POSSIBLE_RESULTS[currentWord.level]['MEDIUM'].text)}</p>
+                    }
+                    {!reverse && currentWord &&
+                        <div className="buttons__results">
+                            <div className="singlebutton__container">
+                                <p className={POSSIBLE_RESULTS[currentWord.level]['AGAIN'].correct ? "singlebutton--correct" : "singlebutton--wrong"}>{t(POSSIBLE_RESULTS[currentWord.level]['AGAIN'].text)}</p>
+                                <button className="greenoutline--button button--mr"
+                                        onClick={() => handleGoNext(currentWord.level, "AGAIN")}>{t("again")}</button>
+                            </div>
+                            <div className="singlebutton__container">
+                                <p className={POSSIBLE_RESULTS[currentWord.level]['HARD'].correct ? "singlebutton--correct" : "singlebutton--wrong"}>{t(POSSIBLE_RESULTS[currentWord.level]['HARD'].text)}</p>
+                                <button className="greenoutline--button button--mr"
+                                        onClick={() => handleGoNext(currentWord.level, "HARD")}>{t("hard")}</button>
+                            </div>
+                            <div className="singlebutton__container">
+                                <p className={POSSIBLE_RESULTS[currentWord.level]['MEDIUM'].correct ? "singlebutton--correct" : "singlebutton--wrong"}>{t(POSSIBLE_RESULTS[currentWord.level]['MEDIUM'].text)}</p>
 
-                            <button className="greenoutline--button button--mr"
-                                    onClick={() => handleGoNext(currentWord.level, "MEDIUM")}>{t("medium")}</button>
+                                <button className="greenoutline--button button--mr"
+                                        onClick={() => handleGoNext(currentWord.level, "MEDIUM")}>{t("medium")}</button>
+                            </div>
+                            <div className="singlebutton__container">
+                                <p className={POSSIBLE_RESULTS[currentWord.level]['EASY'].correct ? "singlebutton--correct" : "singlebutton--wrong"}>{t(POSSIBLE_RESULTS[currentWord.level]['EASY'].text)}</p>
+                                <button className="greenoutline--button button--mr"
+                                        onClick={() => handleGoNext(currentWord.level, "EASY")}>{t("easy")}</button>
+                            </div>
                         </div>
-                        <div className="singlebutton__container">
-                            <p className={POSSIBLE_RESULTS[currentWord.level]['EASY'].correct ? "singlebutton--correct" : "singlebutton--wrong"}>{t(POSSIBLE_RESULTS[currentWord.level]['EASY'].text)}</p>
-                            <button className="greenoutline--button button--mr"
-                                    onClick={() => handleGoNext(currentWord.level, "EASY")}>{t("easy")}</button>
-                        </div>
-                    </div>
-                }
+                    }
+                </div>
             </div>
-
         </div>
 
     );

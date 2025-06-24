@@ -1,7 +1,35 @@
 @use 'variables';
+@import '../main.scss';
 .learnflashcards {
   text-align: center;
   color: variables.$color-text-primary;
+  display: flex;
+  flex-direction: row;
+  &__howmany {
+      margin-top: 1rem !important;
+    }
+  &--normal {
+      color: #1b4332;
+      margin: 0;
+    }
+
+  &--wrong {
+      color: #720026;
+      margin: 0;
+    }
+  &--italics{
+    color: variables.$color-bg-light;
+    margin-right: 0.3rem;
+    margin-left: 0.3rem;
+  }
+
+  &__all_containers {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+  }
 
   &__buttons {
     margin-top: 1rem;
@@ -14,6 +42,7 @@
   &__container {
     border-radius: 20px;
     min-height: 300px;
+    max-width: 600px;
     border: 2px solid variables.$color-bg-medium;
     display: flex;
     flex-direction: column;
@@ -23,57 +52,45 @@
     word-wrap: break-word;
     word-break: break-word;
     text-align: center;
+    width: 100%;
+    @include breakpoint("laptop") {
+      min-width: 500px;
+    }
+
+
+
 
   }
 
-  &__howmany {
-    margin-top: 1rem;
+  .translation {
+    &__title {
+      padding-bottom: 1rem;
+    }
+
   }
 
-  &--wrong {
-    color: #b85c5c;
-    margin-right: 0.2rem;
-    font-size: 1.2rem;
-    font-weight: 500
+  .buttons {
+    &__results {
+      display: flex;
+      justify-content: center;
+    }
   }
 
-  &--normal {
-    color: #6c9a8b;
-    margin-left: 0.2rem;
-    font-size: 1.2rem;
-    font-weight: 500
-  }
-}
+  .singlebutton {
+    &--correct {
+      color: #1b4332;
+      margin: 0;
+    }
 
-.translation {
-  &__title {
-    padding-bottom: 1rem;
-  }
+    &--wrong {
+      color: #720026;
+      margin: 0;
+    }
 
-}
-
-.buttons {
-  &__results {
-    display: flex;
-    justify-content: center;
-  }
-}
-
-.singlebutton {
-  &--correct {
-    color: #1b4332;
-    margin: 0;
-  }
-
-  &--wrong {
-    color: #720026;
-    margin: 0;
-  }
-
-  &__container {
-    display: flex;
-    flex-direction: column;
-    margin-right: 1rem;
+    &__container {
+      display: flex;
+      flex-direction: column;
+      margin-right: 1rem;
+    }
   }
 }
-

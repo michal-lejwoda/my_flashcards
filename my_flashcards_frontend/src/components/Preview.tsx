@@ -70,6 +70,10 @@ const Preview = () => {
 
     return (
         <section className="preview">
+            <div className="preview__image">
+                <img src="public/search.svg" alt=""/>
+            </div>
+            <div className="preview__container">
             <h1 className="title">{t('preview_deck')}</h1>
             <AsyncSelect
                 cacheOptions
@@ -104,6 +108,7 @@ const Preview = () => {
                                handleGetWords={handleGetWords}
                                refreshDeck={refreshDeck}/>
             }
+            </div>
         </section>
     );
 };
