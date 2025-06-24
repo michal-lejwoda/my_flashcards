@@ -287,6 +287,16 @@ button {
   color: #720026;
   margin: 0;
 }
+
+.singlebutton--wrong {
+  color: #720026;
+  margin: 0;
+}
+.singlebutton--correct {
+  color: #1b4332;
+  margin: 0;
+}
+
 .learnflashcards .singlebutton__container {
   display: flex;
   flex-direction: column;
