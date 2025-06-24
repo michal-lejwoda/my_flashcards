@@ -1,7 +1,9 @@
 @use 'variables';
 @import '../main.scss';
 
-
+.MuiFormLabel-root{
+  color: variables.$color-text-primary !important;
+}
 .MuiInputBase-input {
   color: variables.$color-text-primary !important;
 }

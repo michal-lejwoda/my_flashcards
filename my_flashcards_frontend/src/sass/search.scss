@@ -46,11 +46,12 @@
   &__table {
     //width: 100%;
     border-collapse: collapse;
-    color: variables.$color-bg-medium;
+    color: variables.$color-text-primary;
 
     table, th, td {
       border: 1px solid variables.$color-bg-light;
       border-collapse: collapse;
+      color: variables.$color-text-primary;
     }
   }
 }

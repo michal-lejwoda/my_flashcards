@@ -218,6 +218,10 @@ button {
   background-color: #d4a373;
 }
 
+.MuiFormLabel-root {
+  color: #fefae0 !important;
+}
+
 .MuiInputBase-input {
   color: #fefae0 !important;
 }

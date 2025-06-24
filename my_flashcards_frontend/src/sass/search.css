@@ -265,11 +265,12 @@ button {
 }
 .search_table__table {
   border-collapse: collapse;
-  color: #faedcd;
+  color: #fefae0;
 }
 .search_table__table table, .search_table__table th, .search_table__table td {
   border: 1px solid #ccd5ae;
   border-collapse: collapse;
+  color: #fefae0;
 }
 
 .pagination {

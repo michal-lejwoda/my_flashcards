@@ -14,7 +14,7 @@
   &__container {
     border-radius: 20px;
     min-height: 300px;
-    border: 2px solid white;
+    border: 2px solid variables.$color-bg-medium;
     display: flex;
     flex-direction: column;
     justify-content: center;
