@@ -35,18 +35,18 @@ const Decks = () => {
                 <img src="public/list.svg" alt=""/>
             </div>
             <div className="decks__container">
-            <h1 className="decks__container__title">{t("decks")}</h1>
-            {data && data.results && (
-                <DecksTablewithPagination
-                    data={data}
-                    token={token}
-                    setData={setData}
-                    pageSize={pageSize}
-                    setPageSize={setPageSize}
-                    handleGetDecks={handleGetDecks}
-                />
-            )}
-        </div>
+                <h1 className="decks__container__title">{t("decks")}</h1>
+                {data && data.results && (
+                    <DecksTablewithPagination
+                        data={data}
+                        token={token}
+                        setData={setData}
+                        pageSize={pageSize}
+                        setPageSize={setPageSize}
+                        handleGetDecks={handleGetDecks}
+                    />
+                )}
+            </div>
         </section>
     );
 };
