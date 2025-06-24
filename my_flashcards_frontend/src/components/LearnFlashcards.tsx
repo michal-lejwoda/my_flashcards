@@ -19,9 +19,17 @@ const LearnFlashcards = () => {
     const {t} = useTranslation();
     const [reverse, setReverse] = useState(true)
 
-    function setInitData(wordsLearn: LearnObject[], wrongWordsLearn: LearnObject[]) {
-        if (wrongWordsLearn.length > 0) {
+    const checkIfWordsToLearn = (wordsLearn: LearnObject[], wrongWordsLearn: LearnObject[]) => {
+        return wordsLearn.length > 0 || wrongWordsLearn.length > 0;
+    }
 
+    function setInitData(wordsLearn: LearnObject[], wrongWordsLearn: LearnObject[]) {
+        if (!checkIfWordsToLearn(wordsLearn, wrongWordsLearn)) {
+            navigate("/");
+            return;
+        }
+
+        if (wrongWordsLearn.length > 0) {
             const first_word = wrongWordsLearn.shift();
             if (first_word) {
                 setCurrentWord(first_word)
@@ -67,6 +75,9 @@ const LearnFlashcards = () => {
                 return null
             }
         }
+        if (wrongWordsToLearn.length === 0 && wordsToLearn.length === 0) {
+            navigate("/");
+        }
     }
 
     const getData = async () => {
@@ -99,6 +110,7 @@ const LearnFlashcards = () => {
                 }
                 if (wrongWordsToLearn.length == 0 && wordsToLearn.length == 0) {
                     navigate("/")
+                    return;
                 }
             } else {
                 if (currentWord) {
