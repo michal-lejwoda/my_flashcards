@@ -5,7 +5,7 @@ import {useTranslation} from "react-i18next";
 import {getSingleDeckAllWords} from "../api.tsx";
 import AuthContext from "../context/AuthContext.tsx";
 import withAuth from "../context/withAuth.tsx";
-
+// Todo backHERE
 const BrowseFlashcardsWords = () => {
     const [reverse, setReverse] = useState(true)
     const location = useLocation();
@@ -67,6 +67,10 @@ const BrowseFlashcardsWords = () => {
 
     return (
         <div className="learnflashcards">
+<div className="preview__image">
+                <img src="public/search.svg" alt=""/>
+            </div>
+            <div className="learnflashcards__all_containers">
             <h1 className="title">{t('learn')}</h1>
             <div className="learnflashcards__container">
                 <p>{location.state.reverse ? currentWord?.back_side : currentWord?.front_side}</p>
@@ -86,19 +90,21 @@ const BrowseFlashcardsWords = () => {
             <div className="learnflashcards__buttons">
                 {reverse &&
                     <div className="buttons__reverse">
-                        <button className="standard-button" onClick={() => setReverse(false)}>{t("reverse")}</button>
+                        <button className="greenoutline--button" onClick={() => setReverse(false)}>{t("reverse")}</button>
                     </div>
                 }
                 {!reverse && currentWord &&
                     <div className="buttons__results">
-                        <button className="standard-button"
+                        <div className="singlebutton__container">
+                        <button className="greenoutline--button button--mr"
                                 onClick={() => handleGoNext(false)}>{t("again")}</button>
-                        <button className="standard-button"
+                            </div>
+                        <button className="greenoutline--button button--mr"
                                 onClick={() => handleGoNext(true)}>{t("easy")}</button>
                     </div>
                 }
             </div>
-
+            </div>
         </div>
     );
 };
