@@ -20,6 +20,7 @@ import {AuthProvider} from "./context/AuthContext.tsx";
 import ResetPassword from "./components/ResetPassword.tsx";
 import BrowseFlashcardsWords from "./components/BrowseFlashcardsWords.tsx";
 import {Triangle} from "react-loader-spinner";
+import Exercises from "./components/Exercises.tsx";
 
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
@@ -30,7 +31,6 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
                             height="80"
                             width="80"
                             color="#4fa94d"
-                            // radius="9"
                             wrapperStyle={{}}
                             wrapperClass=""
                         />
@@ -52,6 +52,7 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
                         <Route path="/account" element={<Account/>}></Route>
                         <Route path="/preview" element={<Preview/>}></Route>
                         <Route path="/choose_and_learn" element={<ChooseAndLearn/>}></Route>
+                        <Route path="/exercises/*" element={<Exercises/>}></Route>
                     </Routes>
                 </div>
                 <Footer/>

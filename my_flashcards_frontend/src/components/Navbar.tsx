@@ -48,6 +48,9 @@ const Navbar = () => {
                     <NavLink to="/add_file" className="navbar__item">
                         <li className="menu__element">{t("add_file")}</li>
                     </NavLink>
+                    <NavLink to="/exercises" className="navbar__item">
+                        <li className="menu__element">{t("exercises")}</li>
+                    </NavLink>
                 </ul>
                 <ul className="desktop__menu">
                     <select className="menu__language--select navbar__select" value={language}
