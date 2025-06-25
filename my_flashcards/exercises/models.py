@@ -1,4 +1,6 @@
 from django.contrib.auth import get_user_model
+from django.contrib.contenttypes.fields import GenericForeignKey
+from django.contrib.contenttypes.models import ContentType
 from django.db import models
 from django.shortcuts import get_object_or_404
 from wagtail.admin.panels import FieldPanel
@@ -14,6 +16,14 @@ User = get_user_model()
 def audio_upload_path(instance, filename):
     return f"audio/{filename}"
 
+class PathSlugIndex(models.Model):
+    path_slug = models.SlugField(unique=True)
+    content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE)
+    object_id = models.PositiveIntegerField()
+    content_object = GenericForeignKey('content_type', 'object_id')
+
+    def __str__(self):
+        return f"{self.path_slug} → {self.content_type}:{self.object_id}"
 
 class PageWithPathSlugManager(PageManager):
     PATH_SLUG_MODELS = [
@@ -33,23 +43,12 @@ class PageWithPathSlugManager(PageManager):
     def get_by_path_slug_or_404(self, path_slug):
         return get_object_or_404(self.get_queryset(), path_slug=path_slug)
 
-    @classmethod
-    def find_page_by_path_slug(cls, path_slug):
-
-        from django.apps import apps
-
-        for model_name in cls.PATH_SLUG_MODELS:
-            try:
-                model = apps.get_model('exercises', model_name)
-                if hasattr(model.objects, 'live'):
-                    page = model.objects.live().get(path_slug=path_slug)
-                else:
-                    page = model.objects.get(path_slug=path_slug)
-                return page
-            except (model.DoesNotExist, LookupError):
-                continue
-
-        return None
+    def find_page_by_path_slug(path_slug):
+        try:
+            index = PathSlugIndex.objects.select_related('content_type').get(path_slug=path_slug)
+            return index.content_object
+        except PathSlugIndex.DoesNotExist:
+            return None
 
 class PageWithPathSlug(Page):
     path_slug = models.CharField(
@@ -69,6 +68,14 @@ class PageWithPathSlug(Page):
     def save(self, *args, **kwargs):
         self.path_slug = self.generate_path_slug()
         super().save(*args, **kwargs)
+        content_type = ContentType.objects.get_for_model(self)
+        PathSlugIndex.objects.update_or_create(
+            path_slug=self.path_slug,
+            defaults={
+                "content_type": content_type,
+                "object_id": self.id,
+            }
+        )
 
     def generate_path_slug(self):
         parts = []
