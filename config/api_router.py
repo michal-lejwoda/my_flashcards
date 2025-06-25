@@ -25,7 +25,7 @@ router.register("subgroup-with-subgroups",SubGroupwithSubGroupsViewSet, basename
 router.register("subgroup-with-groupexercises",SubGroupwithGroupExercisesViewSet,basename="subgroup-with-groupexercises")
 router.register("maingroup-with-subgroups",MainGroupwithSubGroupsViewSet, basename="maingroup-with-subgroups")
 router.register("maingroup-with-groupexercise", MainGroupwithGroupExerciseViewSet, basename="maingroup-with-groupexercise")
-router.register("page-by-slug", PageBySlugViewSet, basename="page-by-slug")
+# router.register("page-by-slug", PageBySlugViewSet, basename="page-by-slug")
 # router.register("exercise", ExerciseViewSet, basename="exercise")
 app_name = "api"
 urlpatterns = router.urls

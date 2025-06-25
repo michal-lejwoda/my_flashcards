@@ -1,6 +1,5 @@
 from rest_framework import status
 from rest_framework.exceptions import NotFound
-from rest_framework.generics import get_object_or_404
 from rest_framework.mixins import ListModelMixin, RetrieveModelMixin, CreateModelMixin
 from rest_framework.response import Response
 from rest_framework.viewsets import GenericViewSet
@@ -24,7 +23,7 @@ from my_flashcards.exercises.api.serializers import (LanguageCategoryPageDetailS
                                                      ChooseExerciseDependsOnMultipleTextsSerializer,
                                                      MultipleExercisesSerializer)
 from my_flashcards.exercises.models import LanguageCategoryPage, SubGroupWithSubGroups, \
-    MainGroupWithGroupExercises, MainGroupWithSubGroups, SubGroupWithGroupExercises
+    MainGroupWithGroupExercises, MainGroupWithSubGroups, SubGroupWithGroupExercises, PageWithPathSlugManager
 
 exercise_serializers = {
     "MatchExercise": MatchExerciseSerializer,
@@ -40,7 +39,6 @@ exercise_serializers = {
     "ChooseExerciseDependsOnSingleText": ChooseExerciseDependsOnSingleTextSerializer,
     "MultipleExercises": MultipleExercisesSerializer
 }
-
 
 group_serializator = {
     "LanguageCategoryPage": LanguageCategoryPageDetailSerializer,
@@ -65,13 +63,16 @@ class SubGroupwithSubGroupsViewSet(RetrieveModelMixin, GenericViewSet):
     serializer_class = SubGroupListSerializer
     queryset = Page.objects.type(SubGroupWithSubGroups).live().specific()
 
+
 class SubGroupwithGroupExercisesViewSet(RetrieveModelMixin, GenericViewSet):
     serializer_class = SubGroupWithGroupExercisesListSerializer
     queryset = Page.objects.type(SubGroupWithGroupExercises).live().specific()
 
+
 class MainGroupwithSubGroupsViewSet(RetrieveModelMixin, GenericViewSet):
     serializer_class = MainGroupWithSubGroupsListSerializer
     queryset = Page.objects.type(MainGroupWithSubGroups).live().specific()
+
 
 class MainGroupwithGroupExerciseViewSet(RetrieveModelMixin, GenericViewSet):
     serializer_class = GroupExerciseListSerializer
@@ -80,19 +81,25 @@ class MainGroupwithGroupExerciseViewSet(RetrieveModelMixin, GenericViewSet):
 
 class PageBySlugViewSet(RetrieveModelMixin, GenericViewSet):
     serializer_class = PageSerializer
-    lookup_field = 'slug'
+    lookup_field = 'path_slug'
 
     def get_serializer_class(self):
-        slug = self.kwargs.get('slug')
-        page = get_object_or_404(Page.objects.live().specific(), slug=slug)
+        slug = self.kwargs.get('path_slug')
+        page = PageWithPathSlugManager.find_page_by_path_slug(slug)
+
+        if not page:
+            raise NotFound(f"Page with path_slug '{slug}' not found")
+
         try:
             return group_serializator[page.__class__.__name__]
         except KeyError:
             raise NotFound(f"No serializer found for page type: {page.__class__.__name__}")
 
     def get_object(self):
-        slug = self.kwargs.get('slug')
-        page = get_object_or_404(Page.objects.live().specific(), slug=slug)
+        slug = self.kwargs.get('path_slug')
+        page = PageWithPathSlugManager.find_page_by_path_slug(slug)
+        if not page:
+            raise NotFound(f"Page with path_slug '{slug}' not found")
         return page
 
 
