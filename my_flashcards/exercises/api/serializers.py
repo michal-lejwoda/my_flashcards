@@ -37,7 +37,7 @@ class LanguageCategoryPageListSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = LanguageCategoryPage
-        fields = ['id', 'title', 'language', 'flag_image', 'url']
+        fields = ['id', 'title', 'language', 'flag_image', 'url', 'path_slug']
 
 
 
@@ -66,7 +66,7 @@ class MainGroupListSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = MainGroup
-        fields = ['id', 'title','background_image', 'url', 'background_image_with_text']
+        fields = ['id', 'title','background_image', 'url', 'background_image_with_text', 'path_slug']
 
 class MainGroupPageDetailSerializer(serializers.ModelSerializer):
     children = SerializerMethodField()
@@ -89,7 +89,7 @@ class SubGroupListSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = SubGroup
-        fields = ['id', 'title', 'background_image', 'background_image_with_text', 'url']
+        fields = ['id', 'title', 'background_image', 'background_image_with_text', 'url', 'path_slug']
 
 
 
@@ -116,7 +116,7 @@ class GroupExerciseListSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = GroupExercise
-        fields = ['introduction', 'title', 'children']
+        fields = ['introduction', 'title', 'children', 'path_slug']
 
 
 class MainGroupWithGroupExercisePageDetailSerializer(serializers.ModelSerializer):
