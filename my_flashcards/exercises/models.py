@@ -16,6 +16,17 @@ def audio_upload_path(instance, filename):
 
 
 class PageWithPathSlugManager(PageManager):
+    PATH_SLUG_MODELS = [
+        'LanguageCategoryPage',
+        'MainGroup',
+        'SubGroup',
+        'SubGroupWithSubGroups',
+        'SubGroupWithGroupExercises',
+        'MainGroupWithGroupExercises',
+        'MainGroupWithSubGroups',
+
+    ]
+
     def get_by_path_slug(self, path_slug):
         return self.get(path_slug=path_slug)
 
@@ -24,24 +35,18 @@ class PageWithPathSlugManager(PageManager):
 
     @classmethod
     def find_page_by_path_slug(cls, path_slug):
+
         from django.apps import apps
 
-        #TODO make it better
-        page_models = []
-        for model in apps.get_models():
-            if (hasattr(model, 'path_slug') and
-                hasattr(model, '_meta') and
-                not model._meta.abstract):
-                page_models.append(model)
-
-        for model in page_models:
+        for model_name in cls.PATH_SLUG_MODELS:
             try:
+                model = apps.get_model('exercises', model_name)
                 if hasattr(model.objects, 'live'):
                     page = model.objects.live().get(path_slug=path_slug)
                 else:
                     page = model.objects.get(path_slug=path_slug)
                 return page
-            except model.DoesNotExist:
+            except (model.DoesNotExist, LookupError):
                 continue
 
         return None
