@@ -108,6 +108,9 @@ const Navbar = () => {
                     <NavLink className="navbar__item" onClick={() => setIsMobileNavOpen(false)} to="/add_file">
                         <li className="mobile__menu__element">{t("add_file")}</li>
                     </NavLink>
+                    <NavLink className="navbar__item" onClick={() => setIsMobileNavOpen(false)} to="/exercises">
+                        <li className="mobile__menu__element">{t("exercises")}</li>
+                    </NavLink>
                     {token &&
                         <>
                             <NavLink to="/account" className="navbar__item" onClick={() => setIsMobileNavOpen(false)}>
