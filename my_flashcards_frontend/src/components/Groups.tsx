@@ -14,7 +14,7 @@ type Group = {
   };
 };
 
-const Exercises = () => {
+const Groups = () => {
     const [group, setGroup] = useState<Group | null>(null);
     const location = useLocation();
 
@@ -63,4 +63,4 @@ const Exercises = () => {
 };
 
 
-export default Exercises;
+export default Groups;

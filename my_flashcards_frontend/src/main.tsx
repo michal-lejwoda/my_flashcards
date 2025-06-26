@@ -20,21 +20,22 @@ import {AuthProvider} from "./context/AuthContext.tsx";
 import ResetPassword from "./components/ResetPassword.tsx";
 import BrowseFlashcardsWords from "./components/BrowseFlashcardsWords.tsx";
 import {Triangle} from "react-loader-spinner";
-import Exercises from "./components/Exercises.tsx";
+import Groups from "./components/Groups.tsx";
+import Exercise from "./components/Exercise.tsx";
 
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
     <Suspense fallback={
-                    <div className="spinner">
-                        <Triangle
-                            visible={true}
-                            height="80"
-                            width="80"
-                            color="#4fa94d"
-                            wrapperStyle={{}}
-                            wrapperClass=""
-                        />
-                    </div>}>
+        <div className="spinner">
+            <Triangle
+                visible={true}
+                height="80"
+                width="80"
+                color="#4fa94d"
+                wrapperStyle={{}}
+                wrapperClass=""
+            />
+        </div>}>
         <BrowserRouter>
             <AuthProvider>
                 <Navbar/>
@@ -52,7 +53,8 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
                         <Route path="/account" element={<Account/>}></Route>
                         <Route path="/preview" element={<Preview/>}></Route>
                         <Route path="/choose_and_learn" element={<ChooseAndLearn/>}></Route>
-                        <Route path="/exercises/*" element={<Exercises/>}></Route>
+                        <Route path="/exercises/*" element={<Groups/>}></Route>
+                        <Route path="/exercise/:id/:slug" element={<Exercise />}></Route>
                     </Routes>
                 </div>
                 <Footer/>

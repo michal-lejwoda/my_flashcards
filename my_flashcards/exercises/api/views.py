@@ -143,6 +143,8 @@ class PageBySlugViewSet(RetrieveModelMixin, GenericViewSet):
 
 
 class ExerciseViewSet(RetrieveModelMixin, CreateModelMixin, GenericViewSet):
+    authentication_classes = []
+    permission_classes = [AllowAny]
     def get_object(self):
         slug = self.kwargs.get('slug')
         pk = self.kwargs.get('pk')
