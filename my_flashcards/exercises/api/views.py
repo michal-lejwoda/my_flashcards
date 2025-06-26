@@ -49,7 +49,7 @@ group_serializator = {
 }
 
 subgroups = {
-    "LanguageCategoryPage": "LANGUAGE_GROUP",
+    "LanguageCategoryPage": "MAIN_GROUP",
     "MainGroupWithSubGroups": "SUB_GROUP",
     "SubGroupwithSubGroups": "SUB_GROUP",
     "SubGroupWithGroupExercises": "GROUP_EXERCISES",
@@ -71,12 +71,12 @@ class LanguageCategoryViewSet(ListModelMixin, RetrieveModelMixin, GenericViewSet
         if page is not None:
             serializer = self.get_serializer(page, many=True)
             paginated_response = self.get_paginated_response(serializer.data)
-            paginated_response.data['children'] = subgroups['LanguageCategoryPage']
+            paginated_response.data['children'] = 'LANGUAGE_GROUP'
             return paginated_response
 
         serializer = self.get_serializer(queryset, many=True)
         return Response({
-            'children': subgroups['LanguageCategoryPage'],
+            'children': 'LANGUAGE_GROUP',
             'count': len(serializer.data),
             'next': None,
             'previous': None,
