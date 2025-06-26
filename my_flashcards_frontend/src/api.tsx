@@ -289,3 +289,25 @@ export async function handleDeleteUser(data: handleDeleteUserData, token: string
     });
     return response.data
 }
+
+export async function handleGetLanguages(){
+    const currentLanguage = i18n.language;
+    const response = await instance.get(`/api/languages/`, {
+        headers: {
+            'Accept-Language': currentLanguage,
+
+        },
+    });
+    return response.data
+}
+
+export async function handleGetGroups(slug: string){
+    const currentLanguage = i18n.language;
+    const response = await instance.get(`/api/page-by-slug/${slug}`, {
+        headers: {
+            'Accept-Language': currentLanguage,
+
+        },
+    });
+    return response.data
+}

@@ -1,6 +1,7 @@
 from rest_framework import status
 from rest_framework.exceptions import NotFound
 from rest_framework.mixins import ListModelMixin, RetrieveModelMixin, CreateModelMixin
+from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from rest_framework.viewsets import GenericViewSet
 from wagtail.models import Page
@@ -57,6 +58,8 @@ subgroups = {
 }
 
 class LanguageCategoryViewSet(ListModelMixin, RetrieveModelMixin, GenericViewSet):
+    authentication_classes = []
+    permission_classes = [AllowAny]
     serializer_class = LanguageCategoryPageListSerializer
     queryset = Page.objects.type(LanguageCategoryPage).live().specific()
 
@@ -105,6 +108,8 @@ class MainGroupwithGroupExerciseViewSet(RetrieveModelMixin, GenericViewSet):
 
 
 class PageBySlugViewSet(RetrieveModelMixin, GenericViewSet):
+    authentication_classes = []
+    permission_classes = [AllowAny]
     serializer_class = PageSerializer
     lookup_field = 'path_slug'
 

@@ -15,13 +15,15 @@ export const AuthProvider = ({children}: Children) => {
     const [cookie] = useCookies(['flashcard_user_auth']);
     const [tokenLoading, setTokenLoading] = useState(true)
     useEffect(()=>{
-        if(cookie.flashcard_user_auth){
-            setToken(cookie.flashcard_user_auth)
+        const isPublicPath = location.pathname.startsWith("/exercises") || location.pathname.startsWith("/exercise");
+
+        if (cookie.flashcard_user_auth) {
+            setToken(cookie.flashcard_user_auth);
+        } else if (!isPublicPath) {
+            navigate("/login");
         }
-        else{
-            navigate("/login")
-        }
-        setTokenLoading(false)
+
+        setTokenLoading(false);
     },[])
 
     return (
