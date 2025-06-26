@@ -48,6 +48,13 @@ group_serializator = {
     "SubGroupWithGroupExercises": SubGroupWithGroupExercisesListSerializer,
 }
 
+subgroups = {
+    "LanguageCategoryPage": "LANGUAGE_GROUP",
+    "MainGroupWithSubGroups": "SUB_GROUP",
+    "SubGroupwithSubGroups": "SUB_GROUP",
+    "SubGroupWithGroupExercises": "GROUP_EXERCISES",
+    "MainGroupWithGroupExercises": "GROUP_EXERCISES"
+}
 
 class LanguageCategoryViewSet(ListModelMixin, RetrieveModelMixin, GenericViewSet):
     serializer_class = LanguageCategoryPageListSerializer
@@ -57,6 +64,24 @@ class LanguageCategoryViewSet(ListModelMixin, RetrieveModelMixin, GenericViewSet
         if self.action == 'retrieve':
             return LanguageCategoryPageDetailSerializer
         return LanguageCategoryPageListSerializer
+
+    def list(self, request, *args, **kwargs):
+        queryset = self.filter_queryset(self.get_queryset())
+        page = self.paginate_queryset(queryset)
+        if page is not None:
+            serializer = self.get_serializer(page, many=True)
+            paginated_response = self.get_paginated_response(serializer.data)
+            paginated_response.data['children'] = subgroups['LanguageCategoryPage']
+            return paginated_response
+
+        serializer = self.get_serializer(queryset, many=True)
+        return Response({
+            'children': subgroups['LanguageCategoryPage'],
+            'count': len(serializer.data),
+            'next': None,
+            'previous': None,
+            'results': serializer.data
+        })
 
 
 class SubGroupwithSubGroupsViewSet(RetrieveModelMixin, GenericViewSet):
@@ -101,6 +126,15 @@ class PageBySlugViewSet(RetrieveModelMixin, GenericViewSet):
         if not page:
             raise NotFound(f"Page with path_slug '{slug}' not found")
         return page
+
+    def retrieve(self, request, *args, **kwargs):
+        instance = self.get_object()
+        serializer_class = self.get_serializer_class()
+        serializer = serializer_class(instance, context=self.get_serializer_context())
+        return Response({
+            'children': subgroups[instance.__class__.__name__],
+            'data': serializer.data
+        })
 
 
 class ExerciseViewSet(RetrieveModelMixin, CreateModelMixin, GenericViewSet):
