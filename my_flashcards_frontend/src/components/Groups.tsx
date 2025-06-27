@@ -28,12 +28,11 @@ const Groups = () => {
         } else {
             fetchGroups(subPath);
         }
-    }, []);
+    }, [location.pathname]);
 
     const renderContent = () => {
         if (!group || !group.children) return null;
 
-        // Używamy type guards - TypeScript automatycznie zawęzi typ
         if (isMainGroup(group)) {
             return <MainGroup group={group}/>;
         }
