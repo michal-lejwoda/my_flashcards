@@ -5,14 +5,8 @@ import MainGroup from "./groupComponents/MainGroup.tsx";
 import LanguageGroup from "./groupComponents/LanguageGroup.tsx";
 import SubGroup from "./groupComponents/SubGroup.tsx";
 import GroupExercises from "./groupComponents/GroupExercises.tsx";
+import {Group, isGroupExercises, isLanguageGroup, isMainGroup, isSubGroup} from "../interfaces.tsx";
 
-type Group = {
-  children?: string;
-  data: {
-    title: string;
-    children: unknown[];
-  };
-};
 
 const Groups = () => {
     const [group, setGroup] = useState<Group | null>(null);
@@ -37,27 +31,33 @@ const Groups = () => {
     }, []);
 
     const renderContent = () => {
-    if (!group || !group.children) return null;
+        if (!group || !group.children) return null;
 
-    switch (group.children) {
-        case "MAIN_GROUP":
-            return <MainGroup />;
-        case "LANGUAGE_GROUP":
-            return <LanguageGroup />;
-        case "SUB_GROUP":
-            return <SubGroup />;
-        case "GROUP_EXERCISES":
-            return <GroupExercises />
-        default:
-            return <h1>404</h1>;
-    }
-};
+        // Używamy type guards - TypeScript automatycznie zawęzi typ
+        if (isMainGroup(group)) {
+            return <MainGroup group={group}/>;
+        }
+
+        if (isLanguageGroup(group)) {
+            return <LanguageGroup group={group}/>;
+        }
+
+        if (isSubGroup(group)) {
+            return <SubGroup group={group}/>;
+        }
+
+        if (isGroupExercises(group)) {
+            return <GroupExercises group={group}/>;
+        }
+
+        return <h1>404</h1>;
+    };
 
 
     return (
         <div>
             {/*{group && group.children && <h1>{group.children}</h1>}*/}
-            {renderContent()}
+            {group && group.children && renderContent()}
         </div>
     );
 };

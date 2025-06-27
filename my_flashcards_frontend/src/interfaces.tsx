@@ -367,7 +367,7 @@ export interface PaginationButtonProps<> {
     link: string | null;
     token: string | null;
     message: string;
-    setData: Dispatch<any>;
+    setData: Dispatch<unknown>;
 }
 
 export interface PaginationButtonReactTableProps {
@@ -414,4 +414,92 @@ export type FlashcardsSet = {
   HARD: Flashcard;
   MEDIUM: Flashcard;
   EASY: Flashcard;
+}
+
+interface FlagImage {
+  url: string;
+  full_url: string;
+  width: number;
+  height: number;
+  alt: string;
+}
+
+interface LanguageResult {
+  id: number;
+  title: string;
+  language: string;
+  flag_image: FlagImage;
+  url: string;
+  path_slug: string;
+}
+
+// export interface LanguageGroupProps {
+//   group: {
+//     count: number;
+//     next: string | null;
+//     previous: string | null;
+//     results: LanguageResult[];
+//     children: string;
+//   };
+// }
+
+
+export interface LanguageGroupData {
+  children: "LANGUAGE_GROUP";
+  count: number;
+  next: string | null;
+  previous: string | null;
+  results: LanguageResult[];
+}
+
+export interface MainGroupData {
+  children: "MAIN_GROUP";
+  title?: string;
+  description?: string;
+}
+
+export interface SubGroupData {
+  children: "SUB_GROUP";
+  exercises?: unknown[];
+}
+
+export interface GroupExercisesData {
+  children: "GROUP_EXERCISES";
+  exercises?: unknown[];
+}
+
+export type Group = LanguageGroupData | MainGroupData | SubGroupData | GroupExercisesData;
+
+
+export const isLanguageGroup = (group: Group): group is LanguageGroupData => {
+  return group.children === "LANGUAGE_GROUP";
+};
+
+export const isMainGroup = (group: Group): group is MainGroupData => {
+  return group.children === "MAIN_GROUP";
+};
+
+export const isSubGroup = (group: Group): group is SubGroupData => {
+  return group.children === "SUB_GROUP";
+};
+
+export const isGroupExercises = (group: Group): group is GroupExercisesData => {
+  return group.children === "GROUP_EXERCISES";
+};
+
+
+export interface LanguageGroupProps {
+  group: LanguageGroupData;
+}
+
+export interface MainGroupProps {
+  group: MainGroupData;
+}
+
+export interface SubGroupProps {
+  group: SubGroupData;
+}
+
+export interface GroupExercisesProps {
+  group: GroupExercisesData;
 }

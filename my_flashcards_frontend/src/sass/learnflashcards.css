@@ -157,6 +157,7 @@ html, body {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  color: #faedcd;
 }
 
 #root {
@@ -287,16 +288,6 @@ button {
   color: #720026;
   margin: 0;
 }
-
-.singlebutton--wrong {
-  color: #720026;
-  margin: 0;
-}
-.singlebutton--correct {
-  color: #1b4332;
-  margin: 0;
-}
-
 .learnflashcards .singlebutton__container {
   display: flex;
   flex-direction: column;
