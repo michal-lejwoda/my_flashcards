@@ -1,14 +1,14 @@
-import '../../sass/languagegroup.css'
+import '../../sass/subgroup.css'
 import {SubGroupProps} from "../../interfaces.tsx";
 const SubGroup = ({ group }: SubGroupProps)  => {
     console.log("props.group", group)
     return (
-        <section className="languagegroup">
-            <div className="languagegroup__image">
+        <section className="subgroup">
+            <div className="subgroup__image">
                 <img src="public/languages.svg" alt=""/>
             </div>
-            <div className="languagegroup__container">
-                <h1>Main Group</h1>
+            <div className="subgroup__container">
+                <h1>Sub Group</h1>
             </div>
         </section>
     );

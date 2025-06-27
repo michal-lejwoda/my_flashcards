@@ -1,0 +1,23 @@
+@use 'variables';
+@import '../main.scss';
+.maingroup{
+  display:flex;
+  flex-direction: row;
+  &__image {
+    display: none;
+    @include breakpoint("laptop") {
+      width: 50%;
+      display: flex;
+      justify-content: center;
+      align-content: center;
+      min-width: 500px;
+      img {
+        height: 500px;
+      }
+    }
+  }
+  &__container{
+    display:flex;
+    flex-direction: row;
+  }
+}
