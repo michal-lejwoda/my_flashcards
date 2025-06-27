@@ -73,7 +73,7 @@ class LanguageCategoryViewSet(ListModelMixin, RetrieveModelMixin, GenericViewSet
         serializer = self.get_serializer(queryset, many=True)
         return Response({
             "data": serializer.data,
-            "children": "LANGUAGE_GROUP"
+            "type": "LANGUAGE_GROUP"
         })
 
 
@@ -127,7 +127,7 @@ class PageBySlugViewSet(RetrieveModelMixin, GenericViewSet):
         serializer_class = self.get_serializer_class()
         serializer = serializer_class(instance, context=self.get_serializer_context())
         return Response({
-            'children': subgroups[instance.__class__.__name__],
+            'type': subgroups[instance.__class__.__name__],
             'data': serializer.data
         })
 
