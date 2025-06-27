@@ -70,20 +70,10 @@ class LanguageCategoryViewSet(ListModelMixin, RetrieveModelMixin, GenericViewSet
 
     def list(self, request, *args, **kwargs):
         queryset = self.filter_queryset(self.get_queryset())
-        page = self.paginate_queryset(queryset)
-        if page is not None:
-            serializer = self.get_serializer(page, many=True)
-            paginated_response = self.get_paginated_response(serializer.data)
-            paginated_response.data['children'] = 'LANGUAGE_GROUP'
-            return paginated_response
-
         serializer = self.get_serializer(queryset, many=True)
         return Response({
-            'children': 'LANGUAGE_GROUP',
-            'count': len(serializer.data),
-            'next': None,
-            'previous': None,
-            'results': serializer.data
+            "data": serializer.data,
+            "children": "LANGUAGE_GROUP"
         })
 
 
