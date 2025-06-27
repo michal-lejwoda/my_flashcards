@@ -5,7 +5,7 @@ const GroupExercises = ({ group }: GroupExercisesProps)  => {
     return (
         <section className="groupexercises">
             <div className="groupexercises__image">
-                <img src="public/languages.svg" alt=""/>
+                <img src="/public/languages.svg" alt=""/>
             </div>
             <div className="groupexercises__container">
                 <h1>LanguageGroup</h1>

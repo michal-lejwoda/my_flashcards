@@ -55,7 +55,6 @@ const Groups = () => {
 
     return (
         <div>
-            {/*{group && group.children && <h1>{group.children}</h1>}*/}
             {group && group.children && renderContent()}
         </div>
     );

@@ -5,7 +5,7 @@ const SubGroup = ({ group }: SubGroupProps)  => {
     return (
         <section className="subgroup">
             <div className="subgroup__image">
-                <img src="public/languages.svg" alt=""/>
+                <img src="/public/languages.svg" alt=""/>
             </div>
             <div className="subgroup__container">
                 <h1>Sub Group</h1>

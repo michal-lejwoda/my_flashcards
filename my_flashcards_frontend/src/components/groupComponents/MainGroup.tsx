@@ -5,7 +5,7 @@ const MainGroup = ({ group }: MainGroupProps)  => {
     return (
         <section className="maingroup">
             <div className="maingroup__image">
-                <img src="public/languages.svg" alt=""/>
+                <img src="/public/languages.svg" alt=""/>
             </div>
             <div className="maingroup__container">
                 <h1>Main Group</h1>

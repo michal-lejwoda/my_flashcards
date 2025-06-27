@@ -446,26 +446,22 @@ interface LanguageResult {
 
 export interface LanguageGroupData {
   children: "LANGUAGE_GROUP";
-  count: number;
-  next: string | null;
-  previous: string | null;
-  results: LanguageResult[];
+  data: LanguageResult[];
 }
 
 export interface MainGroupData {
   children: "MAIN_GROUP";
-  title?: string;
-  description?: string;
+  data: unknown[]
 }
 
 export interface SubGroupData {
   children: "SUB_GROUP";
-  exercises?: unknown[];
+  data: unknown[];
 }
 
 export interface GroupExercisesData {
   children: "GROUP_EXERCISES";
-  exercises?: unknown[];
+  data: unknown[];
 }
 
 export type Group = LanguageGroupData | MainGroupData | SubGroupData | GroupExercisesData;
