@@ -37,29 +37,28 @@ const Exercise = () => {
     console.log(location)
     const renderContent = () => {
         if (!exercise || !exercise.type) return null;
-        // #TODO BACK HERE
         switch (exercise.type) {
-            case "CHOOSE_EXERCISE_DEPENDS_ON_MULTIPLE_TEXTS":
+            case "ChooseExerciseDependsOnMultipleTexts":
                 return <ChooseExerciseDependsOnMultipleTexts/>;
-            case "CHOOSE_EXERCISE_DEPENDS_ON_SINGLE_TEXT":
+            case "ChooseExerciseDependsOnSingleText":
                 return <ChooseExerciseDependsOnSingleText/>;
-            case "CONJUGATION_EXERCISE":
+            case "ConjugationExercise":
                 return <ConjugationExercise/>;
-            case "FILL_IN_TEXT_EXERCISE_WITH_CHOICES":
+            case "FillInTextExerciseWithChoices":
                 return <FillInTextExerciseWithChoices/>
-            case "FILL_IN_TEXT_EXERCISE_WITH_CHOICES_WITH_IMAGE_DECORATION":
+            case "FillInTextExerciseWithChoicesWithImageDecoration":
                 return <FillInTextExerciseWithChoicesWithImageDecoration/>;
-            case "FILL_IN_TEXT_EXERCISE_WITH_PREDEFINED_BLOCKS":
+            case "FillInTextExerciseWithPredefinedBlocks":
                 return <FillInTextExerciseWithPredefinedBlocks/>
-            case "FLEXIBLE_EXERCISE_PAGE":
+            case "FlexibleExercisePage":
                 return <FlexibleExercisePage/>;
-            case "LISTEN_WITH_MANY_OPTIONS_TO_CHOOSE_TO_SINGLE_EXERCISE":
+            case "ListenWithManyOptionsToChooseToSingleExercise":
                 return <ListenWithManyOptionsToChooseToSingleExercise/>
-            case "MATCH_EXERCISE":
+            case "MatchExercise":
                 return <MatchExercise/>;
-            case "MATCH_EXERCISE_TEXT_WITH_IMAGE":
+            case "MatchExerciseTextWithImage":
                 return <MatchExerciseTextWithImage/>
-            case "MULTIPLE_EXERCISES":
+            case "MultipleExercises":
                 return <MultipleExercises/>
 
             default:
