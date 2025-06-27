@@ -31,7 +31,7 @@ const Groups = () => {
     }, [location.pathname]);
 
     const renderContent = () => {
-        if (!group || !group.children) return null;
+        if (!group || !group.type) return null;
 
         if (isMainGroup(group)) {
             return <MainGroup group={group}/>;
@@ -55,7 +55,7 @@ const Groups = () => {
 
     return (
         <div>
-            {group && group.children && renderContent()}
+            {group && group.type && renderContent()}
         </div>
     );
 };

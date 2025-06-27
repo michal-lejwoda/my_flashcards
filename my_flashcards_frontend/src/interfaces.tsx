@@ -433,54 +433,94 @@ interface LanguageResult {
   path_slug: string;
 }
 
-// export interface LanguageGroupProps {
-//   group: {
-//     count: number;
-//     next: string | null;
-//     previous: string | null;
-//     results: LanguageResult[];
-//     children: string;
-//   };
-// }
+interface MainGroupResult {
+  id: number;
+  title: string;
+  background_image: FlagImage | null;
+  background_image_with_text: FlagImage | null;
+  url: string;
+  path_slug: string;
+}
 
+interface SubGroupResult {
+  id: number;
+  title: string;
+  background_image: FlagImage | null;
+  background_image_with_text: FlagImage | null;
+  url: string;
+  path_slug: string;
+}
+
+interface GroupExercisesResult {
+  id: number;
+  title: string;
+  background_image: FlagImage | null;
+  background_image_with_text: FlagImage | null;
+  url: string;
+  path_slug: string;
+}
+
+interface MainGroupDataChildrens{
+    id: number;
+    language: string;
+    title: string;
+    children: MainGroupResult[]
+
+}
+
+interface SubGroupDataChildrens{
+    id: number;
+    language: string;
+    title: string;
+    children: SubGroupResult[]
+
+}
+
+interface GroupExerciseDataChildrens{
+    id: number;
+    language: string;
+    title: string;
+    children: GroupExercisesResult[]
+
+}
 
 export interface LanguageGroupData {
-  children: "LANGUAGE_GROUP";
+  type: "LANGUAGE_GROUP";
   data: LanguageResult[];
 }
 
 export interface MainGroupData {
-  children: "MAIN_GROUP";
-  data: unknown[]
+  type: "MAIN_GROUP";
+  data: MainGroupDataChildrens
 }
 
 export interface SubGroupData {
-  children: "SUB_GROUP";
-  data: unknown[];
+  type: "SUB_GROUP";
+  data: SubGroupDataChildrens;
 }
 
 export interface GroupExercisesData {
-  children: "GROUP_EXERCISES";
-  data: unknown[];
+  type: "GROUP_EXERCISES";
+  data: GroupExerciseDataChildrens;
 }
 
 export type Group = LanguageGroupData | MainGroupData | SubGroupData | GroupExercisesData;
 
 
 export const isLanguageGroup = (group: Group): group is LanguageGroupData => {
-  return group.children === "LANGUAGE_GROUP";
+  return group.type === "LANGUAGE_GROUP";
 };
 
 export const isMainGroup = (group: Group): group is MainGroupData => {
-  return group.children === "MAIN_GROUP";
+  return group.type === "MAIN_GROUP";
 };
 
 export const isSubGroup = (group: Group): group is SubGroupData => {
-  return group.children === "SUB_GROUP";
+  return group.type === "SUB_GROUP";
 };
 
 export const isGroupExercises = (group: Group): group is GroupExercisesData => {
-  return group.children === "GROUP_EXERCISES";
+  return group.type === "GROUP_EXERCISES";
 };
 
 
