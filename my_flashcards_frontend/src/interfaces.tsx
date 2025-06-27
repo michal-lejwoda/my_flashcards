@@ -363,7 +363,7 @@ export interface LearnDoneModalInterface {
 }
 
 
-export interface PaginationButtonProps<> {
+export interface PaginationButtonProps {
     link: string | null;
     token: string | null;
     message: string;
