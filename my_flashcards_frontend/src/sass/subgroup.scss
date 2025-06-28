@@ -19,5 +19,41 @@
   &__container{
     display:flex;
     flex-direction: row;
+    width: 50%;
+    align-items: flex-start;
+  }
+  &__containers{
+    display:flex;
+    flex-direction: row;
+  }
+}
+
+.sub{
+  &__container{
+    border: 2px solid variables.$color-bg-light;
+    font-family: variables.$font-heading;
+    border-radius: 10px;
+    margin-top: 2rem;
+    margin-right: 1rem;
+    &:hover {
+      cursor: pointer;
+      color: variables.$color-bg-light;
+      box-shadow: 0 0 5px variables.$color-bg-green-light;
+      .languages__title {
+        color: variables.$color-bg-light;
+      }
+    }
+    img{
+      width:250px;
+      height: 150px;
+    }
+  }
+  &__title{
+    width:100%;
+    display: flex;
+    justify-content: center;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+    font-size: 1.2rem;
   }
 }

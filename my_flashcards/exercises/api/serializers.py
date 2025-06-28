@@ -69,7 +69,8 @@ class MainGroupListSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = MainGroup
-        fields = ['id', 'title','background_image', 'url', 'background_image_with_text', 'path_slug']
+        fields = ['id', 'title','background_image', 'url', 'background_image_with_text', 'path_slug',
+                  'main_description']
 
 class MainGroupPageDetailSerializer(serializers.ModelSerializer):
     children = SerializerMethodField()

@@ -22,8 +22,14 @@
   }
   &__container{
     display:flex;
+    //flex-direction: row;
     flex-direction: column;
-    width: 50%;
+    width: 100%;
+    @include breakpoint("laptop") {
+      display: flex;
+      flex-direction: column;
+      width: 50%;
+    }
   }
   &__languages{
     display: flex;
@@ -41,6 +47,8 @@
     border: 2px solid variables.$color-bg-light;
     font-family: variables.$font-heading;
     border-radius: 10px;
+    margin-top: 2rem;
+    margin-right: 1rem;
     &:hover {
       cursor: pointer;
       color: variables.$color-bg-light;

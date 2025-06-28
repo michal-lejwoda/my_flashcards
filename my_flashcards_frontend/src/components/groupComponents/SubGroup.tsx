@@ -12,15 +12,17 @@ const SubGroup = ({ group }: SubGroupProps)  => {
                 <img src="/public/languages.svg" alt=""/>
             </div>
             <div className="subgroup__container">
-                <div className="subgroup__title"><h1>SubGroup</h1></div>
-                <div className="subgroup__languages">
+                {/*<div className="subgroup__title"><h1>SubGroup</h1></div>*/}
+                <div className="subgroup__containers">
                     {group.data.children.map(child => (
                         <div onClick={() => handleMoveToAnotherGroup(child.path_slug)}
                              className="sub__container" key={child.id}>
-                            {child.background_image &&  (<img   src={"http://0.0.0.0:8000" + child.background_image.url} alt=""/>)}
                             <div className="sub__title">
                                 {child.title}
                             </div>
+                            {child.background_image && (
+                                <img src={`${import.meta.env.VITE_API_URL}${child.background_image.url}`} alt=""/>)}
+
                         </div>
                     ))}
                 </div>

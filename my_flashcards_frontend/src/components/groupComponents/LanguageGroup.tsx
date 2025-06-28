@@ -1,6 +1,7 @@
 import '../../sass/languagegroup.css'
 import {LanguageGroupProps} from "../../interfaces.tsx";
 import {useNavigate} from "react-router-dom";
+import {t} from "i18next";
 
 
 const LanguageGroup = ({ group }: LanguageGroupProps)  => {
@@ -15,11 +16,11 @@ const LanguageGroup = ({ group }: LanguageGroupProps)  => {
                 <img src="/public/languages.svg" alt=""/>
             </div>
             <div className="languagegroup__container">
-                <div className="languagegroup__title"><h1>LanguageGroup</h1></div>
+                <div className="languagegroup__title"><h1>{t("Choose Language")}</h1></div>
                 <div className="languagegroup__languages">
                     {group.data.map(language => (
                         <div onClick={()=>handleMoveToAnotherGroup(language.path_slug)} className="languages__container" key={language.id}>
-                            <img src={"http://0.0.0.0:8000" + language.flag_image.url} alt=""/>
+                            <img src={`${import.meta.env.VITE_API_URL}${language.flag_image.url}`} alt="" />
                             <div className="languages__title">
                                 {language.title}
                             </div>

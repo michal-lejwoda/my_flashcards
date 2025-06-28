@@ -105,6 +105,7 @@ class PageWithPathSlug(Page):
 
 # Abstract classes
 class GroupBase(PageWithPathSlug, UniqueSlugAcrossGroupPagesMixin):
+    # description = models.TextField(blank=True)
     background_image = models.ForeignKey(
         'wagtailimages.Image',
         null=True,
@@ -163,6 +164,7 @@ class LanguageCategoryPage(PageWithPathSlug, UniqueSlugAcrossGroupPagesMixin):
 
 
 class MainGroup(GroupBase):
+    # description = models.TextField(blank=True)
     parent_page_types = ['LanguageCategoryPage']
     subpage_types = ['SubGroup']
 
@@ -197,6 +199,7 @@ class SubGroupWithGroupExercises(GroupBase):
 
 
 class MainGroupWithGroupExercises(GroupBase):
+    main_description = models.TextField(blank=True)
     child_type = models.CharField(
         max_length=20,
         choices=CHILDREN_CHOICES,
@@ -206,10 +209,12 @@ class MainGroupWithGroupExercises(GroupBase):
     subpage_types = ['GroupExercise']
     content_panels = GroupBase.content_panels + [
         FieldPanel('child_type'),
+        FieldPanel('main_description'),
     ]
 
 
 class MainGroupWithSubGroups(GroupBase):
+    main_description = models.TextField(blank=True)
     child_type = models.CharField(
         max_length=20,
         choices=CHILDREN_CHOICES,
@@ -218,6 +223,7 @@ class MainGroupWithSubGroups(GroupBase):
     subpage_types = ['SubGroupWithGroupExercises', 'SubGroupWithSubGroups']
     content_panels = GroupBase.content_panels + [
         FieldPanel('child_type'),
+        FieldPanel('main_description'),
     ]
 
 
