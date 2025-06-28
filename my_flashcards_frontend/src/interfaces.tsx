@@ -440,6 +440,7 @@ interface MainGroupResult {
   background_image_with_text: FlagImage | null;
   url: string;
   path_slug: string;
+  main_description: string;
 }
 
 interface SubGroupResult {

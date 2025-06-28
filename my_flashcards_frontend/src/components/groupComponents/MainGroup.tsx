@@ -17,10 +17,13 @@ const MainGroup = ({group}: MainGroupProps) => {
                     {group.data.children.map(child => (
                         <div onClick={() => handleMoveToAnotherGroup(child.path_slug)}
                              className="main__container" key={child.id}>
-                            {child.background_image && (
-                                <img src={`${import.meta.env.VITE_API_URL}${child.background_image.url}`} alt=""/>)}
                             <div className="main__title">
                                 {child.title}
+                            </div>
+                            {child.background_image && (
+                                <img src={`${import.meta.env.VITE_API_URL}${child.background_image.url}`} alt=""/>)}
+                            <div className="main__description">
+                                {child.main_description}
                             </div>
                         </div>
                     ))}
