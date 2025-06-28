@@ -164,7 +164,7 @@ class LanguageCategoryPage(PageWithPathSlug, UniqueSlugAcrossGroupPagesMixin):
 
 
 class MainGroup(GroupBase):
-    # description = models.TextField(blank=True)
+    main_description = models.TextField(blank=True)
     parent_page_types = ['LanguageCategoryPage']
     subpage_types = ['SubGroup']
 
