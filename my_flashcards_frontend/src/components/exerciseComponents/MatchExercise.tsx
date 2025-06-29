@@ -1,5 +1,7 @@
+import {MatchExerciseProps} from "../../interfaces.tsx";
 
-const MatchExercise = () => {
+const MatchExercise = ({exercise}: MatchExerciseProps) => {
+    console.log("exercise", exercise)
     return (
         <div>
             <h1>Match Exercise</h1>

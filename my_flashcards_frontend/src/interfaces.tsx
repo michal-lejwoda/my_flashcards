@@ -101,12 +101,12 @@ export interface ErrorResponse {
     };
 }
 
-export interface ErrorAddFileMessage{
+export interface ErrorAddFileMessage {
     status: string;
     error: string;
 }
 
-export interface ErrorCreateFileMessage{
+export interface ErrorCreateFileMessage {
     name: string;
 }
 
@@ -130,7 +130,8 @@ export interface RegisterError {
     repeat_password?: string[]
     non_field_errors?: string[];
 }
-export interface CreateDeckError{
+
+export interface CreateDeckError {
     name?: string[]
 }
 
@@ -211,7 +212,7 @@ export interface EditLearnWordObject {
     level: number
 }
 
-export interface PostDeckObject{
+export interface PostDeckObject {
     name: string
 }
 
@@ -254,7 +255,7 @@ export interface EditModalProps {
     handleSearchWithDeck: () => Promise<void>;
 }
 
-export interface CreateDeckModalProps{
+export interface CreateDeckModalProps {
     openCreateDeckModal: boolean;
     setOpenCreateDeckModal: Dispatch<SetStateAction<boolean>>;
 
@@ -357,6 +358,7 @@ export interface MainSearchFieldProps {
     }
 
 }
+
 export interface LearnDoneModalInterface {
     showLearnDone: boolean;
     setShowLearnDone: Dispatch<SetStateAction<boolean>>;
@@ -400,68 +402,68 @@ export interface LearnObject {
 }
 
 interface Time {
-  minutes?: number;
-  days?: number;
+    minutes?: number;
+    days?: number;
 }
 
 interface Flashcard {
-  time: Time;
-  correct: boolean;
+    time: Time;
+    correct: boolean;
 }
 
 export type FlashcardsSet = {
-  AGAIN: Flashcard;
-  HARD: Flashcard;
-  MEDIUM: Flashcard;
-  EASY: Flashcard;
+    AGAIN: Flashcard;
+    HARD: Flashcard;
+    MEDIUM: Flashcard;
+    EASY: Flashcard;
 }
 
 interface FlagImage {
-  url: string;
-  full_url: string;
-  width: number;
-  height: number;
-  alt: string;
+    url: string;
+    full_url: string;
+    width: number;
+    height: number;
+    alt: string;
 }
 
 interface LanguageResult {
-  id: number;
-  title: string;
-  language: string;
-  flag_image: FlagImage;
-  url: string;
-  path_slug: string;
+    id: number;
+    title: string;
+    language: string;
+    flag_image: FlagImage;
+    url: string;
+    path_slug: string;
 }
 
 interface MainGroupResult {
-  id: number;
-  title: string;
-  background_image: FlagImage | null;
-  background_image_with_text: FlagImage | null;
-  url: string;
-  path_slug: string;
-  main_description: string;
+    id: number;
+    title: string;
+    background_image: FlagImage | null;
+    background_image_with_text: FlagImage | null;
+    url: string;
+    path_slug: string;
+    main_description: string;
 }
 
 interface SubGroupResult {
-  id: number;
-  title: string;
-  background_image: FlagImage | null;
-  background_image_with_text: FlagImage | null;
-  url: string;
-  path_slug: string;
+    id: number;
+    title: string;
+    background_image: FlagImage | null;
+    background_image_with_text: FlagImage | null;
+    url: string;
+    path_slug: string;
 }
 
 interface GroupExercisesResult {
-  id: number;
-  title: string;
-  background_image: FlagImage | null;
-  background_image_with_text: FlagImage | null;
-  url: string;
-  path_slug: string;
+    id: number;
+    title: string;
+    background_image: FlagImage | null;
+    background_image_with_text: FlagImage | null;
+    url: string;
+    path_slug: string;
 }
 
-interface MainGroupDataChildrens{
+interface MainGroupDataChildrens {
     id: number;
     language: string;
     title: string;
@@ -469,7 +471,7 @@ interface MainGroupDataChildrens{
 
 }
 
-interface SubGroupDataChildrens{
+interface SubGroupDataChildrens {
     id: number;
     language: string;
     title: string;
@@ -477,7 +479,7 @@ interface SubGroupDataChildrens{
 
 }
 
-interface GroupExerciseDataChildrens{
+interface GroupExerciseDataChildrens {
     id: number;
     language: string;
     title: string;
@@ -486,57 +488,205 @@ interface GroupExerciseDataChildrens{
 }
 
 export interface LanguageGroupData {
-  type: "LANGUAGE_GROUP";
-  data: LanguageResult[];
+    type: "LANGUAGE_GROUP";
+    data: LanguageResult[];
 }
 
 export interface MainGroupData {
-  type: "MAIN_GROUP";
-  data: MainGroupDataChildrens
+    type: "MAIN_GROUP";
+    data: MainGroupDataChildrens
 }
 
 export interface SubGroupData {
-  type: "SUB_GROUP";
-  data: SubGroupDataChildrens;
+    type: "SUB_GROUP";
+    data: SubGroupDataChildrens;
 }
 
 export interface GroupExercisesData {
-  type: "GROUP_EXERCISES";
-  data: GroupExerciseDataChildrens;
+    type: "GROUP_EXERCISES";
+    data: GroupExerciseDataChildrens;
+}
+
+export interface MatchExerciseData {
+    type: "MatchExercise";
+    description: string;
+    left_items: [string];
+    right_items: [string];
+    before_layout_config: [];
+    after_layout_config: [];
+}
+
+
+export interface ChooseExerciseDependsOnMultipleTextsData {
+    type: "ChooseExerciseDependsOnMultipleTexts";
+    description: string;
+    left_items: [string];
+    right_items: [string];
+    before_layout_config: [];
+    after_layout_config: [];
+}
+
+export interface ChooseExerciseDependsOnSingleTextData{
+    type: "ChooseExerciseDependsOnSingleText";
+    description: string;
+    left_items: [string];
+    right_items: [string];
+    before_layout_config: [];
+    after_layout_config: [];
+}
+
+export interface ConjugationExerciseData {
+    type: "ConjugationExercise";
+    description: string;
+    left_items: [string];
+    right_items: [string];
+    before_layout_config: [];
+    after_layout_config: [];
+}
+
+export interface FillInTextExerciseWithChoicesData{
+    type: "FillInTextExerciseWithChoices";
+    description: string;
+    left_items: [string];
+    right_items: [string];
+    before_layout_config: [];
+    after_layout_config: [];
+}
+
+export interface FillInTextExerciseWithChoicesWithImageDecorationData{
+    type: "FillInTextExerciseWithChoicesWithImageDecoration";
+    description: string;
+    left_items: [string];
+    right_items: [string];
+    before_layout_config: [];
+    after_layout_config: [];
+}
+
+export interface FillInTextExerciseWithPredefinedBlocksData{
+    type: "FillInTextExerciseWithPredefinedBlocks";
+    description: string;
+    left_items: [string];
+    right_items: [string];
+    before_layout_config: [];
+    after_layout_config: [];
+}
+
+export interface FlexibleExercisePageData {
+    type: "FlexibleExercisePage";
+    description: string;
+    left_items: [string];
+    right_items: [string];
+    before_layout_config: [];
+    after_layout_config: [];
+}
+
+export interface ListenWithManyOptionsToChooseToSingleExerciseData {
+    type: "ListenWithManyOptionsToChooseToSingleExercise";
+    description: string;
+    left_items: [string];
+    right_items: [string];
+    before_layout_config: [];
+    after_layout_config: [];
+}
+export interface MatchExerciseTextWithImageData{
+    type: "MatchExerciseTextWithImage";
+    description: string;
+    left_items: [string];
+    right_items: [string];
+    before_layout_config: [];
+    after_layout_config: [];
+}
+
+export interface MultipleExercisesData{
+    type: "MultipleExercises";
+    description: string;
+    left_items: [string];
+    right_items: [string];
+    before_layout_config: [];
+    after_layout_config: [];
 }
 
 export type Group = LanguageGroupData | MainGroupData | SubGroupData | GroupExercisesData;
 
+export type Exercises = MatchExerciseData | ChooseExerciseDependsOnMultipleTextsData | ChooseExerciseDependsOnSingleTextData |
+    ConjugationExerciseData | FillInTextExerciseWithChoicesData | FillInTextExerciseWithChoicesWithImageDecorationData |
+    FillInTextExerciseWithPredefinedBlocksData | FlexibleExercisePageData | ListenWithManyOptionsToChooseToSingleExerciseData |
+    MatchExerciseTextWithImageData | MultipleExercisesData
+
 
 export const isLanguageGroup = (group: Group): group is LanguageGroupData => {
-  return group.type === "LANGUAGE_GROUP";
+    return group.type === "LANGUAGE_GROUP";
 };
 
 export const isMainGroup = (group: Group): group is MainGroupData => {
-  return group.type === "MAIN_GROUP";
+    return group.type === "MAIN_GROUP";
 };
 
 export const isSubGroup = (group: Group): group is SubGroupData => {
-  return group.type === "SUB_GROUP";
+    return group.type === "SUB_GROUP";
 };
 
 export const isGroupExercises = (group: Group): group is GroupExercisesData => {
-  return group.type === "GROUP_EXERCISES";
+    return group.type === "GROUP_EXERCISES";
 };
+
+export const isMatchExercise = (exercise: Exercises): exercise is MatchExerciseData => {
+    return exercise.type === "MatchExercise"
+}
+export const isChooseExerciseDependsOnMultipleTexts = (exercise: Exercises): exercise is MatchExerciseData => {
+    return exercise.type === "ChooseExerciseDependsOnMultipleTexts"
+}
+
+export const isChooseExerciseDependsOnSingleText = (exercise: Exercises): exercise is MatchExerciseData => {
+    return exercise.type === "ChooseExerciseDependsOnSingleText"
+}
+
+export const isConjugationExercise = (exercise: Exercises): exercise is MatchExerciseData => {
+    return exercise.type === "ConjugationExercise"
+}
+
+export const isFillInTextExerciseWithChoices = (exercise: Exercises): exercise is MatchExerciseData => {
+    return exercise.type === "FillInTextExerciseWithChoices"
+}
+
+export const isFillInTextExerciseWithChoicesWithImageDecoration = (exercise: Exercises): exercise is MatchExerciseData => {
+    return exercise.type === "FillInTextExerciseWithChoicesWithImageDecoration"
+}
+
+export const isFillInTextExerciseWithPredefinedBlocks = (exercise: Exercises): exercise is MatchExerciseData => {
+    return exercise.type === "FillInTextExerciseWithPredefinedBlocks"
+}
+export const isFlexibleExercisePage = (exercise: Exercises): exercise is MatchExerciseData => {
+    return exercise.type === "FlexibleExercisePage"
+}
+export const isListenWithManyOptionsToChooseToSingleExercise = (exercise: Exercises): exercise is MatchExerciseData => {
+    return exercise.type === "ListenWithManyOptionsToChooseToSingleExercise"
+}
+export const isMatchExerciseTextWithImage = (exercise: Exercises): exercise is MatchExerciseData => {
+    return exercise.type === "MatchExerciseTextWithImage"
+}
+
+export const isMultipleExercises = (exercise: Exercises): exercise is MatchExerciseData => {
+    return exercise.type === "MultipleExercises"
+}
 
 
 export interface LanguageGroupProps {
-  group: LanguageGroupData;
+    group: LanguageGroupData;
 }
 
 export interface MainGroupProps {
-  group: MainGroupData;
+    group: MainGroupData;
 }
 
 export interface SubGroupProps {
-  group: SubGroupData;
+    group: SubGroupData;
 }
 
 export interface GroupExercisesProps {
-  group: GroupExercisesData;
+    group: GroupExercisesData;
+}
+
+export interface MatchExerciseProps {
+    exercise: MatchExerciseData;
 }
