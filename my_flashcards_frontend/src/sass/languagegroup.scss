@@ -44,6 +44,8 @@
   &__container{
     display: flex;
     flex-direction: column;
+    background-color: variables.$color-bg-medium;
+
     border: 2px solid variables.$color-bg-light;
     font-family: variables.$font-heading;
     border-radius: 10px;
@@ -70,5 +72,6 @@
     margin-bottom: 1rem;
     font-size: 1.2rem;
     font-weight: 500;
+    color: variables.$color-bg-dark;
   }
 }
