@@ -1,6 +1,8 @@
+import {ListenWithManyOptionsToChooseToSingleExerciseProps} from "../../interfaces.tsx";
 
 
-const ListenWithManyOptionsToChooseToSingleExercise = () => {
+const ListenWithManyOptionsToChooseToSingleExercise = ({exercise}: ListenWithManyOptionsToChooseToSingleExerciseProps) => {
+    console.log("exercise", exercise)
     return (
         <div>
 

@@ -1,5 +1,7 @@
+import {ChooseExerciseDependsOnSingleTextProps} from "../../interfaces.tsx";
 
-const ChooseExerciseDependsOnSingleText = () => {
+const ChooseExerciseDependsOnSingleText = ({exercise}: ChooseExerciseDependsOnSingleTextProps) => {
+    console.log("exercise", exercise)
     return (
         <div>
 

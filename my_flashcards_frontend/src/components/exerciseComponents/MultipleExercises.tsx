@@ -1,5 +1,7 @@
+import {MultipleExercisesProps} from "../../interfaces.tsx";
 
-const MultipleExercises = () => {
+const MultipleExercises = ({exercise}: MultipleExercisesProps) => {
+    console.log("exercise", exercise)
     return (
         <div>
 

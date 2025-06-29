@@ -1,5 +1,7 @@
+import {FillInTextExerciseWithChoicesProps} from "../../interfaces.tsx";
 
-const FillInTextExerciseWithChoices = () => {
+const FillInTextExerciseWithChoices = ({exercise} : FillInTextExerciseWithChoicesProps) => {
+    console.log("exercise", exercise)
     return (
         <div>
 

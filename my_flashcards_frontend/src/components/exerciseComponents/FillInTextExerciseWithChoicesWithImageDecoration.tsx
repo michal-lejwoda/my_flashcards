@@ -1,5 +1,7 @@
+import {FillInTextExerciseWithChoicesWithImageDecorationProps} from "../../interfaces.tsx";
 
-const FillInTextExerciseWithChoicesWithImageDecoration = () => {
+const FillInTextExerciseWithChoicesWithImageDecoration = ({exercise}: FillInTextExerciseWithChoicesWithImageDecorationProps) => {
+    console.log("exercise", exercise)
     return (
         <div>
 

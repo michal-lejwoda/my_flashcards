@@ -690,3 +690,43 @@ export interface GroupExercisesProps {
 export interface MatchExerciseProps {
     exercise: MatchExerciseData;
 }
+
+export interface ChooseExerciseDependsOnMultipleTextsProps {
+    exercise: ChooseExerciseDependsOnMultipleTextsData;
+}
+
+export interface ChooseExerciseDependsOnSingleTextProps {
+    exercise: ChooseExerciseDependsOnSingleTextData
+}
+
+export interface ConjugationExerciseProps{
+    exercise: ConjugationExerciseData
+}
+
+export interface FillInTextExerciseWithChoicesProps{
+    exercise: FillInTextExerciseWithChoicesData
+}
+
+export interface FillInTextExerciseWithChoicesWithImageDecorationProps{
+    exercise: FillInTextExerciseWithChoicesWithImageDecorationData
+}
+
+export interface FillInTextExerciseWithPredefinedBlocksProps{
+    exercise: FillInTextExerciseWithPredefinedBlocksData
+}
+
+export interface FlexibleExercisePageProps{
+    exercise: FlexibleExercisePageData
+}
+
+export interface ListenWithManyOptionsToChooseToSingleExerciseProps{
+    exercise: ListenWithManyOptionsToChooseToSingleExerciseData
+}
+
+export interface MatchExerciseTextWithImageProps{
+    exercise: MatchExerciseTextWithImageData
+}
+
+export interface MultipleExercisesProps{
+    exercise: MultipleExercisesData
+}
