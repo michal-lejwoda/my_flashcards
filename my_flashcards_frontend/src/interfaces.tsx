@@ -459,8 +459,15 @@ interface GroupExercisesResult {
     title: string;
     background_image: FlagImage | null;
     background_image_with_text: FlagImage | null;
+    children: GroupExercisesChildrenResult[]
     url: string;
     path_slug: string;
+}
+
+interface GroupExercisesChildrenResult {
+    id: number;
+    title: string;
+    url: string;
 }
 
 interface MainGroupDataChildrens {

@@ -7,6 +7,11 @@ const GroupExercises = ({ group }: GroupExercisesProps)  => {
     const handleMoveToAnotherGroup = (path_slug: string) => {
         navigate(`/exercises/${path_slug}`)
     }
+
+    const handleGoToExercise = (path_slug: string) => {
+        navigate(`/exercise/${path_slug}`)
+    }
+
     return (
         <section className="groupexercises">
             <div className="groupexercises__image">
@@ -14,11 +19,16 @@ const GroupExercises = ({ group }: GroupExercisesProps)  => {
             </div>
             <div className="groupexercises__container">
                 <div className="groupexercises__title"><h1>Group Exercise</h1></div>
-                <div className="groupexercises__languages">
+                <div className="groupexercises__items">
                     {group.data.children.map(child => (
                         <div onClick={() => handleMoveToAnotherGroup(child.path_slug)}
                              className="grp__container" key={child.id}>
-                            {child.background_image &&  (<img   src={"http://0.0.0.0:8000" + child.background_image.url} alt=""/>)}
+                            {child.children.map(exercise => (
+                                <div onClick={()=> handleGoToExercise(exercise.url)}>
+                                    {exercise.title}
+                                </div>
+                            ))}
+                            {child.background_image &&  (<img  src={"http://0.0.0.0:8000" + child.background_image.url} alt=""/>)}
                             <div className="grp__title">
                                 {child.title}
                             </div>

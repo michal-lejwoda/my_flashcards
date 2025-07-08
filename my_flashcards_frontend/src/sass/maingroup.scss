@@ -85,8 +85,9 @@
     color: variables.$color-bg-dark;
   }
   &__description{
+    margin-top: 0.5rem;
     color: variables.$color-bg-dark;
-    padding: 0.4rem;
+    padding: 0.6rem;
     min-height: 250px;
   }
   &__container{
