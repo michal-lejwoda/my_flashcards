@@ -160,7 +160,7 @@ class ExerciseListSerializer(serializers.ModelSerializer):
     url = serializers.SerializerMethodField()
 
     def get_url(self, obj):
-        return "/api/exercises/{}".format(obj.id)
+        return "{}/{}".format(obj.id, obj.slug)
 
     class Meta:
         model = ExerciseBase

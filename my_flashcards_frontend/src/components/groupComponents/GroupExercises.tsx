@@ -8,9 +8,10 @@ const GroupExercises = ({ group }: GroupExercisesProps)  => {
         navigate(`/exercises/${path_slug}`)
     }
 
-    const handleGoToExercise = (path_slug: string) => {
-        navigate(`/exercise/${path_slug}`)
+    const handleGoToExercise = (url: string) => {
+        navigate(`/exercise/${url}`);
     }
+    // #TODO BACK HERE
 
     return (
         <section className="groupexercises">
