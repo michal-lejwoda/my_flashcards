@@ -3,6 +3,12 @@
 .groupexercises {
   display:flex;
   flex-direction: row;
+  &__items{
+    max-width: 600px;
+  }
+  &__title{
+    font-size: 2rem;
+  }
   &__image {
     display: none;
     @include breakpoint("laptop") {
@@ -19,5 +25,40 @@
   &__container{
     display:flex;
     flex-direction: column;
+    width: 100%;
+    @include breakpoint("laptop") {
+      width: 50%;
+    }
+  }
+}
+
+.grp{
+  &__title{
+    display:flex;
+    flex-direction: row;
+    justify-content: space-between;
+    cursor: pointer;
+  }
+  &__level{
+    &__container{
+        font-size: 2rem;
+        font-family: variables.$font-heading;
+        border-bottom: 3px solid variables.$color-bg-medium;
+        padding: 0.4rem;
+        margin-top: 2rem;
+
+    }
+
+  }
+  &__exercise{
+    &__item{
+      font-size: 1.4rem;
+      padding: 0.4rem;
+      border-bottom: 1px solid variables.$color-bg-light;
+      &:hover{
+        cursor: pointer;
+        color: variables.$color-bg-light;
+      }
+    }
   }
 }
