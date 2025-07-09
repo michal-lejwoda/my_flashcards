@@ -1,7 +1,9 @@
 import {MatchExerciseProps} from "../../interfaces.tsx";
-import {useEffect, useState} from "react";
+import {useContext, useEffect, useState} from "react";
+import {handleSendMatchExerciseAnswers} from "../../api.tsx";
+import AuthContext from "../../context/AuthContext.tsx";
 
-const MatchExercise = ({exercise}: MatchExerciseProps) => {
+const MatchExercise = ({exercise,id,slug}: MatchExerciseProps) => {
     console.log("exercise", exercise)
     type SelectedElement = {
         left_item: string;
@@ -12,6 +14,7 @@ const MatchExercise = ({exercise}: MatchExerciseProps) => {
     const [leftSelected, setLeftSelected] = useState<string | null>(null);
     const [rightItems, setRightItems] = useState<string[]>([])
     const [leftItems, setLeftItems] = useState<string[]>([])
+    const {token} = useContext(AuthContext);
 
     useEffect(() => {
         setLeftItems(exercise.left_items);
@@ -21,6 +24,9 @@ const MatchExercise = ({exercise}: MatchExerciseProps) => {
 
     const sendAnswers = () => {
         const answers = {"answers": selectedElements}
+        const path_slug = `${id}/${slug}`
+        console.log("answers", answers)
+        handleSendMatchExerciseAnswers(path_slug, answers, token)
         console.log("send answers", answers)
     }
 

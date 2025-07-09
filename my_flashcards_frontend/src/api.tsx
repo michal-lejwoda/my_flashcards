@@ -1,6 +1,7 @@
 import axios from 'axios'
 import i18n from "i18next";
 import {
+    AnswersPayload,
     ChangeEmailData,
     ChangePasswordData, EditLearnWordObject,
     EditWordObject, handleDeleteUserData,
@@ -318,6 +319,18 @@ export async function handleGetExercise(id: string | undefined, slug:string | un
         headers: {
             'Accept-Language': currentLanguage,
 
+        },
+    });
+    return response.data
+}
+
+export async function handleSendMatchExerciseAnswers(path_slug: string, data: AnswersPayload, token: string | null){
+     const currentLanguage = i18n.language;
+     console.log("asddsapath_slug", path_slug)
+     const response = await instance.post(`/api/exercise/${path_slug}/`,data, {
+        headers: {
+            'Accept-Language': currentLanguage,
+            'Authorization': `Token ${token}`
         },
     });
     return response.data

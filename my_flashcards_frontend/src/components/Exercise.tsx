@@ -49,7 +49,7 @@ const Exercise = () => {
         if (!exercise || !exercise.type) return null;
 
         if (isMatchExercise(exercise)) {
-            return <MatchExercise exercise={exercise}/>;
+            return <MatchExercise exercise={exercise} id={id} slug={slug}/>;
         }
         if (isChooseExerciseDependsOnMultipleTexts(exercise)) {
             return <ChooseExerciseDependsOnMultipleTexts exercise={exercise}/>;

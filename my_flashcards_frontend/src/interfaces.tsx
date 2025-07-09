@@ -696,6 +696,8 @@ export interface GroupExercisesProps {
 
 export interface MatchExerciseProps {
     exercise: MatchExerciseData;
+    id:string | undefined;
+    slug: string | undefined;
 }
 
 export interface ChooseExerciseDependsOnMultipleTextsProps {
@@ -737,3 +739,12 @@ export interface MatchExerciseTextWithImageProps{
 export interface MultipleExercisesProps{
     exercise: MultipleExercisesData
 }
+
+type AnswerPair = {
+  left_item: string;
+  right_item: string;
+};
+
+export type AnswersPayload = {
+  answers: AnswerPair[];
+};

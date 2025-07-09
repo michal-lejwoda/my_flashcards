@@ -138,12 +138,12 @@ class ExerciseViewSet(RetrieveModelMixin, CreateModelMixin, GenericViewSet):
     def get_object(self):
         slug = self.kwargs.get('slug')
         pk = self.kwargs.get('pk')
-
         if not slug or not pk:
             raise NotFound("Both 'id' and 'slug' must be provided in the URL.")
 
         try:
             page = Page.objects.live().specific().get(id=pk, slug=slug)
+            print("pag123e", page)
         except Page.DoesNotExist:
             raise NotFound("No page found matching both id and slug.")
 
@@ -159,10 +159,12 @@ class ExerciseViewSet(RetrieveModelMixin, CreateModelMixin, GenericViewSet):
     def create(self, request, *args, **kwargs):
         page = self.get_object()
         exercise_type = request.data.get('type')
+
         if exercise_type == "MultipleExercises":
             answers = request.data.get('exercises')
         else:
             answers = request.data.get('answers')
+        print("answerasddsas", answers)
         try:
             result = page.check_answer(request.user, answers)
             return Response(result, status=status.HTTP_200_OK)
