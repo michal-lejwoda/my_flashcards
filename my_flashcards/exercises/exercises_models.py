@@ -101,7 +101,8 @@ class MatchExerciseTextWithImage(ExerciseBase, MatchExercisesCheck, LayoutMixin)
         correct_answers = self.check_pair_exercises(self.pairs)
         print("correct_answers", correct_answers)
         result = check_user_answers(user_answers, correct_answers)
-        self.save_attempt(user, user_answers, result['score'], result['max_score'], result)
+        if not user.is_anonymous:
+            self.save_attempt(user, user_answers, result['score'], result['max_score'], result)
         return result
 
 class FillInTextExerciseWithChoices(ExerciseBase, LayoutMixin):

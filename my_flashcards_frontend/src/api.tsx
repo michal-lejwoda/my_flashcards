@@ -3,9 +3,12 @@ import i18n from "i18next";
 import {
     AnswersPayload,
     ChangeEmailData,
-    ChangePasswordData, EditLearnWordObject,
-    EditWordObject, handleDeleteUserData,
-    handleSendMailWithResetPasswordData, PostDeckObject,
+    ChangePasswordData,
+    EditLearnWordObject,
+    EditWordObject,
+    handleDeleteUserData,
+    handleSendMailWithResetPasswordData,
+    PostDeckObject,
     SendDeckData
 } from "./interfaces.tsx";
 
@@ -67,7 +70,7 @@ export async function getDecks(token: string | null, search: string | null, page
     return response.data
 }
 
-export async function getDeckWords(token: string | null, deck_id: number, search: string | null, page_size: number){
+export async function getDeckWords(token: string | null, deck_id: number, search: string | null, page_size: number) {
     const currentLanguage = i18n.language;
     let url = `/api/word/${deck_id}/words_from_deck/?page_size=${page_size}`;
     if (search !== null) {
@@ -82,7 +85,7 @@ export async function getDeckWords(token: string | null, deck_id: number, search
     return response.data
 }
 
-export async function searchWordWithDeck(searchWord: string, token: string| null, page_size: number) {
+export async function searchWordWithDeck(searchWord: string, token: string | null, page_size: number) {
     const currentLanguage = i18n.language;
     const response = await instance.get(`/api/word/find_word_in_decks/?search=${searchWord}&page_size=${page_size}`, {
         headers: {
@@ -93,7 +96,7 @@ export async function searchWordWithDeck(searchWord: string, token: string| null
     return response.data
 }
 
-export async function createDeck(form: PostDeckObject, token: string| null) {
+export async function createDeck(form: PostDeckObject, token: string | null) {
     const currentLanguage = i18n.language;
     const response = await instance.post(`/api/decks/`, form, {
         headers: {
@@ -104,7 +107,7 @@ export async function createDeck(form: PostDeckObject, token: string| null) {
     return response.data
 }
 
-export async function getSingleWord(id: number, token: string| null) {
+export async function getSingleWord(id: number, token: string | null) {
     const currentLanguage = i18n.language;
     const response = await instance.get(`/api/word/${id}/`, {
         headers: {
@@ -114,9 +117,10 @@ export async function getSingleWord(id: number, token: string| null) {
     });
     return response.data
 }
-export async function editSingleWord(id: number, token: string| null, form: EditWordObject){
+
+export async function editSingleWord(id: number, token: string | null, form: EditWordObject) {
     const currentLanguage = i18n.language;
-    const response = await instance.patch(`/api/word/${id}/`, form,{
+    const response = await instance.patch(`/api/word/${id}/`, form, {
         headers: {
             'Accept-Language': currentLanguage,
             'Authorization': `Token ${token}`
@@ -125,9 +129,9 @@ export async function editSingleWord(id: number, token: string| null, form: Edit
     return response.data
 }
 
-export async function learnSingleWord(id: number, token: string| null, form: EditLearnWordObject){
+export async function learnSingleWord(id: number, token: string | null, form: EditLearnWordObject) {
     const currentLanguage = i18n.language;
-    const response = await instance.patch(`/api/learn_word/${id}/`, form,{
+    const response = await instance.patch(`/api/learn_word/${id}/`, form, {
         headers: {
             'Accept-Language': currentLanguage,
             'Authorization': `Token ${token}`
@@ -137,7 +141,7 @@ export async function learnSingleWord(id: number, token: string| null, form: Edi
 }
 
 
-export async function getSingleDeck(id: number, token: string| null) {
+export async function getSingleDeck(id: number, token: string | null) {
     const currentLanguage = i18n.language;
     const response = await instance.get(`/api/single_deck/${id}/`, {
         headers: {
@@ -148,7 +152,7 @@ export async function getSingleDeck(id: number, token: string| null) {
     return response.data
 }
 
-export async function getSingleDeckAllWords(id: number, token: string| null) {
+export async function getSingleDeckAllWords(id: number, token: string | null) {
     const currentLanguage = i18n.language;
     const response = await instance.get(`/api/single_deck/${id}/all_words/`, {
         headers: {
@@ -246,7 +250,7 @@ export async function searchForWord(str: string) {
     return response.data
 }
 
-export async function changeEmail(data: ChangeEmailData, token: string | null){
+export async function changeEmail(data: ChangeEmailData, token: string | null) {
     const currentLanguage = i18n.language;
     const response = await instance.post(`/api/users/change_email/`, data, {
         headers: {
@@ -258,7 +262,7 @@ export async function changeEmail(data: ChangeEmailData, token: string | null){
 
 }
 
-export async function changePassword(data: ChangePasswordData, token: string | null){
+export async function changePassword(data: ChangePasswordData, token: string | null) {
     const currentLanguage = i18n.language;
     const response = await instance.post(`/api/users/change_password/`, data, {
         headers: {
@@ -270,7 +274,7 @@ export async function changePassword(data: ChangePasswordData, token: string | n
 
 }
 
-export async function handleSendMailWithResetPassword(data: handleSendMailWithResetPasswordData){
+export async function handleSendMailWithResetPassword(data: handleSendMailWithResetPasswordData) {
     const currentLanguage = i18n.language;
     const response = await instance.post(`/api/users/send_mail_with_reset_link/`, data, {
         headers: {
@@ -280,7 +284,7 @@ export async function handleSendMailWithResetPassword(data: handleSendMailWithRe
     return response
 }
 
-export async function handleDeleteUser(data: handleDeleteUserData, token: string | null){
+export async function handleDeleteUser(data: handleDeleteUserData, token: string | null) {
     const currentLanguage = i18n.language;
     const response = await instance.post(`/api/users/delete_user/`, data, {
         headers: {
@@ -291,7 +295,7 @@ export async function handleDeleteUser(data: handleDeleteUserData, token: string
     return response.data
 }
 
-export async function handleGetLanguages(){
+export async function handleGetLanguages() {
     const currentLanguage = i18n.language;
     const response = await instance.get(`/api/languages/`, {
         headers: {
@@ -302,7 +306,7 @@ export async function handleGetLanguages(){
     return response.data
 }
 
-export async function handleGetGroups(slug: string){
+export async function handleGetGroups(slug: string) {
     const currentLanguage = i18n.language;
     const response = await instance.get(`/api/page-by-slug/${slug}`, {
         headers: {
@@ -313,7 +317,7 @@ export async function handleGetGroups(slug: string){
     return response.data
 }
 
-export async function handleGetExercise(id: string | undefined, slug:string | undefined){
+export async function handleGetExercise(id: string | undefined, slug: string | undefined) {
     const currentLanguage = i18n.language;
     const response = await instance.get(`/api/exercise/${id}/${slug}/`, {
         headers: {
@@ -324,10 +328,20 @@ export async function handleGetExercise(id: string | undefined, slug:string | un
     return response.data
 }
 
-export async function handleSendMatchExerciseAnswers(path_slug: string, data: AnswersPayload, token: string | null){
-     const currentLanguage = i18n.language;
-     console.log("asddsapath_slug", path_slug)
-     const response = await instance.post(`/api/exercise/${path_slug}/`,data, {
+export async function handleSendMatchExerciseAnswers(path_slug: string, data: AnswersPayload, token: string | null) {
+    const currentLanguage = i18n.language;
+    const response = await instance.post(`/api/exercise/${path_slug}/`, data, {
+        headers: {
+            'Accept-Language': currentLanguage,
+            'Authorization': `Token ${token}`
+        },
+    });
+    return response.data
+}
+
+export async function handleSendMatchExerciseWithImageAnswers(path_slug: string, data: AnswersPayload, token: string | null) {
+    const currentLanguage = i18n.language;
+    const response = await instance.post(`/api/exercise/${path_slug}/`, data, {
         headers: {
             'Accept-Language': currentLanguage,
             'Authorization': `Token ${token}`

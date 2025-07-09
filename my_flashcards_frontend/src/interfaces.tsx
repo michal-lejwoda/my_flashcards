@@ -598,10 +598,19 @@ export interface ListenWithManyOptionsToChooseToSingleExerciseData {
 export interface MatchExerciseTextWithImageData{
     type: "MatchExerciseTextWithImage";
     description: string;
-    left_items: [string];
+    left_items: [LeftItemsWithImageInterface];
     right_items: [string];
     before_layout_config: [];
     after_layout_config: [];
+}
+export interface LeftItemsWithImageInterface{
+    id: string;
+    url: string;
+}
+
+export interface MatchExerciseWithTextImageSelected{
+    left_item: LeftItemsWithImageInterface;
+    right_item: string;
 }
 
 export interface MultipleExercisesData{
@@ -734,10 +743,13 @@ export interface ListenWithManyOptionsToChooseToSingleExerciseProps{
 
 export interface MatchExerciseTextWithImageProps{
     exercise: MatchExerciseTextWithImageData
+    id:string | undefined;
+    slug: string | undefined;
 }
 
 export interface MultipleExercisesProps{
     exercise: MultipleExercisesData
+
 }
 
 type AnswerPair = {
@@ -745,6 +757,14 @@ type AnswerPair = {
   right_item: string;
 };
 
+type AnswerWithImagePair = {
+    left_item: number;
+    right_item: string
+}
 export type AnswersPayload = {
   answers: AnswerPair[];
 };
+
+export type AnswerMatchExerciseWithImagePayload = {
+    answers: AnswerWithImagePair[]
+}

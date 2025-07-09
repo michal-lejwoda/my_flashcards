@@ -76,7 +76,7 @@ const Exercise = () => {
             return <ListenWithManyOptionsToChooseToSingleExercise exercise={exercise}/>;
         }
         if (isMatchExerciseTextWithImage(exercise)) {
-            return <MatchExerciseTextWithImage exercise={exercise}/>;
+            return <MatchExerciseTextWithImage exercise={exercise} id={id} slug={slug}/>;
         }
         if (isMultipleExercises(exercise)) {
             return <MultipleExercises exercise={exercise}/>;
