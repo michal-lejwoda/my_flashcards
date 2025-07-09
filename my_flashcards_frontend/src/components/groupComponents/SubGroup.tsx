@@ -12,7 +12,7 @@ const SubGroup = ({ group }: SubGroupProps)  => {
                 <img src="/public/languages.svg" alt=""/>
             </div>
             <div className="subgroup__container">
-                {/*<div className="subgroup__title"><h1>SubGroup</h1></div>*/}
+                <div className="subgroup__title"><h1>{group.data.title}</h1></div>
                 <div className="subgroup__containers">
                     {group.data.children.map(child => (
                         <div onClick={() => handleMoveToAnotherGroup(child.path_slug)}

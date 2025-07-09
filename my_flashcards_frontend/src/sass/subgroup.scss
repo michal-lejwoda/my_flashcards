@@ -3,6 +3,11 @@
 .subgroup {
   display:flex;
   flex-direction: row;
+  &__title{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+  }
   &__image {
     display: none;
     @include breakpoint("laptop") {
@@ -18,10 +23,13 @@
   }
   &__container{
     display:flex;
-    flex-direction: row;
-    //width: 100%;
-    justify-content: center;
-    align-items: flex-start;
+    flex-direction: column;
+    width: 100%;
+    @include breakpoint("laptop") {
+      display: flex;
+      flex-direction: column;
+      width: 50%;
+    }
   }
   &__containers{
     display:flex;

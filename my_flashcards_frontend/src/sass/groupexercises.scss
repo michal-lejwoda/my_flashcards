@@ -5,9 +5,12 @@
   flex-direction: row;
   &__items{
     max-width: 600px;
+    width: 100%;
   }
   &__title{
-    font-size: 2rem;
+    //font-size: 2rem;
+    display:flex;
+    justify-content: center;
   }
   &__image {
     display: none;
@@ -25,6 +28,8 @@
   &__container{
     display:flex;
     flex-direction: column;
+    align-content: center;
+    align-items: center;
     width: 100%;
     @include breakpoint("laptop") {
       width: 50%;
@@ -38,6 +43,12 @@
     flex-direction: row;
     justify-content: space-between;
     cursor: pointer;
+    &__icon .rotate {
+    transform: rotate(180deg);
+}
+    &__icon svg {
+    transition: transform 0.3s ease;
+}
   }
   &__level{
     &__container{
@@ -61,4 +72,9 @@
       }
     }
   }
+}
+
+
+.grp__title__icon .rotate {
+    transform: rotate(180deg);
 }

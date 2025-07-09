@@ -3,6 +3,12 @@
 .maingroup {
   display:flex;
   flex-direction: row;
+  &__title{
+    display: flex;
+    justify-content: center;
+    font-family: variables.$color-text-primary;
+    font-size: 2rem;
+  }
   &__containers{
       display: flex;
       flex-wrap: wrap;

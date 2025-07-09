@@ -120,7 +120,7 @@ class GroupExerciseListSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = GroupExercise
-        fields = ['introduction', 'title', 'children']
+        fields = ['id','introduction', 'title', 'children']
 
 
 class MainGroupWithGroupExercisePageDetailSerializer(serializers.ModelSerializer):

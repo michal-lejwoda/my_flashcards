@@ -13,6 +13,7 @@ const MainGroup = ({group}: MainGroupProps) => {
                 <img src="/public/languages.svg" alt=""/>
             </div>
             <div className="maingroup__container">
+                <div className="maingroup__title"><h1>{group.data.title}</h1></div>
                 <div className="maingroup__containers">
                     {group.data.children.map(child => (
                         <div onClick={() => handleMoveToAnotherGroup(child.path_slug)}
