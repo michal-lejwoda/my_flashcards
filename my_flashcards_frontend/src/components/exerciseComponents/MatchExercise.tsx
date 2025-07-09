@@ -3,8 +3,9 @@ import {useContext, useEffect, useState} from "react";
 import {handleSendMatchExerciseAnswers} from "../../api.tsx";
 import AuthContext from "../../context/AuthContext.tsx";
 
-const MatchExercise = ({exercise,id,slug}: MatchExerciseProps) => {
-    console.log("exercise", exercise)
+
+const MatchExercise = ({exercise, id, slug}: MatchExerciseProps) => {
+
     type SelectedElement = {
         left_item: string;
         right_item: string;
@@ -19,13 +20,13 @@ const MatchExercise = ({exercise,id,slug}: MatchExerciseProps) => {
     useEffect(() => {
         setLeftItems(exercise.left_items);
         setRightItems(exercise.right_items);
+        setSelectedElements([])
     }, [exercise]);
-    console.log("leftItems", leftItems)
+
 
     const sendAnswers = () => {
         const answers = {"answers": selectedElements}
         const path_slug = `${id}/${slug}`
-        console.log("answers", answers)
         handleSendMatchExerciseAnswers(path_slug, answers, token)
         console.log("send answers", answers)
     }
@@ -62,7 +63,8 @@ const MatchExercise = ({exercise,id,slug}: MatchExerciseProps) => {
                 <div className="matchexercise__leftside">
                     {leftItems.map((element) => {
                         return (
-                            <div className="matchexercise__leftside__item" key={element} onClick={() => handleAddLeftItem(element)}>
+                            <div className="matchexercise__leftside__item" key={element}
+                                 onClick={() => handleAddLeftItem(element)}>
                                 {element}
                             </div>
                         )
@@ -71,7 +73,8 @@ const MatchExercise = ({exercise,id,slug}: MatchExerciseProps) => {
                 <div className="matchexercise__rightside">
                     {rightItems.map((element) => {
                         return (
-                            <div className="matchexercise__rightside__item" key={element} onClick={() => handleAddRightItem(element)}>
+                            <div className="matchexercise__rightside__item" key={element}
+                                 onClick={() => handleAddRightItem(element)}>
                                 {element}
                             </div>
                         )
@@ -79,11 +82,24 @@ const MatchExercise = ({exercise,id,slug}: MatchExerciseProps) => {
                 </div>
             </div>
             <div className="matchexercise__selectedcontainer">
-
+                <h1>Selected Conttainer</h1>
+                {selectedElements.map((element) => {
+                    return (
+                        <div className="matchexercise__selectedcontainer__item">
+                            <div className="matchexercise__selectedcontainer__leftitem">
+                                {element.left_item}
+                            </div>
+                            <div className="matchexercise__selectedcontainer__rightitem">
+                                {element.right_item}
+                            </div>
+                        </div>
+                    )
+                })}
             </div>
             <div className="matchexercise__buttons">
                 <button onClick={sendAnswers}>Send</button>
             </div>
+
         </div>
     );
 };
