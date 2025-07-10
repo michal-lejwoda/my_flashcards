@@ -4,7 +4,7 @@ const FillInTextExerciseWithChoices = ({exercise} : FillInTextExerciseWithChoice
     console.log("exercise", exercise)
     return (
         <div>
-
+            <h1>FillInTextExerciseWithChoices</h1>
         </div>
     );
 };
