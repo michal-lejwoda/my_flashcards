@@ -542,11 +542,17 @@ export interface ChooseExerciseDependsOnSingleTextData{
     after_layout_config: [];
 }
 
+interface ConjugationRow {
+    person_label: string;
+    correct_form: string;
+    is_pre_filled: string;
+}
+
 export interface ConjugationExerciseData {
     type: "ConjugationExercise";
+    instruction: string
     description: string;
-    left_items: [string];
-    right_items: [string];
+    conjugation_rows: ConjugationRow[]
     before_layout_config: [];
     after_layout_config: [];
 }
@@ -718,7 +724,9 @@ export interface ChooseExerciseDependsOnSingleTextProps {
 }
 
 export interface ConjugationExerciseProps{
-    exercise: ConjugationExerciseData
+    exercise: ConjugationExerciseData;
+    id:string | undefined;
+    slug: string | undefined;
 }
 
 export interface FillInTextExerciseWithChoicesProps{
@@ -759,12 +767,21 @@ type AnswerPair = {
 
 type AnswerWithImagePair = {
     left_item: number;
-    right_item: string
+    right_item: string;
 }
+
+export type ConjugationExerciseAnswer = {
+    "person_label": string;
+    "answer": string
+}
+
 export type AnswersPayload = {
   answers: AnswerPair[];
 };
 
 export type AnswerMatchExerciseWithImagePayload = {
     answers: AnswerWithImagePair[]
+}
+export type AnswerConjugationExercisePayload = {
+    answers: ConjugationExerciseAnswer[]
 }

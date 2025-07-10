@@ -43,7 +43,7 @@ class ExerciseBase(Page):
 
     def save_attempt(self, user, answers, score, max_score, detailed_results=None):
         attempt, created = ExerciseAttempt.objects.update_or_create(
-            user=user,
+            user=user.id,
             exercise=self,
             defaults={
                 'score': score,
@@ -295,8 +295,8 @@ class ConjugationExercise(ExerciseBase, LayoutMixin):
             "max_score": len(result_answers),
             "result_answers": result_answers
         }
-
-        self.save_attempt(user, user_answers, score, len(result_answers), result)
+        if not user.is_anonymous:
+            self.save_attempt(user, user_answers, score, len(result_answers), result)
 
         return result
 

@@ -58,7 +58,7 @@ const Exercise = () => {
             return <ChooseExerciseDependsOnSingleText exercise={exercise}/>;
         }
         if (isConjugationExercise(exercise)) {
-            return <ConjugationExercise exercise={exercise}/>;
+            return <ConjugationExercise exercise={exercise} id={id} slug={slug}/>;
         }
         if (isFillInTextExerciseWithChoices(exercise)) {
             return <FillInTextExerciseWithChoices exercise={exercise}/>;
