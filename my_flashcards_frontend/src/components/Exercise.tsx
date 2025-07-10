@@ -53,7 +53,7 @@ const Exercise = () => {
         }
 
         if (isChooseExerciseDependsOnMultipleTexts(exercise)) {
-            return <ChooseExerciseDependsOnMultipleTexts exercise={exercise}/>;
+            return <ChooseExerciseDependsOnMultipleTexts exercise={exercise}  id={id} slug={slug}/>;
         }
         if (isChooseExerciseDependsOnSingleText(exercise)) {
             return <ChooseExerciseDependsOnSingleText exercise={exercise} id={id} slug={slug}/>;

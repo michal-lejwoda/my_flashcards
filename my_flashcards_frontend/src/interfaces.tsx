@@ -526,9 +526,10 @@ export interface MatchExerciseData {
 
 export interface ChooseExerciseDependsOnMultipleTextsData {
     type: "ChooseExerciseDependsOnMultipleTexts";
+    id: number;
+    title: string;
     description: string;
-    left_items: [string];
-    right_items: [string];
+    exercises: ChooseExerciseDependsOnMultipleTextsDataExercises[]
     before_layout_config: [];
     after_layout_config: [];
 }
@@ -541,6 +542,14 @@ export interface ChooseExerciseDependsOnSingleTextData{
     exercises: ChooseExerciseDependsOnSingleTextDataExercises[]
     before_layout_config: [];
     after_layout_config: [];
+}
+
+interface ChooseExerciseDependsOnMultipleTextsDataExercises{
+    correct_answers: string;
+    question: string;
+    question_id: string;
+    options: [string];
+    text: string;
 }
 
 interface ChooseExerciseDependsOnSingleTextDataExercises{
@@ -725,6 +734,8 @@ export interface MatchExerciseProps {
 
 export interface ChooseExerciseDependsOnMultipleTextsProps {
     exercise: ChooseExerciseDependsOnMultipleTextsData;
+    id:string | undefined;
+    slug: string | undefined;
 }
 
 export interface ChooseExerciseDependsOnSingleTextProps {
