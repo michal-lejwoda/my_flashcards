@@ -4,7 +4,7 @@ const ChooseExerciseDependsOnMultipleTexts = ({exercise}: ChooseExerciseDependsO
     console.log("exercise", exercise)
     return (
         <div>
-
+            <h1>ChooseExerciseDependsOnMultipleTexts</h1>
         </div>
     );
 };

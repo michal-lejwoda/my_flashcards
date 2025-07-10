@@ -536,10 +536,18 @@ export interface ChooseExerciseDependsOnMultipleTextsData {
 export interface ChooseExerciseDependsOnSingleTextData{
     type: "ChooseExerciseDependsOnSingleText";
     description: string;
-    left_items: [string];
-    right_items: [string];
+    id: number;
+    text: string;
+    exercises: ChooseExerciseDependsOnSingleTextDataExercises[]
     before_layout_config: [];
     after_layout_config: [];
+}
+
+interface ChooseExerciseDependsOnSingleTextDataExercises{
+    correct_answers: string;
+    question: string;
+    question_id: string;
+    options: [string]
 }
 
 interface ConjugationRow {
@@ -721,6 +729,8 @@ export interface ChooseExerciseDependsOnMultipleTextsProps {
 
 export interface ChooseExerciseDependsOnSingleTextProps {
     exercise: ChooseExerciseDependsOnSingleTextData
+    id:string | undefined;
+    slug: string | undefined;
 }
 
 export interface ConjugationExerciseProps{
@@ -775,6 +785,11 @@ export type ConjugationExerciseAnswer = {
     "answer": string
 }
 
+export interface ChooseExerciseDependsOnSingleTextAnswer {
+  question_id: string;
+  answer: string;
+}
+
 export type AnswersPayload = {
   answers: AnswerPair[];
 };
@@ -784,4 +799,8 @@ export type AnswerMatchExerciseWithImagePayload = {
 }
 export type AnswerConjugationExercisePayload = {
     answers: ConjugationExerciseAnswer[]
+}
+
+export type AnswerChooseExerciseDependsOnSingleTextPayload = {
+    answers: ChooseExerciseDependsOnSingleTextAnswer[]
 }

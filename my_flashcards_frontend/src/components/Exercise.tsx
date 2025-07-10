@@ -51,11 +51,12 @@ const Exercise = () => {
         if (isMatchExercise(exercise)) {
             return <MatchExercise exercise={exercise} id={id} slug={slug}/>;
         }
+
         if (isChooseExerciseDependsOnMultipleTexts(exercise)) {
             return <ChooseExerciseDependsOnMultipleTexts exercise={exercise}/>;
         }
         if (isChooseExerciseDependsOnSingleText(exercise)) {
-            return <ChooseExerciseDependsOnSingleText exercise={exercise}/>;
+            return <ChooseExerciseDependsOnSingleText exercise={exercise} id={id} slug={slug}/>;
         }
         if (isConjugationExercise(exercise)) {
             return <ConjugationExercise exercise={exercise} id={id} slug={slug}/>;
