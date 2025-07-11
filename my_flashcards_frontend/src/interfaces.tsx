@@ -637,13 +637,20 @@ export interface ListenWithManyOptionsToChooseToSingleExerciseData {
     type: "ListenWithManyOptionsToChooseToSingleExercise";
     description: string;
     audio: string;
-    exercises: ListenWithManyOptionsToChooseToSingleExerciseDataExercises[]
+    exercises: ListenExerciseWithOptionsToChooseExercises[]
     before_layout_config: [];
     after_layout_config: [];
 }
 
-export interface ListenWithManyOptionsToChooseToSingleExerciseDataExercises {
+export interface ListenExerciseWithOptionsToChooseExercises{
     correct_answer: string
+    options: [string]
+    question: string
+    question_id: string
+}
+
+export interface ListenWithManyOptionsToChooseToSingleExerciseDataExercises {
+    correct_answer: [string]
     options: [string]
     question: string
     question_id: string
@@ -862,6 +869,12 @@ export interface ChooseExerciseDependsOnSingleTextAnswer {
     answer: string;
 }
 
+export interface ChooseExerciseDependsOnMultipleTextAnswer {
+    question_id: string;
+    answers: string[];
+}
+
+
 export interface FillInTextExerciseWithChoicesAnswer {
     blank_id: number;
     answer: string;
@@ -885,3 +898,8 @@ export type AnswerChooseExerciseDependsOnSingleTextPayload = {
 export type AnswerFillInTextExerciseWithChoicesPayload = {
     answers: FillInTextExerciseWithChoicesAnswer[]
 }
+
+export type AnswerListenWithManyOptionsToChooseToSingleExercisePayload = {
+    answers: ChooseExerciseDependsOnMultipleTextAnswer[]
+}
+
