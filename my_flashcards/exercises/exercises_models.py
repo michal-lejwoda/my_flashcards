@@ -151,8 +151,8 @@ class FillInTextExerciseWithChoices(ExerciseBase, LayoutMixin):
             "max_score": len(result_answers),
             "result_answers": result_answers
         }
-
-        self.save_attempt(user, user_answers, score, len(result_answers), result)
+        if not user.is_anonymous:
+            self.save_attempt(user, user_answers, score, len(result_answers), result)
 
         return result
 
