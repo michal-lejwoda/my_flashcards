@@ -534,7 +534,7 @@ export interface ChooseExerciseDependsOnMultipleTextsData {
     after_layout_config: [];
 }
 
-export interface ChooseExerciseDependsOnSingleTextData{
+export interface ChooseExerciseDependsOnSingleTextData {
     type: "ChooseExerciseDependsOnSingleText";
     description: string;
     id: number;
@@ -544,7 +544,7 @@ export interface ChooseExerciseDependsOnSingleTextData{
     after_layout_config: [];
 }
 
-interface ChooseExerciseDependsOnMultipleTextsDataExercises{
+interface ChooseExerciseDependsOnMultipleTextsDataExercises {
     correct_answers: string;
     question: string;
     question_id: string;
@@ -552,7 +552,7 @@ interface ChooseExerciseDependsOnMultipleTextsDataExercises{
     text: string;
 }
 
-interface ChooseExerciseDependsOnSingleTextDataExercises{
+interface ChooseExerciseDependsOnSingleTextDataExercises {
     correct_answers: string;
     question: string;
     question_id: string;
@@ -574,7 +574,7 @@ export interface ConjugationExerciseData {
     after_layout_config: [];
 }
 
-export interface FillInTextExerciseWithChoicesData{
+export interface FillInTextExerciseWithChoicesData {
     type: "FillInTextExerciseWithChoices";
     id: number;
     description: string;
@@ -584,19 +584,18 @@ export interface FillInTextExerciseWithChoicesData{
     after_layout_config: [];
 }
 
-export interface  FillInTextExerciseWithChoicesBlanks{
+export interface FillInTextExerciseWithChoicesBlanks {
     blank_id: number;
     correct_answer: string;
     options: [string]
-
 }
 
-export interface FillInTextExerciseWithPredefinedBlocksDataBlocks{
+export interface FillInTextExerciseWithPredefinedBlocksDataBlocks {
     blank_id: number;
     answer: string
 }
 
-export interface FillInTextExerciseWithChoicesWithImageDecorationData{
+export interface FillInTextExerciseWithChoicesWithImageDecorationData {
     type: "FillInTextExerciseWithChoicesWithImageDecoration";
     id: number;
     description: string;
@@ -607,7 +606,7 @@ export interface FillInTextExerciseWithChoicesWithImageDecorationData{
     image: string
 }
 
-export interface FillInTextExerciseWithPredefinedBlocksData{
+export interface FillInTextExerciseWithPredefinedBlocksData {
     type: "FillInTextExerciseWithPredefinedBlocks";
     id: number;
     description: string;
@@ -626,15 +625,31 @@ export interface FlexibleExercisePageData {
     after_layout_config: [];
 }
 
-export interface ListenWithManyOptionsToChooseToSingleExerciseData {
-    type: "ListenWithManyOptionsToChooseToSingleExercise";
+export interface ListenExerciseWithOptionsToChooseData {
+    type: "ListenExerciseWithOptionsToChoose"
     description: string;
-    left_items: [string];
-    right_items: [string];
+    exercises: ListenWithManyOptionsToChooseToSingleExerciseDataExercises[]
     before_layout_config: [];
     after_layout_config: [];
 }
-export interface MatchExerciseTextWithImageData{
+
+export interface ListenWithManyOptionsToChooseToSingleExerciseData {
+    type: "ListenWithManyOptionsToChooseToSingleExercise";
+    description: string;
+    audio: string;
+    exercises: ListenWithManyOptionsToChooseToSingleExerciseDataExercises[]
+    before_layout_config: [];
+    after_layout_config: [];
+}
+
+export interface ListenWithManyOptionsToChooseToSingleExerciseDataExercises {
+    correct_answer: string
+    options: [string]
+    question: string
+    question_id: string
+}
+
+export interface MatchExerciseTextWithImageData {
     type: "MatchExerciseTextWithImage";
     description: string;
     left_items: [LeftItemsWithImageInterface];
@@ -642,17 +657,18 @@ export interface MatchExerciseTextWithImageData{
     before_layout_config: [];
     after_layout_config: [];
 }
-export interface LeftItemsWithImageInterface{
+
+export interface LeftItemsWithImageInterface {
     id: string;
     url: string;
 }
 
-export interface MatchExerciseWithTextImageSelected{
+export interface MatchExerciseWithTextImageSelected {
     left_item: LeftItemsWithImageInterface;
     right_item: string;
 }
 
-export interface MultipleExercisesData{
+export interface MultipleExercisesData {
     type: "MultipleExercises";
     description: string;
     left_items: [string];
@@ -663,10 +679,22 @@ export interface MultipleExercisesData{
 
 export type Group = LanguageGroupData | MainGroupData | SubGroupData | GroupExercisesData;
 
-export type Exercises = MatchExerciseData | ChooseExerciseDependsOnMultipleTextsData | ChooseExerciseDependsOnSingleTextData |
-    ConjugationExerciseData | FillInTextExerciseWithChoicesData | FillInTextExerciseWithChoicesWithImageDecorationData |
-    FillInTextExerciseWithPredefinedBlocksData | FlexibleExercisePageData | ListenWithManyOptionsToChooseToSingleExerciseData |
-    MatchExerciseTextWithImageData | MultipleExercisesData
+export type Exercises =
+    MatchExerciseData
+    | ChooseExerciseDependsOnMultipleTextsData
+    | ChooseExerciseDependsOnSingleTextData
+    |
+    ConjugationExerciseData
+    | FillInTextExerciseWithChoicesData
+    | FillInTextExerciseWithChoicesWithImageDecorationData
+    |
+    FillInTextExerciseWithPredefinedBlocksData
+    | FlexibleExercisePageData
+    | ListenWithManyOptionsToChooseToSingleExerciseData
+    |
+    MatchExerciseTextWithImageData
+    | MultipleExercisesData
+    | ListenExerciseWithOptionsToChooseData
 
 
 export const isLanguageGroup = (group: Group): group is LanguageGroupData => {
@@ -725,6 +753,9 @@ export const isMultipleExercises = (exercise: Exercises): exercise is MatchExerc
     return exercise.type === "MultipleExercises"
 }
 
+export const isListenExerciseWithOptionsToChoose = (exercise: Exercises): exercise is ListenExerciseWithOptionsToChooseData => {
+    return exercise.type === "ListenExerciseWithOptionsToChoose"
+}
 
 export interface LanguageGroupProps {
     group: LanguageGroupData;
@@ -744,68 +775,76 @@ export interface GroupExercisesProps {
 
 export interface MatchExerciseProps {
     exercise: MatchExerciseData;
-    id:string | undefined;
+    id: string | undefined;
     slug: string | undefined;
 }
 
 export interface ChooseExerciseDependsOnMultipleTextsProps {
     exercise: ChooseExerciseDependsOnMultipleTextsData;
-    id:string | undefined;
+    id: string | undefined;
     slug: string | undefined;
 }
 
 export interface ChooseExerciseDependsOnSingleTextProps {
     exercise: ChooseExerciseDependsOnSingleTextData
-    id:string | undefined;
+    id: string | undefined;
     slug: string | undefined;
 }
 
-export interface ConjugationExerciseProps{
+export interface ConjugationExerciseProps {
     exercise: ConjugationExerciseData;
-    id:string | undefined;
+    id: string | undefined;
     slug: string | undefined;
 }
 
-export interface FillInTextExerciseWithChoicesProps{
+export interface FillInTextExerciseWithChoicesProps {
     exercise: FillInTextExerciseWithChoicesData
-    id:string | undefined;
+    id: string | undefined;
     slug: string | undefined;
 }
 
-export interface FillInTextExerciseWithChoicesWithImageDecorationProps{
+export interface FillInTextExerciseWithChoicesWithImageDecorationProps {
     exercise: FillInTextExerciseWithChoicesWithImageDecorationData
-    id:string | undefined;
+    id: string | undefined;
     slug: string | undefined;
 }
 
-export interface FillInTextExerciseWithPredefinedBlocksProps{
+export interface FillInTextExerciseWithPredefinedBlocksProps {
     exercise: FillInTextExerciseWithPredefinedBlocksData
-    id:string | undefined;
+    id: string | undefined;
     slug: string | undefined;
 }
 
-export interface FlexibleExercisePageProps{
+export interface FlexibleExercisePageProps {
     exercise: FlexibleExercisePageData
 }
 
-export interface ListenWithManyOptionsToChooseToSingleExerciseProps{
+export interface ListenWithManyOptionsToChooseToSingleExerciseProps {
     exercise: ListenWithManyOptionsToChooseToSingleExerciseData
+    id: string | undefined;
+    slug: string | undefined
 }
 
-export interface MatchExerciseTextWithImageProps{
+export interface ListenExerciseWithOptionsToChooseProps {
+    exercise: ListenWithManyOptionsToChooseToSingleExerciseData
+    id: string | undefined;
+    slug: string | undefined
+}
+
+export interface MatchExerciseTextWithImageProps {
     exercise: MatchExerciseTextWithImageData
-    id:string | undefined;
+    id: string | undefined;
     slug: string | undefined;
 }
 
-export interface MultipleExercisesProps{
+export interface MultipleExercisesProps {
     exercise: MultipleExercisesData
 
 }
 
 type AnswerPair = {
-  left_item: string;
-  right_item: string;
+    left_item: string;
+    right_item: string;
 };
 
 type AnswerWithImagePair = {
@@ -819,17 +858,17 @@ export type ConjugationExerciseAnswer = {
 }
 
 export interface ChooseExerciseDependsOnSingleTextAnswer {
-  question_id: string;
-  answer: string;
+    question_id: string;
+    answer: string;
 }
 
-export interface FillInTextExerciseWithChoicesAnswer{
+export interface FillInTextExerciseWithChoicesAnswer {
     blank_id: number;
     answer: string;
 }
 
 export type AnswersPayload = {
-  answers: AnswerPair[];
+    answers: AnswerPair[];
 };
 
 export type AnswerMatchExerciseWithImagePayload = {

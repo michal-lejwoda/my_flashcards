@@ -363,7 +363,8 @@ class ListenExerciseWithOptionsToChoose(ExerciseBase, AutoNumberedQuestionsMixin
     def check_answer(self, user, user_answers):
         user_answer_map = {a['question_id']: a['answer'] for a in user_answers}
         result = check_user_answers_another_option(user_answer_map, self.exercises)
-        self.save_attempt(user, user_answers, result['score'], result['max_score'], result)
+        if not user.is_anonymous:
+            self.save_attempt(user, user_answers, result['score'], result['max_score'], result)
         return result
 
 
@@ -405,7 +406,8 @@ class ListenWithManyOptionsToChooseToSingleExercise(ExerciseBase, AutoNumberedQu
             "result_answers": result_answers
         }
         # TODO Comeback here
-        self.save_attempt(user, user_answers, score, max_score, result)
+        if not user.is_anonymous:
+            self.save_attempt(user, user_answers, score, max_score, result)
         return result
 
 

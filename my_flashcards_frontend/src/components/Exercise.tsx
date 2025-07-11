@@ -9,7 +9,7 @@ import {
     isFillInTextExerciseWithChoices,
     isFillInTextExerciseWithChoicesWithImageDecoration,
     isFillInTextExerciseWithPredefinedBlocks,
-    isFlexibleExercisePage,
+    isFlexibleExercisePage, isListenExerciseWithOptionsToChoose,
     isListenWithManyOptionsToChooseToSingleExercise,
     isMatchExercise,
     isMatchExerciseTextWithImage,
@@ -28,6 +28,7 @@ import ListenWithManyOptionsToChooseToSingleExercise
     from "./exerciseComponents/ListenWithManyOptionsToChooseToSingleExercise.tsx";
 import MatchExerciseTextWithImage from "./exerciseComponents/MatchExerciseTextWithImage.tsx";
 import MultipleExercises from "./exerciseComponents/MultipleExercises.tsx";
+import ListenExerciseWithOptionsToChoose from "./exerciseComponents/ListenExerciseWithOptionsToChoose.tsx";
 
 
 const Exercise = () => {
@@ -73,8 +74,11 @@ const Exercise = () => {
         if (isFlexibleExercisePage(exercise)) {
             return <FlexibleExercisePage exercise={exercise}/>;
         }
+        if (isListenExerciseWithOptionsToChoose(exercise)){
+            return <ListenExerciseWithOptionsToChoose exercise={exercise} id={id} slug={slug}/>
+        }
         if (isListenWithManyOptionsToChooseToSingleExercise(exercise)) {
-            return <ListenWithManyOptionsToChooseToSingleExercise exercise={exercise}/>;
+            return <ListenWithManyOptionsToChooseToSingleExercise exercise={exercise} id={id} slug={slug}/>;
         }
         if (isMatchExerciseTextWithImage(exercise)) {
             return <MatchExerciseTextWithImage exercise={exercise} id={id} slug={slug}/>;
