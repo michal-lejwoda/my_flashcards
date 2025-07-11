@@ -62,7 +62,7 @@ const Exercise = () => {
             return <ConjugationExercise exercise={exercise} id={id} slug={slug}/>;
         }
         if (isFillInTextExerciseWithChoices(exercise)) {
-            return <FillInTextExerciseWithChoices exercise={exercise}/>;
+            return <FillInTextExerciseWithChoices exercise={exercise} id={id} slug={slug}/>;
         }
         if (isFillInTextExerciseWithChoicesWithImageDecoration(exercise)) {
             return <FillInTextExerciseWithChoicesWithImageDecoration exercise={exercise}/>;

@@ -576,13 +576,20 @@ export interface ConjugationExerciseData {
 
 export interface FillInTextExerciseWithChoicesData{
     type: "FillInTextExerciseWithChoices";
+    id: number;
     description: string;
-    left_items: [string];
-    right_items: [string];
+    blanks: FillInTextExerciseWithChoicesBlanks[];
+    text_with_blanks: string;
     before_layout_config: [];
     after_layout_config: [];
 }
 
+export interface  FillInTextExerciseWithChoicesBlanks{
+    blank_id: number;
+    correct_answer: string;
+    options: [string]
+
+}
 export interface FillInTextExerciseWithChoicesWithImageDecorationData{
     type: "FillInTextExerciseWithChoicesWithImageDecoration";
     description: string;
@@ -752,6 +759,8 @@ export interface ConjugationExerciseProps{
 
 export interface FillInTextExerciseWithChoicesProps{
     exercise: FillInTextExerciseWithChoicesData
+    id:string | undefined;
+    slug: string | undefined;
 }
 
 export interface FillInTextExerciseWithChoicesWithImageDecorationProps{
@@ -801,6 +810,11 @@ export interface ChooseExerciseDependsOnSingleTextAnswer {
   answer: string;
 }
 
+export interface FillInTextExerciseWithChoicesAnswer{
+    blank_id: number;
+    answer: string;
+}
+
 export type AnswersPayload = {
   answers: AnswerPair[];
 };
@@ -814,4 +828,8 @@ export type AnswerConjugationExercisePayload = {
 
 export type AnswerChooseExerciseDependsOnSingleTextPayload = {
     answers: ChooseExerciseDependsOnSingleTextAnswer[]
+}
+
+export type AnswerFillInTextExerciseWithChoicesPayload = {
+    answers: FillInTextExerciseWithChoicesAnswer[]
 }
