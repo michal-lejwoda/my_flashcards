@@ -590,20 +590,29 @@ export interface  FillInTextExerciseWithChoicesBlanks{
     options: [string]
 
 }
+
+export interface FillInTextExerciseWithPredefinedBlocksDataBlocks{
+    blank_id: number;
+    answer: string
+}
+
 export interface FillInTextExerciseWithChoicesWithImageDecorationData{
     type: "FillInTextExerciseWithChoicesWithImageDecoration";
+    id: number;
     description: string;
-    left_items: [string];
-    right_items: [string];
+    blanks: FillInTextExerciseWithChoicesBlanks[];
+    text_with_blanks: string;
     before_layout_config: [];
     after_layout_config: [];
+    image: string
 }
 
 export interface FillInTextExerciseWithPredefinedBlocksData{
     type: "FillInTextExerciseWithPredefinedBlocks";
+    id: number;
     description: string;
-    left_items: [string];
-    right_items: [string];
+    blocks: FillInTextExerciseWithPredefinedBlocksDataBlocks[];
+    text_with_blanks: string;
     before_layout_config: [];
     after_layout_config: [];
 }
@@ -765,10 +774,14 @@ export interface FillInTextExerciseWithChoicesProps{
 
 export interface FillInTextExerciseWithChoicesWithImageDecorationProps{
     exercise: FillInTextExerciseWithChoicesWithImageDecorationData
+    id:string | undefined;
+    slug: string | undefined;
 }
 
 export interface FillInTextExerciseWithPredefinedBlocksProps{
     exercise: FillInTextExerciseWithPredefinedBlocksData
+    id:string | undefined;
+    slug: string | undefined;
 }
 
 export interface FlexibleExercisePageProps{

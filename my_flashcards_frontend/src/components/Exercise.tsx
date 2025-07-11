@@ -65,10 +65,10 @@ const Exercise = () => {
             return <FillInTextExerciseWithChoices exercise={exercise} id={id} slug={slug}/>;
         }
         if (isFillInTextExerciseWithChoicesWithImageDecoration(exercise)) {
-            return <FillInTextExerciseWithChoicesWithImageDecoration exercise={exercise}/>;
+            return <FillInTextExerciseWithChoicesWithImageDecoration exercise={exercise} id={id} slug={slug}/>;
         }
         if (isFillInTextExerciseWithPredefinedBlocks(exercise)) {
-            return <FillInTextExerciseWithPredefinedBlocks exercise={exercise}/>;
+            return <FillInTextExerciseWithPredefinedBlocks exercise={exercise} id={id} slug={slug}/>;
         }
         if (isFlexibleExercisePage(exercise)) {
             return <FlexibleExercisePage exercise={exercise}/>;
