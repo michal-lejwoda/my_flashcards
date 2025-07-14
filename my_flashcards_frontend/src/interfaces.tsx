@@ -930,4 +930,14 @@ export type AnswerFillInTextExerciseWithChoicesPayload = {
 export type AnswerListenWithManyOptionsToChooseToSingleExercisePayload = {
     answers: ChooseExerciseDependsOnMultipleTextAnswer[]
 }
+export interface MatchExerciseResultAnswers{
+    left_item: string
+    right_item: string
+    correct: boolean
+}
 
+export interface MatchExerciseAnswerResponse{
+    score: number
+    max_score: number
+    result_answers: MatchExerciseResultAnswers[]
+}

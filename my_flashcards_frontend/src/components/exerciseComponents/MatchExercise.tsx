@@ -4,7 +4,7 @@ import {handleSendMatchExerciseAnswers} from "../../api.tsx";
 import AuthContext from "../../context/AuthContext.tsx";
 
 
-const MatchExercise = ({exercise, id, slug}: MatchExerciseProps) => {
+const MatchExercise = ({exercise, id, slug, onScore}: MatchExerciseProps, ) => {
 
     type SelectedElement = {
         left_item: string;
@@ -29,7 +29,7 @@ const MatchExercise = ({exercise, id, slug}: MatchExerciseProps) => {
         const path_slug = `${id}/${slug}`
         const result =  await handleSendMatchExerciseAnswers(path_slug, answers, token)
         console.log("result", result)
-        // onScore(1, data.score)
+        onScore("1", result.score)
         console.log("send answers", answers)
     }
 

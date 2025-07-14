@@ -11,7 +11,7 @@ import {
     EditLearnWordObject,
     EditWordObject,
     handleDeleteUserData,
-    handleSendMailWithResetPasswordData,
+    handleSendMailWithResetPasswordData, MatchExerciseAnswerResponse,
     PostDeckObject,
     SendDeckData
 } from "./interfaces.tsx";
@@ -332,7 +332,7 @@ export async function handleGetExercise(id: number | undefined, slug: string | u
     return response.data
 }
 
-export async function handleSendMatchExerciseAnswers(path_slug: string, data: AnswersPayload, token: string | null) {
+export async function handleSendMatchExerciseAnswers(path_slug: string, data: AnswersPayload, token: string | null):Promise<MatchExerciseAnswerResponse> {
     const currentLanguage = i18n.language;
     const response = await instance.post(`/api/exercise/${path_slug}/`, data, {
         headers: {
