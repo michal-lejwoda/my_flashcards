@@ -7,7 +7,7 @@ import {
     AnswerListenWithManyOptionsToChooseToSingleExercisePayload,
     AnswersPayload,
     ChangeEmailData,
-    ChangePasswordData,
+    ChangePasswordData, ChooseExerciseDependsOnSingleTextAnswersResponse,
     EditLearnWordObject,
     EditWordObject,
     handleDeleteUserData,
@@ -365,7 +365,7 @@ export async function handleSendConjugationExerciseAnswers(path_slug: string, da
     return response.data
 }
 
-export async function handleSendChooseExerciseDependsOnSingleTextAnswers(path_slug: string, data: AnswerChooseExerciseDependsOnSingleTextPayload, token: string | null) {
+export async function handleSendChooseExerciseDependsOnSingleTextAnswers(path_slug: string, data: AnswerChooseExerciseDependsOnSingleTextPayload, token: string | null):Promise<ChooseExerciseDependsOnSingleTextAnswersResponse> {
     const currentLanguage = i18n.language;
     const response = await instance.post(`/api/exercise/${path_slug}/`, data, {
         headers: {

@@ -936,8 +936,22 @@ export interface MatchExerciseResultAnswers{
     correct: boolean
 }
 
+export interface ChooseExerciseDependsOnSingleTextAnswersResponseResultAnwers{
+    person_label: string
+    provided_answer: string
+    correct_answer: string
+    correct: boolean
+}
+
 export interface MatchExerciseAnswerResponse{
     score: number
     max_score: number
     result_answers: MatchExerciseResultAnswers[]
+}
+
+
+export interface ChooseExerciseDependsOnSingleTextAnswersResponse{
+    score: number
+    max_score: number
+    result_answers: ChooseExerciseDependsOnSingleTextAnswersResponseResultAnwers[]
 }
