@@ -877,7 +877,7 @@ export interface MultipleExercisesProps {
     exercise: MultipleExercisesData
     id: number | undefined;
     slug: string | undefined;
-    onScore: (exerciseId: string, score: number) => void;
+    onScore?: (totalScore: number) => void;
 }
 
 type AnswerPair = {
