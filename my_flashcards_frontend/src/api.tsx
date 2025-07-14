@@ -15,6 +15,8 @@ import {
     FillInTextExerciseWithPredefinedBlocksResponse,
     handleDeleteUserData,
     handleSendMailWithResetPasswordData,
+    ListenWithManyOptionsToChooseToSingleExerciseAnswersResponse,
+    MatcheExerciseTextWithImageResponse,
     MatchExerciseAnswerResponse,
     PostDeckObject,
     SendDeckData
@@ -347,7 +349,7 @@ export async function handleSendMatchExerciseAnswers(path_slug: string, data: An
     return response.data
 }
 
-export async function handleSendMatchExerciseWithImageAnswers(path_slug: string, data: AnswersPayload, token: string | null) {
+export async function handleSendMatchExerciseWithImageAnswers(path_slug: string, data: AnswersPayload, token: string | null):Promise<MatcheExerciseTextWithImageResponse> {
     const currentLanguage = i18n.language;
     const response = await instance.post(`/api/exercise/${path_slug}/`, data, {
         headers: {
@@ -403,7 +405,7 @@ export async function handleSendFillInTextExerciseWithPredefinedBlocks(path_slug
 }
 
 
-export async function handleSendListenWithManyOptionsToChooseToSingleExerciseAnswers(path_slug: string, data: AnswerListenWithManyOptionsToChooseToSingleExercisePayload, token: string | null) {
+export async function handleSendListenWithManyOptionsToChooseToSingleExerciseAnswers(path_slug: string, data: AnswerListenWithManyOptionsToChooseToSingleExercisePayload, token: string | null): Promise<ListenWithManyOptionsToChooseToSingleExerciseAnswersResponse> {
     const currentLanguage = i18n.language;
     const response = await instance.post(`/api/exercise/${path_slug}/`, data, {
         headers: {

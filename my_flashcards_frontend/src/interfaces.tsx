@@ -950,10 +950,24 @@ export interface FillInTextExerciseWithChoicesResultAnswers {
     correct_answer: string
     correct: boolean
 }
-export interface FillInTextExerciseWithPredefinedBlocksResultAnswers{
+
+export interface FillInTextExerciseWithPredefinedBlocksResultAnswers {
     block_id: number
     provided_answer: string
     correct_answer: string
+    correct: boolean
+}
+
+export interface ListenWithManyOptionsToChooseToSingleExerciseResultAnswers {
+    person_label: string
+    provided_answers: [string]
+    correct_answers: [string]
+    correct: boolean
+}
+
+export interface MatcheExerciseTextWithImageResultAnswers {
+    left_item: number
+    right_item: string
     correct: boolean
 }
 
@@ -980,4 +994,16 @@ export interface FillInTextExerciseWithPredefinedBlocksResponse {
     score: number
     max_score: number
     result_answers: FillInTextExerciseWithPredefinedBlocksResultAnswers[]
+}
+
+export interface ListenWithManyOptionsToChooseToSingleExerciseAnswersResponse {
+    score: number
+    max_score: number
+    result_answers: ListenWithManyOptionsToChooseToSingleExerciseResultAnswers[]
+}
+
+export interface MatcheExerciseTextWithImageResponse {
+    score: number
+    max_score: number
+    result_answers: MatcheExerciseTextWithImageResultAnswers[]
 }
