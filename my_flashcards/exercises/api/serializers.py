@@ -205,7 +205,8 @@ class MatchExerciseSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = MatchExercise
-        fields = ['id', 'type','description', 'left_items', 'right_items', 'before_layout_config', 'after_layout_config']
+        fields = ['id', 'type','description', 'left_items', 'right_items', 'before_layout_config',
+                  'after_layout_config', 'slug']
         read_only_fields = ['before_layout_config', 'after_layout_config']
 
 class MatchExerciseTextWithImageSerializer(serializers.ModelSerializer):
@@ -276,7 +277,8 @@ class FillInTextExerciseWithChoicesSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = FillInTextExerciseWithChoices
-        fields = ['id', 'type','description', 'text_with_blanks', 'blanks', 'before_layout_config', 'after_layout_config']
+        fields = ['id', 'type','description', 'text_with_blanks', 'blanks', 'before_layout_config',
+                  'after_layout_config', 'slug']
         read_only_fields = ['before_layout_config', 'after_layout_config']
 
 class FillInTextExerciseWithPredefinedBlocksSerializer(serializers.ModelSerializer):
@@ -310,7 +312,8 @@ class FillInTextExerciseWithPredefinedBlocksSerializer(serializers.ModelSerializ
 
     class Meta:
         model = FillInTextExerciseWithPredefinedBlocks
-        fields = ['id', 'type','description', 'text_with_blanks', 'correct_answers', 'blocks', 'before_layout_config', 'after_layout_config']
+        fields = ['id', 'type','description', 'text_with_blanks', 'correct_answers', 'blocks',
+                  'before_layout_config', 'after_layout_config', 'slug']
         read_only_fields = ['before_layout_config', 'after_layout_config']
 
 class FillInTextExerciseWithChoicesWithImageDecorationSerializer(FillInTextExerciseWithChoicesSerializer):
@@ -351,7 +354,8 @@ class ConjugationExerciseSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = ConjugationExercise
-        fields = ['id', 'type','instruction', 'description', 'conjugation_rows', 'before_layout_config', 'after_layout_config']
+        fields = ['id', 'type','instruction', 'description', 'conjugation_rows', 'before_layout_config',
+                  'after_layout_config', 'slug']
         read_only_fields = ['before_layout_config', 'after_layout_config']
 
 class ListenExerciseWithOptionsToChooseSerializer(serializers.ModelSerializer):
@@ -379,7 +383,8 @@ class ListenExerciseWithOptionsToChooseSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = ListenExerciseWithOptionsToChoose
-        fields = ['id', 'type','audio', 'exercises', 'description', 'before_layout_config', 'after_layout_config']
+        fields = ['id', 'type','audio', 'exercises', 'description', 'before_layout_config', 'after_layout_config',
+                  'slug']
         read_only_fields = ['before_layout_config', 'after_layout_config']
 
 class ListenWithManyOptionsToChooseToSingleExerciseSerializer(serializers.ModelSerializer):
@@ -412,7 +417,7 @@ class ListenWithManyOptionsToChooseToSingleExerciseSerializer(serializers.ModelS
 
     class Meta:
         model = ListenWithManyOptionsToChooseToSingleExercise
-        fields = ['id', 'type','title','description','exercises', 'before_layout_config', 'after_layout_config']
+        fields = ['id', 'type','title','description','exercises', 'before_layout_config', 'after_layout_config', 'slug']
         read_only_fields = ['before_layout_config', 'after_layout_config']
 
 class ChooseExerciseDependsOnMultipleTextsSerializer(serializers.ModelSerializer):
@@ -441,7 +446,7 @@ class ChooseExerciseDependsOnMultipleTextsSerializer(serializers.ModelSerializer
 
     class Meta:
         model = ChooseExerciseDependsOnMultipleTexts
-        fields = ['id', 'type','title','description','exercises', 'before_layout_config', 'after_layout_config']
+        fields = ['id', 'type','title','description','exercises', 'before_layout_config', 'after_layout_config', 'slug']
         read_only_fields = ['before_layout_config', 'after_layout_config']
 
 class ChooseExerciseDependsOnSingleTextSerializer(serializers.ModelSerializer):
@@ -469,7 +474,7 @@ class ChooseExerciseDependsOnSingleTextSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = ChooseExerciseDependsOnSingleText
-        fields = ['id', 'type','text', 'exercises', 'description', 'before_layout_config', 'after_layout_config']
+        fields = ['id', 'type','text', 'exercises', 'description', 'before_layout_config', 'after_layout_config', 'slug']
         read_only_fields = ['before_layout_config', 'after_layout_config']
 
 #TODO WORK WITH IT LATER

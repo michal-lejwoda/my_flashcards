@@ -515,6 +515,8 @@ export interface GroupExercisesData {
 }
 
 export interface MatchExerciseData {
+    id: number;
+    slug: string
     type: "MatchExercise";
     description: string;
     left_items: [string];
@@ -525,8 +527,9 @@ export interface MatchExerciseData {
 
 
 export interface ChooseExerciseDependsOnMultipleTextsData {
-    type: "ChooseExerciseDependsOnMultipleTexts";
     id: number;
+    slug: string
+    type: "ChooseExerciseDependsOnMultipleTexts";
     title: string;
     description: string;
     exercises: ChooseExerciseDependsOnMultipleTextsDataExercises[]
@@ -538,6 +541,7 @@ export interface ChooseExerciseDependsOnSingleTextData {
     type: "ChooseExerciseDependsOnSingleText";
     description: string;
     id: number;
+    slug: string
     text: string;
     exercises: ChooseExerciseDependsOnSingleTextDataExercises[]
     before_layout_config: [];
@@ -566,6 +570,8 @@ interface ConjugationRow {
 }
 
 export interface ConjugationExerciseData {
+    id: number;
+    slug: string
     type: "ConjugationExercise";
     instruction: string
     description: string;
@@ -577,6 +583,7 @@ export interface ConjugationExerciseData {
 export interface FillInTextExerciseWithChoicesData {
     type: "FillInTextExerciseWithChoices";
     id: number;
+    slug: string
     description: string;
     blanks: FillInTextExerciseWithChoicesBlanks[];
     text_with_blanks: string;
@@ -598,6 +605,7 @@ export interface FillInTextExerciseWithPredefinedBlocksDataBlocks {
 export interface FillInTextExerciseWithChoicesWithImageDecorationData {
     type: "FillInTextExerciseWithChoicesWithImageDecoration";
     id: number;
+    slug: string
     description: string;
     blanks: FillInTextExerciseWithChoicesBlanks[];
     text_with_blanks: string;
@@ -609,6 +617,7 @@ export interface FillInTextExerciseWithChoicesWithImageDecorationData {
 export interface FillInTextExerciseWithPredefinedBlocksData {
     type: "FillInTextExerciseWithPredefinedBlocks";
     id: number;
+    slug: string
     description: string;
     blocks: FillInTextExerciseWithPredefinedBlocksDataBlocks[];
     text_with_blanks: string;
@@ -617,6 +626,8 @@ export interface FillInTextExerciseWithPredefinedBlocksData {
 }
 
 export interface FlexibleExercisePageData {
+    id: number;
+    slug: string
     type: "FlexibleExercisePage";
     description: string;
     left_items: [string];
@@ -626,6 +637,8 @@ export interface FlexibleExercisePageData {
 }
 
 export interface ListenExerciseWithOptionsToChooseData {
+    id: number;
+    slug: string
     type: "ListenExerciseWithOptionsToChoose"
     description: string;
     exercises: ListenWithManyOptionsToChooseToSingleExerciseDataExercises[]
@@ -634,6 +647,8 @@ export interface ListenExerciseWithOptionsToChooseData {
 }
 
 export interface ListenWithManyOptionsToChooseToSingleExerciseData {
+    id: number;
+    slug: string
     type: "ListenWithManyOptionsToChooseToSingleExercise";
     description: string;
     audio: string;
@@ -657,6 +672,8 @@ export interface ListenWithManyOptionsToChooseToSingleExerciseDataExercises {
 }
 
 export interface MatchExerciseTextWithImageData {
+    id: number;
+    slug: string
     type: "MatchExerciseTextWithImage";
     description: string;
     left_items: [LeftItemsWithImageInterface];
@@ -676,6 +693,8 @@ export interface MatchExerciseWithTextImageSelected {
 }
 
 export interface MultipleExercisesData {
+    id: number;
+    slug: string
     type: "MultipleExercises";
     description: string;
     left_items: [string];
@@ -723,40 +742,40 @@ export const isGroupExercises = (group: Group): group is GroupExercisesData => {
 export const isMatchExercise = (exercise: Exercises): exercise is MatchExerciseData => {
     return exercise.type === "MatchExercise"
 }
-export const isChooseExerciseDependsOnMultipleTexts = (exercise: Exercises): exercise is MatchExerciseData => {
+export const isChooseExerciseDependsOnMultipleTexts = (exercise: Exercises): exercise is ChooseExerciseDependsOnMultipleTextsData => {
     return exercise.type === "ChooseExerciseDependsOnMultipleTexts"
 }
 
-export const isChooseExerciseDependsOnSingleText = (exercise: Exercises): exercise is MatchExerciseData => {
+export const isChooseExerciseDependsOnSingleText = (exercise: Exercises): exercise is ChooseExerciseDependsOnSingleTextData => {
     return exercise.type === "ChooseExerciseDependsOnSingleText"
 }
 
-export const isConjugationExercise = (exercise: Exercises): exercise is MatchExerciseData => {
+export const isConjugationExercise = (exercise: Exercises): exercise is ConjugationExerciseData => {
     return exercise.type === "ConjugationExercise"
 }
 
-export const isFillInTextExerciseWithChoices = (exercise: Exercises): exercise is MatchExerciseData => {
+export const isFillInTextExerciseWithChoices = (exercise: Exercises): exercise is FillInTextExerciseWithChoicesData => {
     return exercise.type === "FillInTextExerciseWithChoices"
 }
 
-export const isFillInTextExerciseWithChoicesWithImageDecoration = (exercise: Exercises): exercise is MatchExerciseData => {
+export const isFillInTextExerciseWithChoicesWithImageDecoration = (exercise: Exercises): exercise is FillInTextExerciseWithChoicesWithImageDecorationData => {
     return exercise.type === "FillInTextExerciseWithChoicesWithImageDecoration"
 }
 
-export const isFillInTextExerciseWithPredefinedBlocks = (exercise: Exercises): exercise is MatchExerciseData => {
+export const isFillInTextExerciseWithPredefinedBlocks = (exercise: Exercises): exercise is FillInTextExerciseWithPredefinedBlocksData => {
     return exercise.type === "FillInTextExerciseWithPredefinedBlocks"
 }
-export const isFlexibleExercisePage = (exercise: Exercises): exercise is MatchExerciseData => {
+export const isFlexibleExercisePage = (exercise: Exercises): exercise is FlexibleExercisePageData => {
     return exercise.type === "FlexibleExercisePage"
 }
-export const isListenWithManyOptionsToChooseToSingleExercise = (exercise: Exercises): exercise is MatchExerciseData => {
+export const isListenWithManyOptionsToChooseToSingleExercise = (exercise: Exercises): exercise is ListenWithManyOptionsToChooseToSingleExerciseData => {
     return exercise.type === "ListenWithManyOptionsToChooseToSingleExercise"
 }
-export const isMatchExerciseTextWithImage = (exercise: Exercises): exercise is MatchExerciseData => {
+export const isMatchExerciseTextWithImage = (exercise: Exercises): exercise is MatchExerciseTextWithImageData => {
     return exercise.type === "MatchExerciseTextWithImage"
 }
 
-export const isMultipleExercises = (exercise: Exercises): exercise is MatchExerciseData => {
+export const isMultipleExercises = (exercise: Exercises): exercise is MultipleExercisesData => {
     return exercise.type === "MultipleExercises"
 }
 
@@ -782,44 +801,51 @@ export interface GroupExercisesProps {
 
 export interface MatchExerciseProps {
     exercise: MatchExerciseData;
-    id: string | undefined;
+    id: number | undefined;
     slug: string | undefined;
+    onScore: (exerciseId: string, score: number) => void;
 }
 
 export interface ChooseExerciseDependsOnMultipleTextsProps {
     exercise: ChooseExerciseDependsOnMultipleTextsData;
-    id: string | undefined;
+    id: number | undefined;
     slug: string | undefined;
+    onScore: (exerciseId: string, score: number) => void;
 }
 
 export interface ChooseExerciseDependsOnSingleTextProps {
     exercise: ChooseExerciseDependsOnSingleTextData
-    id: string | undefined;
+    id: number | undefined;
     slug: string | undefined;
+    onScore: (exerciseId: string, score: number) => void;
 }
 
 export interface ConjugationExerciseProps {
     exercise: ConjugationExerciseData;
-    id: string | undefined;
+    id: number | undefined;
     slug: string | undefined;
+    onScore: (exerciseId: string, score: number) => void;
 }
 
 export interface FillInTextExerciseWithChoicesProps {
     exercise: FillInTextExerciseWithChoicesData
-    id: string | undefined;
+    id: number | undefined;
     slug: string | undefined;
+    onScore: (exerciseId: string, score: number) => void;
 }
 
 export interface FillInTextExerciseWithChoicesWithImageDecorationProps {
     exercise: FillInTextExerciseWithChoicesWithImageDecorationData
-    id: string | undefined;
+    id: number | undefined;
     slug: string | undefined;
+    onScore: (exerciseId: string, score: number) => void;
 }
 
 export interface FillInTextExerciseWithPredefinedBlocksProps {
     exercise: FillInTextExerciseWithPredefinedBlocksData
-    id: string | undefined;
+    id: number | undefined;
     slug: string | undefined;
+    onScore: (exerciseId: string, score: number) => void;
 }
 
 export interface FlexibleExercisePageProps {
@@ -828,25 +854,30 @@ export interface FlexibleExercisePageProps {
 
 export interface ListenWithManyOptionsToChooseToSingleExerciseProps {
     exercise: ListenWithManyOptionsToChooseToSingleExerciseData
-    id: string | undefined;
-    slug: string | undefined
+    id: number | undefined;
+    slug: string | undefined;
+    onScore: (exerciseId: string, score: number) => void;
 }
 
 export interface ListenExerciseWithOptionsToChooseProps {
     exercise: ListenWithManyOptionsToChooseToSingleExerciseData
-    id: string | undefined;
+    id: number | undefined;
     slug: string | undefined
+    onScore: (exerciseId: string, score: number) => void;
 }
 
 export interface MatchExerciseTextWithImageProps {
     exercise: MatchExerciseTextWithImageData
-    id: string | undefined;
+    id: number | undefined;
     slug: string | undefined;
+    onScore: (exerciseId: string, score: number) => void;
 }
 
 export interface MultipleExercisesProps {
     exercise: MultipleExercisesData
-
+    id: number | undefined;
+    slug: string | undefined;
+    onScore: (exerciseId: string, score: number) => void;
 }
 
 type AnswerPair = {

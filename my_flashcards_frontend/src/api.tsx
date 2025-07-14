@@ -321,7 +321,7 @@ export async function handleGetGroups(slug: string) {
     return response.data
 }
 
-export async function handleGetExercise(id: string | undefined, slug: string | undefined) {
+export async function handleGetExercise(id: number | undefined, slug: string | undefined) {
     const currentLanguage = i18n.language;
     const response = await instance.get(`/api/exercise/${id}/${slug}/`, {
         headers: {
