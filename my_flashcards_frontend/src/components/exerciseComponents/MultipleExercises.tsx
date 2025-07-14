@@ -1,5 +1,6 @@
 import React, {useState} from "react";
 import {
+    Exercises,
     isChooseExerciseDependsOnMultipleTexts,
     isChooseExerciseDependsOnSingleText,
     isConjugationExercise,
@@ -25,7 +26,7 @@ import ListenWithManyOptionsToChooseToSingleExercise from "./ListenWithManyOptio
 import MatchExerciseTextWithImage from "./MatchExerciseTextWithImage.tsx";
 
 const MultipleExercises = ({exercise, onScore}: MultipleExercisesProps) => {
-
+    console.log("exercise1", exercise)
     const [results, setResults] = useState<Record<string, number>>({});
     console.log("result", results)
     const handleScoreUpdate = (childId: string, score: number) => {
@@ -37,7 +38,7 @@ const MultipleExercises = ({exercise, onScore}: MultipleExercisesProps) => {
         });
     };
 
-    const renderContent = (ex: any) => {
+    const renderContent = (ex: Exercises) => {
         console.log("ex", ex)
         if (isMatchExercise(ex)) return <MatchExercise
             exercise={ex}

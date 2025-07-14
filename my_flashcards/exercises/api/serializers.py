@@ -500,7 +500,7 @@ class MultipleExercisesSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = MultipleExercises
-        fields = ['id', 'type','exercises']
+        fields = ['id', 'type','exercises', 'slug']
 
 exercise_serializers = {
     "MatchExercise": MatchExerciseSerializer,

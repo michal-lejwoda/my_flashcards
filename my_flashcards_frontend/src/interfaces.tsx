@@ -697,11 +697,7 @@ export interface MultipleExercisesData {
     id: number;
     slug: string
     type: "MultipleExercises";
-    description: string;
-    left_items: [string];
-    right_items: [string];
-    before_layout_config: [];
-    after_layout_config: [];
+    exercises: Exercises[];
 }
 
 export type Group = LanguageGroupData | MainGroupData | SubGroupData | GroupExercisesData;
