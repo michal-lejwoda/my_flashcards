@@ -640,6 +640,7 @@ export interface ListenExerciseWithOptionsToChooseData {
     id: number;
     slug: string
     type: "ListenExerciseWithOptionsToChoose"
+    audio: string
     description: string;
     exercises: ListenWithManyOptionsToChooseToSingleExerciseDataExercises[]
     before_layout_config: [];
@@ -860,7 +861,7 @@ export interface ListenWithManyOptionsToChooseToSingleExerciseProps {
 }
 
 export interface ListenExerciseWithOptionsToChooseProps {
-    exercise: ListenWithManyOptionsToChooseToSingleExerciseData
+    exercise: ListenExerciseWithOptionsToChooseData
     id: number | undefined;
     slug: string | undefined
     onScore: (exerciseId: string, score: number) => void;

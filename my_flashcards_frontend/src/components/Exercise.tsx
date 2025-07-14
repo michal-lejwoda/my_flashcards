@@ -9,7 +9,8 @@ import {
     isListenExerciseWithOptionsToChoose,
     isListenWithManyOptionsToChooseToSingleExercise,
     isMatchExercise,
-    isMatchExerciseTextWithImage, isMultipleExercises
+    isMatchExerciseTextWithImage,
+    isMultipleExercises
 } from "../interfaces.tsx";
 import MatchExercise from "./exerciseComponents/MatchExercise.tsx";
 import {useParams} from "react-router-dom";
@@ -29,14 +30,17 @@ import MatchExerciseTextWithImage from "./exerciseComponents/MatchExerciseTextWi
 import MultipleExercises from "./exerciseComponents/MultipleExercises.tsx";
 
 const Exercise = () => {
-    const { id: idParam, slug } = useParams<{ id: string; slug: string }>();
-const id = idParam ? parseInt(idParam, 10) : undefined;
+    const {id: idParam, slug} = useParams<{ id: string; slug: string }>();
+    const id = idParam ? parseInt(idParam, 10) : undefined;
     const [exercise, setExercise] = useState<Exercises | null>(null);
     const [results, setResults] = useState<Record<string, number>>({});
 
     const handleScoreUpdate = useCallback((exerciseId: string, score: number) => {
         setResults((prev) => ({...prev, [exerciseId]: score}));
     }, []);
+    const handleMultipleExerciseScore = (score: number) => {
+        handleScoreUpdate("multiple_" + (id ?? slug ?? ""), score);
+    };
 
     const totalScore = Object.values(results).reduce((s, v) => s + v, 0);
 
@@ -92,6 +96,7 @@ const id = idParam ? parseInt(idParam, 10) : undefined;
                                                                                                      id={id}
                                                                                                      slug={slug}
                                                                                                      onScore={handleScoreUpdate}/>;
+
         if (isListenWithManyOptionsToChooseToSingleExercise(exercise)) return <ListenWithManyOptionsToChooseToSingleExercise
             exercise={exercise}
             id={id}
@@ -103,7 +108,9 @@ const id = idParam ? parseInt(idParam, 10) : undefined;
                                                                                        onScore={handleScoreUpdate}/>;
         if (isMultipleExercises(exercise)) {
 
-          return <MultipleExercises exercise={exercise} id={id} slug={slug} onScore={handleScoreUpdate} />;
+            return <MultipleExercises exercise={exercise} id={id} slug={slug}
+                                      onScore={handleMultipleExerciseScore}
+            />;
         }
 
         return <h1>404</h1>;
