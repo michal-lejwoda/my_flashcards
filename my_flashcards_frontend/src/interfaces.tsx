@@ -658,7 +658,7 @@ export interface ListenWithManyOptionsToChooseToSingleExerciseData {
     after_layout_config: [];
 }
 
-export interface ListenExerciseWithOptionsToChooseExercises{
+export interface ListenExerciseWithOptionsToChooseExercises {
     correct_answer: string
     options: [string]
     question: string
@@ -930,28 +930,42 @@ export type AnswerFillInTextExerciseWithChoicesPayload = {
 export type AnswerListenWithManyOptionsToChooseToSingleExercisePayload = {
     answers: ChooseExerciseDependsOnMultipleTextAnswer[]
 }
-export interface MatchExerciseResultAnswers{
+
+export interface MatchExerciseResultAnswers {
     left_item: string
     right_item: string
     correct: boolean
 }
 
-export interface ChooseExerciseDependsOnSingleTextAnswersResponseResultAnwers{
+export interface ChooseExerciseDependsOnSingleTextAnswersResponseResultAnwers {
     person_label: string
     provided_answer: string
     correct_answer: string
     correct: boolean
 }
 
-export interface MatchExerciseAnswerResponse{
+export interface FillInTextExerciseWithChoicesResultAnswers {
+    blank_id: number
+    provided_answer: string
+    correct_answer: string
+    correct: boolean
+}
+
+export interface MatchExerciseAnswerResponse {
     score: number
     max_score: number
     result_answers: MatchExerciseResultAnswers[]
 }
 
 
-export interface ChooseExerciseDependsOnSingleTextAnswersResponse{
+export interface ChooseExerciseDependsOnSingleTextAnswersResponse {
     score: number
     max_score: number
     result_answers: ChooseExerciseDependsOnSingleTextAnswersResponseResultAnwers[]
+}
+
+export interface FillInTextExerciseWithChoicesAnswersResponse {
+    score: number
+    max_score: number
+    result_answers: FillInTextExerciseWithChoicesResultAnswers[]
 }

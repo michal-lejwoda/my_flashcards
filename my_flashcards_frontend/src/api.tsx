@@ -9,7 +9,7 @@ import {
     ChangeEmailData,
     ChangePasswordData, ChooseExerciseDependsOnSingleTextAnswersResponse,
     EditLearnWordObject,
-    EditWordObject,
+    EditWordObject, FillInTextExerciseWithChoicesAnswersResponse,
     handleDeleteUserData,
     handleSendMailWithResetPasswordData, MatchExerciseAnswerResponse,
     PostDeckObject,
@@ -376,7 +376,7 @@ export async function handleSendChooseExerciseDependsOnSingleTextAnswers(path_sl
     return response.data
 }
 
-export async function handleSendFillInTextExerciseWithChoicesAnswers(path_slug: string, data: AnswerFillInTextExerciseWithChoicesPayload, token: string | null) {
+export async function handleSendFillInTextExerciseWithChoicesAnswers(path_slug: string, data: AnswerFillInTextExerciseWithChoicesPayload, token: string | null):Promise<FillInTextExerciseWithChoicesAnswersResponse> {
     const currentLanguage = i18n.language;
     const response = await instance.post(`/api/exercise/${path_slug}/`, data, {
         headers: {
