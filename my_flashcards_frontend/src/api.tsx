@@ -354,7 +354,7 @@ export async function handleSendMatchExerciseWithImageAnswers(path_slug: string,
     return response.data
 }
 
-export async function handleSendConjugationExerciseAnswers(path_slug: string, data: AnswerConjugationExercisePayload, token: string | null) {
+export async function handleSendConjugationExerciseAnswers(path_slug: string, data: AnswerConjugationExercisePayload, token: string | null):Promise<ChooseExerciseDependsOnSingleTextAnswersResponse> {
     const currentLanguage = i18n.language;
     const response = await instance.post(`/api/exercise/${path_slug}/`, data, {
         headers: {
