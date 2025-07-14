@@ -7,11 +7,15 @@ import {
     AnswerListenWithManyOptionsToChooseToSingleExercisePayload,
     AnswersPayload,
     ChangeEmailData,
-    ChangePasswordData, ChooseExerciseDependsOnSingleTextAnswersResponse,
+    ChangePasswordData,
+    ChooseExerciseDependsOnSingleTextAnswersResponse,
     EditLearnWordObject,
-    EditWordObject, FillInTextExerciseWithChoicesAnswersResponse,
+    EditWordObject,
+    FillInTextExerciseWithChoicesAnswersResponse,
+    FillInTextExerciseWithPredefinedBlocksResponse,
     handleDeleteUserData,
-    handleSendMailWithResetPasswordData, MatchExerciseAnswerResponse,
+    handleSendMailWithResetPasswordData,
+    MatchExerciseAnswerResponse,
     PostDeckObject,
     SendDeckData
 } from "./interfaces.tsx";
@@ -332,7 +336,7 @@ export async function handleGetExercise(id: number | undefined, slug: string | u
     return response.data
 }
 
-export async function handleSendMatchExerciseAnswers(path_slug: string, data: AnswersPayload, token: string | null):Promise<MatchExerciseAnswerResponse> {
+export async function handleSendMatchExerciseAnswers(path_slug: string, data: AnswersPayload, token: string | null): Promise<MatchExerciseAnswerResponse> {
     const currentLanguage = i18n.language;
     const response = await instance.post(`/api/exercise/${path_slug}/`, data, {
         headers: {
@@ -354,7 +358,7 @@ export async function handleSendMatchExerciseWithImageAnswers(path_slug: string,
     return response.data
 }
 
-export async function handleSendConjugationExerciseAnswers(path_slug: string, data: AnswerConjugationExercisePayload, token: string | null):Promise<ChooseExerciseDependsOnSingleTextAnswersResponse> {
+export async function handleSendConjugationExerciseAnswers(path_slug: string, data: AnswerConjugationExercisePayload, token: string | null): Promise<ChooseExerciseDependsOnSingleTextAnswersResponse> {
     const currentLanguage = i18n.language;
     const response = await instance.post(`/api/exercise/${path_slug}/`, data, {
         headers: {
@@ -365,7 +369,7 @@ export async function handleSendConjugationExerciseAnswers(path_slug: string, da
     return response.data
 }
 
-export async function handleSendChooseExerciseDependsOnSingleTextAnswers(path_slug: string, data: AnswerChooseExerciseDependsOnSingleTextPayload, token: string | null):Promise<ChooseExerciseDependsOnSingleTextAnswersResponse> {
+export async function handleSendChooseExerciseDependsOnSingleTextAnswers(path_slug: string, data: AnswerChooseExerciseDependsOnSingleTextPayload, token: string | null): Promise<ChooseExerciseDependsOnSingleTextAnswersResponse> {
     const currentLanguage = i18n.language;
     const response = await instance.post(`/api/exercise/${path_slug}/`, data, {
         headers: {
@@ -376,7 +380,7 @@ export async function handleSendChooseExerciseDependsOnSingleTextAnswers(path_sl
     return response.data
 }
 
-export async function handleSendFillInTextExerciseWithChoicesAnswers(path_slug: string, data: AnswerFillInTextExerciseWithChoicesPayload, token: string | null):Promise<FillInTextExerciseWithChoicesAnswersResponse> {
+export async function handleSendFillInTextExerciseWithChoicesAnswers(path_slug: string, data: AnswerFillInTextExerciseWithChoicesPayload, token: string | null): Promise<FillInTextExerciseWithChoicesAnswersResponse> {
     const currentLanguage = i18n.language;
     const response = await instance.post(`/api/exercise/${path_slug}/`, data, {
         headers: {
@@ -387,7 +391,7 @@ export async function handleSendFillInTextExerciseWithChoicesAnswers(path_slug: 
     return response.data
 }
 
-export async function handleSendFillInTextExerciseWithPredefinedBlocks(path_slug: string, data: AnswerFillInTextExerciseWithChoicesPayload, token: string | null) {
+export async function handleSendFillInTextExerciseWithPredefinedBlocks(path_slug: string, data: AnswerFillInTextExerciseWithChoicesPayload, token: string | null): Promise<FillInTextExerciseWithPredefinedBlocksResponse> {
     const currentLanguage = i18n.language;
     const response = await instance.post(`/api/exercise/${path_slug}/`, data, {
         headers: {

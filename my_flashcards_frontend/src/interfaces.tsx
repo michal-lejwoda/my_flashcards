@@ -950,6 +950,12 @@ export interface FillInTextExerciseWithChoicesResultAnswers {
     correct_answer: string
     correct: boolean
 }
+export interface FillInTextExerciseWithPredefinedBlocksResultAnswers{
+    block_id: number
+    provided_answer: string
+    correct_answer: string
+    correct: boolean
+}
 
 export interface MatchExerciseAnswerResponse {
     score: number
@@ -968,4 +974,10 @@ export interface FillInTextExerciseWithChoicesAnswersResponse {
     score: number
     max_score: number
     result_answers: FillInTextExerciseWithChoicesResultAnswers[]
+}
+
+export interface FillInTextExerciseWithPredefinedBlocksResponse {
+    score: number
+    max_score: number
+    result_answers: FillInTextExerciseWithPredefinedBlocksResultAnswers[]
 }
