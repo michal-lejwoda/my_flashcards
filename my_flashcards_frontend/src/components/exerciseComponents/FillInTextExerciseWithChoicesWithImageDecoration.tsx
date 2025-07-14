@@ -13,10 +13,11 @@ const FillInTextExerciseWithChoicesWithImageDecoration = ({
     const {token} = useContext(AuthContext);
     const textParts = exercise.text_with_blanks.split(/({{\d+}})/g);
 
-    const sendAnswers = () => {
+    const sendAnswers = async() => {
         const answers = {"answers": formData}
         const path_slug = `${id}/${slug}`
-        handleSendFillInTextExerciseWithChoicesAnswers(path_slug, answers, token)
+        const result = await handleSendFillInTextExerciseWithChoicesAnswers(path_slug, answers, token)
+        console.log("result", result)
         console.log("send answers", answers)
     }
 

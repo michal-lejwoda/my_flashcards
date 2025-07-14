@@ -7,10 +7,11 @@ import AuthContext from "../../context/AuthContext.tsx";
 const ChooseExerciseDependsOnMultipleTexts = ({exercise, id, slug}: ChooseExerciseDependsOnMultipleTextsProps) => {
     const [selectedOptions, setSelectedOptions] = useState<ChooseExerciseDependsOnSingleTextAnswer[]>([]);
     const {token} = useContext(AuthContext);
-    const sendAnswers = () => {
+    const sendAnswers = async() => {
         const answers = {"answers": selectedOptions}
         const path_slug = `${id}/${slug}`
-        handleSendChooseExerciseDependsOnSingleTextAnswers(path_slug, answers, token)
+        const result = await handleSendChooseExerciseDependsOnSingleTextAnswers(path_slug, answers, token)
+        console.log(result)
         console.log("send answers", answers)
     }
 

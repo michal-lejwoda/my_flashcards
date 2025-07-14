@@ -20,11 +20,12 @@ const ListenWithManyOptionsToChooseToSingleExercise = ({
         audio.play();
     };
     const {token} = useContext(AuthContext);
-    const sendAnswers = () => {
+    const sendAnswers = async() => {
         const answers = {"answers": selectedOptions}
         console.log("answers", answers)
         const path_slug = `${id}/${slug}`
-        handleSendListenWithManyOptionsToChooseToSingleExerciseAnswers(path_slug, answers, token)
+        const result = await handleSendListenWithManyOptionsToChooseToSingleExerciseAnswers(path_slug, answers, token)
+        console.log("result", result)
         console.log("send answers", answers)
     }
 

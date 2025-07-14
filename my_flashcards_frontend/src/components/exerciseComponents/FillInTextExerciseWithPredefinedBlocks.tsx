@@ -12,10 +12,11 @@ const FillInTextExerciseWithPredefinedBlocks = ({exercise, id, slug}: FillInText
     const {token} = useContext(AuthContext);
     const textParts = exercise.text_with_blanks.split(/({{\d+}})/g);
 
-    const sendAnswers = () => {
+    const sendAnswers = async () => {
         const answers = {"answers": formData}
         const path_slug = `${id}/${slug}`
-        handleSendFillInTextExerciseWithPredefinedBlocks(path_slug, answers, token)
+        const result = handleSendFillInTextExerciseWithPredefinedBlocks(path_slug, answers, token)
+        console.log("result", result)
         console.log("send answers", answers)
     }
 

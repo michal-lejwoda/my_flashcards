@@ -15,10 +15,11 @@ const ListenExerciseWithOptionsToChoose = ({exercise, id, slug}: ListenExerciseW
         audio.play();
     };
     const {token} = useContext(AuthContext);
-    const sendAnswers = () => {
+    const sendAnswers = async () => {
         const answers = {"answers": selectedOptions}
         const path_slug = `${id}/${slug}`
-        handleSendChooseExerciseDependsOnSingleTextAnswers(path_slug, answers, token)
+        const result = await handleSendChooseExerciseDependsOnSingleTextAnswers(path_slug, answers, token)
+        console.log("result", result)
         console.log("send answers", answers)
     }
 

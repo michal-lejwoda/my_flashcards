@@ -24,10 +24,12 @@ const MatchExercise = ({exercise, id, slug}: MatchExerciseProps) => {
     }, [exercise]);
 
 
-    const sendAnswers = () => {
+    const sendAnswers = async () => {
         const answers = {"answers": selectedElements}
         const path_slug = `${id}/${slug}`
-        handleSendMatchExerciseAnswers(path_slug, answers, token)
+        const result =  await handleSendMatchExerciseAnswers(path_slug, answers, token)
+        console.log("result", result)
+        // onScore(1, data.score)
         console.log("send answers", answers)
     }
 

@@ -15,10 +15,11 @@ const ConjugationExercise = ({exercise, id, slug}: ConjugationExerciseProps) => 
     );
 
     const {token} = useContext(AuthContext);
-    const sendAnswers = () => {
+    const sendAnswers = async() => {
         const answers = {"answers": formData}
         const path_slug = `${id}/${slug}`
-        handleSendConjugationExerciseAnswers(path_slug, answers, token)
+        const result = await handleSendConjugationExerciseAnswers(path_slug, answers, token)
+        console.log(result)
         console.log("send answers", answers)
     }
     console.log(formData)

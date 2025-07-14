@@ -25,7 +25,7 @@ const MatchExerciseTextWithImage = ({exercise, id, slug}: MatchExerciseTextWithI
     console.log("rightItems", rightItems)
 
 
-    const sendAnswers = () => {
+    const sendAnswers = async() => {
         const transformedList = selectedElements.map(item => ({
           left_item: item.left_item.id,
           right_item: item.right_item
@@ -33,7 +33,8 @@ const MatchExerciseTextWithImage = ({exercise, id, slug}: MatchExerciseTextWithI
         const answers = {"answers": transformedList}
         console.log("answers", answers)
         const path_slug = `${id}/${slug}`
-        handleSendMatchExerciseWithImageAnswers(path_slug, answers, token)
+        const result = await handleSendMatchExerciseWithImageAnswers(path_slug, answers, token)
+        console.log("result", result)
         console.log("send answers", answers)
     }
 
