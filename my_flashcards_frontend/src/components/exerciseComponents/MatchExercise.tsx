@@ -29,7 +29,9 @@ const MatchExercise = ({exercise, id, slug, onScore}: MatchExerciseProps, ) => {
         const path_slug = `${id}/${slug}`
         const result =  await handleSendMatchExerciseAnswers(path_slug, answers, token)
         console.log("result", result)
-        onScore("1", result.score)
+        if (id !== undefined){
+            onScore(id.toString(), result.score)
+        }
         console.log("send answers", answers)
     }
 

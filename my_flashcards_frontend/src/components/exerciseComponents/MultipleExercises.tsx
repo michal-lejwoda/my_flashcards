@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import {
     Exercises,
     isChooseExerciseDependsOnMultipleTexts,
@@ -25,15 +25,65 @@ import ListenExerciseWithOptionsToChoose from "./ListenExerciseWithOptionsToChoo
 import ListenWithManyOptionsToChooseToSingleExercise from "./ListenWithManyOptionsToChooseToSingleExercise.tsx";
 import MatchExerciseTextWithImage from "./MatchExerciseTextWithImage.tsx";
 
+interface ExerciseScore {
+    id: string;
+    score: number;
+    maxScore: number;
+    completed: boolean;
+}
+
 const MultipleExercises = ({exercise, onScore}: MultipleExercisesProps) => {
-    console.log("exercise1", exercise)
-    const [results, setResults] = useState<Record<string, number>>({});
-    console.log("result", results)
-    const handleScoreUpdate = (childId: string, score: number) => {
+    const [results, setResults] = useState<Record<string, ExerciseScore>>({});
+    const [totalScore, setTotalScore] = useState(0);
+    const [maxTotalScore, setMaxTotalScore] = useState(0);
+    const [completedExercises, setCompletedExercises] = useState(0);
+    console.log("results", results)
+    console.log("totalScore",totalScore)
+    console.log("maxTotalScore",maxTotalScore)
+    console.log("CompletedExercises", completedExercises)
+
+    useEffect(() => {
+        const initialResults: Record<string, ExerciseScore> = {};
+        let maxTotal = 0;
+
+        exercise.exercises.forEach((ex) => {
+            const exerciseId = ex.id ?? ex.slug;
+            // const maxScore = getMaxScoreForExercise(ex);
+            // maxTotal += maxScore;
+
+            initialResults[exerciseId] = {
+                id: exerciseId.toString(),
+                score: 0,
+                maxScore: 0,
+                completed: false
+            };
+        });
+
+        setResults(initialResults);
+        setMaxTotalScore(maxTotal);
+    }, [exercise.exercises]);
+
+
+    const handleScoreUpdate = (childId: string, score: number, maxScore?: number, completed: boolean = false) => {
         setResults((prev) => {
-            const updated = {...prev, [childId]: score};
-            const total = Object.values(updated).reduce((sum, v) => sum + v, 0);
+            const updated = {...prev};
+            updated[childId] = {
+                ...updated[childId],
+                score: score,
+                maxScore: maxScore || updated[childId].maxScore,
+                completed: completed
+            };
+
+            const total = Object.values(updated).reduce((sum, result) => sum + result.score, 0);
+            const maxTotal = Object.values(updated).reduce((sum, result) => sum + result.maxScore, 0);
+            const completedCount = Object.values(updated).filter(result => result.completed).length;
+
+            setTotalScore(total);
+            setMaxTotalScore(maxTotal);
+            setCompletedExercises(completedCount);
+
             onScore?.(total);
+
             return updated;
         });
     };
@@ -44,45 +94,46 @@ const MultipleExercises = ({exercise, onScore}: MultipleExercisesProps) => {
             exercise={ex}
             id={ex.id}
             slug={ex.slug}
-            onScore={handleScoreUpdate}
+            onScore={(id, score, maxScore, completed) => handleScoreUpdate(id, score, maxScore, completed)}
         />;
         if (isChooseExerciseDependsOnMultipleTexts(ex)) return <ChooseExerciseDependsOnMultipleTexts
             exercise={ex}
             id={ex.id}
             slug={ex.slug}
-            onScore={handleScoreUpdate}
+            onScore={(id, score, maxScore, completed) => handleScoreUpdate(id, score, maxScore, completed)}
         />;
         if (isChooseExerciseDependsOnSingleText(ex)) return <ChooseExerciseDependsOnSingleText
             exercise={ex}
             id={ex.id}
             slug={ex.slug}
-            onScore={handleScoreUpdate}
+            onScore={(id, score, maxScore, completed) => handleScoreUpdate(id, score, maxScore, completed)}
         />;
         if (isConjugationExercise(ex)) return <ConjugationExercise
             exercise={ex}
             id={ex.id}
             slug={ex.slug}
-            onScore={handleScoreUpdate}
+            onScore={(id, score, maxScore, completed) => handleScoreUpdate(id, score, maxScore, completed)}
         />;
         if (isFillInTextExerciseWithChoices(ex)) return <FillInTextExerciseWithChoices
             exercise={ex}
             id={ex.id}
             slug={ex.slug}
-            onScore={handleScoreUpdate}
+            onScore={(id, score, maxScore, completed) => handleScoreUpdate(id, score, maxScore, completed)}
         />;
         if (isFillInTextExerciseWithChoicesWithImageDecoration(ex))
             return <FillInTextExerciseWithChoicesWithImageDecoration
                 exercise={ex}
                 id={ex.id}
                 slug={ex.slug}
-                onScore={handleScoreUpdate}
+                onScore={(id, score, maxScore, completed) => handleScoreUpdate(id, score, maxScore, completed)}
 
             />;
         if (isFillInTextExerciseWithPredefinedBlocks(ex)) return <FillInTextExerciseWithPredefinedBlocks
             exercise={ex}
             id={ex.id}
             slug={ex.slug}
-            onScore={handleScoreUpdate}/>;
+            onScore={(id, score, maxScore, completed) => handleScoreUpdate(id, score, maxScore, completed)}
+        />;
 
         // if (isFlexibleExercisePage(ex)) return <FlexibleExercisePage
         //     exercise={ex}
