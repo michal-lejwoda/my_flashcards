@@ -7,7 +7,7 @@ import {useContext, useEffect, useState} from "react";
 import AuthContext from "../../context/AuthContext.tsx";
 import {handleSendMatchExerciseWithImageAnswers} from "../../api.tsx";
 
-const MatchExerciseTextWithImage = ({exercise, id, slug}: MatchExerciseTextWithImageProps) => {
+const MatchExerciseTextWithImage = ({exercise, id, slug, onScore}: MatchExerciseTextWithImageProps) => {
     console.log("exercise", exercise)
     const [selectedElements, setSelectedElements] = useState<MatchExerciseWithTextImageSelected[]>([]);
     const [rightSelected, setRightSelected] = useState<string | null>(null);
@@ -34,6 +34,9 @@ const MatchExerciseTextWithImage = ({exercise, id, slug}: MatchExerciseTextWithI
         console.log("answers", answers)
         const path_slug = `${id}/${slug}`
         const result = await handleSendMatchExerciseWithImageAnswers(path_slug, answers, token)
+        if (id !== undefined){
+            onScore(id.toString(), result.score, result.max_score)
+        }
         console.log("result", result)
         console.log("send answers", answers)
     }

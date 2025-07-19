@@ -6,7 +6,7 @@ import React, {useContext, useState} from "react";
 import AuthContext from "../../context/AuthContext.tsx";
 import {handleSendFillInTextExerciseWithPredefinedBlocks} from "../../api.tsx";
 
-const FillInTextExerciseWithPredefinedBlocks = ({exercise, id, slug}: FillInTextExerciseWithPredefinedBlocksProps) => {
+const FillInTextExerciseWithPredefinedBlocks = ({exercise, id, slug, onScore}: FillInTextExerciseWithPredefinedBlocksProps) => {
     console.log("exercise", exercise)
     const [formData, setFormData] = useState<FillInTextExerciseWithPredefinedBlocksDataBlocks[]>([]);
     const {token} = useContext(AuthContext);
@@ -16,6 +16,9 @@ const FillInTextExerciseWithPredefinedBlocks = ({exercise, id, slug}: FillInText
         const answers = {"answers": formData}
         const path_slug = `${id}/${slug}`
         const result = handleSendFillInTextExerciseWithPredefinedBlocks(path_slug, answers, token)
+        if (id !== undefined){
+            onScore(id.toString(), result.score, result.max_score)
+        }
         console.log("result", result)
         console.log("send answers", answers)
     }

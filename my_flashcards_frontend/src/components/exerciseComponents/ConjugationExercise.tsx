@@ -3,7 +3,7 @@ import {useContext, useState} from "react";
 import {handleSendConjugationExerciseAnswers} from "../../api.tsx";
 import AuthContext from "../../context/AuthContext.tsx";
 
-const ConjugationExercise = ({exercise, id, slug}: ConjugationExerciseProps) => {
+const ConjugationExercise = ({exercise, id, slug,onScore}: ConjugationExerciseProps) => {
     console.log("exercise", exercise)
     const [formData, setFormData] = useState<ConjugationExerciseAnswer[]>(() =>
         exercise.conjugation_rows.reduce((acc, row) => {
@@ -19,6 +19,9 @@ const ConjugationExercise = ({exercise, id, slug}: ConjugationExerciseProps) => 
         const answers = {"answers": formData}
         const path_slug = `${id}/${slug}`
         const result = await handleSendConjugationExerciseAnswers(path_slug, answers, token)
+        if (id !== undefined){
+            onScore(id.toString(), result.score, result.max_score)
+        }
         console.log(result)
         console.log("send answers", answers)
     }

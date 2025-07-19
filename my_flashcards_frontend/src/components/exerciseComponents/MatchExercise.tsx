@@ -30,7 +30,7 @@ const MatchExercise = ({exercise, id, slug, onScore}: MatchExerciseProps, ) => {
         const result =  await handleSendMatchExerciseAnswers(path_slug, answers, token)
         console.log("result", result)
         if (id !== undefined){
-            onScore(id.toString(), result.score)
+            onScore(id.toString(), result.score, result.max_score)
         }
         console.log("send answers", answers)
     }

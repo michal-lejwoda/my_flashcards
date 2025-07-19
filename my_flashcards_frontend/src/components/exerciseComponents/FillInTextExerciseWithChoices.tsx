@@ -3,7 +3,7 @@ import {FillInTextExerciseWithChoicesProps} from "../../interfaces.tsx";
 import AuthContext from "../../context/AuthContext.tsx";
 import {handleSendFillInTextExerciseWithChoicesAnswers} from "../../api.tsx";
 
-const FillInTextExerciseWithChoices = ({exercise, id, slug}: FillInTextExerciseWithChoicesProps) => {
+const FillInTextExerciseWithChoices = ({exercise, id, slug,onScore}: FillInTextExerciseWithChoicesProps) => {
     type Answer = { blank_id: number; answer: string };
     const [formData, setFormData] = useState<Answer[]>([]);
     const {token} = useContext(AuthContext);
@@ -13,6 +13,9 @@ const FillInTextExerciseWithChoices = ({exercise, id, slug}: FillInTextExerciseW
         const answers = {"answers": formData}
         const path_slug = `${id}/${slug}`
         const result = await handleSendFillInTextExerciseWithChoicesAnswers(path_slug, answers, token)
+        if (id !== undefined){
+            onScore(id.toString(), result.score, result.max_score)
+        }
         console.log(result)
         console.log("send answers", answers)
     }

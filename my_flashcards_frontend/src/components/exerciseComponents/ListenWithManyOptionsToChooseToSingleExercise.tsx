@@ -10,7 +10,8 @@ import AuthContext from "../../context/AuthContext.tsx";
 const ListenWithManyOptionsToChooseToSingleExercise = ({
                                                            exercise,
                                                            id,
-                                                           slug
+                                                           slug,
+                                                           onScore
                                                        }: ListenWithManyOptionsToChooseToSingleExerciseProps) => {
     console.log("exercise", exercise)
     const [selectedOptions, setSelectedOptions] = useState<ChooseExerciseDependsOnMultipleTextAnswer[]>([]);
@@ -20,11 +21,14 @@ const ListenWithManyOptionsToChooseToSingleExercise = ({
         audio.play();
     };
     const {token} = useContext(AuthContext);
-    const sendAnswers = async() => {
+    const sendAnswers = async () => {
         const answers = {"answers": selectedOptions}
         console.log("answers", answers)
         const path_slug = `${id}/${slug}`
         const result = await handleSendListenWithManyOptionsToChooseToSingleExerciseAnswers(path_slug, answers, token)
+        if (id !== undefined) {
+            onScore(id.toString(), result.score, result.max_score)
+        }
         console.log("result", result)
         console.log("send answers", answers)
     }

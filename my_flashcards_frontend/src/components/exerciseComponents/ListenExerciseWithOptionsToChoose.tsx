@@ -4,7 +4,7 @@ import {handleSendChooseExerciseDependsOnSingleTextAnswers} from "../../api.tsx"
 import AuthContext from "../../context/AuthContext.tsx";
 
 
-const ListenExerciseWithOptionsToChoose = ({exercise, id, slug}: ListenExerciseWithOptionsToChooseProps) => {
+const ListenExerciseWithOptionsToChoose = ({exercise, id, slug, onScore}: ListenExerciseWithOptionsToChooseProps) => {
     console.log("exercise", exercise)
     console.log("id", id)
     console.log("slug", slug)
@@ -19,6 +19,9 @@ const ListenExerciseWithOptionsToChoose = ({exercise, id, slug}: ListenExerciseW
         const answers = {"answers": selectedOptions}
         const path_slug = `${id}/${slug}`
         const result = await handleSendChooseExerciseDependsOnSingleTextAnswers(path_slug, answers, token)
+        if (id !== undefined){
+            onScore(id.toString(), result.score, result.max_score)
+        }
         console.log("result", result)
         console.log("send answers", answers)
     }

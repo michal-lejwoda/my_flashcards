@@ -6,7 +6,8 @@ import {handleSendFillInTextExerciseWithChoicesAnswers} from "../../api.tsx";
 const FillInTextExerciseWithChoicesWithImageDecoration = ({
                                                               exercise,
                                                               id,
-                                                              slug
+                                                              slug,
+                                                                onScore
                                                           }: FillInTextExerciseWithChoicesWithImageDecorationProps) => {
     type Answer = { blank_id: number; answer: string };
     const [formData, setFormData] = useState<Answer[]>([]);
@@ -17,6 +18,9 @@ const FillInTextExerciseWithChoicesWithImageDecoration = ({
         const answers = {"answers": formData}
         const path_slug = `${id}/${slug}`
         const result = await handleSendFillInTextExerciseWithChoicesAnswers(path_slug, answers, token)
+        if (id !== undefined){
+            onScore(id.toString(), result.score, result.max_score)
+        }
         console.log("result", result)
         console.log("send answers", answers)
     }

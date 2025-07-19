@@ -30,24 +30,46 @@ import MatchExerciseTextWithImage from "./exerciseComponents/MatchExerciseTextWi
 import MultipleExercises from "./exerciseComponents/MultipleExercises.tsx";
 
 const Exercise = () => {
+    type ExerciseScore = {
+        "score": number,
+        "max_score": number
+    }
     const {id: idParam, slug} = useParams<{ id: string; slug: string }>();
     const id = idParam ? parseInt(idParam, 10) : undefined;
     const [exercise, setExercise] = useState<Exercises | null>(null);
-    const [results, setResults] = useState<Record<string, number>>({});
+    const [numberOfExercises, setNumberOfExercises] = useState<number>(1);
+    const [results, setResults] = useState<ExerciseScore[]>([]);
 
-    const handleScoreUpdate = useCallback((exerciseId: string, score: number) => {
-        setResults((prev) => ({...prev, [exerciseId]: score}));
-    }, []);
-    const handleMultipleExerciseScore = (score: number) => {
-        handleScoreUpdate("multiple_" + (id ?? slug ?? ""), score);
+    const handleScoreUpdate = useCallback((exerciseId: string, score: number, max_score: number) => {
+  setResults((prev) => [
+    ...prev,
+    { id: exerciseId, score, max_score }
+  ]);
+}, []);
+    const handleMultipleExerciseScore = (score: number, max_score: number) => {
+        handleScoreUpdate("multiple_" + (id ?? slug ?? ""), score, max_score);
     };
 
-    const totalScore = Object.values(results).reduce((s, v) => s + v, 0);
+    console.log(exercise)
+
+    const userScore = results.reduce((acc, v) => acc + v.score,0)
+    const maxScore = results.reduce((acc, v) => acc + v.max_score, 0)
+    console.log("userScore", userScore)
+    console.log("maxScore", maxScore)
+    console.log("results", results)
+    // const totalScore = Object.values(results).reduce((s, v) => s + v, 0);
 
     useEffect(() => {
         const fetchExercise = async () => {
-            const result = await handleGetExercise(id, slug);
-            setExercise(result);
+            const res = await handleGetExercise(id, slug);
+            setExercise(res);
+            console.log("rezultat", res)
+            console.log(res.type)
+            if (res.type !== "MultipleExercises"){
+                setNumberOfExercises(1)
+            }else{
+                setNumberOfExercises(res.exercises.length)
+            }
         };
         fetchExercise();
     }, [id, slug]);
@@ -119,7 +141,7 @@ const Exercise = () => {
     return (
         <div>
             {renderContent()}
-            <div className="text-lg font-semibold mt-6">Suma punktów: {totalScore}</div>
+            <div>Zrobione zadania {results.length} z {numberOfExercises} Liczba punktow {userScore} z {maxScore}</div>
         </div>
     );
 };
