@@ -800,49 +800,49 @@ export interface MatchExerciseProps {
     exercise: MatchExerciseData;
     id: number | undefined;
     slug: string | undefined;
-    onScore: (exerciseId: string, score: number) => void;
+    onScore: (exerciseId: string, score: number, max_score: number) => void;
 }
 
 export interface ChooseExerciseDependsOnMultipleTextsProps {
     exercise: ChooseExerciseDependsOnMultipleTextsData;
     id: number | undefined;
     slug: string | undefined;
-    onScore: (exerciseId: string, score: number) => void;
+    onScore: (exerciseId: string, score: number, max_score: number) => void;
 }
 
 export interface ChooseExerciseDependsOnSingleTextProps {
     exercise: ChooseExerciseDependsOnSingleTextData
     id: number | undefined;
     slug: string | undefined;
-    onScore: (exerciseId: string, score: number) => void;
+    onScore: (exerciseId: string, score: number, max_score: number) => void;
 }
 
 export interface ConjugationExerciseProps {
     exercise: ConjugationExerciseData;
     id: number | undefined;
     slug: string | undefined;
-    onScore: (exerciseId: string, score: number) => void;
+    onScore: (exerciseId: string, score: number, max_score: number) => void;
 }
 
 export interface FillInTextExerciseWithChoicesProps {
     exercise: FillInTextExerciseWithChoicesData
     id: number | undefined;
     slug: string | undefined;
-    onScore: (exerciseId: string, score: number) => void;
+    onScore: (exerciseId: string, score: number, max_score: number) => void;
 }
 
 export interface FillInTextExerciseWithChoicesWithImageDecorationProps {
     exercise: FillInTextExerciseWithChoicesWithImageDecorationData
     id: number | undefined;
     slug: string | undefined;
-    onScore: (exerciseId: string, score: number) => void;
+    onScore: (exerciseId: string, score: number, max_score: number) => void;
 }
 
 export interface FillInTextExerciseWithPredefinedBlocksProps {
     exercise: FillInTextExerciseWithPredefinedBlocksData
     id: number | undefined;
     slug: string | undefined;
-    onScore: (exerciseId: string, score: number) => void;
+    onScore: (exerciseId: string, score: number, max_score: number) => void;
 }
 
 export interface FlexibleExercisePageProps {
@@ -853,28 +853,28 @@ export interface ListenWithManyOptionsToChooseToSingleExerciseProps {
     exercise: ListenWithManyOptionsToChooseToSingleExerciseData
     id: number | undefined;
     slug: string | undefined;
-    onScore: (exerciseId: string, score: number) => void;
+    onScore: (exerciseId: string, score: number, max_score: number) => void;
 }
 
 export interface ListenExerciseWithOptionsToChooseProps {
     exercise: ListenExerciseWithOptionsToChooseData
     id: number | undefined;
     slug: string | undefined
-    onScore: (exerciseId: string, score: number) => void;
+    onScore: (exerciseId: string, score: number, max_score: number) => void;
 }
 
 export interface MatchExerciseTextWithImageProps {
     exercise: MatchExerciseTextWithImageData
     id: number | undefined;
     slug: string | undefined;
-    onScore: (exerciseId: string, score: number) => void;
+    onScore: (exerciseId: string, score: number, max_score: number) => void;
 }
 
 export interface MultipleExercisesProps {
     exercise: MultipleExercisesData
     id: number | undefined;
     slug: string | undefined;
-    onScore?: (totalScore: number) => void;
+    onScore: (exerciseId: string, score: number, max_score: number) => void;
 }
 
 type AnswerPair = {

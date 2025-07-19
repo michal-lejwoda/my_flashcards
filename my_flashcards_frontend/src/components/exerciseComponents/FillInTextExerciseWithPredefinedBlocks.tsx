@@ -15,7 +15,8 @@ const FillInTextExerciseWithPredefinedBlocks = ({exercise, id, slug, onScore}: F
     const sendAnswers = async () => {
         const answers = {"answers": formData}
         const path_slug = `${id}/${slug}`
-        const result = handleSendFillInTextExerciseWithPredefinedBlocks(path_slug, answers, token)
+        const result = await handleSendFillInTextExerciseWithPredefinedBlocks(path_slug, answers, token)
+
         if (id !== undefined){
             onScore(id.toString(), result.score, result.max_score)
         }

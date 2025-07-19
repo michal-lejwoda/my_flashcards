@@ -5,10 +5,11 @@ IPYTHONDIR=/app/.ipython
 # Redis
 # ------------------------------------------------------------------------------
 REDIS_URL=redis://redis:6379/0
+DATABASE_URL=postgres://iDjHVTmPResDcVhnrEuzLQqAkVqayvof:uQEi6d2kmWK0JCgnfxtAx2uCLg5UMymikQGzEZwNWWkiKjOTIG0qAavLKeWCeGTC@postgres:5432/my_flashcards
 
 # Celery
 # ------------------------------------------------------------------------------
-
+CELERY_BROKER_URL=redis://redis:6379/0
 # Flower
 CELERY_FLOWER_USER=RlvOWDTnLCKFOqKzEPNLkMoojGBUAauk
 CELERY_FLOWER_PASSWORD=jXAkg2QKOe4xXWoyQt062L3z7NtQEPg3f8diV1Qv3srF02EQejklLqbSY1WdMBu0
