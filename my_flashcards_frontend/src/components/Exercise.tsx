@@ -41,33 +41,22 @@ const Exercise = () => {
     const [results, setResults] = useState<ExerciseScore[]>([]);
 
     const handleScoreUpdate = useCallback((exerciseId: string, score: number, max_score: number) => {
-  setResults((prev) => [
-    ...prev,
-    { id: exerciseId, score, max_score }
-  ]);
-}, []);
-    const handleMultipleExerciseScore = (score: number, max_score: number) => {
-        handleScoreUpdate("multiple_" + (id ?? slug ?? ""), score, max_score);
-    };
+        setResults((prev) => [
+            ...prev,
+            {id: exerciseId, score, max_score}
+        ]);
+    }, []);
 
-    console.log(exercise)
-
-    const userScore = results.reduce((acc, v) => acc + v.score,0)
+    const userScore = results.reduce((acc, v) => acc + v.score, 0)
     const maxScore = results.reduce((acc, v) => acc + v.max_score, 0)
-    console.log("userScore", userScore)
-    console.log("maxScore", maxScore)
-    console.log("results", results)
-    // const totalScore = Object.values(results).reduce((s, v) => s + v, 0);
 
     useEffect(() => {
         const fetchExercise = async () => {
             const res = await handleGetExercise(id, slug);
             setExercise(res);
-            console.log("rezultat", res)
-            console.log(res.type)
-            if (res.type !== "MultipleExercises"){
+            if (res.type !== "MultipleExercises") {
                 setNumberOfExercises(1)
-            }else{
+            } else {
                 setNumberOfExercises(res.exercises.length)
             }
         };
@@ -131,7 +120,7 @@ const Exercise = () => {
         if (isMultipleExercises(exercise)) {
 
             return <MultipleExercises exercise={exercise} id={id} slug={slug}
-                                      onScore={handleMultipleExerciseScore}
+                                      onScore={handleScoreUpdate}
             />;
         }
 
