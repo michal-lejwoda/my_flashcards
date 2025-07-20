@@ -2,7 +2,7 @@ import {MatchExerciseProps} from "../../interfaces.tsx";
 import {useContext, useEffect, useState} from "react";
 import {handleSendMatchExerciseAnswers} from "../../api.tsx";
 import AuthContext from "../../context/AuthContext.tsx";
-
+import '../../sass/exercises/match_exercise.css';
 
 const MatchExercise = ({exercise, id, slug, onScore}: MatchExerciseProps, ) => {
 

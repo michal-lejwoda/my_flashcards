@@ -24,7 +24,7 @@ import FillInTextExerciseWithPredefinedBlocks from "./FillInTextExerciseWithPred
 import ListenExerciseWithOptionsToChoose from "./ListenExerciseWithOptionsToChoose.tsx";
 import ListenWithManyOptionsToChooseToSingleExercise from "./ListenWithManyOptionsToChooseToSingleExercise.tsx";
 import MatchExerciseTextWithImage from "./MatchExerciseTextWithImage.tsx";
-
+import "../../sass/exercises/multiple_exercises.css";
 
 const MultipleExercises = ({exercise, onScore}: MultipleExercisesProps) => {
 

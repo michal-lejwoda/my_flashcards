@@ -1,5 +1,7 @@
 import {ChooseExerciseDependsOnSingleTextAnswer, ListenExerciseWithOptionsToChooseProps} from "../../interfaces.tsx";
 import {useContext, useState} from "react";
+import "../../sass/exercises/listen_exercise_with_options_to_choose.css";
+
 import {handleSendChooseExerciseDependsOnSingleTextAnswers} from "../../api.tsx";
 import AuthContext from "../../context/AuthContext.tsx";
 

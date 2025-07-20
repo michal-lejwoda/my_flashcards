@@ -2,7 +2,7 @@ import {useContext, useState} from "react";
 import {ChooseExerciseDependsOnSingleTextAnswer, ChooseExerciseDependsOnSingleTextProps} from "../../interfaces.tsx";
 import {handleSendChooseExerciseDependsOnSingleTextAnswers} from "../../api.tsx";
 import AuthContext from "../../context/AuthContext.tsx";
-
+import "../../sass/exercises/choose_exercise_depends_on_single_text.css"
 
 
 const ChooseExerciseDependsOnSingleText = ({exercise, id, slug,onScore}: ChooseExerciseDependsOnSingleTextProps) => {

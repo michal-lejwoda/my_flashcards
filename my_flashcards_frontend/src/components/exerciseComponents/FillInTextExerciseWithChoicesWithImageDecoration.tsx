@@ -2,6 +2,8 @@ import React, {useContext, useState} from "react";
 import {FillInTextExerciseWithChoicesWithImageDecorationProps} from "../../interfaces.tsx";
 import AuthContext from "../../context/AuthContext.tsx";
 import {handleSendFillInTextExerciseWithChoicesAnswers} from "../../api.tsx";
+import "../../sass/exercises/fill_in_text_exercise_with_choices_with_image_decoration.css";
+
 
 const FillInTextExerciseWithChoicesWithImageDecoration = ({
                                                               exercise,

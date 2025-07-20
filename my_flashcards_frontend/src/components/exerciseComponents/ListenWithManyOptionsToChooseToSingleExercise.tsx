@@ -5,6 +5,7 @@ import {
 import {useContext, useState} from "react";
 import {handleSendListenWithManyOptionsToChooseToSingleExerciseAnswers} from "../../api.tsx";
 import AuthContext from "../../context/AuthContext.tsx";
+import "../../sass/exercises/listen_with_many_options_to_choose_to_single_exercise.css";
 
 
 const ListenWithManyOptionsToChooseToSingleExercise = ({

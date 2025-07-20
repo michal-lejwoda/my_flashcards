@@ -2,7 +2,7 @@ import {useContext, useState} from "react";
 import {ChooseExerciseDependsOnMultipleTextsProps, ChooseExerciseDependsOnSingleTextAnswer} from "../../interfaces.tsx";
 import {handleSendChooseExerciseDependsOnSingleTextAnswers} from "../../api.tsx";
 import AuthContext from "../../context/AuthContext.tsx";
-
+import "../../sass/exercises/choose_exercise_depends_on_multiple_texts.css"
 
 const ChooseExerciseDependsOnMultipleTexts = ({exercise, id, slug, onScore}: ChooseExerciseDependsOnMultipleTextsProps) => {
     const [selectedOptions, setSelectedOptions] = useState<ChooseExerciseDependsOnSingleTextAnswer[]>([]);

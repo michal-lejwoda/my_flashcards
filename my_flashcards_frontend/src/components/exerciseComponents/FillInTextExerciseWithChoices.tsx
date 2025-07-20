@@ -2,6 +2,7 @@ import React, {useContext, useState} from "react";
 import {FillInTextExerciseWithChoicesProps} from "../../interfaces.tsx";
 import AuthContext from "../../context/AuthContext.tsx";
 import {handleSendFillInTextExerciseWithChoicesAnswers} from "../../api.tsx";
+import "../../sass/exercises/fill_in_text_exercise_with_choices.css"
 
 const FillInTextExerciseWithChoices = ({exercise, id, slug,onScore}: FillInTextExerciseWithChoicesProps) => {
     type Answer = { blank_id: number; answer: string };

@@ -6,6 +6,8 @@ import {
 import {useContext, useEffect, useState} from "react";
 import AuthContext from "../../context/AuthContext.tsx";
 import {handleSendMatchExerciseWithImageAnswers} from "../../api.tsx";
+import "../../sass/exercises/match_exercise_text_with_image.css"
+
 
 const MatchExerciseTextWithImage = ({exercise, id, slug, onScore}: MatchExerciseTextWithImageProps) => {
     console.log("exercise", exercise)

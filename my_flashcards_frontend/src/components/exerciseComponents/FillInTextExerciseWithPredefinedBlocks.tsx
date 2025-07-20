@@ -5,6 +5,8 @@ import {
 import React, {useContext, useState} from "react";
 import AuthContext from "../../context/AuthContext.tsx";
 import {handleSendFillInTextExerciseWithPredefinedBlocks} from "../../api.tsx";
+import "../../sass/exercises/fill_in_text_exercise_with_predefined_blocks.css"
+
 
 const FillInTextExerciseWithPredefinedBlocks = ({exercise, id, slug, onScore}: FillInTextExerciseWithPredefinedBlocksProps) => {
     console.log("exercise", exercise)

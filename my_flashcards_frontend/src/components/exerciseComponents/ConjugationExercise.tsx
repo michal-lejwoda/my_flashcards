@@ -2,6 +2,7 @@ import {ConjugationExerciseAnswer, ConjugationExerciseProps} from "../../interfa
 import {useContext, useState} from "react";
 import {handleSendConjugationExerciseAnswers} from "../../api.tsx";
 import AuthContext from "../../context/AuthContext.tsx";
+import "../../sass/exercises/conjugation_exercise.css"
 
 const ConjugationExercise = ({exercise, id, slug,onScore}: ConjugationExerciseProps) => {
     console.log("exercise", exercise)
