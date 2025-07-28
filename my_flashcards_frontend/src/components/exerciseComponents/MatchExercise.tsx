@@ -4,7 +4,7 @@ import {handleSendMatchExerciseAnswers} from "../../api.tsx";
 import AuthContext from "../../context/AuthContext.tsx";
 import '../../sass/exercises/match_exercise.css';
 
-const MatchExercise = ({exercise, id, slug, onScore}: MatchExerciseProps, ) => {
+const MatchExercise = ({exercise, id, slug, onScore}: MatchExerciseProps,) => {
 
     type SelectedElement = {
         left_item: string;
@@ -27,19 +27,20 @@ const MatchExercise = ({exercise, id, slug, onScore}: MatchExerciseProps, ) => {
     const sendAnswers = async () => {
         const answers = {"answers": selectedElements}
         const path_slug = `${id}/${slug}`
-        const result =  await handleSendMatchExerciseAnswers(path_slug, answers, token)
+        const result = await handleSendMatchExerciseAnswers(path_slug, answers, token)
         console.log("result", result)
-        if (id !== undefined){
+        if (id !== undefined) {
             onScore(id.toString(), result.score, result.max_score)
         }
         console.log("send answers", answers)
     }
 
+    // TODO BACK HERE
 
-    const handleAddLeftItem = (item: string) => {
+    const handleAddLeftItem = (item: string, key: number) => {
         console.log("leftitem", item)
         if (rightSelected != null) {
-            setSelectedElements(prevState => [...prevState, {left_item: item, right_item: rightSelected}]);
+            setSelectedElements(prevState => [...prevState, {key: key, left_item: item, right_item: rightSelected}]);
             setLeftItems(prev => prev.filter(i => i !== item));
             setRightItems(prev => prev.filter(i => i !== rightSelected));
 
@@ -59,50 +60,58 @@ const MatchExercise = ({exercise, id, slug, onScore}: MatchExerciseProps, ) => {
         }
     }
 
+    const removeItem = (item: string) =>{
+        console.log("selectedElements",selectedElements)
+        console.log("Item", item)
+    }
+
 
     return (
-        <div>
-            <h1>Match Exercise</h1>
+        <div className="matchexercise">
+            <h1 className="matchexercise__title">Match Exercise</h1>
+            <h3 className="matchexercise__description">{exercise.description}</h3>
             <div className="matchexercise__selectcontainer">
-                <div className="matchexercise__leftside">
-                    {leftItems.map((element) => {
+                <div className="matchexercise__sides">
+                    <div className="matchexercise__leftside">
+                        {leftItems.map((element,key) => {
+                            return (
+                                <button className="matchexercise__leftside__item" key={key}
+                                     onClick={() => handleAddLeftItem(element)}>
+                                    {element}
+                                </button>
+                            )
+                        })}
+                    </div>
+                    <div className="matchexercise__rightside">
+                        {rightItems.map((element) => {
+                            return (
+                                <button className="matchexercise__rightside__item" key={element}
+                                     onClick={() => handleAddRightItem(element)}>
+                                    {element}
+                                </button>
+                            )
+                        })}
+                    </div>
+                </div>
+                <div className="matchexercise__selectedcontainer">
+                    <h1>Selected Conttainer</h1>
+                    {selectedElements.map((element) => {
                         return (
-                            <div className="matchexercise__leftside__item" key={element}
-                                 onClick={() => handleAddLeftItem(element)}>
-                                {element}
+                            <div className="matchexercise__selectedcontainer__item">
+                                <button className="matchexercise__selectedcontainer__leftitem " onClick={()=>removeItem(element.left_item)}>
+                                    {element.left_item}
+                                </button>
+                                <button className="matchexercise__selectedcontainer__rightitem" onClick={()=>removeItem(element.right_item)}>
+                                    {element.right_item}
+                                </button>
                             </div>
                         )
                     })}
                 </div>
-                <div className="matchexercise__rightside">
-                    {rightItems.map((element) => {
-                        return (
-                            <div className="matchexercise__rightside__item" key={element}
-                                 onClick={() => handleAddRightItem(element)}>
-                                {element}
-                            </div>
-                        )
-                    })}
-                </div>
             </div>
-            <div className="matchexercise__selectedcontainer">
-                <h1>Selected Conttainer</h1>
-                {selectedElements.map((element) => {
-                    return (
-                        <div className="matchexercise__selectedcontainer__item">
-                            <div className="matchexercise__selectedcontainer__leftitem">
-                                {element.left_item}
-                            </div>
-                            <div className="matchexercise__selectedcontainer__rightitem">
-                                {element.right_item}
-                            </div>
-                        </div>
-                    )
-                })}
-            </div>
-            <div className="matchexercise__buttons">
-                <button onClick={sendAnswers}>Send</button>
-            </div>
+            <button className="matchexercise__buttons greenoutline--button greenoutline--button--mb" onClick={sendAnswers}>
+                 Send
+            </button>
 
         </div>
     );

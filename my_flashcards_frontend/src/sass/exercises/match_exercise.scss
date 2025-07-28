@@ -1,0 +1,97 @@
+
+@import '../../main.scss';
+.matchexercise {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+
+  &__selectcontainer {
+    display:flex;
+    flex-direction: column;
+    background-color: red;
+    width: 80%;
+    border-radius: 15px;
+    min-width: 350px;
+    @include breakpoint("desktop") {
+      width: 60%;
+    }
+  }
+
+  &__sides {
+    //max-width: 700px;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    font-size: 1.4rem;
+    margin-bottom: 2rem;
+
+  }
+
+  &__leftside {
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+    margin-left: 2rem;
+    margin-right: 2rem;
+
+    &__item {
+      display: flex;
+      justify-content: center;
+      background-color: green;
+      padding: 0.5rem;
+      margin-bottom: 1rem;
+      cursor: pointer;
+      border-radius: 15px;
+      font-size: 1.5rem;
+    }
+  }
+
+  &__rightside {
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+    margin-left: 2rem;
+    margin-right: 2rem;
+    align-items: end;
+    display:flex;
+    flex-direction: column;
+
+    &__item {
+      display: flex;
+      justify-content: center;
+      background-color: green;
+      padding: 0.5rem;
+      margin-bottom: 1rem;
+      cursor: pointer;
+      border-radius: 15px;
+      font-size: 1.5rem;
+    }
+  }
+  &__selectedcontainer{
+    display:flex;
+    flex-direction: column;
+    align-items: center;
+    &__item{
+      display: flex;
+
+    }
+    &__leftitem{
+      justify-content: center;
+      background-color: green;
+      padding: 0.5rem;
+      margin-bottom: 1rem;
+      cursor: pointer;
+      border-radius: 15px;
+      font-size: 1.5rem;
+      margin-right: 0.5rem;
+    }
+    &__rightitem{
+      justify-content: center;
+      background-color: green;
+      padding: 0.5rem;
+      margin-bottom: 1rem;
+      cursor: pointer;
+      border-radius: 15px;
+      font-size: 1.5rem;
+    }
+  }
+}
