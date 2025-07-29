@@ -25,7 +25,7 @@ const MatchExercise = ({exercise, id, slug, onScore}: MatchExerciseProps,) => {
         setSelectedElements([])
     }, [exercise]);
 
-    console.log("activeLeftIndex",activeLeftIndex)
+
 
 
     const sendAnswers = async () => {
@@ -99,7 +99,7 @@ const MatchExercise = ({exercise, id, slug, onScore}: MatchExerciseProps,) => {
                 <div className="matchexercise__description">{exercise.description}</div>
                 <div className="matchexercise__sides">
                     <div className="matchexercise__leftside">
-                        {leftItems.map((element,key) => {
+                        {rightItems.map((element,key) => {
                             return (
                                 <button
                                     className={`matchexercise__leftside__item ${activeLeftIndex === key ? 'matchexercise__item__active' : ''}`}
@@ -110,7 +110,7 @@ const MatchExercise = ({exercise, id, slug, onScore}: MatchExerciseProps,) => {
                         })}
                     </div>
                     <div className="matchexercise__rightside">
-                        {rightItems.map((element,key) => {
+                        {leftItems.map((element,key) => {
                             return (
                                 <button
                                      className={`matchexercise__rightside__item ${activeRightIndex === key ? 'matchexercise__item__active' : ''}`}
