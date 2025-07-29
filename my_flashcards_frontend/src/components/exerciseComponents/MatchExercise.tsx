@@ -37,12 +37,14 @@ const MatchExercise = ({exercise, id, slug, onScore}: MatchExerciseProps,) => {
 
     // TODO BACK HERE
 
-    const handleAddLeftItem = (item: string, key: number) => {
+    const handleAddLeftItem = (item: string) => {
         console.log("leftitem", item)
         if (rightSelected != null) {
-            setSelectedElements(prevState => [...prevState, {key: key, left_item: item, right_item: rightSelected}]);
+            setSelectedElements(prevState => [...prevState, {left_item: item, right_item: rightSelected}]);
             setLeftItems(prev => prev.filter(i => i !== item));
             setRightItems(prev => prev.filter(i => i !== rightSelected));
+            setLeftSelected(null)
+            setRightSelected(null)
 
         } else {
             setLeftSelected(item)
@@ -55,15 +57,25 @@ const MatchExercise = ({exercise, id, slug, onScore}: MatchExerciseProps,) => {
             setSelectedElements(prevState => [...prevState, {left_item: leftSelected, right_item: item}]);
             setLeftItems(prev => prev.filter(i => i !== leftSelected));
             setRightItems(prev => prev.filter(i => i !== item));
+            setLeftSelected(null)
+            setRightSelected(null)
         } else {
             setRightSelected(item)
         }
     }
 
-    const removeItem = (item: string) =>{
-        console.log("selectedElements",selectedElements)
-        console.log("Item", item)
-    }
+    const removeItem = (indexToRemove: number) => {
+    setSelectedElements(prev => {
+        const removed = prev[indexToRemove];
+        setLeftItems(items => [...items, removed.left_item]);
+        setRightItems(items => [...items, removed.right_item]);
+        setLeftSelected(null)
+        setRightSelected(null)
+        return prev.filter((_, index) => index !== indexToRemove);
+
+    });
+};
+
 
 
     return (
@@ -95,13 +107,13 @@ const MatchExercise = ({exercise, id, slug, onScore}: MatchExerciseProps,) => {
                 </div>
                 <div className="matchexercise__selectedcontainer">
                     <h1>Selected Conttainer</h1>
-                    {selectedElements.map((element) => {
+                    {selectedElements.map((element, key) => {
                         return (
                             <div className="matchexercise__selectedcontainer__item">
-                                <button className="matchexercise__selectedcontainer__leftitem " onClick={()=>removeItem(element.left_item)}>
+                                <button className="matchexercise__selectedcontainer__leftitem " onClick={()=>removeItem(key)}>
                                     {element.left_item}
                                 </button>
-                                <button className="matchexercise__selectedcontainer__rightitem" onClick={()=>removeItem(element.right_item)}>
+                                <button className="matchexercise__selectedcontainer__rightitem" onClick={()=>removeItem(key)}>
                                     {element.right_item}
                                 </button>
                             </div>
