@@ -79,18 +79,18 @@ const MatchExerciseTextWithImage = ({exercise, id, slug, onScore}: MatchExercise
     }
 
     const removeItem = (indexToRemove: number) => {
-    setSelectedElements(prev => {
-        const removed = prev[indexToRemove];
-        setLeftItems(items => [...items, removed.left_item]);
-        setRightItems(items => [...items, removed.right_item]);
-        setLeftSelected(null)
-        setRightSelected(null)
-        setActiveLeftIndex(null)
-        setActiveRightIndex(null)
-        return prev.filter((_, index) => index !== indexToRemove);
+        setSelectedElements(prev => {
+            const removed = prev[indexToRemove];
+            setLeftItems(items => [...items, removed.left_item]);
+            setRightItems(items => [...items, removed.right_item]);
+            setLeftSelected(null)
+            setRightSelected(null)
+            setActiveLeftIndex(null)
+            setActiveRightIndex(null)
+            return prev.filter((_, index) => index !== indexToRemove);
 
-    });
-};
+        });
+    };
 
 
     return (
@@ -100,48 +100,52 @@ const MatchExerciseTextWithImage = ({exercise, id, slug, onScore}: MatchExercise
                 <div className="matchexercise__description">{exercise.description}</div>
                 <div className="matchexercise__sides">
                     <div className="matchexercise__leftside">
-                        {rightItems.map((element,key) => {
+                        {rightItems.map((element, key) => {
                             return (
                                 <button
                                     className={`matchexercise__leftside__item ${activeRightIndex === key ? 'matchexercise__item__active' : ''}`}
-                                     onClick={() => handleAddRightItem(element,key)}>
+                                    onClick={() => handleAddRightItem(element, key)}>
                                     {element}
                                 </button>
                             )
                         })}
                     </div>
                     <div className="matchexercise__rightside">
-                        {leftItems.map((element,key) => {
+                        {leftItems.map((element, key) => {
                             return (
                                 <button
                                     className={`matchexercise__rightside__item ${activeLeftIndex === key ? 'matchexercise__item__active' : ''}`}
-                                     onClick={() => handleAddLeftItem(element, key)}>
-                                        <img src={`${import.meta.env.VITE_API_URL}${element.url}`} alt=""/>
+                                    onClick={() => handleAddLeftItem(element, key)}>
+                                    <img src={`${import.meta.env.VITE_API_URL}${element.url}`} alt=""/>
                                 </button>
                             )
                         })}
                     </div>
                 </div>
                 <div className="matchexercise__selectedcontainer">
-                <h1>Selected Container</h1>
-                {selectedElements.map((element, key) => {
-                    return (
-                        <div className="matchexercise__selectedcontainer__item">
-                            <div className="matchexercise__selectedcontainer__leftitem" onClick={()=>removeItem(key)}>
-                                <img src={`${import.meta.env.VITE_API_URL}${element.left_item.url}`} alt=""/>
-                            </div>
-                            <div className="matchexercise__selectedcontainer__rightitem" onClick={()=>removeItem(key)}>
-                                {element.right_item}
-                            </div>
-                        </div>
-                    )
-                })}
-            </div>
+                    <h1>Selected Container</h1>
+                    <div className="matchexercise__selectedcontainer__items">
+                        {selectedElements.map((element, key) => {
+                            return (
+                                <div className="matchexercise__selectedcontainer__item">
+                                    <div className="matchexercise__selectedcontainer__leftitem"
+                                         onClick={() => removeItem(key)}>
+                                        {element.right_item}
+                                    </div>
+                                    <div className="matchexercise__selectedcontainer__rightitem"
+                                         onClick={() => removeItem(key)}>
+                                        <img src={`${import.meta.env.VITE_API_URL}${element.left_item.url}`} alt=""/>
+                                    </div>
+                                </div>
+                            )
+                        })}
+                    </div>
+                </div>
             </div>
 
-            <div className="matchexercise__buttons">
-                <button onClick={sendAnswers}>Send</button>
-            </div>
+            <button className="matchexercise__buttons greenoutline--button greenoutline--button--mb" onClick={sendAnswers}>
+                 Check
+            </button>
 
         </div>
     );
