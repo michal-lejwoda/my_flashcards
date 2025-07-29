@@ -1,15 +1,39 @@
-
+@use '../variables';
 @import '../../main.scss';
+
 .matchexercise {
   display: flex;
   justify-content: center;
   flex-direction: column;
   align-items: center;
 
+  &__description{
+    background-color: variables.$color-bg-dark !important;
+    border-top: 2px solid variables.$color-bg-green-light;
+    border-left: 2px solid variables.$color-bg-green-light;
+    border-right: 2px solid variables.$color-bg-green-light;
+    border-top-left-radius: 15px;
+    border-top-right-radius: 15px;
+    font-size: 1.5rem;
+    font-weight: 600;
+    width: 100%;
+    padding: 1rem;
+  }
+
+  &__item{
+    &__active{
+      background-color: variables.$color-bg-green-light !important;
+      color: variables.$button-bg !important;
+      &:hover{
+        color: variables.$button-bg;
+      }
+    }
+  }
+
   &__selectcontainer {
     display:flex;
     flex-direction: column;
-    background-color: red;
+    background-color: variables.$button-bg;
     width: 80%;
     border-radius: 15px;
     min-width: 350px;
@@ -37,12 +61,17 @@
     &__item {
       display: flex;
       justify-content: center;
-      background-color: green;
+      background-color: variables.$button-bg-lighter;
       padding: 0.5rem;
       margin-bottom: 1rem;
       cursor: pointer;
       border-radius: 15px;
       font-size: 1.5rem;
+      border: 2px solid variables.$color-bg-light;;
+      //color: white;
+      &:hover{
+        color: variables.$color-bg-light;
+      }
     }
   }
 
@@ -58,12 +87,17 @@
     &__item {
       display: flex;
       justify-content: center;
-      background-color: green;
+      background-color: variables.$button-bg-lighter;
       padding: 0.5rem;
       margin-bottom: 1rem;
       cursor: pointer;
       border-radius: 15px;
       font-size: 1.5rem;
+      border: 2px solid variables.$color-bg-light;
+      //color: white;
+      &:hover{
+        color: variables.$color-bg-light;
+      }
     }
   }
   &__selectedcontainer{
@@ -76,22 +110,27 @@
     }
     &__leftitem{
       justify-content: center;
-      background-color: green;
+      background-color: variables.$button-bg-lighter;
       padding: 0.5rem;
       margin-bottom: 1rem;
       cursor: pointer;
       border-radius: 15px;
       font-size: 1.5rem;
       margin-right: 0.5rem;
+      border: 2px solid variables.$color-bg-light;;
+      //color: white;
+
     }
     &__rightitem{
       justify-content: center;
-      background-color: green;
+      background-color: variables.$button-bg-lighter;
       padding: 0.5rem;
       margin-bottom: 1rem;
       cursor: pointer;
       border-radius: 15px;
       font-size: 1.5rem;
+      border: 2px solid variables.$color-bg-light;;
+      //color: white;
     }
   }
 }

@@ -28,7 +28,7 @@ import ListenWithManyOptionsToChooseToSingleExercise
     from "./exerciseComponents/ListenWithManyOptionsToChooseToSingleExercise.tsx";
 import MatchExerciseTextWithImage from "./exerciseComponents/MatchExerciseTextWithImage.tsx";
 import MultipleExercises from "./exerciseComponents/MultipleExercises.tsx";
-
+import "../../src/sass/exercises/exercise.css"
 const Exercise = () => {
     type ExerciseScore = {
         "score": number,
@@ -128,9 +128,9 @@ const Exercise = () => {
     };
 
     return (
-        <div>
+        <div className="exercise__content">
             {renderContent()}
-            <div>Zrobione zadania {results.length} z {numberOfExercises} Liczba punktow {userScore} z {maxScore}</div>
+            <div className="exercise__results">Zrobione zadania {results.length} z {numberOfExercises}. Liczba punktow {userScore} z {maxScore}</div>
         </div>
     );
 };

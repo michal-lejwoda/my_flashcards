@@ -10,6 +10,8 @@ const MatchExercise = ({exercise, id, slug, onScore}: MatchExerciseProps,) => {
         left_item: string;
         right_item: string;
     };
+    const [activeLeftIndex, setActiveLeftIndex] = useState<number | null>(null);
+    const [activeRightIndex, setActiveRightIndex] = useState<number | null>(null);
     const [selectedElements, setSelectedElements] = useState<SelectedElement[]>([]);
     const [rightSelected, setRightSelected] = useState<string | null>(null);
     const [leftSelected, setLeftSelected] = useState<string | null>(null);
@@ -23,6 +25,8 @@ const MatchExercise = ({exercise, id, slug, onScore}: MatchExerciseProps,) => {
         setSelectedElements([])
     }, [exercise]);
 
+    console.log("activeLeftIndex",activeLeftIndex)
+
 
     const sendAnswers = async () => {
         const answers = {"answers": selectedElements}
@@ -35,9 +39,8 @@ const MatchExercise = ({exercise, id, slug, onScore}: MatchExerciseProps,) => {
         console.log("send answers", answers)
     }
 
-    // TODO BACK HERE
 
-    const handleAddLeftItem = (item: string) => {
+    const handleAddLeftItem = (item: string, key: number) => {
         console.log("leftitem", item)
         if (rightSelected != null) {
             setSelectedElements(prevState => [...prevState, {left_item: item, right_item: rightSelected}]);
@@ -45,13 +48,18 @@ const MatchExercise = ({exercise, id, slug, onScore}: MatchExerciseProps,) => {
             setRightItems(prev => prev.filter(i => i !== rightSelected));
             setLeftSelected(null)
             setRightSelected(null)
+            setActiveLeftIndex(null)
+            setActiveRightIndex(null)
 
         } else {
             setLeftSelected(item)
+            setActiveLeftIndex(key)
         }
-
     }
-    const handleAddRightItem = (item: string) => {
+
+
+
+    const handleAddRightItem = (item: string, key: number) => {
         console.log("rightitem", item)
         if (leftSelected != null) {
             setSelectedElements(prevState => [...prevState, {left_item: leftSelected, right_item: item}]);
@@ -59,8 +67,11 @@ const MatchExercise = ({exercise, id, slug, onScore}: MatchExerciseProps,) => {
             setRightItems(prev => prev.filter(i => i !== item));
             setLeftSelected(null)
             setRightSelected(null)
+            setActiveLeftIndex(null)
+            setActiveRightIndex(null)
         } else {
             setRightSelected(item)
+            setActiveRightIndex(key)
         }
     }
 
@@ -71,6 +82,8 @@ const MatchExercise = ({exercise, id, slug, onScore}: MatchExerciseProps,) => {
         setRightItems(items => [...items, removed.right_item]);
         setLeftSelected(null)
         setRightSelected(null)
+        setActiveLeftIndex(null)
+        setActiveRightIndex(null)
         return prev.filter((_, index) => index !== indexToRemove);
 
     });
@@ -81,24 +94,27 @@ const MatchExercise = ({exercise, id, slug, onScore}: MatchExerciseProps,) => {
     return (
         <div className="matchexercise">
             <h1 className="matchexercise__title">Match Exercise</h1>
-            <h3 className="matchexercise__description">{exercise.description}</h3>
+
             <div className="matchexercise__selectcontainer">
+                <div className="matchexercise__description">{exercise.description}</div>
                 <div className="matchexercise__sides">
                     <div className="matchexercise__leftside">
                         {leftItems.map((element,key) => {
                             return (
-                                <button className="matchexercise__leftside__item" key={key}
-                                     onClick={() => handleAddLeftItem(element)}>
+                                <button
+                                    className={`matchexercise__leftside__item ${activeLeftIndex === key ? 'matchexercise__item__active' : ''}`}
+                                     onClick={() => handleAddLeftItem(element, key)}>
                                     {element}
                                 </button>
                             )
                         })}
                     </div>
                     <div className="matchexercise__rightside">
-                        {rightItems.map((element) => {
+                        {rightItems.map((element,key) => {
                             return (
-                                <button className="matchexercise__rightside__item" key={element}
-                                     onClick={() => handleAddRightItem(element)}>
+                                <button
+                                     className={`matchexercise__rightside__item ${activeRightIndex === key ? 'matchexercise__item__active' : ''}`}
+                                     onClick={() => handleAddRightItem(element, key)}>
                                     {element}
                                 </button>
                             )
@@ -106,7 +122,7 @@ const MatchExercise = ({exercise, id, slug, onScore}: MatchExerciseProps,) => {
                     </div>
                 </div>
                 <div className="matchexercise__selectedcontainer">
-                    <h1>Selected Conttainer</h1>
+                    <h3>Created pairs</h3>
                     {selectedElements.map((element, key) => {
                         return (
                             <div className="matchexercise__selectedcontainer__item">
@@ -122,7 +138,7 @@ const MatchExercise = ({exercise, id, slug, onScore}: MatchExerciseProps,) => {
                 </div>
             </div>
             <button className="matchexercise__buttons greenoutline--button greenoutline--button--mb" onClick={sendAnswers}>
-                 Send
+                 Check
             </button>
 
         </div>
