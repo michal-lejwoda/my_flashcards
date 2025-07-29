@@ -5,14 +5,16 @@ import AuthContext from "../../context/AuthContext.tsx";
 import "../../sass/exercises/choose_exercise_depends_on_single_text.css"
 
 
-const ChooseExerciseDependsOnSingleText = ({exercise, id, slug,onScore}: ChooseExerciseDependsOnSingleTextProps) => {
+const ChooseExerciseDependsOnSingleText = ({exercise, id, slug, onScore}: ChooseExerciseDependsOnSingleTextProps) => {
     const [selectedOptions, setSelectedOptions] = useState<ChooseExerciseDependsOnSingleTextAnswer[]>([]);
+    console.log(selectedOptions)
+
     const {token} = useContext(AuthContext);
-    const sendAnswers = async() => {
+    const sendAnswers = async () => {
         const answers = {"answers": selectedOptions}
         const path_slug = `${id}/${slug}`
         const result = await handleSendChooseExerciseDependsOnSingleTextAnswers(path_slug, answers, token)
-        if (id !== undefined){
+        if (id !== undefined) {
             onScore(id.toString(), result.score, result.max_score)
         }
         console.log("result", result)
@@ -24,10 +26,10 @@ const ChooseExerciseDependsOnSingleText = ({exercise, id, slug,onScore}: ChooseE
             const exists = prev.find(item => item.question_id === questionId);
             if (exists) {
                 return prev.map(item =>
-                    item.question_id === questionId ? { ...item, answer: option } : item
+                    item.question_id === questionId ? {...item, answer: option} : item
                 );
             }
-            return [...prev, { question_id: questionId, answer: option }];
+            return [...prev, {question_id: questionId, answer: option}];
         });
     };
 
@@ -35,39 +37,43 @@ const ChooseExerciseDependsOnSingleText = ({exercise, id, slug,onScore}: ChooseE
 
     return (
         <section className="cdost">
-            <h1 className="cdost__title">ChooseExerciseDependsOnSingleText</h1>
+            <div className="cdost__content">
+                <h1 className="cdost__title">ChooseExerciseDependsOnSingleText</h1>
 
-            <div className="cdost__text">
-                {exercise.text}
-            </div>
 
-            <div className="cdost__choose-container">
-                {exercise.exercises.map((element) => {
-                    const selectedAnswer = selectedOptions.find(opt => opt.question_id === element.question_id)?.answer;
+                <div className="cdost__text">
+                    {exercise.text}
+                </div>
+                <div className="cdost__description">{exercise.description}</div>
 
-                    return (
-                        <div className="cdost__question-block" key={element.question_id}>
-                            <div className="cdost__question">{element.question}</div>
-                            <div className="cdost__options">
-                                {element.options.map((option, i) => {
-                                    const isSelected = selectedAnswer === option;
-                                    return (
-                                        <div
-                                            className={`cdost__option ${isSelected ? "cdost__option--selected" : ""}`}
-                                            key={i}
-                                            onClick={() => handleOptionClick(element.question_id, option)}
-                                        >
-                                            {option}
-                                        </div>
-                                    );
-                                })}
+                <div className="cdost__choose-container">
+                    {exercise.exercises.map((element) => {
+                        const selectedAnswer = selectedOptions.find(opt => opt.question_id === element.question_id)?.answer;
+
+                        return (
+                            <div className="cdost__question-block" key={element.question_id}>
+                                <div className="cdost__question">{element.question}</div>
+                                <div className="cdost__options">
+                                    {element.options.map((option, i) => {
+                                        const isSelected = selectedAnswer === option;
+                                        return (
+                                            <div
+                                                className={`cdost__option ${isSelected ? "cdost__option--selected" : ""}`}
+                                                key={i}
+                                                onClick={() => handleOptionClick(element.question_id, option)}
+                                            >
+                                                {option}
+                                            </div>
+                                        );
+                                    })}
+                                </div>
                             </div>
-                        </div>
-                    );
-                })}
-            </div>
-            <div className="cdost__buttons">
-                <button onClick={sendAnswers}>Send</button>
+                        );
+                    })}
+                </div>
+                <div className="cdost__buttons">
+                    <button className="greenoutline--button greenoutline--button--mb" onClick={sendAnswers}>Send</button>
+                </div>
             </div>
         </section>
     );
