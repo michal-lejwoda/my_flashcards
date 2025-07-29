@@ -1,0 +1,75 @@
+@use '../variables';
+@import '../../main.scss';
+.cdomt{
+  display:flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  &__choose-container{
+    width: 80%;
+    @include breakpoint("desktop") {
+      width: 60%;
+    }
+  }
+  &__buttons{
+    display:flex;
+    justify-content: center;
+  }
+  &__question-block{
+    display:flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-bottom: 2rem;
+    align-items: flex-start;
+  }
+  &__question{
+    font-size: 1.3rem;
+    width: 40%;
+    padding-left: 1rem;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+    border: 2px solid variables.$color-bg-green-light;
+    border-radius: 15px;
+  }
+  &__text{
+    overflow-wrap: normal;
+    padding: 1rem;
+    background-color: variables.$button-bg !important;
+    font-size: 1.2rem;
+    border-radius: 15px;
+    margin-bottom: 2rem;
+  }
+  &__options{
+    width: 40%;
+  }
+  &__option {
+    background-color: variables.$button-bg !important;
+    padding: 1rem;
+    text-align: center;
+    margin-bottom: 0.4rem;
+    border-radius: 10px;
+    font-size: 1.3rem;
+    font-weight: 600;
+    cursor: pointer;
+    &--selected{
+      background-color: variables.$color-bg-green-light !important;
+      color: variables.$button-bg !important;
+    }
+    &:hover{
+        color: variables.$color-bg-light;
+      }
+  }
+  &__description{
+    overflow-wrap: normal;
+    font-size: 1.1rem;
+    font-weight: 500;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+  }
+  &__content {
+    width: 80%;
+    @include breakpoint("desktop") {
+      width: 60%;
+    }
+  }
+}

@@ -4,14 +4,19 @@ import {handleSendChooseExerciseDependsOnSingleTextAnswers} from "../../api.tsx"
 import AuthContext from "../../context/AuthContext.tsx";
 import "../../sass/exercises/choose_exercise_depends_on_multiple_texts.css"
 
-const ChooseExerciseDependsOnMultipleTexts = ({exercise, id, slug, onScore}: ChooseExerciseDependsOnMultipleTextsProps) => {
+const ChooseExerciseDependsOnMultipleTexts = ({
+                                                  exercise,
+                                                  id,
+                                                  slug,
+                                                  onScore
+                                              }: ChooseExerciseDependsOnMultipleTextsProps) => {
     const [selectedOptions, setSelectedOptions] = useState<ChooseExerciseDependsOnSingleTextAnswer[]>([]);
     const {token} = useContext(AuthContext);
-    const sendAnswers = async() => {
+    const sendAnswers = async () => {
         const answers = {"answers": selectedOptions}
         const path_slug = `${id}/${slug}`
         const result = await handleSendChooseExerciseDependsOnSingleTextAnswers(path_slug, answers, token)
-        if (id !== undefined){
+        if (id !== undefined) {
             onScore(id.toString(), result.score, result.max_score)
         }
 
@@ -41,31 +46,34 @@ const ChooseExerciseDependsOnMultipleTexts = ({exercise, id, slug, onScore}: Cho
                     const selectedAnswer = selectedOptions.find(opt => opt.question_id === element.question_id)?.answer;
 
                     return (
-                        <div className="cdomt__question-block" key={element.question_id}>
+                        <div className="cdomt__questions">
                             <div className="cdomt__text">
-                                {element.text}
-                            </div>
-                            <div className="cdomt__question">{element.question}</div>
-                            <div className="cdomt__options">
-                                {element.options.map((option, i) => {
-                                    const isSelected = selectedAnswer === option;
-                                    return (
-                                        <div
-                                            className={`cdomt__option ${isSelected ? "cdomt__option--selected" : ""}`}
-                                            key={i}
-                                            onClick={() => handleOptionClick(element.question_id, option)}
-                                        >
-                                            {option}
-                                        </div>
-                                    );
-                                })}
+                                    {element.text}
+                                </div>
+                            <div className="cdomt__question-block" key={element.question_id}>
+
+                                <div className="cdomt__question">{element.question}</div>
+                                <div className="cdomt__options">
+                                    {element.options.map((option, i) => {
+                                        const isSelected = selectedAnswer === option;
+                                        return (
+                                            <div
+                                                className={`cdomt__option ${isSelected ? "cdomt__option--selected" : ""}`}
+                                                key={i}
+                                                onClick={() => handleOptionClick(element.question_id, option)}
+                                            >
+                                                {option}
+                                            </div>
+                                        );
+                                    })}
+                                </div>
                             </div>
                         </div>
                     );
                 })}
             </div>
             <div className="cdomt__buttons">
-                <button onClick={sendAnswers}>Send</button>
+                <button className="greenoutline--button greenoutline--button--mb" onClick={sendAnswers}>Send</button>
             </div>
         </section>
     );
