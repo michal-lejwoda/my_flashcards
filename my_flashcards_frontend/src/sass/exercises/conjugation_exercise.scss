@@ -28,6 +28,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+    min-width: 300px;
   }
 
   &__input {
@@ -37,6 +38,7 @@
     background-color: transparent;
     color: #faedcd;
     cursor: pointer;
+    align-self: flex-start;
 
     &:disabled{
       background-color: variables.$color-bg-dark;
