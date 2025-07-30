@@ -1,0 +1,60 @@
+@use '../variables';
+@import '../../main.scss';
+.fitewc{
+  display:flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  &__title{
+    display: flex;
+    justify-content: center;
+  }
+  &__content {
+    width: 80%;
+    @include breakpoint("desktop") {
+      width: 60%;
+    }
+  }
+  &__select{
+    background-color: transparent;
+    padding: 0.2rem;
+    margin-bottom: 1rem;
+    border: 1px solid variables.$color-bg-light;
+    border-radius: 10px;
+    cursor: pointer;
+    select {
+  /* To działa */
+  background-color: #f0f0f0;
+  border: 2px solid #333;
+  padding: 10px;
+  font-size: 16px;
+  color: #333;
+}
+
+/* Opcje - bardzo ograniczone możliwości */
+select option {
+  background-color: white;
+  color: black;
+  padding: 5px;
+}
+
+select option:hover {
+  background-color: #f0f0f0; /* Może nie działać we wszystkich przeglądarkach */
+}
+  }
+  &__container{
+    overflow-wrap: normal;
+    padding: 1rem;
+    background-color: variables.$button-bg !important;
+    font-size: 1.2rem;
+    border-radius: 15px;
+    margin-bottom: 2rem;
+    margin-top: 2rem;
+  }
+  &__text{
+    font-size: 1.4rem;
+    line-height: 2;
+    display:flex;
+    flex-wrap: wrap;
+  }
+}

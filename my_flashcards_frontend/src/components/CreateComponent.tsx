@@ -75,6 +75,7 @@ const CreateComponent = () => {
             <div className="create_word__container">
                 <CenteredTitle title={t("create")}/>
                 <CenteredForm handleSubmit={handleSubmit}>
+
                     <AsyncSelect
                         className="async_select"
                         cacheOptions
