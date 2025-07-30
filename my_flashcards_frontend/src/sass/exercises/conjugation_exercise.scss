@@ -1,0 +1,65 @@
+@use '../variables';
+@import '../../main.scss';
+
+.conjugation-exercise {
+  display: flex;
+  justify-content: center;
+
+  &__container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-size: 1.4rem;
+    width: 80%;
+    @include breakpoint("desktop") {
+      width: 60%;
+    }
+  }
+  &__name{
+    font-size: 1.8rem;
+    font-weight: 700;
+    margin-bottom: 2rem;
+  }
+
+  &__rowscontainer {
+    width: 100%;
+    padding: 1rem;
+    background-color: variables.$button-bg !important;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  &__input {
+    padding: 5px;
+    border: 2px solid #ccd5ae;
+    font-size: 1rem;
+    background-color: transparent;
+    color: #faedcd;
+    cursor: pointer;
+
+    &:disabled{
+      background-color: variables.$color-bg-dark;
+      cursor: default;
+    }
+    &:focus {
+      outline: 1.4px solid variables.$color-bg-green-light;
+      //outline: #00A000;
+      //border-color: blue;
+      //outline: none;
+    }
+
+  }
+
+  &__row {
+    display: flex;
+    flex-direction: row;
+    margin-bottom: 1rem;
+  }
+
+  &__person-label {
+    margin-right: 2rem;
+
+
+  }
+}
