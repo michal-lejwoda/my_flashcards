@@ -123,7 +123,7 @@ export const customStyleforFillTextWithChoices = {
         ...provided,
         color: '#faedcd',
         backgroundColor: '#d4a373',
-        zIndex: 2,
+        zIndex: 100,
     }),
     // @ts-expect-error Custom styles
     placeholder: provided => ({
@@ -162,7 +162,7 @@ export const customStyleforFillTextWithChoices = {
     // @ts-expect-error Custom styles
     option: (base, {isFocused, isSelected}) => ({
         ...base,
-        zIndex: 1,
+        zIndex: 100,
         fontSize: '1rem',
         backgroundColor: isSelected ? "#b8865e" : isFocused ? "#cb9e6c" : undefined
     })
