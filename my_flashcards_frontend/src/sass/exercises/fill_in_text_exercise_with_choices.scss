@@ -6,8 +6,16 @@
   flex-direction: column;
   align-items: center;
   &__image{
+    float: left;
+    //margin-left: 1rem;
+    margin-right: 20px;
+    margin-bottom: 15px;
+    //margin-top: 1rem;
+    max-width: 200px;
     img{
       height: 150px;
+      width: 100%;
+      display: block;
     }
   }
   &__description{
@@ -70,8 +78,38 @@
   &__text{
     font-size: 1.4rem;
     line-height: 2;
-    display:flex;
+    //display:flex;
     flex-wrap: wrap;
+    overflow: hidden;
+    list-style: none;
+    padding: 1rem;
+    &--content{
+      line-height: 1.5;
+    text-align: justify;
+      //padding: 1rem;
+    }
   }
 
 }
+//.fitewc__text {
+//    overflow: hidden;
+//}
+//
+//.fitewc__image {
+//    float: left;
+//    margin-right: 20px;
+//    margin-bottom: 15px;
+//    max-width: 200px;
+//}
+//
+//.fitewc__image img {
+//    width: 100%;
+//    height: auto;
+//    display: block;
+//}
+//
+//.fitewc__text--content {
+//    /* Tekst automatycznie będzie zawijał się wokół obrazka */
+//    line-height: 1.5;
+//    text-align: justify; /* Opcjonalnie - wyrównanie tekstu */
+//}

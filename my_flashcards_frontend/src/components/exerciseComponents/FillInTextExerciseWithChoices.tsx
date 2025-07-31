@@ -98,7 +98,9 @@ const FillInTextExerciseWithChoices = ({exercise, id, slug, onScore}: FillInText
                 <div className="fitewc__container">
                     <div className="fitewc__description">{exercise.description}</div>
                     <div className="fitewc__text">
-                        {renderedText}
+                        <div className="fitew__text--content">
+                            {renderedText}
+                        </div>
                     </div>
                 </div>
             </div>
