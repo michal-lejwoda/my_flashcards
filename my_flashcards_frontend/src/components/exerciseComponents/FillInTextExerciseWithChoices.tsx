@@ -10,9 +10,9 @@ import {SingleValue} from "react-select";
 const FillInTextExerciseWithChoices = ({exercise, id, slug, onScore}: FillInTextExerciseWithChoicesProps) => {
     type Answer = { blank_id: number; answer: string };
     type OptionType = {
-  value: string;
-  label: string;
-};
+        value: string;
+        label: string;
+    };
     const [formData, setFormData] = useState<Answer[]>([]);
     const {token} = useContext(AuthContext);
     const textParts = exercise.text_with_blanks.split(/({{\d+}})/g);
@@ -28,22 +28,20 @@ const FillInTextExerciseWithChoices = ({exercise, id, slug, onScore}: FillInText
         console.log("send answers", answers)
     }
 
-    const handleChange = (selectedOption:SingleValue<OptionType>, blankId: number) => {
-        // const blankId = Number(e.target.name);
-        // const value = e.target.value;
+    const handleChange = (selectedOption: SingleValue<OptionType>, blankId: number) => {
+        if (selectedOption !== null) {
+            setFormData(prev => {
+                const existingIndex = prev.findIndex(item => item.blank_id === blankId);
 
-        if (selectedOption !== null){
-        setFormData(prev => {
-            const existingIndex = prev.findIndex(item => item.blank_id === blankId);
+                if (existingIndex !== -1) {
+                    const updated = [...prev];
+                    updated[existingIndex] = {blank_id: blankId, answer: selectedOption.value};
+                    return updated;
+                }
 
-            if (existingIndex !== -1) {
-                const updated = [...prev];
-                updated[existingIndex] = {blank_id: blankId, answer: selectedOption.value};
-                return updated;
-            }
-
-            return [...prev, {blank_id: blankId, answer: selectedOption.value}];
-        });}
+                return [...prev, {blank_id: blankId, answer: selectedOption.value}];
+            });
+        }
     };
 
     const renderedText = textParts.map((part, index) => {
@@ -53,8 +51,8 @@ const FillInTextExerciseWithChoices = ({exercise, id, slug, onScore}: FillInText
             // const options = exercise.blanks.find(blank => blank.blank_id === blankId);
             const blankData = exercise.blanks.find(blank => blank.blank_id === blankId);
             if (!blankData) {
-              return null;
-}
+                return null;
+            }
             const selectOptions = blankData.options.map(opt => ({
                 value: opt,
                 label: opt
@@ -95,9 +93,10 @@ const FillInTextExerciseWithChoices = ({exercise, id, slug, onScore}: FillInText
                 <div className="fitewc__title">
                     <h1>FillInTextExerciseWithChoices</h1>
                 </div>
-                <div className="fitewc__description"></div>
+
                 {/*<p>{exercise.text_with_blanks}</p>*/}
                 <div className="fitewc__container">
+                    <div className="fitewc__description">{exercise.description}</div>
                     <div className="fitewc__text">
                         {renderedText}
                     </div>

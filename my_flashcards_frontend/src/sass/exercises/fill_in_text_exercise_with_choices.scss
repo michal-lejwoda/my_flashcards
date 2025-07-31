@@ -5,6 +5,23 @@
   justify-content: center;
   flex-direction: column;
   align-items: center;
+  &__image{
+    img{
+      height: 150px;
+    }
+  }
+  &__description{
+    background-color: variables.$color-bg-dark !important;
+    border-top: 2px solid variables.$color-bg-green-light;
+    border-left: 2px solid variables.$color-bg-green-light;
+    border-right: 2px solid variables.$color-bg-green-light;
+    border-top-left-radius: 15px;
+    border-top-right-radius: 15px;
+    font-size: 1.5rem;
+    font-weight: 600;
+    width: 100%;
+    padding: 1rem;
+  }
   &__title{
     display: flex;
     justify-content: center;
@@ -22,29 +39,28 @@
     border: 1px solid variables.$color-bg-light;
     border-radius: 10px;
     cursor: pointer;
-    select {
-  /* To działa */
-  background-color: #f0f0f0;
-  border: 2px solid #333;
-  padding: 10px;
-  font-size: 16px;
-  color: #333;
-}
-
-/* Opcje - bardzo ograniczone możliwości */
-select option {
-  background-color: white;
-  color: black;
-  padding: 5px;
-}
-
-select option:hover {
-  background-color: #f0f0f0; /* Może nie działać we wszystkich przeglądarkach */
-}
+//    select {
+//  background-color: #f0f0f0;
+//  border: 2px solid #333;
+//  padding: 10px;
+//  font-size: 16px;
+//  color: #333;
+//}
+//
+//
+//select option {
+//  background-color: white;
+//  color: black;
+//  padding: 5px;
+//}
+//
+//select option:hover {
+//  background-color: #f0f0f0; /* Może nie działać we wszystkich przeglądarkach */
+//}
   }
   &__container{
     overflow-wrap: normal;
-    padding: 1rem;
+    //padding: 1rem;
     background-color: variables.$button-bg !important;
     font-size: 1.2rem;
     border-radius: 15px;
@@ -57,4 +73,5 @@ select option:hover {
     display:flex;
     flex-wrap: wrap;
   }
+
 }

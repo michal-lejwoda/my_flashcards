@@ -137,8 +137,8 @@ export const customStyleforFillTextWithChoices = {
         color: '#faedcd',
         backgroundColor: 'transparent',
         borderColor: state.isFocused ? '#ccd5ae' : '#ccd5ae',
-        width: '200px',
-        minWidth: '150px',
+        width: 'auto',
+        minWidth: '100px',
         fontSize: '1rem',
         boxShadow: state.isFocused ? '0 0 0 1px #e9edc9' : 'none',
         '&:hover': {
@@ -147,12 +147,12 @@ export const customStyleforFillTextWithChoices = {
     }),
     // @ts-expect-error Custom styles
     container: (provided) => ({
-    ...provided,
-    width: '200px',
-        marginLeft: '0.3rem',
-        marginRight: '0.3rem',
-        marginBottom: '0.2rem',
-  }),
+        ...provided,
+        width: 'auto',
+        display: 'inline-block',
+        verticalAlign: 'middle',
+        margin: '0 0.3rem 0.2rem 0.3rem',
+    }),
     // @ts-expect-error Custom styles
     input: provided => ({
         ...provided,
