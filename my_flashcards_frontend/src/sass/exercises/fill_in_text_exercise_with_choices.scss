@@ -1,22 +1,26 @@
 @use '../variables';
 @import '../../main.scss';
-.fitewc{
-  display:flex;
+
+.fitewc {
+  display: flex;
   justify-content: center;
   flex-direction: column;
   align-items: center;
-  &__image{
+
+  &__image {
     float: left;
     margin-right: 20px;
     margin-bottom: 15px;
     max-width: 200px;
-    img{
+
+    img {
       height: 150px;
       width: 100%;
       display: block;
     }
   }
-  &__description{
+
+  &__description {
     background-color: variables.$color-bg-dark !important;
     border-top: 2px solid variables.$color-bg-green-light;
     border-left: 2px solid variables.$color-bg-green-light;
@@ -28,17 +32,33 @@
     width: 100%;
     padding: 1rem;
   }
-  &__title{
+
+  &__title {
     display: flex;
     justify-content: center;
   }
+
   &__content {
     width: 80%;
     @include breakpoint("desktop") {
       width: 60%;
     }
   }
-  &__select{
+
+  &--select {
+    //padding:0.4rem;
+    padding: 5px;
+    border: 2px solid #ccd5ae;
+    font-size: 1rem;
+    background-color: transparent;
+    color: #faedcd;
+    cursor: pointer;
+    &:focus {
+      outline: 1.4px solid variables.$color-bg-green-light;
+    }
+  }
+
+  &__select {
     background-color: transparent;
     padding: 0.2rem;
     margin-bottom: 1rem;
@@ -46,7 +66,8 @@
     border-radius: 10px;
     cursor: pointer;
   }
-  &__container{
+
+  &__container {
     overflow-wrap: normal;
     background-color: variables.$button-bg !important;
     font-size: 1.2rem;
@@ -54,15 +75,17 @@
     margin-bottom: 2rem;
     margin-top: 2rem;
   }
-  &__text{
+
+  &__text {
     font-size: 1.4rem;
     line-height: 2;
     flex-wrap: wrap;
     list-style: none;
     padding: 1rem;
-    &--content{
+
+    &--content {
       line-height: 1.5;
-    text-align: justify;
+      text-align: justify;
     }
   }
 

@@ -56,6 +56,7 @@ const FillInTextExerciseWithPredefinedBlocks = ({exercise, id, slug, onScore}: F
                     onChange={handleChange}
                     style={{margin: '0 4px'}}
                     defaultValue=""
+                    className="fitewc--select"
                 >
                 </input>
             );
@@ -65,15 +66,27 @@ const FillInTextExerciseWithPredefinedBlocks = ({exercise, id, slug, onScore}: F
     });
 
     return (
-        <div>
-            <h1>FillInTextExerciseWithChoices</h1>
-            <p>{exercise.text_with_blanks}</p>
-            {renderedText}
-            <pre>{JSON.stringify(formData, null, 2)}</pre>
-            <div>
-                <button onClick={sendAnswers}>Send</button>
+        <section className="fitewc">
+            <div className="fitewc__content">
+                <div className="fitewc__title">
+                    <h1>FillInTextExerciseWithPredefinedBlocks</h1>
+                </div>
+
+                {/*<p>{exercise.text_with_blanks}</p>*/}
+                <div className="fitewc__container">
+                    <div className="fitewc__description">{exercise.description}</div>
+                    <div className="fitewc__text">
+                        <div className="fitew__text--content">
+                            {renderedText}
+                        </div>
+                    </div>
+                </div>
             </div>
-        </div>
+            {/*<pre>{JSON.stringify(formData, null, 2)}</pre>*/}
+            <div className="fitewc__buttons">
+                <button className="greenoutline--button greenoutline--button--mb" onClick={sendAnswers}>Send</button>
+            </div>
+        </section>
     );
 };
 
