@@ -78,7 +78,9 @@ const ListenExerciseWithOptionsToChoose = ({exercise, id, slug, onScore}: Listen
                     )
                 })}
             </div>
-            <button onClick={sendAnswers}></button>
+            <div className="lewotc__buttons">
+                <button onClick={sendAnswers}>Send</button>
+            </div>
         </section>
     );
 };
