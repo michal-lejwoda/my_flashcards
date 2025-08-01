@@ -4,6 +4,8 @@ import "../../sass/exercises/listen_exercise_with_options_to_choose.css";
 
 import {handleSendChooseExerciseDependsOnSingleTextAnswers} from "../../api.tsx";
 import AuthContext from "../../context/AuthContext.tsx";
+import {faVolumeUp} from "@fortawesome/free-solid-svg-icons";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 
 
 const ListenExerciseWithOptionsToChoose = ({exercise, id, slug, onScore}: ListenExerciseWithOptionsToChooseProps) => {
@@ -21,7 +23,7 @@ const ListenExerciseWithOptionsToChoose = ({exercise, id, slug, onScore}: Listen
         const answers = {"answers": selectedOptions}
         const path_slug = `${id}/${slug}`
         const result = await handleSendChooseExerciseDependsOnSingleTextAnswers(path_slug, answers, token)
-        if (id !== undefined){
+        if (id !== undefined) {
             onScore(id.toString(), result.score, result.max_score)
         }
         console.log("result", result)
@@ -41,37 +43,43 @@ const ListenExerciseWithOptionsToChoose = ({exercise, id, slug, onScore}: Listen
     };
 
     return (
-        <div>
-            <h1>ListenExerciseWithOptionsToChoose</h1>
-            {exercise.exercises.map(element => {
-                const selectedAnswer = selectedOptions.find(opt => opt.question_id === element.question_id)?.answer;
+        <section className="lewotc">
+            <div className="lewotc__title">
+                <h1>ListenExerciseWithOptionsToChoose sdds</h1>
+            </div>
+            <div className="lewotc__allexercises">
+                {exercise.exercises.map(element => {
+                    const selectedAnswer = selectedOptions.find(opt => opt.question_id === element.question_id)?.answer;
 
-                return (
-                    <>
-                        <div key={element.question_id}>
-                            {element.question}
-                            <button onClick={() => playSound(exercise.audio)}>Zagraj dźwięk</button>
+                    return (
+                        <div className="lewotc__singleexercise">
+                            <div className="lewotc__questioncontainer" key={element.question_id}>
+                                <div className="lewotc__question">{element.question}</div>
+                                <div className="lewotc--soundbutton" onClick={() => playSound(exercise.audio)}>
+                                    <FontAwesomeIcon
+                                        size="lg" icon={faVolumeUp}/></div>
+                            </div>
+                            <div className="lewotc__options">
+                                {element.options.map((answer, i) => {
+                                    const isSelected = selectedAnswer === answer;
+                                    return (
+                                        <div
+                                            className={`cdost__option ${isSelected ? "cdost__option--selected" : ""}`}
+                                            key={i}
+                                            onClick={() => handleOptionClick(element.question_id, answer)}>
+                                            {answer}
+                                        </div>
+                                    )
+                                })}
+                            </div>
+                            {/*<pre>{JSON.stringify(selectedOptions, null, 2)}</pre>*/}
                         </div>
-                        <div>
-                            {element.options.map((answer, i) => {
-                                const isSelected = selectedAnswer === answer;
-                                return (
-                                    <div
-                                        className={`cdost__option ${isSelected ? "cdost__option--selected" : ""}`}
-                                        key={i}
-                                        onClick={() => handleOptionClick(element.question_id, answer)}>
-                                        {answer}
-                                    </div>
-                                )
-                            })}
-                        </div>
-                        <pre>{JSON.stringify(selectedOptions, null, 2)}</pre>
-                    </>
 
-                )
-            })}
+                    )
+                })}
+            </div>
             <button onClick={sendAnswers}></button>
-        </div>
+        </section>
     );
 };
 
