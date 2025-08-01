@@ -2,7 +2,7 @@ export const customStyles = {
     // @ts-expect-error Custom styles
     singleValue: provided => ({
         ...provided,
-        color: 'white',
+        color: '#faedcd',
         backgroundColor: 'transparent',
         zIndex: 1,
     }),
@@ -41,20 +41,20 @@ export const customStyles = {
     // @ts-expect-error Custom styles
     menu: provided => ({
         ...provided,
-        color: 'white',
+        color: '#faedcd',
         backgroundColor: '#d4a373',
         zIndex: 2,
     }),
     // @ts-expect-error Custom styles
     placeholder: provided => ({
         ...provided,
-        color: 'white',
+        color: '#faedcd',
         zIndex: 1,
     }),
     // @ts-expect-error Custom styles
     control: (provided, state) => ({
         ...provided,
-        color: 'white',
+        color: '#faedcd',
         backgroundColor: 'transparent',
         borderColor: state.isFocused ? '#ccd5ae' : '#ccd5ae',
         boxShadow: state.isFocused ? '0 0 0 1px #e9edc9' : 'none',

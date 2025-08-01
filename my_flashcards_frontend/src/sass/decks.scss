@@ -78,6 +78,10 @@
       font-size: 1rem;
       background-color: transparent;
       color: variables.$color-bg-medium;
+      cursor: pointer;
+    &:focus {
+      outline: 1.4px solid variables.$color-bg-green-light;
+    }
     }
   }
   &__table {
