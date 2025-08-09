@@ -16,7 +16,7 @@ const FillInTextExerciseWithChoices = ({exercise, id, slug, onScore}: FillInText
     const [formData, setFormData] = useState<Answer[]>([]);
     const {token} = useContext(AuthContext);
     const textParts = exercise.text_with_blanks.split(/({{\d+}})/g);
-
+    const [disableButton, setDisableButton] = useState<boolean>(false)
     const sendAnswers = async () => {
         const answers = {"answers": formData}
         const path_slug = `${id}/${slug}`
@@ -26,6 +26,7 @@ const FillInTextExerciseWithChoices = ({exercise, id, slug, onScore}: FillInText
         }
         console.log(result)
         console.log("send answers", answers)
+        setDisableButton(true)
     }
 
     const handleChange = (selectedOption: SingleValue<OptionType>, blankId: number) => {
@@ -106,7 +107,7 @@ const FillInTextExerciseWithChoices = ({exercise, id, slug, onScore}: FillInText
             </div>
             {/*<pre>{JSON.stringify(formData, null, 2)}</pre>*/}
             <div className="fitewc__buttons">
-                <button className="greenoutline--button greenoutline--button--mb" onClick={sendAnswers}>Send</button>
+                <button disabled={disableButton} className="greenoutline--button greenoutline--button--mb" onClick={sendAnswers}>Send</button>
             </div>
         </section>
     );

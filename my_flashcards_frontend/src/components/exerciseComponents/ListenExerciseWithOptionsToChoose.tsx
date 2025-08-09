@@ -18,6 +18,7 @@ const ListenExerciseWithOptionsToChoose = ({exercise, id, slug, onScore}: Listen
         const audio = new Audio(audio_url);
         audio.play();
     };
+    const [disableButton, setDisableButton] = useState<boolean>(false)
     const {token} = useContext(AuthContext);
     const sendAnswers = async () => {
         const answers = {"answers": selectedOptions}
@@ -28,6 +29,7 @@ const ListenExerciseWithOptionsToChoose = ({exercise, id, slug, onScore}: Listen
         }
         console.log("result", result)
         console.log("send answers", answers)
+        setDisableButton(true)
     }
 
     const handleOptionClick = (questionId: string, option: string) => {
@@ -79,7 +81,7 @@ const ListenExerciseWithOptionsToChoose = ({exercise, id, slug, onScore}: Listen
                 })}
             </div>
             <div className="lewotc__buttons">
-                <button onClick={sendAnswers}>Send</button>
+                <button disabled={disableButton} className="greenoutline--button greenoutline--button--mb" onClick={sendAnswers}>Send</button>
             </div>
         </section>
     );

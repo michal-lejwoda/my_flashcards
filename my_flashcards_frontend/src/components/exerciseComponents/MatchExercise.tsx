@@ -17,6 +17,7 @@ const MatchExercise = ({exercise, id, slug, onScore}: MatchExerciseProps,) => {
     const [leftSelected, setLeftSelected] = useState<string | null>(null);
     const [rightItems, setRightItems] = useState<string[]>([])
     const [leftItems, setLeftItems] = useState<string[]>([])
+    const [disableButton, setDisableButton] = useState<boolean>(false)
     const {token} = useContext(AuthContext);
 
     useEffect(() => {
@@ -37,6 +38,7 @@ const MatchExercise = ({exercise, id, slug, onScore}: MatchExerciseProps,) => {
             onScore(id.toString(), result.score, result.max_score)
         }
         console.log("send answers", answers)
+        setDisableButton(true)
     }
 
 
@@ -137,8 +139,8 @@ const MatchExercise = ({exercise, id, slug, onScore}: MatchExerciseProps,) => {
                     })}
                 </div>
             </div>
-            <button className="matchexercise__buttons greenoutline--button greenoutline--button--mb" onClick={sendAnswers}>
-                 Check
+            <button disabled={disableButton} className="matchexercise__buttons greenoutline--button greenoutline--button--mb" onClick={sendAnswers}>
+                 Send
             </button>
 
         </div>

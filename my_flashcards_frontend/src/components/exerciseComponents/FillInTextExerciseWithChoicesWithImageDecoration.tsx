@@ -18,6 +18,7 @@ const FillInTextExerciseWithChoicesWithImageDecoration = ({
         value: string;
         label: string;
     };
+    const [disableButton, setDisableButton] = useState<boolean>(false)
     const [formData, setFormData] = useState<Answer[]>([]);
     const {token} = useContext(AuthContext);
     const textParts = exercise.text_with_blanks.split(/({{\d+}})/g);
@@ -30,6 +31,7 @@ const FillInTextExerciseWithChoicesWithImageDecoration = ({
         if (id !== undefined) {
             onScore(id.toString(), result.score, result.max_score)
         }
+        setDisableButton(true)
         console.log(result)
         console.log("send answers", answers)
     }
@@ -103,7 +105,7 @@ const FillInTextExerciseWithChoicesWithImageDecoration = ({
                 </div>
             </div>
             <div className="fitewc__buttons">
-                <button className="greenoutline--button greenoutline--button--mb" onClick={sendAnswers}>Send</button>
+                <button disabled={disableButton} className="greenoutline--button greenoutline--button--mb" onClick={sendAnswers}>Send</button>
             </div>
         </section>
     );

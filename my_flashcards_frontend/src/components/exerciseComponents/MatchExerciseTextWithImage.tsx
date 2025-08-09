@@ -19,6 +19,7 @@ const MatchExerciseTextWithImage = ({exercise, id, slug, onScore}: MatchExercise
     const {token} = useContext(AuthContext);
     const [activeLeftIndex, setActiveLeftIndex] = useState<number | null>(null);
     const [activeRightIndex, setActiveRightIndex] = useState<number | null>(null);
+    const [disableButton, setDisableButton] = useState<boolean>(false)
 
     useEffect(() => {
         setLeftItems(exercise.left_items);
@@ -43,6 +44,7 @@ const MatchExerciseTextWithImage = ({exercise, id, slug, onScore}: MatchExercise
         }
         console.log("result", result)
         console.log("send answers", answers)
+        setDisableButton(true)
     }
 
 
@@ -143,8 +145,8 @@ const MatchExerciseTextWithImage = ({exercise, id, slug, onScore}: MatchExercise
                 </div>
             </div>
 
-            <button className="matchexercise__buttons greenoutline--button greenoutline--button--mb" onClick={sendAnswers}>
-                 Check
+            <button disabled={disableButton} className="matchexercise__buttons greenoutline--button greenoutline--button--mb" onClick={sendAnswers}>
+                 Send
             </button>
 
         </div>

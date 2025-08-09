@@ -17,6 +17,7 @@ const ListenWithManyOptionsToChooseToSingleExercise = ({
                                                            onScore
                                                        }: ListenWithManyOptionsToChooseToSingleExerciseProps) => {
     console.log("exercise", exercise)
+    const [disableButton, setDisableButton] = useState<boolean>(false)
     const [selectedOptions, setSelectedOptions] = useState<ChooseExerciseDependsOnMultipleTextAnswer[]>([]);
     const playSound = (audio_url: string) => {
         console.log("http://0.0.0.0:8000" + audio_url)
@@ -34,6 +35,7 @@ const ListenWithManyOptionsToChooseToSingleExercise = ({
         }
         console.log("result", result)
         console.log("send answers", answers)
+        setDisableButton(true)
     }
 
     const handleOptionToggle = (questionId: string, option: string) => {
@@ -100,7 +102,7 @@ const ListenWithManyOptionsToChooseToSingleExercise = ({
             </div>
             {/*<pre>{JSON.stringify(selectedOptions, null, 2)}</pre>*/}
             <div className="lewotc__buttons">
-                <button className="greenoutline--button greenoutline--button--mb" onClick={sendAnswers}>Send</button>
+                <button disabled={disableButton} className="greenoutline--button greenoutline--button--mb" onClick={sendAnswers}>Send</button>
             </div>
         </section>
     );

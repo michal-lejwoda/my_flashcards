@@ -12,11 +12,13 @@ const ChooseExerciseDependsOnMultipleTexts = ({
                                               }: ChooseExerciseDependsOnMultipleTextsProps) => {
     const [selectedOptions, setSelectedOptions] = useState<ChooseExerciseDependsOnSingleTextAnswer[]>([]);
     const {token} = useContext(AuthContext);
+    const [disableButton, setDisableButton] = useState<boolean>(false)
     const sendAnswers = async () => {
         const answers = {"answers": selectedOptions}
         const path_slug = `${id}/${slug}`
         const result = await handleSendChooseExerciseDependsOnSingleTextAnswers(path_slug, answers, token)
         if (id !== undefined) {
+            setDisableButton(true)
             onScore(id.toString(), result.score, result.max_score)
         }
 
@@ -73,7 +75,7 @@ const ChooseExerciseDependsOnMultipleTexts = ({
                 })}
             </div>
             <div className="cdomt__buttons">
-                <button className="greenoutline--button greenoutline--button--mb" onClick={sendAnswers}>Send</button>
+                <button disabled={disableButton} className="greenoutline--button greenoutline--button--mb" onClick={sendAnswers}>Send</button>
             </div>
         </section>
     );

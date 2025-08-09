@@ -14,7 +14,7 @@ const ConjugationExercise = ({exercise, id, slug, onScore}: ConjugationExerciseP
             return acc;
         }, [] as ConjugationExerciseAnswer[])
     );
-
+    const [disableButton, setDisableButton] = useState<boolean>(false)
     const {token} = useContext(AuthContext);
     const sendAnswers = async () => {
         const answers = {"answers": formData}
@@ -23,6 +23,7 @@ const ConjugationExercise = ({exercise, id, slug, onScore}: ConjugationExerciseP
         if (id !== undefined) {
             onScore(id.toString(), result.score, result.max_score)
         }
+        setDisableButton(true)
         console.log(result)
         console.log("send answers", answers)
     }
@@ -60,7 +61,7 @@ const ConjugationExercise = ({exercise, id, slug, onScore}: ConjugationExerciseP
                     </div>
                 </div>
                 <div className="conjugationexercise__buttons ">
-                    <button  className="greenoutline--button greenoutline--button--mb" onClick={sendAnswers}>Send</button>
+                    <button disabled={disableButton}  className="greenoutline--button greenoutline--button--mb" onClick={sendAnswers}>Send</button>
                 </div>
             </div>
         </section>

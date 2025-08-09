@@ -8,6 +8,7 @@ import "../../sass/exercises/choose_exercise_depends_on_single_text.css"
 const ChooseExerciseDependsOnSingleText = ({exercise, id, slug, onScore}: ChooseExerciseDependsOnSingleTextProps) => {
     const [selectedOptions, setSelectedOptions] = useState<ChooseExerciseDependsOnSingleTextAnswer[]>([]);
     console.log(selectedOptions)
+    const [disableButton, setDisableButton] = useState<boolean>(false)
 
     const {token} = useContext(AuthContext);
     const sendAnswers = async () => {
@@ -17,6 +18,7 @@ const ChooseExerciseDependsOnSingleText = ({exercise, id, slug, onScore}: Choose
         if (id !== undefined) {
             onScore(id.toString(), result.score, result.max_score)
         }
+        setDisableButton(true)
         console.log("result", result)
         console.log("send answers", answers)
     }
@@ -72,7 +74,7 @@ const ChooseExerciseDependsOnSingleText = ({exercise, id, slug, onScore}: Choose
                     })}
                 </div>
                 <div className="cdost__buttons">
-                    <button className="greenoutline--button greenoutline--button--mb" onClick={sendAnswers}>Send</button>
+                    <button disabled={disableButton} className="greenoutline--button greenoutline--button--mb" onClick={sendAnswers}>Send</button>
                 </div>
             </div>
         </section>
