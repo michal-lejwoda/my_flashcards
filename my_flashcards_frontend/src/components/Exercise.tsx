@@ -28,8 +28,8 @@ import ListenWithManyOptionsToChooseToSingleExercise
     from "./exerciseComponents/ListenWithManyOptionsToChooseToSingleExercise.tsx";
 import MatchExerciseTextWithImage from "./exerciseComponents/MatchExerciseTextWithImage.tsx";
 import MultipleExercises from "./exerciseComponents/MultipleExercises.tsx";
-// import "../../src/sass/exercises/exercise.css"
-// import "../../src/sass/exercises/exercise.css"
+import "../../src/sass/exercises/exercise.css"
+
 const Exercise = () => {
     type ExerciseScore = {
         "score": number,
