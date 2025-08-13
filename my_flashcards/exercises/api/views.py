@@ -61,8 +61,10 @@ class LanguageCategoryViewSet(ListModelMixin, RetrieveModelMixin, GenericViewSet
     authentication_classes = []
     permission_classes = [AllowAny]
     serializer_class = LanguageCategoryPageListSerializer
-    queryset = Page.objects.type(LanguageCategoryPage).live().specific()
+    # queryset = Page.objects.type(LanguageCategoryPage).live().specific()
 
+    def get_queryset(self):
+        return Page.objects.type(LanguageCategoryPage).live().specific()
     def get_serializer_class(self):
         if self.action == 'retrieve':
             return LanguageCategoryPageDetailSerializer
@@ -79,22 +81,28 @@ class LanguageCategoryViewSet(ListModelMixin, RetrieveModelMixin, GenericViewSet
 
 class SubGroupwithSubGroupsViewSet(RetrieveModelMixin, GenericViewSet):
     serializer_class = SubGroupListSerializer
-    queryset = Page.objects.type(SubGroupWithSubGroups).live().specific()
-
+    # queryset = Page.objects.type(SubGroupWithSubGroups).live().specific()
+    def get_queryset(self):
+        return Page.objects.type(SubGroupWithSubGroups).live().specific()
 
 class SubGroupwithGroupExercisesViewSet(RetrieveModelMixin, GenericViewSet):
     serializer_class = SubGroupWithGroupExercisesListSerializer
-    queryset = Page.objects.type(SubGroupWithGroupExercises).live().specific()
-
+    # queryset = Page.objects.type(SubGroupWithGroupExercises).live().specific()
+    def get_queryset(self):
+        return Page.objects.type(SubGroupWithGroupExercises).live().specific()
 
 class MainGroupwithSubGroupsViewSet(RetrieveModelMixin, GenericViewSet):
     serializer_class = MainGroupWithSubGroupsListSerializer
-    queryset = Page.objects.type(MainGroupWithSubGroups).live().specific()
+    # queryset = Page.objects.type(MainGroupWithSubGroups).live().specific()
+    def get_queryset(self):
+        return Page.objects.type(MainGroupWithSubGroups).live().specific()
 
 
 class MainGroupwithGroupExerciseViewSet(RetrieveModelMixin, GenericViewSet):
     serializer_class = GroupExerciseListSerializer
-    queryset = Page.objects.type(MainGroupWithGroupExercises).live().specific()
+    # queryset = Page.objects.type(MainGroupWithGroupExercises).live().specific()
+    def get_queryset(self):
+        return Page.objects.type(MainGroupWithGroupExercises).live().specific()
 
 
 class PageBySlugViewSet(RetrieveModelMixin, GenericViewSet):
