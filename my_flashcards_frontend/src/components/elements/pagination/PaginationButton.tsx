@@ -1,11 +1,15 @@
 import {PaginationButtonProps} from "../../../interfaces.tsx";
 import {handleGoToUrl} from "../../../globalFunctions.tsx";
-import React from "react";
 
 
-const PaginationButton: React.FC<PaginationButtonProps> = ({link, token, message, setData}) => {
+const PaginationButton = <T,>({ link, token, message, setData }: PaginationButtonProps<T>) => {
     return (
-        <button className="pagination--button" onClick={() => handleGoToUrl(link, token, setData)}>{message}</button>
+        <button
+            className="pagination--button"
+            onClick={() => handleGoToUrl(link, token, setData)}
+        >
+            {message}
+        </button>
     );
 };
 

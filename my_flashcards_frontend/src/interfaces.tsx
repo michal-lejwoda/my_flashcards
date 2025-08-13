@@ -365,11 +365,11 @@ export interface LearnDoneModalInterface {
 }
 
 
-export interface PaginationButtonProps {
+export interface PaginationButtonProps<T> {
     link: string | null;
     token: string | null;
     message: string;
-    setData: Dispatch<unknown>;
+    setData: Dispatch<SetStateAction<T | null>>;
 }
 
 export interface PaginationButtonReactTableProps {
