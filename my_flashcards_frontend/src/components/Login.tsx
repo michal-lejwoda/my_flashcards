@@ -55,7 +55,7 @@ const Login = () => {
     return (
         <div className="login">
             <div className="login__image">
-                <img src="/public/login_page.svg" alt=""/>
+                <img src="/login_page.svg" alt=""/>
             </div>
             <div className="login__container">
                 <div className="login__container__inputs">
