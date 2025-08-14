@@ -20,6 +20,7 @@ export const AuthProvider = ({children}: Children) => {
         if (cookie.flashcard_user_auth) {
             setToken(cookie.flashcard_user_auth);
         } else if (!isPublicPath) {
+            console.log("location.pathname", location.pathname)
             navigate("/login");
         }
 
