@@ -22,8 +22,6 @@ import {
     SendDeckData
 } from "./interfaces.tsx";
 
-console.log("test")
-console.log(import.meta.env.VITE_API_URL)
 
 const instance = axios.create({
     // TODO Use it only local
