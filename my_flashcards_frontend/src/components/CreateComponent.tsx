@@ -70,7 +70,7 @@ const CreateComponent = () => {
     return (
         <div className="create_word">
             <div className="create_word__image">
-                <img src="public/create_deck.svg" alt=""/>
+                <img src="/public/create_deck.svg" alt=""/>
             </div>
             <div className="create_word__container">
                 <CenteredTitle title={t("create")}/>

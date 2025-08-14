@@ -16,7 +16,7 @@ const Account = () => {
     return (
         <section className="account__section ">
             <div className="account__image">
-                <img src="public/forgot_password.svg" alt=""/>
+                <img src="/public/forgot_password.svg" alt=""/>
             </div>
             <div className="account">
                 <div className="account__header">

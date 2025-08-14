@@ -39,7 +39,7 @@ const Search = () => {
     return (
         <div className="search">
             <div className="search__image">
-                <img src="public/search.svg" alt=""/>
+                <img src="/public/search.svg" alt=""/>
             </div>
             <div className="search__container">
             <div className="search__header">

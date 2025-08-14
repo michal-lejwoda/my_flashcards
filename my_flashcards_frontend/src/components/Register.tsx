@@ -58,7 +58,7 @@ const Register = () => {
     return (
         <div className="register">
             <div className="register__image">
-                <img src="public/register_page.svg" alt=""/>
+                <img src="/public/register_page.svg" alt=""/>
             </div>
             <div className="register__container__inputs">
             <CenteredTitle title={t('register')}/>
