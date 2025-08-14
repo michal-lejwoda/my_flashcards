@@ -96,7 +96,7 @@ const AddFile = () => {
     return (
         <section className="addfile">
             <div className="addfile__image">
-                <img src="/public/image_upload.svg" alt=""/>
+                <img src="/image_upload.svg" alt=""/>
             </div>
             <div className="addfile__container">
             <h1 className="title">{t('add_file')}</h1>

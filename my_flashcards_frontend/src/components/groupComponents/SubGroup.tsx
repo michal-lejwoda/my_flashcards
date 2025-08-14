@@ -9,7 +9,7 @@ const SubGroup = ({ group }: SubGroupProps)  => {
     return (
         <section className="subgroup">
             <div className="subgroup__image">
-                <img src="/public/languages.svg" alt=""/>
+                <img src="/languages.svg" alt=""/>
             </div>
             <div className="subgroup__container">
                 <div className="subgroup__title"><h1>{group.data.title}</h1></div>

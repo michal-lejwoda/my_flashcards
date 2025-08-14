@@ -155,7 +155,7 @@ const LearnFlashcards = () => {
     return (
         <div className="learnflashcards">
             <div className="preview__image">
-                <img src="/public/search.svg" alt=""/>
+                <img src="/search.svg" alt=""/>
             </div>
             <div className="learnflashcards__all_containers">
                 <h1 className="title">{t('learn')}</h1>

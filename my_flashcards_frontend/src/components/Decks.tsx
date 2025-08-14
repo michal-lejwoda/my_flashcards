@@ -32,7 +32,7 @@ const Decks = () => {
     return (
         <section className="decks__section">
             <div className="decks__image">
-                <img src="/public/list.svg" alt=""/>
+                <img src="/list.svg" alt=""/>
             </div>
             <div className="decks__container">
                 <h1 className="decks__container__title">{t("decks")}</h1>

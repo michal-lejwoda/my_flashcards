@@ -13,7 +13,7 @@ const LanguageGroup = ({ group }: LanguageGroupProps)  => {
     return (
         <section className="languagegroup">
             <div className="languagegroup__image">
-                <img src="/public/languages.svg" alt=""/>
+                <img src="/languages.svg" alt=""/>
             </div>
             <div className="languagegroup__container">
                 <div className="languagegroup__title"><h1>{t("Choose Language")}</h1></div>
