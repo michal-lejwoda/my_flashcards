@@ -25,7 +25,7 @@ import {
 
 const instance = axios.create({
     // TODO Use it only local
-    baseURL: 'http://0.0.0.0:8000',
+    baseURL: import.meta.env.VITE_API_URL,
     headers: {
         'Accept': 'application/json',
     }

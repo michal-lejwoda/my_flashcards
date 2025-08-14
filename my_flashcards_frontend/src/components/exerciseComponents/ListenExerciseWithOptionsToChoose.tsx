@@ -14,7 +14,7 @@ const ListenExerciseWithOptionsToChoose = ({exercise, id, slug, onScore}: Listen
     console.log("slug", slug)
     const [selectedOptions, setSelectedOptions] = useState<ChooseExerciseDependsOnSingleTextAnswer[]>([]);
     const playSound = (audio_url: string) => {
-        console.log("http://0.0.0.0:8000" + audio_url)
+        console.log(import.meta.env.VITE_API_URL + audio_url)
         const audio = new Audio(audio_url);
         audio.play();
     };

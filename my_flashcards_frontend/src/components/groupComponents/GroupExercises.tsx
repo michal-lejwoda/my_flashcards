@@ -39,7 +39,7 @@ const GroupExercises = ({group}: GroupExercisesProps) => {
                             <div className="grp__container" key={child.id}>
                                 <div className="grp__level__container">
                                     {child.background_image && (
-                                        <img src={"http://0.0.0.0:8000" + child.background_image.url} alt=""/>
+                                        <img src={import.meta.env.VITE_API_URL + child.background_image.url} alt=""/>
                                     )}
                                     <div className="grp__title" onClick={() => toggleGroup(child.id)}>
                                         <div className="grp__title__name">

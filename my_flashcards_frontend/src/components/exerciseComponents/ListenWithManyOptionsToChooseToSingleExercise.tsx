@@ -20,7 +20,7 @@ const ListenWithManyOptionsToChooseToSingleExercise = ({
     const [disableButton, setDisableButton] = useState<boolean>(false)
     const [selectedOptions, setSelectedOptions] = useState<ChooseExerciseDependsOnMultipleTextAnswer[]>([]);
     const playSound = (audio_url: string) => {
-        console.log("http://0.0.0.0:8000" + audio_url)
+        console.log(import.meta.env.VITE_API_URL + audio_url)
         const audio = new Audio(audio_url);
         audio.play();
     };
