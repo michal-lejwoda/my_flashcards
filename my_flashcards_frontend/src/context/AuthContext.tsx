@@ -14,9 +14,8 @@ export const AuthProvider = ({children}: Children) => {
     const [token, setToken] = useState<string | null>(null);
     const [cookie] = useCookies(['flashcard_user_auth']);
     const [tokenLoading, setTokenLoading] = useState(true)
-    useEffect(()=>{
-        const isPublicPath = location.pathname.startsWith("/exercises") || location.pathname.startsWith("/exercise");
-
+    useEffect(() => {
+        const isPublicPath = location.pathname.startsWith("/exercises") || location.pathname.startsWith("/exercise") || location.pathname.startsWith("/public");
         if (cookie.flashcard_user_auth) {
             setToken(cookie.flashcard_user_auth);
         } else if (!isPublicPath) {
@@ -24,7 +23,7 @@ export const AuthProvider = ({children}: Children) => {
         }
 
         setTokenLoading(false);
-    },[])
+    }, [])
 
     return (
         <AuthContext.Provider value={{token, setToken, tokenLoading}}>
