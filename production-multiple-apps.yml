@@ -13,7 +13,7 @@ services:
       dockerfile: ./compose/production/django/Dockerfile
     image: my_flashcards_production_django
     volumes:
-      - production_django_media:/app/my_flashcards/media
+      - production_django_media:/app/backend/production-media
       - production_django_static:/app/backend/production-static
     depends_on:
       - postgres
