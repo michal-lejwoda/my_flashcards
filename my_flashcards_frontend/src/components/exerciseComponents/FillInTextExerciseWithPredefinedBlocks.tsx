@@ -7,7 +7,6 @@ import AuthContext from "../../context/AuthContext.tsx";
 import {handleSendFillInTextExerciseWithPredefinedBlocks} from "../../api.tsx";
 import "../../sass/exercises/fill_in_text_exercise_with_predefined_blocks.css"
 
-
 const FillInTextExerciseWithPredefinedBlocks = ({exercise, id, slug, onScore}: FillInTextExerciseWithPredefinedBlocksProps) => {
     console.log("exercise", exercise)
     const [formData, setFormData] = useState<FillInTextExerciseWithPredefinedBlocksDataBlocks[]>([]);
@@ -15,8 +14,6 @@ const FillInTextExerciseWithPredefinedBlocks = ({exercise, id, slug, onScore}: F
     const textParts = exercise.text_with_blanks.split(/({{\d+}})/g);
     const [disableButton, setDisableButton] = useState<boolean>(false)
     const [resultMode, setResultMode] = useState<boolean>(false)
-
-
 
     const sendAnswers = async () => {
         const answers = {"answers": formData}
@@ -49,58 +46,75 @@ const FillInTextExerciseWithPredefinedBlocks = ({exercise, id, slug, onScore}: F
         });
     };
 
+    const renderTextWithLineBreaks = (text: string, keyPrefix: string) => {
+        return text.split('\n').map((line, lineIndex) => (
+            <React.Fragment key={`${keyPrefix}-line-${lineIndex}`}>
+                {line}
+                {lineIndex < text.split('\n').length - 1 && <br />}
+            </React.Fragment>
+        ));
+    };
+
     const renderedText = textParts.map((part, index) => {
-  const match = part.match(/{{(\d+)}}/);
+        const match = part.match(/{{(\d+)}}/);
 
-  if (resultMode) {
-    if (match) {
-      const blankId = Number(match[1]);
+        if (resultMode) {
+            if (match) {
+                const blankId = Number(match[1]);
 
-      const answer = exercise.correct_answers.find(
-        (element) => element.blank_id === blankId
-      );
+                const answer = exercise.correct_answers.find(
+                    (element) => element.blank_id === blankId
+                );
 
-      const userAnswer = formData.find(
-        (element) => element.blank_id === blankId
-      );
+                const userAnswer = formData.find(
+                    (element) => element.blank_id === blankId
+                );
 
-      const isCorrect = userAnswer?.answer === answer?.answer;
+                const isCorrect = userAnswer?.answer === answer?.answer;
 
-      return (
-        <span key={index}>
-          {isCorrect ? (
-            <span className="fitewc--correct">{userAnswer?.answer}</span>
-          ) : (
-            <>
-              <span className="fitewc--wrong">{userAnswer?.answer}</span>
-              <span className="fitewc--correct-answer">
-                {answer?.answer}
-              </span>
-            </>
-          )}
-        </span>
-      );
-    } else {
-      return <React.Fragment key={index}>{part}</React.Fragment>;
-    }
-  } else {
-    if (match) {
-      const blankId = Number(match[1]);
-      return (
-        <input
-          key={index}
-          name={String(blankId)}
-          onChange={handleChange}
-          style={{ margin: "0 4px" }}
-          defaultValue=""
-          className="fitewc--select"
-        />
-      );
-    } else {
-      return <React.Fragment key={index}>{part}</React.Fragment>;
-    }
-  }
-});
+                return (
+                    <span key={index}>
+                        {isCorrect ? (
+                            <span className="fitewc--correct">{userAnswer?.answer}</span>
+                        ) : (
+                            <>
+                                <span className="fitewc--wrong">{userAnswer?.answer}</span>
+                                <span className="fitewc--correct-answer">
+                                    {answer?.answer}
+                                </span>
+                            </>
+                        )}
+                    </span>
+                );
+            } else {
+                return (
+                    <React.Fragment key={index}>
+                        {renderTextWithLineBreaks(part, `result-${index}`)}
+                    </React.Fragment>
+                );
+            }
+        } else {
+            if (match) {
+                const blankId = Number(match[1]);
+                return (
+                    <input
+                        key={index}
+                        name={String(blankId)}
+                        onChange={handleChange}
+                        style={{ margin: "0 4px" }}
+                        defaultValue=""
+                        className="fitewc--select"
+                    />
+                );
+            } else {
+                return (
+                    <React.Fragment key={index}>
+                        {renderTextWithLineBreaks(part, `normal-${index}`)}
+                    </React.Fragment>
+                );
+            }
+        }
+    });
 
     return (
         <section className="fitewc">
