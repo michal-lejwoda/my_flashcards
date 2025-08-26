@@ -51,6 +51,17 @@
     font-size: 1.3rem;
     font-weight: 600;
     cursor: pointer;
+    &--correct{
+      background-color: #d4edda !important;
+      border-color: #28a745 !important;
+      color: #155724 !important;
+    }
+    &--incorrect {
+    background-color: #f8d7da !important;
+    border-color: #dc3545 !important;
+    color: #721c24 !important;
+}
+
     &--selected{
       background-color: variables.$color-bg-green-light !important;
       color: variables.$button-bg !important;

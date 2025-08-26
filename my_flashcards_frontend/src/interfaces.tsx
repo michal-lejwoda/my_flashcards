@@ -599,7 +599,12 @@ export interface FillInTextExerciseWithChoicesBlanks {
 
 export interface FillInTextExerciseWithPredefinedBlocksDataBlocks {
     blank_id: number;
-    answer: string
+    answer: string;
+}
+
+export interface FillInTextExerciseWithPredefinedBlocksDataCorrectAnswers{
+    blank_id: number;
+    answer: string;
 }
 
 export interface FillInTextExerciseWithChoicesWithImageDecorationData {
@@ -620,6 +625,7 @@ export interface FillInTextExerciseWithPredefinedBlocksData {
     slug: string
     description: string;
     blocks: FillInTextExerciseWithPredefinedBlocksDataBlocks[];
+    correct_answers: FillInTextExerciseWithPredefinedBlocksDataCorrectAnswers[];
     text_with_blanks: string;
     before_layout_config: [];
     after_layout_config: [];
