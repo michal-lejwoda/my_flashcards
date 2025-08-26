@@ -358,3 +358,6 @@ temp
 TODOs.md
 *.css.map
 *.css.d.ts
+
+my_flashcards_frontend/src/sass/**/*.css
+my_flashcards_frontend/src/sass/**/*.css.map
