@@ -6,7 +6,20 @@
   justify-content: center;
   flex-direction: column;
   align-items: center;
-
+    &--correct{
+      color: #2ecc71;
+      font-weight: bold;
+    }
+    &--wrong{
+      color: #e74c3c;
+      font-weight: bold;
+      text-decoration: line-through;
+    }
+    &--correct-answer{
+      color: #3498db;
+      font-weight: bold;
+      margin-left: 6px;
+    }
   &__image {
     float: left;
     margin-right: 20px;
@@ -49,10 +62,12 @@
     //padding:0.4rem;
     padding: 5px;
     border: 2px solid #ccd5ae;
-    font-size: 1rem;
+    font-size: 0.8rem;
+    font-weight: 500;
     background-color: transparent;
     color: #faedcd;
     cursor: pointer;
+    height: 40px;
     &:focus {
       outline: 1.4px solid variables.$color-bg-green-light;
     }
@@ -77,15 +92,16 @@
   }
 
   &__text {
-    font-size: 1.4rem;
+    font-size: 1.2rem;
+    font-weight: 500;
     line-height: 2;
     flex-wrap: wrap;
     list-style: none;
     padding: 1rem;
 
     &--content {
-      line-height: 1.5;
-      text-align: justify;
+      line-height: 3;
+      text-align: left;
     }
   }
 

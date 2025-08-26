@@ -14,6 +14,9 @@ const FillInTextExerciseWithPredefinedBlocks = ({exercise, id, slug, onScore}: F
     const {token} = useContext(AuthContext);
     const textParts = exercise.text_with_blanks.split(/({{\d+}})/g);
     const [disableButton, setDisableButton] = useState<boolean>(false)
+    const [resultMode, setResultMode] = useState<boolean>(false)
+
+
 
     const sendAnswers = async () => {
         const answers = {"answers": formData}
@@ -26,6 +29,7 @@ const FillInTextExerciseWithPredefinedBlocks = ({exercise, id, slug, onScore}: F
         console.log("result", result)
         console.log("send answers", answers)
         setDisableButton(true)
+        setResultMode(true)
     }
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -46,39 +50,70 @@ const FillInTextExerciseWithPredefinedBlocks = ({exercise, id, slug, onScore}: F
     };
 
     const renderedText = textParts.map((part, index) => {
-        const match = part.match(/{{(\d+)}}/);
-        if (match) {
-            const blankId = Number(match[1]);
-            // const options = exercise.blocks.find(blank => blank.blank_id === blankId);
+  const match = part.match(/{{(\d+)}}/);
 
-            return (
-                <input
-                    key={index}
-                    name={String(blankId)}
-                    onChange={handleChange}
-                    style={{margin: '0 4px'}}
-                    defaultValue=""
-                    className="fitewc--select"
-                >
-                </input>
-            );
-        } else {
-            return <React.Fragment key={index}>{part}</React.Fragment>;
-        }
-    });
+  if (resultMode) {
+    if (match) {
+      const blankId = Number(match[1]);
+
+      const answer = exercise.correct_answers.find(
+        (element) => element.blank_id === blankId
+      );
+
+      const userAnswer = formData.find(
+        (element) => element.blank_id === blankId
+      );
+
+      const isCorrect = userAnswer?.answer === answer?.answer;
+
+      return (
+        <span key={index}>
+          {isCorrect ? (
+            <span className="fitewc--correct">{userAnswer?.answer}</span>
+          ) : (
+            <>
+              <span className="fitewc--wrong">{userAnswer?.answer}</span>
+              <span className="fitewc--correct-answer">
+                {answer?.answer}
+              </span>
+            </>
+          )}
+        </span>
+      );
+    } else {
+      return <React.Fragment key={index}>{part}</React.Fragment>;
+    }
+  } else {
+    if (match) {
+      const blankId = Number(match[1]);
+      return (
+        <input
+          key={index}
+          name={String(blankId)}
+          onChange={handleChange}
+          style={{ margin: "0 4px" }}
+          defaultValue=""
+          className="fitewc--select"
+        />
+      );
+    } else {
+      return <React.Fragment key={index}>{part}</React.Fragment>;
+    }
+  }
+});
 
     return (
         <section className="fitewc">
             <div className="fitewc__content">
-                <div className="fitewc__title">
-                    <h1>FillInTextExerciseWithPredefinedBlocks</h1>
-                </div>
+                {/*<div className="fitewc__title">*/}
+                {/*    <h1>FillInTextExerciseWithPredefinedBlocks</h1>*/}
+                {/*</div>*/}
 
                 {/*<p>{exercise.text_with_blanks}</p>*/}
                 <div className="fitewc__container">
                     <div className="fitewc__description">{exercise.description}</div>
                     <div className="fitewc__text">
-                        <div className="fitew__text--content">
+                        <div className="fitewc__text--content">
                             {renderedText}
                         </div>
                     </div>
