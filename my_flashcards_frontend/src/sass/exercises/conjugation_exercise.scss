@@ -5,6 +5,16 @@
   display: flex;
   justify-content: center;
 
+  &__feedback{
+    &--incorrect{
+      font-size:1rem;
+      color: #721c24 !important;
+      strong{
+        color: #721c24 !important;
+      }
+    }
+  }
+
   &__container {
     display: flex;
     flex-direction: column;
@@ -39,6 +49,18 @@
     color: #faedcd;
     cursor: pointer;
     align-self: flex-start;
+    font-weight: 600;
+    &--correct{
+      background-color: #d4edda !important;
+      //border-color: #28a745 !important;
+      color: #155724 !important;
+    }
+    &--wrong {
+    background-color: #f8d7da !important;
+      text-decoration: line-through #721c24;
+    //border-color: #dc3545 !important;
+    color: #721c24 !important;
+}
 
     &:disabled{
       background-color: variables.$color-bg-dark;

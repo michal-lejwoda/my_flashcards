@@ -26,8 +26,8 @@ const ChooseExerciseDependsOnMultipleTexts = ({
         const answers = {"answers": selectedOptions}
         const path_slug = `${id}/${slug}`
         const result = await handleSendChooseExerciseDependsOnSingleTextAnswers(path_slug, answers, token)
-        await setResults(result)
-        await setResultMode(true)
+        setResults(result)
+        setResultMode(true)
         console.log("id", id)
         if (id !== undefined) {
             setDisableButton(true)

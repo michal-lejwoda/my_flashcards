@@ -1,4 +1,4 @@
-import {ConjugationExerciseAnswer, ConjugationExerciseProps} from "../../interfaces.tsx";
+import {ConjugationExerciseAnswer, ConjugationExerciseProps, ResultData} from "../../interfaces.tsx";
 import {useContext, useState} from "react";
 import {handleSendConjugationExerciseAnswers} from "../../api.tsx";
 import AuthContext from "../../context/AuthContext.tsx";
@@ -15,7 +15,10 @@ const ConjugationExercise = ({exercise, id, slug, onScore}: ConjugationExerciseP
         }, [] as ConjugationExerciseAnswer[])
     );
     const [disableButton, setDisableButton] = useState<boolean>(false)
+    const [results, setResults] = useState<ResultData | undefined>()
+    const [resultMode, setResultMode] = useState<boolean>(false)
     const {token} = useContext(AuthContext);
+
     const sendAnswers = async () => {
         const answers = {"answers": formData}
         const path_slug = `${id}/${slug}`
@@ -23,13 +26,35 @@ const ConjugationExercise = ({exercise, id, slug, onScore}: ConjugationExerciseP
         if (id !== undefined) {
             onScore(id.toString(), result.score, result.max_score)
         }
+        setResults(result)
+        setResultMode(true)
         setDisableButton(true)
         console.log(result)
         console.log("send answers", answers)
     }
-    console.log(formData)
+
+    console.log("results",results)
+
+    const getOptionClassName = (person_label: string): string => {
+        console.log("person_label", person_label)
+        let className = "conjugation-exercise__input "
+        if (resultMode){
+            if (results){
+                const row  = results.result_answers.find(element=> element.person_label == person_label)
+                if (!row?.correct){
+                    className += "conjugation-exercise__input--wrong"
+                }
+                else{
+                    className += "conjugation-exercise__input--correct"
+                }
+                console.log("row", row)
+            }
+        }
+        return className
+    }
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        if (resultMode) return;
         const {name, value} = e.target;
 
         setFormData(prev =>
@@ -39,22 +64,63 @@ const ConjugationExercise = ({exercise, id, slug, onScore}: ConjugationExerciseP
         );
     };
 
+    const getResultData = (personLabel: string) => {
+        if (resultMode && results?.result_answers) {
+            return results.result_answers.find(row => row.person_label === personLabel);
+        }
+        return null;
+    };
+
     return (
         <section className="conjugation-exercise">
             <div className="conjugation-exercise__container">
                 <div className="conjugation-exercise__title">
-                    <h1>Conjugation Exercise</h1>
+                    {/*<h1>Conjugation Exercise</h1>*/}
                 </div>
                 <div className="conjugation-exercise__rowscontainer">
                     <div className="conjugation-exercise__name">{exercise.instruction}</div>
                     <div className="conjugation-exercise__rowcenter">
 
                         {exercise.conjugation_rows.map(element => {
+                            const resultData = getResultData(element.person_label);
+                            // const isCorrect = resultData?.correct === true;
+                            const isIncorrect = resultData?.correct === false;
+
                             return (
                                 <div className="conjugation-exercise__row" key={element.person_label}>
                                     <div className="conjugation-exercise__person-label">{element.person_label}</div>
-                                    {element.is_pre_filled ? <input className="conjugation-exercise__input" type="text" value={element.correct_form} disabled /> :
-                                        <input className="conjugation-exercise__input" name={element.person_label} onChange={handleChange} type="text"/>}
+
+                                    {element.is_pre_filled ?
+                                        <input
+                                            className="conjugation-exercise__input"
+                                            type="text"
+                                            value={element.correct_form}
+                                            disabled
+                                        /> :
+                                        <div className="conjugation-exercise__input-wrapper">
+                                            <input
+                                                className={getOptionClassName(element.person_label)}
+                                                name={element.person_label}
+                                                onChange={handleChange}
+                                                type="text"
+                                            />
+
+                                            {resultMode && resultData && (
+                                                <div className="conjugation-exercise__feedback">
+                                                    {/*{isCorrect && (*/}
+                                                    {/*    <span className="conjugation-exercise__feedback--correct">*/}
+                                                    {/*        ✓ Correct*/}
+                                                    {/*    </span>*/}
+                                                    {/*)}*/}
+                                                    {isIncorrect && (
+                                                        <span className="conjugation-exercise__feedback--incorrect">
+                                                            ✗ Correct_answer: <strong>{resultData.correct_answer}</strong>
+                                                        </span>
+                                                    )}
+                                                </div>
+                                            )}
+                                        </div>
+                                    }
                                 </div>
                             )
                         })}
