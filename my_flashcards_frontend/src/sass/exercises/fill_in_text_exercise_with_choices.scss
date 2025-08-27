@@ -6,6 +6,12 @@
   justify-content: center;
   flex-direction: column;
   align-items: center;
+  &__corrected-answer{
+    margin-left: 5px;
+    color:  #e74c3c;
+    font-size: 1.1rem;
+    font-weight: 500
+  }
     &--correct{
       color: #2ecc71;
       font-weight: bold;

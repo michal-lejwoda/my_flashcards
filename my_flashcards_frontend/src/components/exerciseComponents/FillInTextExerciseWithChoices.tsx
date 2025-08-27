@@ -1,5 +1,5 @@
 import React, {useContext, useState} from "react";
-import {FillInTextExerciseWithChoicesProps} from "../../interfaces.tsx";
+import {FillInTextExerciseWithChoicesProps, ResultData} from "../../interfaces.tsx";
 import AuthContext from "../../context/AuthContext.tsx";
 import {handleSendFillInTextExerciseWithChoicesAnswers} from "../../api.tsx";
 import "../../sass/exercises/fill_in_text_exercise_with_choices.css"
@@ -17,10 +17,15 @@ const FillInTextExerciseWithChoices = ({exercise, id, slug, onScore}: FillInText
     const {token} = useContext(AuthContext);
     const textParts = exercise.text_with_blanks.split(/({{\d+}})/g);
     const [disableButton, setDisableButton] = useState<boolean>(false)
+    const [results, setResults] = useState<ResultData | undefined>()
+    const [resultMode, setResultMode] = useState<boolean>(false)
+
     const sendAnswers = async () => {
         const answers = {"answers": formData}
         const path_slug = `${id}/${slug}`
         const result = await handleSendFillInTextExerciseWithChoicesAnswers(path_slug, answers, token)
+        setResults(result)
+        setResultMode(true)
         if (id !== undefined) {
             onScore(id.toString(), result.score, result.max_score)
         }
@@ -45,11 +50,47 @@ const FillInTextExerciseWithChoices = ({exercise, id, slug, onScore}: FillInText
         }
     };
 
+    const isAnswerCorrect = (blankId: number) => {
+        if (!results || !results.result_answers) return null;
+        const result = results.result_answers.find(r => r.blank_id === blankId);
+        return result ? result.correct : null;
+    };
+
+    const getCorrectAnswer = (blankId: number) => {
+        if (!results || !results.result_answers) return null;
+        const result = results.result_answers.find(r => r.blank_id === blankId);
+        return result ? result.correct_answer : null;
+    };
+
+    const getSelectedAnswer = (blankId: number) => {
+        const answer = formData.find(item => item.blank_id === blankId);
+        return answer ? answer.answer : null;
+    };
+
+    const getSelectStyles = (blankId: number) => {
+        if (!resultMode) return customStyleforFillTextWithChoices;
+
+        const isCorrect = isAnswerCorrect(blankId);
+        if (isCorrect === null) return customStyleforFillTextWithChoices;
+
+        return {
+            ...customStyleforFillTextWithChoices,
+            control: (provided, state) => ({
+                ...customStyleforFillTextWithChoices.control?.(provided, state) || provided,
+                borderColor: isCorrect ? '#10B981' : '#EF4444',
+                backgroundColor: isCorrect ? 'rgba(16, 185, 129, 0.2)' : 'rgba(239, 68, 68, 0.2)',
+                borderWidth: '2px',
+                '&:hover': {
+                    borderColor: isCorrect ? '#10B981' : '#EF4444'
+                }
+            })
+        };
+    };
+
     const renderedText = textParts.map((part, index) => {
         const match = part.match(/{{(\d+)}}/);
         if (match) {
             const blankId = Number(match[1]);
-            // const options = exercise.blanks.find(blank => blank.blank_id === blankId);
             const blankData = exercise.blanks.find(blank => blank.blank_id === blankId);
             if (!blankData) {
                 return null;
@@ -59,32 +100,39 @@ const FillInTextExerciseWithChoices = ({exercise, id, slug, onScore}: FillInText
                 label: opt
             }));
 
+            const selectedAnswer = getSelectedAnswer(blankId);
+            const isCorrect = isAnswerCorrect(blankId);
+            const correctAnswer = getCorrectAnswer(blankId);
+
             return (
-                <Select
-                    key={index}
-                    name={String(blankId)}
-                    options={selectOptions}
-                    defaultValue={null}
-                    onChange={(selectedOption) => handleChange(selectedOption, blankId)}
-                    // onChange={handleChange}
-                    styles={customStyleforFillTextWithChoices}
-                />
-                // <select
-                //     key={index}
-                //     name={String(blankId)}
-                //     className="fitewc__select"
-                //     onChange={handleChange}
-                //     style={{margin: '0 4px'}}
-                //     defaultValue=""
-                // >
-                //     <option className="fitewc__select--option" value="" disabled hidden>-- wybierz --</option>
-                //     {options?.options.map((option: string, optIndex: number) => (
-                //         <option className="fitewc__select--option" key={optIndex} value={option}>{option}</option>
-                //     ))}
-                // </select>
+                <React.Fragment key={index}>
+                    <Select
+                        name={String(blankId)}
+                        options={selectOptions}
+                        defaultValue={selectedAnswer ? {value: selectedAnswer, label: selectedAnswer} : null}
+                        onChange={(selectedOption) => handleChange(selectedOption, blankId)}
+                        styles={getSelectStyles(blankId)}
+                        isDisabled={disableButton}
+                    />
+                    {resultMode && isCorrect === false && correctAnswer && (
+                        <span className="fitewc__corrected-answer">
+                            (Poprawna odpowiedź: {correctAnswer})
+                        </span>
+                    )}
+                </React.Fragment>
             );
         } else {
-            return <React.Fragment key={index}>{part}</React.Fragment>;
+            const lines = part.split('\n');
+            return (
+                <React.Fragment key={index}>
+                    {lines.map((line, lineIndex) => (
+                        <React.Fragment key={lineIndex}>
+                            {line}
+                            {lineIndex < lines.length - 1 && <br />}
+                        </React.Fragment>
+                    ))}
+                </React.Fragment>
+            );
         }
     });
 
@@ -92,10 +140,9 @@ const FillInTextExerciseWithChoices = ({exercise, id, slug, onScore}: FillInText
         <section className="fitewc">
             <div className="fitewc__content">
                 <div className="fitewc__title">
-                    <h1>FillInTextExerciseWithChoices</h1>
+                    {/*<h1>FillInTextExerciseWithChoices</h1>*/}
                 </div>
 
-                {/*<p>{exercise.text_with_blanks}</p>*/}
                 <div className="fitewc__container">
                     <div className="fitewc__description">{exercise.description}</div>
                     <div className="fitewc__text">
@@ -104,10 +151,18 @@ const FillInTextExerciseWithChoices = ({exercise, id, slug, onScore}: FillInText
                         </div>
                     </div>
                 </div>
+
+
             </div>
-            {/*<pre>{JSON.stringify(formData, null, 2)}</pre>*/}
+
             <div className="fitewc__buttons">
-                <button disabled={disableButton} className="greenoutline--button greenoutline--button--mb" onClick={sendAnswers}>Send</button>
+                <button
+                    disabled={disableButton}
+                    className="greenoutline--button greenoutline--button--mb"
+                    onClick={sendAnswers}
+                >
+                    Send
+                </button>
             </div>
         </section>
     );

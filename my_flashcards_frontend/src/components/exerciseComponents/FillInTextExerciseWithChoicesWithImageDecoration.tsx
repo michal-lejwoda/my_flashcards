@@ -1,5 +1,5 @@
 import React, {useContext, useState} from "react";
-import {FillInTextExerciseWithChoicesWithImageDecorationProps} from "../../interfaces.tsx";
+import {FillInTextExerciseWithChoicesWithImageDecorationProps, ResultData} from "../../interfaces.tsx";
 import AuthContext from "../../context/AuthContext.tsx";
 import {handleSendFillInTextExerciseWithChoicesAnswers} from "../../api.tsx";
 import "../../sass/exercises/fill_in_text_exercise_with_choices_with_image_decoration.css";
@@ -21,6 +21,8 @@ const FillInTextExerciseWithChoicesWithImageDecoration = ({
     const [disableButton, setDisableButton] = useState<boolean>(false)
     const [formData, setFormData] = useState<Answer[]>([]);
     const {token} = useContext(AuthContext);
+    const [results, setResults] = useState<ResultData | undefined>()
+    const [resultMode, setResultMode] = useState<boolean>(false)
     const textParts = exercise.text_with_blanks.split(/({{\d+}})/g);
     console.log("exercise", exercise)
 
@@ -28,6 +30,8 @@ const FillInTextExerciseWithChoicesWithImageDecoration = ({
         const answers = {"answers": formData}
         const path_slug = `${id}/${slug}`
         const result = await handleSendFillInTextExerciseWithChoicesAnswers(path_slug, answers, token)
+        setResults(result)
+        setResultMode(true)
         if (id !== undefined) {
             onScore(id.toString(), result.score, result.max_score)
         }
@@ -52,11 +56,47 @@ const FillInTextExerciseWithChoicesWithImageDecoration = ({
         }
     };
 
+    const isAnswerCorrect = (blankId: number) => {
+        if (!results || !results.result_answers) return null;
+        const result = results.result_answers.find(r => r.blank_id === blankId);
+        return result ? result.correct : null;
+    };
+
+    const getCorrectAnswer = (blankId: number) => {
+        if (!results || !results.result_answers) return null;
+        const result = results.result_answers.find(r => r.blank_id === blankId);
+        return result ? result.correct_answer : null;
+    };
+
+    const getSelectedAnswer = (blankId: number) => {
+        const answer = formData.find(item => item.blank_id === blankId);
+        return answer ? answer.answer : null;
+    };
+
+    const getSelectStyles = (blankId: number) => {
+        if (!resultMode) return customStyleforFillTextWithChoices;
+
+        const isCorrect = isAnswerCorrect(blankId);
+        if (isCorrect === null) return customStyleforFillTextWithChoices;
+
+        return {
+            ...customStyleforFillTextWithChoices,
+            control: (provided, state) => ({
+                ...customStyleforFillTextWithChoices.control?.(provided, state) || provided,
+                borderColor: isCorrect ? '#10B981' : '#EF4444',
+                backgroundColor: isCorrect ? 'rgba(16, 185, 129, 0.2)' : 'rgba(239, 68, 68, 0.2)',
+                borderWidth: '2px',
+                '&:hover': {
+                    borderColor: isCorrect ? '#10B981' : '#EF4444'
+                }
+            })
+        };
+    };
+
     const renderedText = textParts.map((part, index) => {
         const match = part.match(/{{(\d+)}}/);
         if (match) {
             const blankId = Number(match[1]);
-            // const options = exercise.blanks.find(blank => blank.blank_id === blankId);
             const blankData = exercise.blanks.find(blank => blank.blank_id === blankId);
             if (!blankData) {
                 return null;
@@ -66,22 +106,39 @@ const FillInTextExerciseWithChoicesWithImageDecoration = ({
                 label: opt
             }));
 
-            return (
-                <span>
-                <Select
-                    key={index}
-                    name={String(blankId)}
-                    options={selectOptions}
-                    defaultValue={null}
-                    onChange={(selectedOption) => handleChange(selectedOption, blankId)}
-                    // onChange={handleChange}
-                    styles={customStyleforFillTextWithChoices}
-                />
-                    </span>
-            );
+            const selectedAnswer = getSelectedAnswer(blankId);
+            const isCorrect = isAnswerCorrect(blankId);
+            const correctAnswer = getCorrectAnswer(blankId);
 
+            return (
+                <React.Fragment key={index}>
+                    <Select
+                        name={String(blankId)}
+                        options={selectOptions}
+                        defaultValue={selectedAnswer ? {value: selectedAnswer, label: selectedAnswer} : null}
+                        onChange={(selectedOption) => handleChange(selectedOption, blankId)}
+                        styles={getSelectStyles(blankId)}
+                        isDisabled={disableButton}
+                    />
+                    {resultMode && isCorrect === false && correctAnswer && (
+                        <span className="fitewc__corrected-answer">
+                            (Poprawna odpowiedź: {correctAnswer})
+                        </span>
+                    )}
+                </React.Fragment>
+            );
         } else {
-            return <React.Fragment key={index}>{part}</React.Fragment>;
+            const lines = part.split('\n');
+            return (
+                <React.Fragment key={index}>
+                    {lines.map((line, lineIndex) => (
+                        <React.Fragment key={lineIndex}>
+                            {line}
+                            {lineIndex < lines.length - 1 && <br />}
+                        </React.Fragment>
+                    ))}
+                </React.Fragment>
+            );
         }
     });
 
@@ -89,7 +146,7 @@ const FillInTextExerciseWithChoicesWithImageDecoration = ({
         <section className="fitewc">
             <div className="fitewc__content">
                 <div className="fitewc__title">
-                    <h1>FillInTextExerciseWithChoices</h1>
+                    {/*<h1>FillInTextExerciseWithChoices</h1>*/}
                 </div>
 
                 <div className="fitewc__container">
@@ -98,7 +155,7 @@ const FillInTextExerciseWithChoicesWithImageDecoration = ({
                         <div className="fitewc__image">
                             <img src={`${import.meta.env.VITE_API_URL}${exercise.image}`} alt={exercise.image}/>
                         </div>
-                        <div className="fitewc__text--content">
+                        <div className="fitew__text--content">
                             {renderedText}
                         </div>
                     </div>
