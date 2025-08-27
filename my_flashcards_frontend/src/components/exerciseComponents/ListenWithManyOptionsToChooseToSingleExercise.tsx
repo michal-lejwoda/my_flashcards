@@ -1,6 +1,6 @@
 import {
     ChooseExerciseDependsOnMultipleTextAnswer,
-    ListenWithManyOptionsToChooseToSingleExerciseProps
+    ListenWithManyOptionsToChooseToSingleExerciseProps, ResultData
 } from "../../interfaces.tsx";
 import {useContext, useState} from "react";
 import {handleSendListenWithManyOptionsToChooseToSingleExerciseAnswers} from "../../api.tsx";
@@ -19,9 +19,10 @@ const ListenWithManyOptionsToChooseToSingleExercise = ({
     console.log("exercise", exercise)
     const [disableButton, setDisableButton] = useState<boolean>(false)
     const [selectedOptions, setSelectedOptions] = useState<ChooseExerciseDependsOnMultipleTextAnswer[]>([]);
+    const [results, setResults] = useState<ResultData | undefined>()
+    const [resultMode, setResultMode] = useState<boolean>(false)
     const playSound = (audio_url: string) => {
-        console.log(import.meta.env.VITE_API_URL + audio_url)
-        const audio = new Audio(audio_url);
+        const audio = new Audio(import.meta.env.VITE_API_URL + audio_url);
         audio.play();
     };
     const {token} = useContext(AuthContext);
@@ -33,6 +34,8 @@ const ListenWithManyOptionsToChooseToSingleExercise = ({
         if (id !== undefined) {
             onScore(id.toString(), result.score, result.max_score)
         }
+        setResults(result)
+        setResultMode(true)
         console.log("result", result)
         console.log("send answers", answers)
         setDisableButton(true)
@@ -61,6 +64,46 @@ const ListenWithManyOptionsToChooseToSingleExercise = ({
         });
     };
 
+    const getOptionClassName = (questionId: string, option: string): string => {
+        console.log("questionId", questionId)
+        console.log("option", option)
+
+        const selectedAnswersForQuestion = selectedOptions.find(opt => opt.question_id === questionId);
+        const isSelected = selectedAnswersForQuestion ? selectedAnswersForQuestion.answers.includes(option) : false;
+
+        let className = "cdost__option";
+
+        if (!resultMode) {
+            if (isSelected) {
+                className += " cdost__option--selected";
+            }
+        } else if (results) {
+            const resultAnswer = results.result_answers.find(
+                (result) => result.person_label === questionId
+            );
+
+            if (resultAnswer) {
+                const correctAnswers = Array.isArray(resultAnswer.correct_answer)
+                    ? resultAnswer.correct_answer
+                    : [resultAnswer.correct_answer];
+
+                const isCorrectOption = correctAnswers.includes(option);
+
+                if (isSelected && isCorrectOption) {
+                    className += " cdost__option--correct";
+                } else if (isSelected && !isCorrectOption) {
+                    className += " cdost__option--incorrect";
+                } else if (!isSelected && isCorrectOption) {
+                    className += " cdost__option--incorrect";
+                }
+            }
+        }
+
+        return className;
+    };
+
+
+
     return (
         <section className="lewotc">
             <div className="lewotc__title">
@@ -69,23 +112,18 @@ const ListenWithManyOptionsToChooseToSingleExercise = ({
             <div className="lewotc__allexercises">
                 {exercise.exercises.map(element => {
                     return (
-                        <div className="lewotc__singleexercise">
-                            <div className="lewotc__questioncontainer" key={element.question_id}>
+                        <div className="lewotc__singleexercise" key={element.question_id}>
+                            <div className="lewotc__questioncontainer">
                                 <div className="lewotc__question">{element.question}</div>
-                                <div className="lewotc--soundbutton" onClick={() => playSound(exercise.audio)}>
+                                <div className="lewotc--soundbutton" onClick={() => playSound(element.audio)}>
                                     <FontAwesomeIcon
                                         size="lg" icon={faVolumeUp}/></div>
                             </div>
                             <div className="lewotc__options">
                                 {element.options.map(answer => {
-                                    const filteredOptions = selectedOptions.filter(el => el.question_id == element.question_id)
-                                    let isSelected = false
-                                    if (filteredOptions.length > 0) {
-                                        isSelected = filteredOptions[0].answers.includes(answer)
-                                    }
                                     return (
                                         <div
-                                            className={`cdost__option ${isSelected ? "cdost__option--selected" : ""}`}
+                                            className={getOptionClassName(element.question_id, answer)}
                                             key={`${element.question_id}-${answer}`}
                                             onClick={() => handleOptionToggle(element.question_id, answer)}
                                         >

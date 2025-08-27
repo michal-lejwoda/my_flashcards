@@ -26,6 +26,8 @@ const ListenExerciseWithOptionsToChoose = ({exercise, id, slug, onScore}: Listen
     const {token} = useContext(AuthContext);
     const [results, setResults] = useState<ResultData | undefined>()
     const [resultMode, setResultMode] = useState<boolean>(false)
+
+
     const sendAnswers = async () => {
         const answers = {"answers": selectedOptions}
         const path_slug = `${id}/${slug}`
