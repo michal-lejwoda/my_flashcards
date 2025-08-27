@@ -1,4 +1,8 @@
-import {ChooseExerciseDependsOnSingleTextAnswer, ListenExerciseWithOptionsToChooseProps} from "../../interfaces.tsx";
+import {
+    ChooseExerciseDependsOnSingleTextAnswer,
+    ListenExerciseWithOptionsToChooseProps,
+    ResultData
+} from "../../interfaces.tsx";
 import {useContext, useState} from "react";
 import "../../sass/exercises/listen_exercise_with_options_to_choose.css";
 
@@ -20,6 +24,8 @@ const ListenExerciseWithOptionsToChoose = ({exercise, id, slug, onScore}: Listen
     };
     const [disableButton, setDisableButton] = useState<boolean>(false)
     const {token} = useContext(AuthContext);
+    const [results, setResults] = useState<ResultData | undefined>()
+    const [resultMode, setResultMode] = useState<boolean>(false)
     const sendAnswers = async () => {
         const answers = {"answers": selectedOptions}
         const path_slug = `${id}/${slug}`
@@ -27,6 +33,8 @@ const ListenExerciseWithOptionsToChoose = ({exercise, id, slug, onScore}: Listen
         if (id !== undefined) {
             onScore(id.toString(), result.score, result.max_score)
         }
+        setResults(result)
+        setResultMode(true)
         console.log("result", result)
         console.log("send answers", answers)
         setDisableButton(true)
@@ -44,15 +52,40 @@ const ListenExerciseWithOptionsToChoose = ({exercise, id, slug, onScore}: Listen
         });
     };
 
+    const getOptionClassName = (questionId: string, option: string): string => {
+        const selectedAnswer = selectedOptions.find(opt => opt.question_id === questionId)?.answer;
+        const isSelected = selectedAnswer === option;
+
+        let className = "cdost__option";
+
+        if (!resultMode) {
+            if (isSelected) {
+                className += " cdost__option--selected";
+            }
+        } else if (results) {
+            const resultAnswer = results.result_answers.find(
+                (result) => result.person_label === questionId
+            );
+
+            if (resultAnswer) {
+                if (option === resultAnswer.correct_answer) {
+                    className += " cdost__option--correct";
+                } else if (isSelected && !resultAnswer.correct) {
+                    className += " cdost__option--incorrect";
+                }
+            }
+        }
+
+        return className;
+    };
+
+
     return (
         <section className="lewotc">
             <div className="lewotc__title">
-                <h1>ListenExerciseWithOptionsToChoose sdds</h1>
             </div>
             <div className="lewotc__allexercises">
                 {exercise.exercises.map(element => {
-                    const selectedAnswer = selectedOptions.find(opt => opt.question_id === element.question_id)?.answer;
-
                     return (
                         <div className="lewotc__singleexercise">
                             <div className="lewotc__questioncontainer" key={element.question_id}>
@@ -63,10 +96,9 @@ const ListenExerciseWithOptionsToChoose = ({exercise, id, slug, onScore}: Listen
                             </div>
                             <div className="lewotc__options">
                                 {element.options.map((answer, i) => {
-                                    const isSelected = selectedAnswer === answer;
                                     return (
                                         <div
-                                            className={`cdost__option ${isSelected ? "cdost__option--selected" : ""}`}
+                                            className={getOptionClassName(element.question_id, answer)}
                                             key={i}
                                             onClick={() => handleOptionClick(element.question_id, answer)}>
                                             {answer}
