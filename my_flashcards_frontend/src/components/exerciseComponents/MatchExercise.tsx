@@ -1,4 +1,4 @@
-import {MatchExerciseProps} from "../../interfaces.tsx";
+import {MatchExerciseProps, ResultData} from "../../interfaces.tsx";
 import {useContext, useEffect, useState} from "react";
 import {handleSendMatchExerciseAnswers} from "../../api.tsx";
 import AuthContext from "../../context/AuthContext.tsx";
@@ -18,6 +18,8 @@ const MatchExercise = ({exercise, id, slug, onScore}: MatchExerciseProps,) => {
     const [rightItems, setRightItems] = useState<string[]>([])
     const [leftItems, setLeftItems] = useState<string[]>([])
     const [disableButton, setDisableButton] = useState<boolean>(false)
+    const [results, setResults] = useState<ResultData | undefined>()
+    const [resultMode, setResultMode] = useState<boolean>(false)
     const {token} = useContext(AuthContext);
 
     useEffect(() => {
@@ -39,6 +41,8 @@ const MatchExercise = ({exercise, id, slug, onScore}: MatchExerciseProps,) => {
         }
         console.log("send answers", answers)
         setDisableButton(true)
+        setResults(result)
+        setResultMode(true)
     }
 
 
@@ -101,43 +105,72 @@ const MatchExercise = ({exercise, id, slug, onScore}: MatchExerciseProps,) => {
                 <div className="matchexercise__description">{exercise.description}</div>
                 <div className="matchexercise__sides">
                     <div className="matchexercise__leftside">
-                        {rightItems.map((element,key) => {
-                            return (
-                                <button
-                                    className={`matchexercise__leftside__item ${activeLeftIndex === key ? 'matchexercise__item__active' : ''}`}
-                                     onClick={() => handleAddLeftItem(element, key)}>
-                                    {element}
-                                </button>
-                            )
-                        })}
-                    </div>
-                    <div className="matchexercise__rightside">
-                        {leftItems.map((element,key) => {
-                            return (
-                                <button
-                                     className={`matchexercise__rightside__item ${activeRightIndex === key ? 'matchexercise__item__active' : ''}`}
-                                     onClick={() => handleAddRightItem(element, key)}>
-                                    {element}
-                                </button>
-                            )
-                        })}
-                    </div>
+    {leftItems.map((element,key) => {
+        return (
+            <button
+                className={`matchexercise__leftside__item ${activeLeftIndex === key ? 'matchexercise__item__active' : ''}`}
+                 onClick={() => handleAddLeftItem(element, key)}>
+                {element}
+            </button>
+        )
+    })}
+</div>
+<div className="matchexercise__rightside">
+    {rightItems.map((element,key) => {
+        return (
+            <button
+             className={`matchexercise__rightside__item ${activeRightIndex === key ? 'matchexercise__item__active' : ''}`}
+             onClick={() => handleAddRightItem(element, key)}>
+            {element}
+        </button>
+        )
+    })}
+</div>
                 </div>
                 <div className="matchexercise__selectedcontainer">
-                    <h3>Created pairs</h3>
-                    {selectedElements.map((element, key) => {
-                        return (
-                            <div className="matchexercise__selectedcontainer__item">
-                                <button className="matchexercise__selectedcontainer__leftitem " onClick={()=>removeItem(key)}>
-                                    {element.left_item}
-                                </button>
-                                <button className="matchexercise__selectedcontainer__rightitem" onClick={()=>removeItem(key)}>
-                                    {element.right_item}
-                                </button>
-                            </div>
-                        )
-                    })}
-                </div>
+    <h3>Created pairs</h3>
+    {selectedElements.map((element, key) => {
+
+        console.log("sadads", results?.result_answers)
+        const isCorrect = resultMode && results?.result_answers?.some(result =>
+            result.left_item === element.left_item &&
+            result.right_item === element.right_item &&
+            result.correct
+        );
+        console.log("isCorrect",isCorrect)
+        const isIncorrect = resultMode && results?.result_answers?.some(result =>
+            result.left_item === element.left_item &&
+            result.right_item === element.right_item &&
+            !result.correct
+        );
+        console.log("isIncorrect",isIncorrect)
+
+        return (
+            <div key={key} className="matchexercise__selectedcontainer__item">
+                <button
+                    className={`matchexercise__selectedcontainer__leftitem ${
+                        isCorrect ? 'matchexercise__selectedcontainer__leftitem--correct' :
+                        isIncorrect ? 'matchexercise__selectedcontainer__leftitem--incorrect' : ''
+                    }`}
+                    onClick={() => !resultMode && removeItem(key)}
+                    disabled={resultMode}
+                >
+                    {element.left_item}
+                </button>
+                <button
+                    className={`matchexercise__selectedcontainer__rightitem ${
+                        isCorrect ? 'matchexercise__selectedcontainer__rightitem--correct' :
+                        isIncorrect ? 'matchexercise__selectedcontainer__rightitem--incorrect' : ''
+                    }`}
+                    onClick={() => !resultMode && removeItem(key)}
+                    disabled={resultMode}
+                >
+                    {element.right_item}
+                </button>
+            </div>
+        )
+    })}
+</div>
             </div>
             <button disabled={disableButton} className="matchexercise__buttons greenoutline--button greenoutline--button--mb" onClick={sendAnswers}>
                  Send

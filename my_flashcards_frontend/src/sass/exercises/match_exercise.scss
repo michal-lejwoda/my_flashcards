@@ -133,6 +133,16 @@
       font-size: 1.5rem;
       margin-right: 0.5rem;
       border: 2px solid variables.$color-bg-light;
+      &--correct{
+        //background-color: #d4edda !important;
+        border: 3px solid #28a745;
+        //border-color: #28a745 !important;
+      }
+      &--incorrect{
+        //background-color: #f8d7da !important;
+        border: 3px solid #dc3545
+        //border-color: #dc3545 !important;
+      }
       img{
         height: 60px;
         width: 107px;
@@ -150,7 +160,12 @@
       border-radius: 15px;
       font-size: 1.5rem;
       border: 2px solid variables.$color-bg-light;;
-      //color: white;
+      &--correct{
+        border: 3px solid #28a745;
+      }
+      &--incorrect{
+        border: 3px solid #dc3545
+      }
       img{
         height: 60px;
         width: 107px;

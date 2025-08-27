@@ -1,7 +1,7 @@
 import {
     LeftItemsWithImageInterface,
     MatchExerciseTextWithImageProps,
-    MatchExerciseWithTextImageSelected
+    MatchExerciseWithTextImageSelected, ResultData
 } from "../../interfaces.tsx";
 import {useContext, useEffect, useState} from "react";
 import AuthContext from "../../context/AuthContext.tsx";
@@ -20,6 +20,8 @@ const MatchExerciseTextWithImage = ({exercise, id, slug, onScore}: MatchExercise
     const [activeLeftIndex, setActiveLeftIndex] = useState<number | null>(null);
     const [activeRightIndex, setActiveRightIndex] = useState<number | null>(null);
     const [disableButton, setDisableButton] = useState<boolean>(false)
+    const [results, setResults] = useState<ResultData | undefined>()
+    const [resultMode, setResultMode] = useState<boolean>(false)
 
     useEffect(() => {
         setLeftItems(exercise.left_items);
@@ -44,6 +46,8 @@ const MatchExerciseTextWithImage = ({exercise, id, slug, onScore}: MatchExercise
         }
         console.log("result", result)
         console.log("send answers", answers)
+        setResults(result)
+        setResultMode(true)
         setDisableButton(true)
     }
 
@@ -128,16 +132,35 @@ const MatchExerciseTextWithImage = ({exercise, id, slug, onScore}: MatchExercise
                     <h1>Selected Container</h1>
                     <div className="matchexercise__selectedcontainer__items">
                         {selectedElements.map((element, key) => {
+                            const isCorrect = resultMode && results?.result_answers?.some(result =>
+            result.left_item === element.left_item.id &&
+            result.right_item === element.right_item &&
+            result.correct
+        );
+        console.log("isCorrect",isCorrect)
+                            console.log("element.left_item", element.left_item)
+                            console.log("element.right_item", element.right_item)
+        const isIncorrect = resultMode && results?.result_answers?.some(result =>
+            result.left_item === element.left_item.id &&
+            result.right_item === element.right_item &&
+            !result.correct
+        );
                             return (
                                 <div className="matchexercise__selectedcontainer__item">
-                                    <div className="matchexercise__selectedcontainer__leftitem"
+                                    <button className={`matchexercise__selectedcontainer__leftitem ${
+                                        isCorrect ? 'matchexercise__selectedcontainer__leftitem--correct' :
+                                        isIncorrect ? 'matchexercise__selectedcontainer__leftitem--incorrect' : ''
+                                    }`}
                                          onClick={() => removeItem(key)}>
                                         {element.right_item}
-                                    </div>
-                                    <div className="matchexercise__selectedcontainer__rightitem"
+                                    </button>
+                                    <button className={`matchexercise__selectedcontainer__rightitem ${
+                                        isCorrect ? 'matchexercise__selectedcontainer__rightitem--correct' :
+                                        isIncorrect ? 'matchexercise__selectedcontainer__rightitem--incorrect' : ''
+                                    }`}
                                          onClick={() => removeItem(key)}>
                                         <img src={`${import.meta.env.VITE_API_URL}${element.left_item.url}`} alt=""/>
-                                    </div>
+                                    </button>
                                 </div>
                             )
                         })}
