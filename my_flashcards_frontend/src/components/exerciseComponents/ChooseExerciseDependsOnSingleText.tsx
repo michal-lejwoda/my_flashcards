@@ -1,5 +1,9 @@
 import {useContext, useState} from "react";
-import {ChooseExerciseDependsOnSingleTextAnswer, ChooseExerciseDependsOnSingleTextProps} from "../../interfaces.tsx";
+import {
+    ChooseExerciseDependsOnSingleTextAnswer,
+    ChooseExerciseDependsOnSingleTextProps,
+    ResultData
+} from "../../interfaces.tsx";
 import {handleSendChooseExerciseDependsOnSingleTextAnswers} from "../../api.tsx";
 import AuthContext from "../../context/AuthContext.tsx";
 import "../../sass/exercises/choose_exercise_depends_on_single_text.css"
@@ -9,21 +13,25 @@ const ChooseExerciseDependsOnSingleText = ({exercise, id, slug, onScore}: Choose
     const [selectedOptions, setSelectedOptions] = useState<ChooseExerciseDependsOnSingleTextAnswer[]>([]);
     console.log(selectedOptions)
     const [disableButton, setDisableButton] = useState<boolean>(false)
+    const [results, setResults] = useState<ResultData | undefined>()
+    const [resultMode, setResultMode] = useState<boolean>(false)
 
     const {token} = useContext(AuthContext);
     const sendAnswers = async () => {
         const answers = {"answers": selectedOptions}
         const path_slug = `${id}/${slug}`
         const result = await handleSendChooseExerciseDependsOnSingleTextAnswers(path_slug, answers, token)
+        setResults(result)
+        setResultMode(true)
         if (id !== undefined) {
+            setDisableButton(true)
             onScore(id.toString(), result.score, result.max_score)
         }
-        setDisableButton(true)
-        console.log("result", result)
-        console.log("send answers", answers)
     }
 
-    const handleOptionClick = (questionId: string, option: string) => {
+   const handleOptionClick = (questionId: string, option: string) => {
+        if (resultMode) return;
+
         setSelectedOptions((prev) => {
             const exists = prev.find(item => item.question_id === questionId);
             if (exists) {
@@ -35,7 +43,32 @@ const ChooseExerciseDependsOnSingleText = ({exercise, id, slug, onScore}: Choose
         });
     };
 
-    console.log("selectedOptions", selectedOptions);
+    const getOptionClassName = (questionId: string, option: string): string => {
+        const selectedAnswer = selectedOptions.find(opt => opt.question_id === questionId)?.answer;
+        const isSelected = selectedAnswer === option;
+
+        let className = "cdomt__option";
+
+        if (!resultMode) {
+            if (isSelected) {
+                className += " cdomt__option--selected";
+            }
+        } else if (results) {
+            const resultAnswer = results.result_answers.find(
+                (result) => result.person_label === questionId
+            );
+
+            if (resultAnswer) {
+                if (option === resultAnswer.correct_answer) {
+                    className += " cdomt__option--correct";
+                } else if (isSelected && !resultAnswer.correct) {
+                    className += " cdomt__option--incorrect";
+                }
+            }
+        }
+
+        return className;
+    };
 
     return (
         <section className="cdost">
@@ -50,17 +83,16 @@ const ChooseExerciseDependsOnSingleText = ({exercise, id, slug, onScore}: Choose
 
                 <div className="cdost__choose-container">
                     {exercise.exercises.map((element) => {
-                        const selectedAnswer = selectedOptions.find(opt => opt.question_id === element.question_id)?.answer;
+                        // const selectedAnswer = selectedOptions.find(opt => opt.question_id === element.question_id)?.answer;
 
                         return (
                             <div className="cdost__question-block" key={element.question_id}>
                                 <div className="cdost__question">{element.question}</div>
                                 <div className="cdost__options">
                                     {element.options.map((option, i) => {
-                                        const isSelected = selectedAnswer === option;
                                         return (
                                             <div
-                                                className={`cdost__option ${isSelected ? "cdost__option--selected" : ""}`}
+                                                className={getOptionClassName(element.question_id, option)}
                                                 key={i}
                                                 onClick={() => handleOptionClick(element.question_id, option)}
                                             >

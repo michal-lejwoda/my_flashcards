@@ -1013,3 +1013,16 @@ export interface MatcheExerciseTextWithImageResponse {
     max_score: number
     result_answers: MatcheExerciseTextWithImageResultAnswers[]
 }
+
+export interface ResultAnswer {
+    person_label: string;
+    provided_answer: string | null;
+    correct_answer: string;
+    correct: boolean;
+}
+
+export interface ResultData {
+    score: number;
+    max_score: number;
+    result_answers: ResultAnswer[];
+}

@@ -1,21 +1,14 @@
 import {useContext, useState} from "react";
-import {ChooseExerciseDependsOnMultipleTextsProps, ChooseExerciseDependsOnSingleTextAnswer} from "../../interfaces.tsx";
+import {
+    ChooseExerciseDependsOnMultipleTextsProps,
+    ChooseExerciseDependsOnSingleTextAnswer,
+    ResultData
+} from "../../interfaces.tsx";
 import {handleSendChooseExerciseDependsOnSingleTextAnswers} from "../../api.tsx";
 import AuthContext from "../../context/AuthContext.tsx";
 import "../../sass/exercises/choose_exercise_depends_on_multiple_texts.css"
 
-interface ResultAnswer {
-    person_label: string;
-    provided_answer: string | null;
-    correct_answer: string;
-    correct: boolean;
-}
 
-interface ResultData {
-    score: number;
-    max_score: number;
-    result_answers: ResultAnswer[];
-}
 
 const ChooseExerciseDependsOnMultipleTexts = ({
                                                   exercise,
