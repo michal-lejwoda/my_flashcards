@@ -1,6 +1,7 @@
 import {
     ChooseExerciseDependsOnMultipleTextAnswer,
-    ListenWithManyOptionsToChooseToSingleExerciseProps, ResultData
+    ListenWithManyOptionsToChooseToSingleExerciseAnswersResponse,
+    ListenWithManyOptionsToChooseToSingleExerciseProps
 } from "../../interfaces.tsx";
 import {useContext, useState} from "react";
 import {handleSendListenWithManyOptionsToChooseToSingleExerciseAnswers} from "../../api.tsx";
@@ -19,7 +20,7 @@ const ListenWithManyOptionsToChooseToSingleExercise = ({
     console.log("exercise", exercise)
     const [disableButton, setDisableButton] = useState<boolean>(false)
     const [selectedOptions, setSelectedOptions] = useState<ChooseExerciseDependsOnMultipleTextAnswer[]>([]);
-    const [results, setResults] = useState<ResultData | undefined>()
+    const [results, setResults] = useState<ListenWithManyOptionsToChooseToSingleExerciseAnswersResponse | undefined>()
     const [resultMode, setResultMode] = useState<boolean>(false)
     const playSound = (audio_url: string) => {
         const audio = new Audio(import.meta.env.VITE_API_URL + audio_url);
@@ -115,7 +116,7 @@ const ListenWithManyOptionsToChooseToSingleExercise = ({
                         <div className="lewotc__singleexercise" key={element.question_id}>
                             <div className="lewotc__questioncontainer">
                                 <div className="lewotc__question">{element.question}</div>
-                                <div className="lewotc--soundbutton" onClick={() => playSound(element.audio)}>
+                                <div className="lewotc--soundbutton" onClick={() => playSound(exercise.audio)}>
                                     <FontAwesomeIcon
                                         size="lg" icon={faVolumeUp}/></div>
                             </div>

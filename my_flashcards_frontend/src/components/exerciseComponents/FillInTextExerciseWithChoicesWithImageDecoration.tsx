@@ -1,5 +1,5 @@
 import React, {useContext, useState} from "react";
-import {FillInTextExerciseWithChoicesWithImageDecorationProps, ResultData} from "../../interfaces.tsx";
+import {FillInTextExerciseWithChoicesWithImageDecorationProps, ResultDataWithBlankId} from "../../interfaces.tsx";
 import AuthContext from "../../context/AuthContext.tsx";
 import {handleSendFillInTextExerciseWithChoicesAnswers} from "../../api.tsx";
 import "../../sass/exercises/fill_in_text_exercise_with_choices_with_image_decoration.css";
@@ -21,7 +21,7 @@ const FillInTextExerciseWithChoicesWithImageDecoration = ({
     const [disableButton, setDisableButton] = useState<boolean>(false)
     const [formData, setFormData] = useState<Answer[]>([]);
     const {token} = useContext(AuthContext);
-    const [results, setResults] = useState<ResultData | undefined>()
+    const [results, setResults] = useState<ResultDataWithBlankId | undefined>()
     const [resultMode, setResultMode] = useState<boolean>(false)
     const textParts = exercise.text_with_blanks.split(/({{\d+}})/g);
     console.log("exercise", exercise)
@@ -81,6 +81,7 @@ const FillInTextExerciseWithChoicesWithImageDecoration = ({
 
         return {
             ...customStyleforFillTextWithChoices,
+            // @ts-expect-error Custom styles
             control: (provided, state) => ({
                 ...customStyleforFillTextWithChoices.control?.(provided, state) || provided,
                 borderColor: isCorrect ? '#10B981' : '#EF4444',

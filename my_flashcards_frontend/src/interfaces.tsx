@@ -669,6 +669,7 @@ export interface ListenExerciseWithOptionsToChooseExercises {
     options: [string]
     question: string
     question_id: string
+
 }
 
 export interface ListenWithManyOptionsToChooseToSingleExerciseDataExercises {
@@ -966,8 +967,8 @@ export interface FillInTextExerciseWithPredefinedBlocksResultAnswers {
 
 export interface ListenWithManyOptionsToChooseToSingleExerciseResultAnswers {
     person_label: string
-    provided_answers: [string]
-    correct_answers: [string]
+    provided_answers: string[]
+    correct_answer: string[]
     correct: boolean
 }
 
@@ -1034,6 +1035,18 @@ export interface ResultAnswerWithBlankId {
     correct: boolean;
 }
 
+export interface ResultAnswerWithManyOptions{
+    person_label: string;
+    provided_answer: [];
+    correct_answer: [];
+    correct: boolean;
+}
+
+export interface ResultDataWithManyOptions{
+    score: number;
+    max_score: number;
+    result_answers: ResultAnswerWithManyOptions[];
+}
 
 export interface ResultDataWithBlankId {
     score: number;

@@ -1,7 +1,8 @@
 import {
     LeftItemsWithImageInterface,
+    MatcheExerciseTextWithImageResponse,
     MatchExerciseTextWithImageProps,
-    MatchExerciseWithTextImageSelected, ResultData
+    MatchExerciseWithTextImageSelected
 } from "../../interfaces.tsx";
 import {useContext, useEffect, useState} from "react";
 import AuthContext from "../../context/AuthContext.tsx";
@@ -20,7 +21,7 @@ const MatchExerciseTextWithImage = ({exercise, id, slug, onScore}: MatchExercise
     const [activeLeftIndex, setActiveLeftIndex] = useState<number | null>(null);
     const [activeRightIndex, setActiveRightIndex] = useState<number | null>(null);
     const [disableButton, setDisableButton] = useState<boolean>(false)
-    const [results, setResults] = useState<ResultData | undefined>()
+    const [results, setResults] = useState<MatcheExerciseTextWithImageResponse | undefined>()
     const [resultMode, setResultMode] = useState<boolean>(false)
 
     useEffect(() => {
@@ -133,7 +134,7 @@ const MatchExerciseTextWithImage = ({exercise, id, slug, onScore}: MatchExercise
                     <div className="matchexercise__selectedcontainer__items">
                         {selectedElements.map((element, key) => {
                             const isCorrect = resultMode && results?.result_answers?.some(result =>
-            result.left_item === element.left_item.id &&
+            result.left_item === Number(element.left_item.id) &&
             result.right_item === element.right_item &&
             result.correct
         );
@@ -141,7 +142,7 @@ const MatchExerciseTextWithImage = ({exercise, id, slug, onScore}: MatchExercise
                             console.log("element.left_item", element.left_item)
                             console.log("element.right_item", element.right_item)
         const isIncorrect = resultMode && results?.result_answers?.some(result =>
-            result.left_item === element.left_item.id &&
+            result.left_item === Number(element.left_item.id) &&
             result.right_item === element.right_item &&
             !result.correct
         );

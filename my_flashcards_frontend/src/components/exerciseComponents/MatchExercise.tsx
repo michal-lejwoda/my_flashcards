@@ -1,4 +1,4 @@
-import {MatchExerciseProps, ResultData} from "../../interfaces.tsx";
+import {MatchExerciseAnswerResponse, MatchExerciseProps} from "../../interfaces.tsx";
 import {useContext, useEffect, useState} from "react";
 import {handleSendMatchExerciseAnswers} from "../../api.tsx";
 import AuthContext from "../../context/AuthContext.tsx";
@@ -18,7 +18,7 @@ const MatchExercise = ({exercise, id, slug, onScore}: MatchExerciseProps,) => {
     const [rightItems, setRightItems] = useState<string[]>([])
     const [leftItems, setLeftItems] = useState<string[]>([])
     const [disableButton, setDisableButton] = useState<boolean>(false)
-    const [results, setResults] = useState<ResultData | undefined>()
+    const [results, setResults] = useState<MatchExerciseAnswerResponse | undefined>()
     const [resultMode, setResultMode] = useState<boolean>(false)
     const {token} = useContext(AuthContext);
 
