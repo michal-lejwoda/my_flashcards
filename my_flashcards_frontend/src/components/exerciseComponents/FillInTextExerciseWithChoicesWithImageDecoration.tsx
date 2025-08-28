@@ -8,6 +8,7 @@ import {customStyleforFillTextWithChoices} from "../../customFunctions.tsx";
 
 
 const FillInTextExerciseWithChoicesWithImageDecoration = ({
+                                                                playSound,
                                                               exercise,
                                                               id,
                                                               slug,
@@ -36,6 +37,11 @@ const FillInTextExerciseWithChoicesWithImageDecoration = ({
             onScore(id.toString(), result.score, result.max_score)
         }
         setDisableButton(true)
+        if (result.score == result.max_score){
+            playSound('/RightAnswer.mp3')
+        }else{
+            playSound('/WrongAnswer.mp3')
+        }
         console.log(result)
         console.log("send answers", answers)
     }

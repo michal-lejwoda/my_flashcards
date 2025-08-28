@@ -12,16 +12,16 @@ import {faVolumeUp} from "@fortawesome/free-solid-svg-icons";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 
 
-const ListenExerciseWithOptionsToChoose = ({exercise, id, slug, onScore}: ListenExerciseWithOptionsToChooseProps) => {
+const ListenExerciseWithOptionsToChoose = ({playSound, exercise, id, slug, onScore}: ListenExerciseWithOptionsToChooseProps) => {
     console.log("exercise", exercise)
     console.log("id", id)
     console.log("slug", slug)
     const [selectedOptions, setSelectedOptions] = useState<ChooseExerciseDependsOnSingleTextAnswer[]>([]);
-    const playSound = (audio_url: string) => {
-        console.log(import.meta.env.VITE_API_URL + audio_url)
-        const audio = new Audio(audio_url);
-        audio.play();
-    };
+    // const playSound = (audio_url: string) => {
+    //     console.log(import.meta.env.VITE_API_URL + audio_url)
+    //     const audio = new Audio(audio_url);
+    //     audio.play();
+    // };
     const [disableButton, setDisableButton] = useState<boolean>(false)
     const {token} = useContext(AuthContext);
     const [results, setResults] = useState<ResultData | undefined>()
@@ -37,9 +37,15 @@ const ListenExerciseWithOptionsToChoose = ({exercise, id, slug, onScore}: Listen
         }
         setResults(result)
         setResultMode(true)
+        setDisableButton(true)
+        if (result.score == result.max_score){
+            playSound('/RightAnswer.mp3')
+        }else{
+            playSound('/WrongAnswer.mp3')
+        }
         console.log("result", result)
         console.log("send answers", answers)
-        setDisableButton(true)
+
     }
 
     const handleOptionClick = (questionId: string, option: string) => {

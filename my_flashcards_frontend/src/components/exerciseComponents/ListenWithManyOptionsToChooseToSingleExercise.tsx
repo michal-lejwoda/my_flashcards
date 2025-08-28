@@ -12,20 +12,17 @@ import {faVolumeUp} from "@fortawesome/free-solid-svg-icons";
 
 
 const ListenWithManyOptionsToChooseToSingleExercise = ({
-                                                           exercise,
-                                                           id,
-                                                           slug,
-                                                           onScore
+                                                           playSound,exercise, id, slug, onScore
                                                        }: ListenWithManyOptionsToChooseToSingleExerciseProps) => {
     console.log("exercise", exercise)
     const [disableButton, setDisableButton] = useState<boolean>(false)
     const [selectedOptions, setSelectedOptions] = useState<ChooseExerciseDependsOnMultipleTextAnswer[]>([]);
     const [results, setResults] = useState<ListenWithManyOptionsToChooseToSingleExerciseAnswersResponse | undefined>()
     const [resultMode, setResultMode] = useState<boolean>(false)
-    const playSound = (audio_url: string) => {
-        const audio = new Audio(import.meta.env.VITE_API_URL + audio_url);
-        audio.play();
-    };
+    // const playSound = (audio_url: string) => {
+    //     const audio = new Audio(import.meta.env.VITE_API_URL + audio_url);
+    //     audio.play();
+    // };
     const {token} = useContext(AuthContext);
     const sendAnswers = async () => {
         const answers = {"answers": selectedOptions}
@@ -40,6 +37,11 @@ const ListenWithManyOptionsToChooseToSingleExercise = ({
         console.log("result", result)
         console.log("send answers", answers)
         setDisableButton(true)
+        if (result.score == result.max_score){
+            playSound('/RightAnswer.mp3')
+        }else{
+            playSound('/WrongAnswer.mp3')
+        }
     }
 
     const handleOptionToggle = (questionId: string, option: string) => {

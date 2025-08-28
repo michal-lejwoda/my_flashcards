@@ -10,7 +10,7 @@ import {handleSendMatchExerciseWithImageAnswers} from "../../api.tsx";
 import "../../sass/exercises/match_exercise_text_with_image.css"
 
 
-const MatchExerciseTextWithImage = ({exercise, id, slug, onScore}: MatchExerciseTextWithImageProps) => {
+const MatchExerciseTextWithImage = ({playSound, exercise, id, slug, onScore}: MatchExerciseTextWithImageProps) => {
     console.log("exercise", exercise)
     const [selectedElements, setSelectedElements] = useState<MatchExerciseWithTextImageSelected[]>([]);
     const [rightSelected, setRightSelected] = useState<string | null>(null);
@@ -50,6 +50,11 @@ const MatchExerciseTextWithImage = ({exercise, id, slug, onScore}: MatchExercise
         setResults(result)
         setResultMode(true)
         setDisableButton(true)
+        if (result.score == result.max_score){
+            playSound('/RightAnswer.mp3')
+        }else{
+            playSound('/WrongAnswer.mp3')
+        }
     }
 
 

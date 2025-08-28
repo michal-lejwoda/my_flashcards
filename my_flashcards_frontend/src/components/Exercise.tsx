@@ -14,7 +14,7 @@ import {
 } from "../interfaces.tsx";
 import MatchExercise from "./exerciseComponents/MatchExercise.tsx";
 import {useParams} from "react-router-dom";
-import {useCallback, useEffect, useState} from "react";
+import {useCallback, useEffect, useRef, useState} from "react";
 import {handleGetExercise} from "../api.tsx";
 import ChooseExerciseDependsOnMultipleTexts from "./exerciseComponents/ChooseExerciseDependsOnMultipleTexts.tsx";
 import ChooseExerciseDependsOnSingleText from "./exerciseComponents/ChooseExerciseDependsOnSingleText.tsx";
@@ -40,6 +40,22 @@ const Exercise = () => {
     const [exercise, setExercise] = useState<Exercises | null>(null);
     const [numberOfExercises, setNumberOfExercises] = useState<number>(1);
     const [results, setResults] = useState<ExerciseScore[]>([]);
+
+    const currentAudioRef = useRef<HTMLAudioElement | null>(null);
+
+  const playSound = (src: string) => {
+    if (currentAudioRef.current) {
+      currentAudioRef.current.pause();
+      currentAudioRef.current.currentTime = 0;
+    }
+    console.log(src)
+    const newAudio = new Audio(src);
+    console.log(newAudio)
+    newAudio.play();
+    currentAudioRef.current = newAudio;
+  };
+
+
 
     const handleScoreUpdate = useCallback((exerciseId: string, score: number, max_score: number) => {
         setResults((prev) => [
@@ -68,59 +84,74 @@ const Exercise = () => {
         if (!exercise) return null;
 
 
-        if (isMatchExercise(exercise)) return <MatchExercise exercise={exercise}
+        if (isMatchExercise(exercise)) return <MatchExercise
+            playSound={playSound}
+            exercise={exercise}
                                                              id={id}
                                                              slug={slug}
                                                              onScore={handleScoreUpdate}
         />;
         if (isChooseExerciseDependsOnMultipleTexts(exercise)) return <ChooseExerciseDependsOnMultipleTexts
+            playSound={playSound}
             exercise={exercise}
             id={id}
             slug={slug}
             onScore={handleScoreUpdate}/>;
         if (isChooseExerciseDependsOnSingleText(exercise)) return <ChooseExerciseDependsOnSingleText
+            playSound={playSound}
             exercise={exercise}
             id={id}
             slug={slug}
             onScore={handleScoreUpdate}
         />;
         if (isConjugationExercise(exercise)) return <ConjugationExercise
+            playSound={playSound}
             exercise={exercise}
             id={id}
             slug={slug}
             onScore={handleScoreUpdate}/>;
-        if (isFillInTextExerciseWithChoices(exercise)) return <FillInTextExerciseWithChoices exercise={exercise}
+        if (isFillInTextExerciseWithChoices(exercise)) return <FillInTextExerciseWithChoices
+            playSound={playSound}
+            exercise={exercise}
                                                                                              id={id}
                                                                                              slug={slug}
                                                                                              onScore={handleScoreUpdate}/>;
         if (isFillInTextExerciseWithChoicesWithImageDecoration(exercise)) return <FillInTextExerciseWithChoicesWithImageDecoration
+            playSound={playSound}
             exercise={exercise}
             id={id}
             slug={slug}
             onScore={handleScoreUpdate}/>;
         if (isFillInTextExerciseWithPredefinedBlocks(exercise)) return <FillInTextExerciseWithPredefinedBlocks
+            playSound={playSound}
             exercise={exercise}
             id={id}
             slug={slug}
             onScore={handleScoreUpdate}/>;
 
-        if (isListenExerciseWithOptionsToChoose(exercise)) return <ListenExerciseWithOptionsToChoose exercise={exercise}
-                                                                                                     id={id}
-                                                                                                     slug={slug}
-                                                                                                     onScore={handleScoreUpdate}/>;
+        if (isListenExerciseWithOptionsToChoose(exercise)) return <ListenExerciseWithOptionsToChoose
+            playSound={playSound}
+            exercise={exercise}
+            id={id}
+            slug={slug}
+            onScore={handleScoreUpdate}/>;
 
         if (isListenWithManyOptionsToChooseToSingleExercise(exercise)) return <ListenWithManyOptionsToChooseToSingleExercise
+            playSound={playSound}
             exercise={exercise}
             id={id}
             slug={slug}
             onScore={handleScoreUpdate}/>;
-        if (isMatchExerciseTextWithImage(exercise)) return <MatchExerciseTextWithImage exercise={exercise}
+        if (isMatchExerciseTextWithImage(exercise)) return <MatchExerciseTextWithImage
+            playSound={playSound}
+            exercise={exercise}
                                                                                        id={id}
                                                                                        slug={slug}
                                                                                        onScore={handleScoreUpdate}/>;
         if (isMultipleExercises(exercise)) {
-
-            return <MultipleExercises exercise={exercise} id={id} slug={slug}
+            return <MultipleExercises
+                playSound={playSound}
+                exercise={exercise} id={id} slug={slug}
                                       onScore={handleScoreUpdate}
             />;
         }

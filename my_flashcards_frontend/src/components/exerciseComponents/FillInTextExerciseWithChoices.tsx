@@ -6,7 +6,7 @@ import "../../sass/exercises/fill_in_text_exercise_with_choices.css"
 import Select, {SingleValue} from "react-select";
 import {customStyleforFillTextWithChoices} from "../../customFunctions.tsx";
 
-const FillInTextExerciseWithChoices = ({exercise, id, slug, onScore}: FillInTextExerciseWithChoicesProps) => {
+const FillInTextExerciseWithChoices = ({playSound, exercise, id, slug, onScore}: FillInTextExerciseWithChoicesProps) => {
     type Answer = { blank_id: number; answer: string };
     type OptionType = {
         value: string;
@@ -32,6 +32,11 @@ const FillInTextExerciseWithChoices = ({exercise, id, slug, onScore}: FillInText
         console.log(result)
         console.log("send answers", answers)
         setDisableButton(true)
+        if (result.score == result.max_score){
+            playSound('/RightAnswer.mp3')
+        }else{
+            playSound('/WrongAnswer.mp3')
+        }
     }
 
     const handleChange = (selectedOption: SingleValue<OptionType>, blankId: number) => {

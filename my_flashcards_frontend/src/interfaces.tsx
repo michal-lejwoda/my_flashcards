@@ -804,6 +804,7 @@ export interface GroupExercisesProps {
 }
 
 export interface MatchExerciseProps {
+    playSound: (src: string) => void;
     exercise: MatchExerciseData;
     id: number | undefined;
     slug: string | undefined;
@@ -811,6 +812,7 @@ export interface MatchExerciseProps {
 }
 
 export interface ChooseExerciseDependsOnMultipleTextsProps {
+    playSound: (src: string) => void;
     exercise: ChooseExerciseDependsOnMultipleTextsData;
     id: number | undefined;
     slug: string | undefined;
@@ -818,6 +820,7 @@ export interface ChooseExerciseDependsOnMultipleTextsProps {
 }
 
 export interface ChooseExerciseDependsOnSingleTextProps {
+    playSound: (src: string) => void;
     exercise: ChooseExerciseDependsOnSingleTextData
     id: number | undefined;
     slug: string | undefined;
@@ -825,6 +828,7 @@ export interface ChooseExerciseDependsOnSingleTextProps {
 }
 
 export interface ConjugationExerciseProps {
+    playSound: (src: string) => void;
     exercise: ConjugationExerciseData;
     id: number | undefined;
     slug: string | undefined;
@@ -832,6 +836,7 @@ export interface ConjugationExerciseProps {
 }
 
 export interface FillInTextExerciseWithChoicesProps {
+    playSound: (src: string) => void;
     exercise: FillInTextExerciseWithChoicesData
     id: number | undefined;
     slug: string | undefined;
@@ -839,6 +844,7 @@ export interface FillInTextExerciseWithChoicesProps {
 }
 
 export interface FillInTextExerciseWithChoicesWithImageDecorationProps {
+    playSound: (src: string) => void;
     exercise: FillInTextExerciseWithChoicesWithImageDecorationData
     id: number | undefined;
     slug: string | undefined;
@@ -846,6 +852,7 @@ export interface FillInTextExerciseWithChoicesWithImageDecorationProps {
 }
 
 export interface FillInTextExerciseWithPredefinedBlocksProps {
+    playSound: (src: string) => void;
     exercise: FillInTextExerciseWithPredefinedBlocksData
     id: number | undefined;
     slug: string | undefined;
@@ -857,6 +864,7 @@ export interface FlexibleExercisePageProps {
 }
 
 export interface ListenWithManyOptionsToChooseToSingleExerciseProps {
+    playSound: (src: string) => void;
     exercise: ListenWithManyOptionsToChooseToSingleExerciseData
     id: number | undefined;
     slug: string | undefined;
@@ -864,6 +872,7 @@ export interface ListenWithManyOptionsToChooseToSingleExerciseProps {
 }
 
 export interface ListenExerciseWithOptionsToChooseProps {
+    playSound: (src: string) => void;
     exercise: ListenExerciseWithOptionsToChooseData
     id: number | undefined;
     slug: string | undefined
@@ -871,6 +880,7 @@ export interface ListenExerciseWithOptionsToChooseProps {
 }
 
 export interface MatchExerciseTextWithImageProps {
+    playSound: (src: string) => void;
     exercise: MatchExerciseTextWithImageData
     id: number | undefined;
     slug: string | undefined;
@@ -878,6 +888,7 @@ export interface MatchExerciseTextWithImageProps {
 }
 
 export interface MultipleExercisesProps {
+    playSound: (src: string) => void;
     exercise: MultipleExercisesData
     id: number | undefined;
     slug: string | undefined;

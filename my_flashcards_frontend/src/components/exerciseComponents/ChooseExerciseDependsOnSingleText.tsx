@@ -9,7 +9,7 @@ import AuthContext from "../../context/AuthContext.tsx";
 import "../../sass/exercises/choose_exercise_depends_on_single_text.css"
 
 
-const ChooseExerciseDependsOnSingleText = ({exercise, id, slug, onScore}: ChooseExerciseDependsOnSingleTextProps) => {
+const ChooseExerciseDependsOnSingleText = ({playSound, exercise, id, slug, onScore}: ChooseExerciseDependsOnSingleTextProps) => {
     const [selectedOptions, setSelectedOptions] = useState<ChooseExerciseDependsOnSingleTextAnswer[]>([]);
     console.log(selectedOptions)
     const [disableButton, setDisableButton] = useState<boolean>(false)
@@ -26,6 +26,11 @@ const ChooseExerciseDependsOnSingleText = ({exercise, id, slug, onScore}: Choose
         if (id !== undefined) {
             setDisableButton(true)
             onScore(id.toString(), result.score, result.max_score)
+        }
+        if (result.score == result.max_score){
+            playSound('/RightAnswer.mp3')
+        }else{
+            playSound('/WrongAnswer.mp3')
         }
     }
 

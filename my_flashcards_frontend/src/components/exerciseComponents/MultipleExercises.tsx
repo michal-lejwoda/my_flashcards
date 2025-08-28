@@ -26,36 +26,41 @@ import ListenWithManyOptionsToChooseToSingleExercise from "./ListenWithManyOptio
 import MatchExerciseTextWithImage from "./MatchExerciseTextWithImage.tsx";
 import "../../sass/exercises/multiple_exercises.css";
 
-const MultipleExercises = ({exercise, onScore}: MultipleExercisesProps) => {
+const MultipleExercises = ({playSound,exercise, onScore}: MultipleExercisesProps) => {
 
 
     const renderContent = (ex: Exercises) => {
         console.log("ex", ex)
         if (isMatchExercise(ex)) return <MatchExercise
+            playSound = {playSound}
             exercise={ex}
             id={ex.id}
             slug={ex.slug}
             onScore={onScore}
         />;
         if (isChooseExerciseDependsOnMultipleTexts(ex)) return <ChooseExerciseDependsOnMultipleTexts
+            playSound = {playSound}
             exercise={ex}
             id={ex.id}
             slug={ex.slug}
             onScore={onScore}
         />;
         if (isChooseExerciseDependsOnSingleText(ex)) return <ChooseExerciseDependsOnSingleText
+            playSound = {playSound}
             exercise={ex}
             id={ex.id}
             slug={ex.slug}
             onScore={onScore}
         />;
         if (isConjugationExercise(ex)) return <ConjugationExercise
+            playSound = {playSound}
             exercise={ex}
             id={ex.id}
             slug={ex.slug}
             onScore={onScore}
         />;
         if (isFillInTextExerciseWithChoices(ex)) return <FillInTextExerciseWithChoices
+            playSound = {playSound}
             exercise={ex}
             id={ex.id}
             slug={ex.slug}
@@ -63,6 +68,7 @@ const MultipleExercises = ({exercise, onScore}: MultipleExercisesProps) => {
         />;
         if (isFillInTextExerciseWithChoicesWithImageDecoration(ex))
             return <FillInTextExerciseWithChoicesWithImageDecoration
+                playSound = {playSound}
                 exercise={ex}
                 id={ex.id}
                 slug={ex.slug}
@@ -70,6 +76,7 @@ const MultipleExercises = ({exercise, onScore}: MultipleExercisesProps) => {
 
             />;
         if (isFillInTextExerciseWithPredefinedBlocks(ex)) return <FillInTextExerciseWithPredefinedBlocks
+            playSound = {playSound}
             exercise={ex}
             id={ex.id}
             slug={ex.slug}
@@ -83,6 +90,7 @@ const MultipleExercises = ({exercise, onScore}: MultipleExercisesProps) => {
         //     onScore={handleScoreUpdate}
         // />;
         if (isListenExerciseWithOptionsToChoose(ex)) return <ListenExerciseWithOptionsToChoose
+            playSound = {playSound}
             exercise={ex}
             id={ex.id}
             slug={ex.slug}
@@ -90,12 +98,14 @@ const MultipleExercises = ({exercise, onScore}: MultipleExercisesProps) => {
         />;
         if (isListenWithManyOptionsToChooseToSingleExercise(ex))
             return <ListenWithManyOptionsToChooseToSingleExercise
+                playSound = {playSound}
                 exercise={ex}
                 id={ex.id}
                 slug={ex.slug}
                 onScore={onScore}
             />;
         if (isMatchExerciseTextWithImage(ex)) return <MatchExerciseTextWithImage
+            playSound = {playSound}
             exercise={ex}
             id={ex.id}
             slug={ex.slug}

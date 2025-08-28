@@ -11,6 +11,7 @@ import "../../sass/exercises/choose_exercise_depends_on_multiple_texts.css"
 
 
 const ChooseExerciseDependsOnMultipleTexts = ({
+                                                    playSound,
                                                   exercise,
                                                   id,
                                                   slug,
@@ -32,6 +33,11 @@ const ChooseExerciseDependsOnMultipleTexts = ({
         if (id !== undefined) {
             setDisableButton(true)
             onScore(id.toString(), result.score, result.max_score)
+        }
+        if (result.score == result.max_score){
+            playSound('/RightAnswer.mp3')
+        }else{
+            playSound('/WrongAnswer.mp3')
         }
     }
 

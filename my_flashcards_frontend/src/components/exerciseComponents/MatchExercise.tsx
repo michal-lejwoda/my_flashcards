@@ -4,7 +4,7 @@ import {handleSendMatchExerciseAnswers} from "../../api.tsx";
 import AuthContext from "../../context/AuthContext.tsx";
 import '../../sass/exercises/match_exercise.css';
 
-const MatchExercise = ({exercise, id, slug, onScore}: MatchExerciseProps,) => {
+const MatchExercise = ({playSound,  exercise, id, slug, onScore}: MatchExerciseProps) => {
 
     type SelectedElement = {
         left_item: string;
@@ -43,6 +43,11 @@ const MatchExercise = ({exercise, id, slug, onScore}: MatchExerciseProps,) => {
         setDisableButton(true)
         setResults(result)
         setResultMode(true)
+        if (result.score == result.max_score){
+            playSound('/RightAnswer.mp3')
+        }else{
+            playSound('/WrongAnswer.mp3')
+        }
     }
 
 

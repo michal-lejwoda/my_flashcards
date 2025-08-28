@@ -4,7 +4,7 @@ import {handleSendConjugationExerciseAnswers} from "../../api.tsx";
 import AuthContext from "../../context/AuthContext.tsx";
 import "../../sass/exercises/conjugation_exercise.css"
 
-const ConjugationExercise = ({exercise, id, slug, onScore}: ConjugationExerciseProps) => {
+const ConjugationExercise = ({playSound, exercise, id, slug, onScore}: ConjugationExerciseProps) => {
     console.log("exercise", exercise)
     const [formData, setFormData] = useState<ConjugationExerciseAnswer[]>(() =>
         exercise.conjugation_rows.reduce((acc, row) => {
@@ -29,6 +29,11 @@ const ConjugationExercise = ({exercise, id, slug, onScore}: ConjugationExerciseP
         setResults(result)
         setResultMode(true)
         setDisableButton(true)
+        if (result.score == result.max_score){
+            playSound('/RightAnswer.mp3')
+        }else{
+            playSound('/WrongAnswer.mp3')
+        }
         console.log(result)
         console.log("send answers", answers)
     }

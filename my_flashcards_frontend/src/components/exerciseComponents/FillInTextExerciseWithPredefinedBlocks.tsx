@@ -7,7 +7,7 @@ import AuthContext from "../../context/AuthContext.tsx";
 import {handleSendFillInTextExerciseWithPredefinedBlocks} from "../../api.tsx";
 import "../../sass/exercises/fill_in_text_exercise_with_predefined_blocks.css"
 
-const FillInTextExerciseWithPredefinedBlocks = ({exercise, id, slug, onScore}: FillInTextExerciseWithPredefinedBlocksProps) => {
+const FillInTextExerciseWithPredefinedBlocks = ({playSound, exercise, id, slug, onScore}: FillInTextExerciseWithPredefinedBlocksProps) => {
     console.log("exercise", exercise)
     const [formData, setFormData] = useState<FillInTextExerciseWithPredefinedBlocksDataBlocks[]>([]);
     const {token} = useContext(AuthContext);
@@ -27,6 +27,11 @@ const FillInTextExerciseWithPredefinedBlocks = ({exercise, id, slug, onScore}: F
         console.log("send answers", answers)
         setDisableButton(true)
         setResultMode(true)
+        if (result.score == result.max_score){
+            playSound('/RightAnswer.mp3')
+        }else{
+            playSound('/WrongAnswer.mp3')
+        }
     }
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
