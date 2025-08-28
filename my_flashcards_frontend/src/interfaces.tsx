@@ -1026,3 +1026,17 @@ export interface ResultData {
     max_score: number;
     result_answers: ResultAnswer[];
 }
+
+export interface ResultAnswerWithBlankId {
+    blank_id: number;
+    provided_answer: string | null;
+    correct_answer: string;
+    correct: boolean;
+}
+
+
+export interface ResultDataWithBlankId {
+    score: number;
+    max_score: number;
+    result_answers: ResultAnswerWithBlankId[];
+}

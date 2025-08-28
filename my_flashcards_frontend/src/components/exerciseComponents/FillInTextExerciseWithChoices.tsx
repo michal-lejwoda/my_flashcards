@@ -1,11 +1,10 @@
 import React, {useContext, useState} from "react";
-import {FillInTextExerciseWithChoicesProps, ResultData} from "../../interfaces.tsx";
+import {FillInTextExerciseWithChoicesProps, ResultDataWithBlankId} from "../../interfaces.tsx";
 import AuthContext from "../../context/AuthContext.tsx";
 import {handleSendFillInTextExerciseWithChoicesAnswers} from "../../api.tsx";
 import "../../sass/exercises/fill_in_text_exercise_with_choices.css"
-import Select from "react-select";
+import Select, {SingleValue} from "react-select";
 import {customStyleforFillTextWithChoices} from "../../customFunctions.tsx";
-import {SingleValue} from "react-select";
 
 const FillInTextExerciseWithChoices = ({exercise, id, slug, onScore}: FillInTextExerciseWithChoicesProps) => {
     type Answer = { blank_id: number; answer: string };
@@ -17,13 +16,14 @@ const FillInTextExerciseWithChoices = ({exercise, id, slug, onScore}: FillInText
     const {token} = useContext(AuthContext);
     const textParts = exercise.text_with_blanks.split(/({{\d+}})/g);
     const [disableButton, setDisableButton] = useState<boolean>(false)
-    const [results, setResults] = useState<ResultData | undefined>()
+    const [results, setResults] = useState<ResultDataWithBlankId | undefined>()
     const [resultMode, setResultMode] = useState<boolean>(false)
 
     const sendAnswers = async () => {
         const answers = {"answers": formData}
         const path_slug = `${id}/${slug}`
         const result = await handleSendFillInTextExerciseWithChoicesAnswers(path_slug, answers, token)
+        console.log("FillINTExtExerciseWithChoices", result)
         setResults(result)
         setResultMode(true)
         if (id !== undefined) {
@@ -75,6 +75,7 @@ const FillInTextExerciseWithChoices = ({exercise, id, slug, onScore}: FillInText
 
         return {
             ...customStyleforFillTextWithChoices,
+            // @ts-expect-error Custom styles
             control: (provided, state) => ({
                 ...customStyleforFillTextWithChoices.control?.(provided, state) || provided,
                 borderColor: isCorrect ? '#10B981' : '#EF4444',
