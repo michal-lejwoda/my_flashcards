@@ -3,6 +3,7 @@ import {useContext, useEffect, useState} from "react";
 import {handleSendMatchExerciseAnswers} from "../../api.tsx";
 import AuthContext from "../../context/AuthContext.tsx";
 import '../../sass/exercises/match_exercise.css';
+import {useExerciseContext} from "../ExerciseContext.tsx";
 
 const MatchExercise = ({playSound,  exercise, id, slug, onScore}: MatchExerciseProps) => {
 
@@ -21,6 +22,14 @@ const MatchExercise = ({playSound,  exercise, id, slug, onScore}: MatchExerciseP
     const [results, setResults] = useState<MatchExerciseAnswerResponse | undefined>()
     const [resultMode, setResultMode] = useState<boolean>(false)
     const {token} = useContext(AuthContext);
+    const { shouldCheckAll, resetCheckAll } = useExerciseContext();
+
+    useEffect(() => {
+        if (shouldCheckAll && !resultMode && !disableButton) {
+            sendAnswers();
+            resetCheckAll();
+        }
+    }, [shouldCheckAll, resultMode, disableButton]);
 
     useEffect(() => {
         setLeftItems(exercise.left_items);
@@ -32,14 +41,13 @@ const MatchExercise = ({playSound,  exercise, id, slug, onScore}: MatchExerciseP
 
 
     const sendAnswers = async () => {
+        if (disableButton || resultMode) return;
         const answers = {"answers": selectedElements}
         const path_slug = `${id}/${slug}`
         const result = await handleSendMatchExerciseAnswers(path_slug, answers, token)
-        console.log("result", result)
         if (id !== undefined) {
             onScore(id.toString(), result.score, result.max_score)
         }
-        console.log("send answers", answers)
         setDisableButton(true)
         setResults(result)
         setResultMode(true)
@@ -52,7 +60,6 @@ const MatchExercise = ({playSound,  exercise, id, slug, onScore}: MatchExerciseP
 
 
     const handleAddLeftItem = (item: string, key: number) => {
-        console.log("leftitem", item)
         if (rightSelected != null) {
             setSelectedElements(prevState => [...prevState, {left_item: item, right_item: rightSelected}]);
             setLeftItems(prev => prev.filter(i => i !== item));
@@ -71,7 +78,6 @@ const MatchExercise = ({playSound,  exercise, id, slug, onScore}: MatchExerciseP
 
 
     const handleAddRightItem = (item: string, key: number) => {
-        console.log("rightitem", item)
         if (leftSelected != null) {
             setSelectedElements(prevState => [...prevState, {left_item: leftSelected, right_item: item}]);
             setLeftItems(prev => prev.filter(i => i !== leftSelected));
@@ -135,20 +141,17 @@ const MatchExercise = ({playSound,  exercise, id, slug, onScore}: MatchExerciseP
                 <div className="matchexercise__selectedcontainer">
     <h3>Created pairs</h3>
     {selectedElements.map((element, key) => {
-
-        console.log("sadads", results?.result_answers)
         const isCorrect = resultMode && results?.result_answers?.some(result =>
             result.left_item === element.left_item &&
             result.right_item === element.right_item &&
             result.correct
         );
-        console.log("isCorrect",isCorrect)
         const isIncorrect = resultMode && results?.result_answers?.some(result =>
             result.left_item === element.left_item &&
             result.right_item === element.right_item &&
             !result.correct
         );
-        console.log("isIncorrect",isIncorrect)
+
 
         return (
             <div key={key} className="matchexercise__selectedcontainer__item">

@@ -8,10 +8,10 @@ import {useContext, useEffect, useState} from "react";
 import AuthContext from "../../context/AuthContext.tsx";
 import {handleSendMatchExerciseWithImageAnswers} from "../../api.tsx";
 import "../../sass/exercises/match_exercise_text_with_image.css"
+import {useExerciseContext} from "../ExerciseContext.tsx";
 
 
 const MatchExerciseTextWithImage = ({playSound, exercise, id, slug, onScore}: MatchExerciseTextWithImageProps) => {
-    console.log("exercise", exercise)
     const [selectedElements, setSelectedElements] = useState<MatchExerciseWithTextImageSelected[]>([]);
     const [rightSelected, setRightSelected] = useState<string | null>(null);
     const [leftSelected, setLeftSelected] = useState<LeftItemsWithImageInterface | null>(null);
@@ -23,30 +23,33 @@ const MatchExerciseTextWithImage = ({playSound, exercise, id, slug, onScore}: Ma
     const [disableButton, setDisableButton] = useState<boolean>(false)
     const [results, setResults] = useState<MatcheExerciseTextWithImageResponse | undefined>()
     const [resultMode, setResultMode] = useState<boolean>(false)
+    const { shouldCheckAll, resetCheckAll } = useExerciseContext();
+
+    useEffect(() => {
+        if (shouldCheckAll && !resultMode && !disableButton) {
+            sendAnswers();
+            resetCheckAll();
+        }
+    }, [shouldCheckAll, resultMode, disableButton]);
 
     useEffect(() => {
         setLeftItems(exercise.left_items);
         setRightItems(exercise.right_items);
         setSelectedElements([])
     }, [exercise]);
-    console.log("leftItems", leftItems)
-    console.log("rightItems", rightItems)
-
 
     const sendAnswers = async () => {
+        if (disableButton || resultMode) return;
         const transformedList = selectedElements.map(item => ({
             left_item: item.left_item.id,
             right_item: item.right_item
         }));
         const answers = {"answers": transformedList}
-        console.log("answers", answers)
         const path_slug = `${id}/${slug}`
         const result = await handleSendMatchExerciseWithImageAnswers(path_slug, answers, token)
         if (id !== undefined) {
             onScore(id.toString(), result.score, result.max_score)
         }
-        console.log("result", result)
-        console.log("send answers", answers)
         setResults(result)
         setResultMode(true)
         setDisableButton(true)
@@ -59,7 +62,6 @@ const MatchExerciseTextWithImage = ({playSound, exercise, id, slug, onScore}: Ma
 
 
     const handleAddLeftItem = (item: LeftItemsWithImageInterface, key: number) => {
-        console.log("leftitem", item)
         if (rightSelected != null) {
             setSelectedElements(prevState => [...prevState, {left_item: item, right_item: rightSelected}]);
             setLeftItems(prev => prev.filter(i => i !== item));
@@ -75,7 +77,6 @@ const MatchExerciseTextWithImage = ({playSound, exercise, id, slug, onScore}: Ma
 
     }
     const handleAddRightItem = (item: string, key: number) => {
-        console.log("rightitem", item)
         if (leftSelected != null) {
             setSelectedElements(prevState => [...prevState, {left_item: leftSelected, right_item: item}]);
             setLeftItems(prev => prev.filter(i => i !== leftSelected));
@@ -143,9 +144,6 @@ const MatchExerciseTextWithImage = ({playSound, exercise, id, slug, onScore}: Ma
             result.right_item === element.right_item &&
             result.correct
         );
-        console.log("isCorrect",isCorrect)
-                            console.log("element.left_item", element.left_item)
-                            console.log("element.right_item", element.right_item)
         const isIncorrect = resultMode && results?.result_answers?.some(result =>
             result.left_item === Number(element.left_item.id) &&
             result.right_item === element.right_item &&

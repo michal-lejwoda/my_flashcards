@@ -1,4 +1,4 @@
-import {useContext, useState} from "react";
+import {useContext, useState, useEffect} from "react";
 import {
     ChooseExerciseDependsOnMultipleTextsProps,
     ChooseExerciseDependsOnSingleTextAnswer,
@@ -6,9 +6,8 @@ import {
 } from "../../interfaces.tsx";
 import {handleSendChooseExerciseDependsOnSingleTextAnswers} from "../../api.tsx";
 import AuthContext from "../../context/AuthContext.tsx";
+import { useExerciseContext } from '../ExerciseContext.tsx';
 import "../../sass/exercises/choose_exercise_depends_on_multiple_texts.css"
-
-
 
 const ChooseExerciseDependsOnMultipleTexts = ({
                                                     playSound,
@@ -22,14 +21,15 @@ const ChooseExerciseDependsOnMultipleTexts = ({
     const [disableButton, setDisableButton] = useState<boolean>(false)
     const [results, setResults] = useState<ResultData | undefined>()
     const [resultMode, setResultMode] = useState<boolean>(false)
+    const { shouldCheckAll, resetCheckAll } = useExerciseContext();
 
     const sendAnswers = async () => {
+        if (disableButton || resultMode) return;
         const answers = {"answers": selectedOptions}
         const path_slug = `${id}/${slug}`
         const result = await handleSendChooseExerciseDependsOnSingleTextAnswers(path_slug, answers, token)
         setResults(result)
         setResultMode(true)
-        console.log("id", id)
         if (id !== undefined) {
             setDisableButton(true)
             onScore(id.toString(), result.score, result.max_score)
@@ -40,6 +40,12 @@ const ChooseExerciseDependsOnMultipleTexts = ({
             playSound('/WrongAnswer.mp3')
         }
     }
+    useEffect(() => {
+        if (shouldCheckAll && !resultMode && !disableButton) {
+            sendAnswers();
+            resetCheckAll();
+        }
+    }, [shouldCheckAll, resultMode, disableButton]);
 
     const handleOptionClick = (questionId: string, option: string) => {
         if (resultMode) return;
@@ -82,8 +88,6 @@ const ChooseExerciseDependsOnMultipleTexts = ({
         return className;
     };
 
-    console.log("selectedOptions", selectedOptions);
-
     return (
         <section className="cdomt">
             {/*<h1 className="cdomt__title">ChooseExerciseDependsOnMultipleText</h1>*/}
@@ -115,8 +119,22 @@ const ChooseExerciseDependsOnMultipleTexts = ({
                 })}
             </div>
             <div className="cdomt__buttons">
-                <button disabled={disableButton} className="greenoutline--button greenoutline--button--mb" onClick={sendAnswers}>Send</button>
+                <button
+                    disabled={disableButton}
+                    className="greenoutline--button greenoutline--button--mb"
+                    onClick={sendAnswers}
+                >
+                    {resultMode ? 'Sprawdzone' : 'Send'}
+                </button>
             </div>
+
+            {/*/!* ← OPCJONALNIE: Pokaż status dla debugowania *!/*/}
+            {/*{process.env.NODE_ENV === 'development' && (*/}
+            {/*    <div style={{fontSize: '12px', color: '#666', marginTop: '10px'}}>*/}
+            {/*        Status: {resultMode ? 'Sprawdzone' : 'Do sprawdzenia'} | */}
+            {/*        Odpowiedzi: {selectedOptions.length}/{exercise.exercises.length}*/}
+            {/*    </div>*/}
+            {/*)}*/}
         </section>
     );
 };

@@ -2,20 +2,30 @@ import {
     FillInTextExerciseWithPredefinedBlocksDataBlocks,
     FillInTextExerciseWithPredefinedBlocksProps
 } from "../../interfaces.tsx";
-import React, {useContext, useState} from "react";
+import React, {useContext, useEffect, useState} from "react";
 import AuthContext from "../../context/AuthContext.tsx";
 import {handleSendFillInTextExerciseWithPredefinedBlocks} from "../../api.tsx";
 import "../../sass/exercises/fill_in_text_exercise_with_predefined_blocks.css"
+import {useExerciseContext} from "../ExerciseContext.tsx";
 
 const FillInTextExerciseWithPredefinedBlocks = ({playSound, exercise, id, slug, onScore}: FillInTextExerciseWithPredefinedBlocksProps) => {
-    console.log("exercise", exercise)
     const [formData, setFormData] = useState<FillInTextExerciseWithPredefinedBlocksDataBlocks[]>([]);
     const {token} = useContext(AuthContext);
     const textParts = exercise.text_with_blanks.split(/({{\d+}})/g);
     const [disableButton, setDisableButton] = useState<boolean>(false)
     const [resultMode, setResultMode] = useState<boolean>(false)
+    const { shouldCheckAll, resetCheckAll } = useExerciseContext();
+
+    useEffect(() => {
+        if (shouldCheckAll && !resultMode && !disableButton) {
+            sendAnswers();
+            resetCheckAll();
+        }
+    }, [shouldCheckAll, resultMode, disableButton]);
+
 
     const sendAnswers = async () => {
+        if (disableButton || resultMode) return;
         const answers = {"answers": formData}
         const path_slug = `${id}/${slug}`
         const result = await handleSendFillInTextExerciseWithPredefinedBlocks(path_slug, answers, token)
@@ -23,8 +33,6 @@ const FillInTextExerciseWithPredefinedBlocks = ({playSound, exercise, id, slug, 
         if (id !== undefined){
             onScore(id.toString(), result.score, result.max_score)
         }
-        console.log("result", result)
-        console.log("send answers", answers)
         setDisableButton(true)
         setResultMode(true)
         if (result.score == result.max_score){

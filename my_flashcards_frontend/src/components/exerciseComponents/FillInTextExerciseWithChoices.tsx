@@ -1,10 +1,11 @@
-import React, {useContext, useState} from "react";
+import React, {useContext, useEffect, useState} from "react";
 import {FillInTextExerciseWithChoicesProps, ResultDataWithBlankId} from "../../interfaces.tsx";
 import AuthContext from "../../context/AuthContext.tsx";
 import {handleSendFillInTextExerciseWithChoicesAnswers} from "../../api.tsx";
 import "../../sass/exercises/fill_in_text_exercise_with_choices.css"
 import Select, {SingleValue} from "react-select";
 import {customStyleforFillTextWithChoices} from "../../customFunctions.tsx";
+import {useExerciseContext} from "../ExerciseContext.tsx";
 
 const FillInTextExerciseWithChoices = ({playSound, exercise, id, slug, onScore}: FillInTextExerciseWithChoicesProps) => {
     type Answer = { blank_id: number; answer: string };
@@ -18,19 +19,27 @@ const FillInTextExerciseWithChoices = ({playSound, exercise, id, slug, onScore}:
     const [disableButton, setDisableButton] = useState<boolean>(false)
     const [results, setResults] = useState<ResultDataWithBlankId | undefined>()
     const [resultMode, setResultMode] = useState<boolean>(false)
+    const { shouldCheckAll, resetCheckAll } = useExerciseContext();
+
+    useEffect(() => {
+        if (shouldCheckAll && !resultMode && !disableButton) {
+            sendAnswers();
+            resetCheckAll();
+        }
+    }, [shouldCheckAll, resultMode, disableButton]);
+
 
     const sendAnswers = async () => {
+        if (disableButton || resultMode) return;
         const answers = {"answers": formData}
         const path_slug = `${id}/${slug}`
         const result = await handleSendFillInTextExerciseWithChoicesAnswers(path_slug, answers, token)
-        console.log("FillINTExtExerciseWithChoices", result)
+
         setResults(result)
         setResultMode(true)
         if (id !== undefined) {
             onScore(id.toString(), result.score, result.max_score)
         }
-        console.log(result)
-        console.log("send answers", answers)
         setDisableButton(true)
         if (result.score == result.max_score){
             playSound('/RightAnswer.mp3')

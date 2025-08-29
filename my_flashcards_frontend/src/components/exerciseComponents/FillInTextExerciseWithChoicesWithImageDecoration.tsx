@@ -1,10 +1,11 @@
-import React, {useContext, useState} from "react";
+import React, {useContext, useEffect, useState} from "react";
 import {FillInTextExerciseWithChoicesWithImageDecorationProps, ResultDataWithBlankId} from "../../interfaces.tsx";
 import AuthContext from "../../context/AuthContext.tsx";
 import {handleSendFillInTextExerciseWithChoicesAnswers} from "../../api.tsx";
 import "../../sass/exercises/fill_in_text_exercise_with_choices_with_image_decoration.css";
 import Select, {SingleValue} from "react-select";
 import {customStyleforFillTextWithChoices} from "../../customFunctions.tsx";
+import {useExerciseContext} from "../ExerciseContext.tsx";
 
 
 const FillInTextExerciseWithChoicesWithImageDecoration = ({
@@ -25,9 +26,17 @@ const FillInTextExerciseWithChoicesWithImageDecoration = ({
     const [results, setResults] = useState<ResultDataWithBlankId | undefined>()
     const [resultMode, setResultMode] = useState<boolean>(false)
     const textParts = exercise.text_with_blanks.split(/({{\d+}})/g);
-    console.log("exercise", exercise)
+    const { shouldCheckAll, resetCheckAll } = useExerciseContext();
+
+    useEffect(() => {
+        if (shouldCheckAll && !resultMode && !disableButton) {
+            sendAnswers();
+            resetCheckAll();
+        }
+    }, [shouldCheckAll, resultMode, disableButton]);
 
     const sendAnswers = async () => {
+        if (disableButton || resultMode) return;
         const answers = {"answers": formData}
         const path_slug = `${id}/${slug}`
         const result = await handleSendFillInTextExerciseWithChoicesAnswers(path_slug, answers, token)

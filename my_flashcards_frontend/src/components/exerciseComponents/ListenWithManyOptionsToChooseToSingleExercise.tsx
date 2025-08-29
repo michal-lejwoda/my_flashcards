@@ -3,30 +3,35 @@ import {
     ListenWithManyOptionsToChooseToSingleExerciseAnswersResponse,
     ListenWithManyOptionsToChooseToSingleExerciseProps
 } from "../../interfaces.tsx";
-import {useContext, useState} from "react";
+import {useContext, useEffect, useState} from "react";
 import {handleSendListenWithManyOptionsToChooseToSingleExerciseAnswers} from "../../api.tsx";
 import AuthContext from "../../context/AuthContext.tsx";
 import "../../sass/exercises/listen_with_many_options_to_choose_to_single_exercise.css";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faVolumeUp} from "@fortawesome/free-solid-svg-icons";
+import {useExerciseContext} from "../ExerciseContext.tsx";
+
 
 
 const ListenWithManyOptionsToChooseToSingleExercise = ({
                                                            playSound,exercise, id, slug, onScore
                                                        }: ListenWithManyOptionsToChooseToSingleExerciseProps) => {
-    console.log("exercise", exercise)
     const [disableButton, setDisableButton] = useState<boolean>(false)
     const [selectedOptions, setSelectedOptions] = useState<ChooseExerciseDependsOnMultipleTextAnswer[]>([]);
     const [results, setResults] = useState<ListenWithManyOptionsToChooseToSingleExerciseAnswersResponse | undefined>()
     const [resultMode, setResultMode] = useState<boolean>(false)
-    // const playSound = (audio_url: string) => {
-    //     const audio = new Audio(import.meta.env.VITE_API_URL + audio_url);
-    //     audio.play();
-    // };
     const {token} = useContext(AuthContext);
+    const { shouldCheckAll, resetCheckAll } = useExerciseContext();
+
+    useEffect(() => {
+        if (shouldCheckAll && !resultMode && !disableButton) {
+            sendAnswers();
+            resetCheckAll();
+        }
+    }, [shouldCheckAll, resultMode, disableButton]);
     const sendAnswers = async () => {
+        if (disableButton || resultMode) return;
         const answers = {"answers": selectedOptions}
-        console.log("answers", answers)
         const path_slug = `${id}/${slug}`
         const result = await handleSendListenWithManyOptionsToChooseToSingleExerciseAnswers(path_slug, answers, token)
         if (id !== undefined) {
@@ -34,8 +39,6 @@ const ListenWithManyOptionsToChooseToSingleExercise = ({
         }
         setResults(result)
         setResultMode(true)
-        console.log("result", result)
-        console.log("send answers", answers)
         setDisableButton(true)
         if (result.score == result.max_score){
             playSound('/RightAnswer.mp3')
@@ -68,9 +71,6 @@ const ListenWithManyOptionsToChooseToSingleExercise = ({
     };
 
     const getOptionClassName = (questionId: string, option: string): string => {
-        console.log("questionId", questionId)
-        console.log("option", option)
-
         const selectedAnswersForQuestion = selectedOptions.find(opt => opt.question_id === questionId);
         const isSelected = selectedAnswersForQuestion ? selectedAnswersForQuestion.answers.includes(option) : false;
 

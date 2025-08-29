@@ -26,11 +26,11 @@ import ListenWithManyOptionsToChooseToSingleExercise from "./ListenWithManyOptio
 import MatchExerciseTextWithImage from "./MatchExerciseTextWithImage.tsx";
 import "../../sass/exercises/multiple_exercises.css";
 
+
 const MultipleExercises = ({playSound,exercise, onScore}: MultipleExercisesProps) => {
 
 
     const renderContent = (ex: Exercises) => {
-        console.log("ex", ex)
         if (isMatchExercise(ex)) return <MatchExercise
             playSound = {playSound}
             exercise={ex}
@@ -82,13 +82,6 @@ const MultipleExercises = ({playSound,exercise, onScore}: MultipleExercisesProps
             slug={ex.slug}
             onScore={onScore}
         />;
-
-        // if (isFlexibleExercisePage(ex)) return <FlexibleExercisePage
-        //     exercise={ex}
-        //     id={ex.id}
-        //     slug={ex.slug}
-        //     onScore={handleScoreUpdate}
-        // />;
         if (isListenExerciseWithOptionsToChoose(ex)) return <ListenExerciseWithOptionsToChoose
             playSound = {playSound}
             exercise={ex}
@@ -116,12 +109,15 @@ const MultipleExercises = ({playSound,exercise, onScore}: MultipleExercisesProps
     };
 
     return (
-        <div>
-            {exercise.exercises.map((ex) => (
+        <div className="multiple-exercises">
+            {exercise.exercises.map((ex, index) =>{
+                return (
                 <React.Fragment key={ex.id ?? ex.slug}>
+                    {index > 0 && <div className="multiple-exercises__hr"></div>}
                     {renderContent(ex)}
                 </React.Fragment>
-            ))}
+            )})}
+
         </div>
     );
 };

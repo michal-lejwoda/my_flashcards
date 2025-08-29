@@ -3,32 +3,34 @@ import {
     ListenExerciseWithOptionsToChooseProps,
     ResultData
 } from "../../interfaces.tsx";
-import {useContext, useState} from "react";
+import {useContext, useEffect, useState} from "react";
 import "../../sass/exercises/listen_exercise_with_options_to_choose.css";
 
 import {handleSendChooseExerciseDependsOnSingleTextAnswers} from "../../api.tsx";
 import AuthContext from "../../context/AuthContext.tsx";
 import {faVolumeUp} from "@fortawesome/free-solid-svg-icons";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {useExerciseContext} from "../ExerciseContext.tsx";
 
 
 const ListenExerciseWithOptionsToChoose = ({playSound, exercise, id, slug, onScore}: ListenExerciseWithOptionsToChooseProps) => {
-    console.log("exercise", exercise)
-    console.log("id", id)
-    console.log("slug", slug)
     const [selectedOptions, setSelectedOptions] = useState<ChooseExerciseDependsOnSingleTextAnswer[]>([]);
-    // const playSound = (audio_url: string) => {
-    //     console.log(import.meta.env.VITE_API_URL + audio_url)
-    //     const audio = new Audio(audio_url);
-    //     audio.play();
-    // };
     const [disableButton, setDisableButton] = useState<boolean>(false)
     const {token} = useContext(AuthContext);
     const [results, setResults] = useState<ResultData | undefined>()
     const [resultMode, setResultMode] = useState<boolean>(false)
+    const { shouldCheckAll, resetCheckAll } = useExerciseContext();
+
+    useEffect(() => {
+        if (shouldCheckAll && !resultMode && !disableButton) {
+            sendAnswers();
+            resetCheckAll();
+        }
+    }, [shouldCheckAll, resultMode, disableButton]);
 
 
     const sendAnswers = async () => {
+        if (disableButton || resultMode) return;
         const answers = {"answers": selectedOptions}
         const path_slug = `${id}/${slug}`
         const result = await handleSendChooseExerciseDependsOnSingleTextAnswers(path_slug, answers, token)
@@ -43,9 +45,6 @@ const ListenExerciseWithOptionsToChoose = ({playSound, exercise, id, slug, onSco
         }else{
             playSound('/WrongAnswer.mp3')
         }
-        console.log("result", result)
-        console.log("send answers", answers)
-
     }
 
     const handleOptionClick = (questionId: string, option: string) => {

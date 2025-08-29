@@ -1,11 +1,11 @@
 import {ConjugationExerciseAnswer, ConjugationExerciseProps, ResultData} from "../../interfaces.tsx";
-import {useContext, useState} from "react";
+import {useContext, useEffect, useState} from "react";
 import {handleSendConjugationExerciseAnswers} from "../../api.tsx";
 import AuthContext from "../../context/AuthContext.tsx";
 import "../../sass/exercises/conjugation_exercise.css"
+import {useExerciseContext} from "../ExerciseContext.tsx";
 
 const ConjugationExercise = ({playSound, exercise, id, slug, onScore}: ConjugationExerciseProps) => {
-    console.log("exercise", exercise)
     const [formData, setFormData] = useState<ConjugationExerciseAnswer[]>(() =>
         exercise.conjugation_rows.reduce((acc, row) => {
             if (!row.is_pre_filled && row.person_label) {
@@ -17,9 +17,18 @@ const ConjugationExercise = ({playSound, exercise, id, slug, onScore}: Conjugati
     const [disableButton, setDisableButton] = useState<boolean>(false)
     const [results, setResults] = useState<ResultData | undefined>()
     const [resultMode, setResultMode] = useState<boolean>(false)
+    const { shouldCheckAll, resetCheckAll } = useExerciseContext();
     const {token} = useContext(AuthContext);
 
+    useEffect(() => {
+        if (shouldCheckAll && !resultMode && !disableButton) {
+            sendAnswers();
+            resetCheckAll();
+        }
+    }, [shouldCheckAll, resultMode, disableButton]);
+
     const sendAnswers = async () => {
+        if (disableButton || resultMode) return;
         const answers = {"answers": formData}
         const path_slug = `${id}/${slug}`
         const result = await handleSendConjugationExerciseAnswers(path_slug, answers, token)
@@ -34,14 +43,9 @@ const ConjugationExercise = ({playSound, exercise, id, slug, onScore}: Conjugati
         }else{
             playSound('/WrongAnswer.mp3')
         }
-        console.log(result)
-        console.log("send answers", answers)
     }
 
-    console.log("results",results)
-
     const getOptionClassName = (person_label: string): string => {
-        console.log("person_label", person_label)
         let className = "conjugation-exercise__input "
         if (resultMode){
             if (results){
@@ -52,7 +56,6 @@ const ConjugationExercise = ({playSound, exercise, id, slug, onScore}: Conjugati
                 else{
                     className += "conjugation-exercise__input--correct"
                 }
-                console.log("row", row)
             }
         }
         return className
@@ -88,7 +91,6 @@ const ConjugationExercise = ({playSound, exercise, id, slug, onScore}: Conjugati
 
                         {exercise.conjugation_rows.map(element => {
                             const resultData = getResultData(element.person_label);
-                            // const isCorrect = resultData?.correct === true;
                             const isIncorrect = resultData?.correct === false;
 
                             return (

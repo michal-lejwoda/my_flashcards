@@ -1,4 +1,4 @@
-import {useContext, useState} from "react";
+import {useContext, useEffect, useState} from "react";
 import {
     ChooseExerciseDependsOnSingleTextAnswer,
     ChooseExerciseDependsOnSingleTextProps,
@@ -7,17 +7,19 @@ import {
 import {handleSendChooseExerciseDependsOnSingleTextAnswers} from "../../api.tsx";
 import AuthContext from "../../context/AuthContext.tsx";
 import "../../sass/exercises/choose_exercise_depends_on_single_text.css"
+import {useExerciseContext} from "../ExerciseContext.tsx";
 
 
 const ChooseExerciseDependsOnSingleText = ({playSound, exercise, id, slug, onScore}: ChooseExerciseDependsOnSingleTextProps) => {
     const [selectedOptions, setSelectedOptions] = useState<ChooseExerciseDependsOnSingleTextAnswer[]>([]);
-    console.log(selectedOptions)
     const [disableButton, setDisableButton] = useState<boolean>(false)
     const [results, setResults] = useState<ResultData | undefined>()
     const [resultMode, setResultMode] = useState<boolean>(false)
+    const { shouldCheckAll, resetCheckAll } = useExerciseContext();
 
     const {token} = useContext(AuthContext);
     const sendAnswers = async () => {
+        if (disableButton || resultMode) return;
         const answers = {"answers": selectedOptions}
         const path_slug = `${id}/${slug}`
         const result = await handleSendChooseExerciseDependsOnSingleTextAnswers(path_slug, answers, token)
@@ -33,6 +35,13 @@ const ChooseExerciseDependsOnSingleText = ({playSound, exercise, id, slug, onSco
             playSound('/WrongAnswer.mp3')
         }
     }
+
+    useEffect(() => {
+        if (shouldCheckAll && !resultMode && !disableButton) {
+            sendAnswers();
+            resetCheckAll();
+        }
+    }, [shouldCheckAll, resultMode, disableButton]);
 
    const handleOptionClick = (questionId: string, option: string) => {
         if (resultMode) return;
@@ -88,8 +97,6 @@ const ChooseExerciseDependsOnSingleText = ({playSound, exercise, id, slug, onSco
 
                 <div className="cdost__choose-container">
                     {exercise.exercises.map((element) => {
-                        // const selectedAnswer = selectedOptions.find(opt => opt.question_id === element.question_id)?.answer;
-
                         return (
                             <div className="cdost__question-block" key={element.question_id}>
                                 <div className="cdost__question">{element.question}</div>
@@ -111,7 +118,7 @@ const ChooseExerciseDependsOnSingleText = ({playSound, exercise, id, slug, onSco
                     })}
                 </div>
                 <div className="cdost__buttons">
-                    <button disabled={disableButton} className="greenoutline--button greenoutline--button--mb" onClick={sendAnswers}>Send</button>
+                    <button disabled={disableButton} className="greenoutline--button greenoutline--button--mb" onClick={sendAnswers}>{resultMode ? 'Sprawdzone' : 'Send'}</button>
                 </div>
             </div>
         </section>

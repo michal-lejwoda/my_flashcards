@@ -28,40 +28,64 @@ import ListenWithManyOptionsToChooseToSingleExercise
     from "./exerciseComponents/ListenWithManyOptionsToChooseToSingleExercise.tsx";
 import MatchExerciseTextWithImage from "./exerciseComponents/MatchExerciseTextWithImage.tsx";
 import MultipleExercises from "./exerciseComponents/MultipleExercises.tsx";
+import { ExerciseProvider, useExerciseContext } from './ExerciseContext.tsx';
 import "../../src/sass/exercises/exercise.css"
 
-const Exercise = () => {
+const ExerciseContent = () => {
     type ExerciseScore = {
         "score": number,
-        "max_score": number
+        "max_score": number,
+        "id": string
     }
+
     const {id: idParam, slug} = useParams<{ id: string; slug: string }>();
     const id = idParam ? parseInt(idParam, 10) : undefined;
     const [exercise, setExercise] = useState<Exercises | null>(null);
     const [numberOfExercises, setNumberOfExercises] = useState<number>(1);
     const [results, setResults] = useState<ExerciseScore[]>([]);
+    const [isMultipleExercise, setIsMultipleExercise] = useState(false);
+    const [allChecked, setAllChecked] = useState(false);
+    const { triggerCheckAll } = useExerciseContext();
+    useEffect(() => {
+        if (exercise && exercise.exercises && exercise.exercises.length > 0){
+            setIsMultipleExercise(true)
+        } else if (exercise && exercise.type) {
+            setIsMultipleExercise(false)
+        }
+    }, [exercise]);
 
     const currentAudioRef = useRef<HTMLAudioElement | null>(null);
 
-  const playSound = (src: string) => {
-    if (currentAudioRef.current) {
-      currentAudioRef.current.pause();
-      currentAudioRef.current.currentTime = 0;
+    const playSound = (src: string) => {
+        if (currentAudioRef.current) {
+            currentAudioRef.current.pause();
+            currentAudioRef.current.currentTime = 0;
+        }
+        const newAudio = new Audio(src);
+        newAudio.play();
+        currentAudioRef.current = newAudio;
+    };
+
+    const checkAllExercises = () => {
+        triggerCheckAll();
+        setAllChecked(true);
+        setTimeout(() => {
+            setAllChecked(false);
+        }, 1000);
     }
-    console.log(src)
-    const newAudio = new Audio(src);
-    console.log(newAudio)
-    newAudio.play();
-    currentAudioRef.current = newAudio;
-  };
-
-
 
     const handleScoreUpdate = useCallback((exerciseId: string, score: number, max_score: number) => {
-        setResults((prev) => [
-            ...prev,
-            {id: exerciseId, score, max_score}
-        ]);
+        setResults((prev) => {
+            const existingIndex = prev.findIndex(result => result.id === exerciseId);
+            if (existingIndex >= 0) {
+                const updated = [...prev];
+                updated[existingIndex] = { id: exerciseId, score, max_score };
+                return updated;
+            } else {
+                const newResults = [...prev, { id: exerciseId, score, max_score }];
+                return newResults;
+            }
+        });
     }, []);
 
     const userScore = results.reduce((acc, v) => acc + v.score, 0)
@@ -80,79 +104,65 @@ const Exercise = () => {
         fetchExercise();
     }, [id, slug]);
 
+    useEffect(() => {
+        setResults([]);
+        setAllChecked(false);
+    }, [exercise]);
+
     const renderContent = () => {
         if (!exercise) return null;
 
+        const commonProps = {
+            playSound,
+            id,
+            slug,
+            onScore: handleScoreUpdate
+        };
 
         if (isMatchExercise(exercise)) return <MatchExercise
-            playSound={playSound}
             exercise={exercise}
-                                                             id={id}
-                                                             slug={slug}
-                                                             onScore={handleScoreUpdate}
+            {...commonProps}
         />;
         if (isChooseExerciseDependsOnMultipleTexts(exercise)) return <ChooseExerciseDependsOnMultipleTexts
-            playSound={playSound}
             exercise={exercise}
-            id={id}
-            slug={slug}
-            onScore={handleScoreUpdate}/>;
+            {...commonProps}
+        />;
         if (isChooseExerciseDependsOnSingleText(exercise)) return <ChooseExerciseDependsOnSingleText
-            playSound={playSound}
             exercise={exercise}
-            id={id}
-            slug={slug}
-            onScore={handleScoreUpdate}
+            {...commonProps}
         />;
         if (isConjugationExercise(exercise)) return <ConjugationExercise
-            playSound={playSound}
             exercise={exercise}
-            id={id}
-            slug={slug}
-            onScore={handleScoreUpdate}/>;
+            {...commonProps}
+        />;
         if (isFillInTextExerciseWithChoices(exercise)) return <FillInTextExerciseWithChoices
-            playSound={playSound}
             exercise={exercise}
-                                                                                             id={id}
-                                                                                             slug={slug}
-                                                                                             onScore={handleScoreUpdate}/>;
+            {...commonProps}
+        />;
         if (isFillInTextExerciseWithChoicesWithImageDecoration(exercise)) return <FillInTextExerciseWithChoicesWithImageDecoration
-            playSound={playSound}
             exercise={exercise}
-            id={id}
-            slug={slug}
-            onScore={handleScoreUpdate}/>;
+            {...commonProps}
+        />;
         if (isFillInTextExerciseWithPredefinedBlocks(exercise)) return <FillInTextExerciseWithPredefinedBlocks
-            playSound={playSound}
             exercise={exercise}
-            id={id}
-            slug={slug}
-            onScore={handleScoreUpdate}/>;
-
+            {...commonProps}
+        />;
         if (isListenExerciseWithOptionsToChoose(exercise)) return <ListenExerciseWithOptionsToChoose
-            playSound={playSound}
             exercise={exercise}
-            id={id}
-            slug={slug}
-            onScore={handleScoreUpdate}/>;
-
+            {...commonProps}
+        />;
         if (isListenWithManyOptionsToChooseToSingleExercise(exercise)) return <ListenWithManyOptionsToChooseToSingleExercise
-            playSound={playSound}
             exercise={exercise}
-            id={id}
-            slug={slug}
-            onScore={handleScoreUpdate}/>;
+            {...commonProps}
+        />;
         if (isMatchExerciseTextWithImage(exercise)) return <MatchExerciseTextWithImage
-            playSound={playSound}
             exercise={exercise}
-                                                                                       id={id}
-                                                                                       slug={slug}
-                                                                                       onScore={handleScoreUpdate}/>;
+            {...commonProps}
+        />;
         if (isMultipleExercises(exercise)) {
             return <MultipleExercises
-                playSound={playSound}
-                exercise={exercise} id={id} slug={slug}
-                                      onScore={handleScoreUpdate}
+                exercise={exercise}
+                {...commonProps}
             />;
         }
 
@@ -162,10 +172,32 @@ const Exercise = () => {
     return (
         <div className="exercise__content">
             {renderContent()}
-            <div className="exercise__results">Zrobione zadania {results.length} z {numberOfExercises}. Liczba punktow {userScore} z {maxScore}</div>
+            {isMultipleExercise && (
+                <button
+                    onClick={checkAllExercises}
+                    disabled={allChecked}
+                    className={`check-all-button ${allChecked ? 'checking' : ''}`}
+                >
+                    {allChecked ? 'Checking...' : 'Check all'}
+                </button>
+            )}
+            <div className="exercise__results">
+                Zrobione zadania {results.length} z {numberOfExercises}.
+                Liczba punktów {userScore} z {maxScore}
+                {results.length === numberOfExercises && numberOfExercises > 0 && (
+                    <span className="completion-status"> ✅ Wszystkie ukończone!</span>
+                )}
+            </div>
         </div>
     );
 };
+
+const Exercise = () => {
+    return (
+        <ExerciseProvider>
+            <ExerciseContent />
+        </ExerciseProvider>
+    );
+};
+
 export default Exercise
-
-
