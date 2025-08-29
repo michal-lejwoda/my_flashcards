@@ -108,7 +108,6 @@ const MatchExerciseTextWithImage = ({playSound, exercise, id, slug, onScore}: Ma
 
     return (
         <div className="matchexercise">
-            <h1 className="matchexercise__title">Match Exercise Text With Image</h1>
             <div className="matchexercise__selectcontainer">
                 <div className="matchexercise__description">{exercise.description}</div>
                 <div className="matchexercise__sides">

@@ -90,7 +90,6 @@ const ChooseExerciseDependsOnMultipleTexts = ({
 
     return (
         <section className="cdomt">
-            {/*<h1 className="cdomt__title">ChooseExerciseDependsOnMultipleText</h1>*/}
             <div className="cdomt__choose-container">
                 {exercise.exercises.map((element) => {
                     return (

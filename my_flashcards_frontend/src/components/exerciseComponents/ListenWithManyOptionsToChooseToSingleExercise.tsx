@@ -109,9 +109,6 @@ const ListenWithManyOptionsToChooseToSingleExercise = ({
 
     return (
         <section className="lewotc">
-            <div className="lewotc__title">
-                <h1>ListenExerciseWithOptionsToChooseToSingleExercise</h1>
-            </div>
             <div className="lewotc__allexercises">
                 {exercise.exercises.map(element => {
                     return (

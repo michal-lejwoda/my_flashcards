@@ -132,11 +132,6 @@ const FillInTextExerciseWithPredefinedBlocks = ({playSound, exercise, id, slug, 
     return (
         <section className="fitewc">
             <div className="fitewc__content">
-                {/*<div className="fitewc__title">*/}
-                {/*    <h1>FillInTextExerciseWithPredefinedBlocks</h1>*/}
-                {/*</div>*/}
-
-                {/*<p>{exercise.text_with_blanks}</p>*/}
                 <div className="fitewc__container">
                     <div className="fitewc__description">{exercise.description}</div>
                     <div className="fitewc__text">

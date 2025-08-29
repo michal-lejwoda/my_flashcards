@@ -110,8 +110,6 @@ const MatchExercise = ({playSound,  exercise, id, slug, onScore}: MatchExerciseP
 
     return (
         <div className="matchexercise">
-            <h1 className="matchexercise__title">Match Exercise</h1>
-
             <div className="matchexercise__selectcontainer">
                 <div className="matchexercise__description">{exercise.description}</div>
                 <div className="matchexercise__sides">

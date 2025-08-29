@@ -89,8 +89,6 @@ const ListenExerciseWithOptionsToChoose = ({playSound, exercise, id, slug, onSco
 
     return (
         <section className="lewotc">
-            <div className="lewotc__title">
-            </div>
             <div className="lewotc__allexercises">
                 {exercise.exercises.map(element => {
                     return (
@@ -113,7 +111,6 @@ const ListenExerciseWithOptionsToChoose = ({playSound, exercise, id, slug, onSco
                                     )
                                 })}
                             </div>
-                            {/*<pre>{JSON.stringify(selectedOptions, null, 2)}</pre>*/}
                         </div>
 
                     )

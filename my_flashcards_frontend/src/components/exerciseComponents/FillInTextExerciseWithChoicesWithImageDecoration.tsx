@@ -161,10 +161,6 @@ const FillInTextExerciseWithChoicesWithImageDecoration = ({
     return (
         <section className="fitewc">
             <div className="fitewc__content">
-                <div className="fitewc__title">
-                    {/*<h1>FillInTextExerciseWithChoices</h1>*/}
-                </div>
-
                 <div className="fitewc__container">
                     <div className="fitewc__description">{exercise.description}</div>
                     <div className="fitewc__text">
