@@ -4,6 +4,7 @@ import {handleSendConjugationExerciseAnswers} from "../../api.tsx";
 import AuthContext from "../../context/AuthContext.tsx";
 import "../../sass/exercises/conjugation_exercise.css"
 import {useExerciseContext} from "../ExerciseContext.tsx";
+import {useTranslation} from "react-i18next";
 
 const ConjugationExercise = ({playSound, exercise, id, slug, onScore}: ConjugationExerciseProps) => {
     const [formData, setFormData] = useState<ConjugationExerciseAnswer[]>(() =>
@@ -19,6 +20,7 @@ const ConjugationExercise = ({playSound, exercise, id, slug, onScore}: Conjugati
     const [resultMode, setResultMode] = useState<boolean>(false)
     const { shouldCheckAll, resetCheckAll } = useExerciseContext();
     const {token} = useContext(AuthContext);
+    const {t} = useTranslation();
 
     useEffect(() => {
         if (shouldCheckAll && !resultMode && !disableButton) {
@@ -111,11 +113,6 @@ const ConjugationExercise = ({playSound, exercise, id, slug, onScore}: Conjugati
 
                                             {resultMode && resultData && (
                                                 <div className="conjugation-exercise__feedback">
-                                                    {/*{isCorrect && (*/}
-                                                    {/*    <span className="conjugation-exercise__feedback--correct">*/}
-                                                    {/*        ✓ Correct*/}
-                                                    {/*    </span>*/}
-                                                    {/*)}*/}
                                                     {isIncorrect && (
                                                         <span className="conjugation-exercise__feedback--incorrect">
                                                             ✗ Correct_answer: <strong>{resultData.correct_answer}</strong>
@@ -131,7 +128,7 @@ const ConjugationExercise = ({playSound, exercise, id, slug, onScore}: Conjugati
                     </div>
                 </div>
                 <div className="conjugationexercise__buttons ">
-                    <button disabled={disableButton}  className="greenoutline--button greenoutline--button--mb" onClick={sendAnswers}>Send</button>
+                    <button disabled={disableButton}  className="greenoutline--button greenoutline--button--mb" onClick={sendAnswers}>{resultMode ? t('Checked') : t('Check')}</button>
                 </div>
             </div>
         </section>

@@ -11,6 +11,7 @@ import AuthContext from "../../context/AuthContext.tsx";
 import {faVolumeUp} from "@fortawesome/free-solid-svg-icons";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {useExerciseContext} from "../ExerciseContext.tsx";
+import {useTranslation} from "react-i18next";
 
 
 const ListenExerciseWithOptionsToChoose = ({playSound, exercise, id, slug, onScore}: ListenExerciseWithOptionsToChooseProps) => {
@@ -20,6 +21,7 @@ const ListenExerciseWithOptionsToChoose = ({playSound, exercise, id, slug, onSco
     const [results, setResults] = useState<ResultData | undefined>()
     const [resultMode, setResultMode] = useState<boolean>(false)
     const { shouldCheckAll, resetCheckAll } = useExerciseContext();
+    const {t} = useTranslation();
 
     useEffect(() => {
         if (shouldCheckAll && !resultMode && !disableButton) {
@@ -117,7 +119,7 @@ const ListenExerciseWithOptionsToChoose = ({playSound, exercise, id, slug, onSco
                 })}
             </div>
             <div className="lewotc__buttons">
-                <button disabled={disableButton} className="greenoutline--button greenoutline--button--mb" onClick={sendAnswers}>Send</button>
+                <button disabled={disableButton} className="greenoutline--button greenoutline--button--mb" onClick={sendAnswers}>{resultMode ? t('Checked') : t('Check')}</button>
             </div>
         </section>
     );

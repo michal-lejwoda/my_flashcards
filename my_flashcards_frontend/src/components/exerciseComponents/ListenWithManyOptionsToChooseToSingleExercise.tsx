@@ -10,6 +10,7 @@ import "../../sass/exercises/listen_with_many_options_to_choose_to_single_exerci
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faVolumeUp} from "@fortawesome/free-solid-svg-icons";
 import {useExerciseContext} from "../ExerciseContext.tsx";
+import {useTranslation} from "react-i18next";
 
 
 
@@ -22,6 +23,7 @@ const ListenWithManyOptionsToChooseToSingleExercise = ({
     const [resultMode, setResultMode] = useState<boolean>(false)
     const {token} = useContext(AuthContext);
     const { shouldCheckAll, resetCheckAll } = useExerciseContext();
+    const {t} = useTranslation();
 
     useEffect(() => {
         if (shouldCheckAll && !resultMode && !disableButton) {
@@ -138,9 +140,8 @@ const ListenWithManyOptionsToChooseToSingleExercise = ({
                     )
                 })}
             </div>
-            {/*<pre>{JSON.stringify(selectedOptions, null, 2)}</pre>*/}
             <div className="lewotc__buttons">
-                <button disabled={disableButton} className="greenoutline--button greenoutline--button--mb" onClick={sendAnswers}>Send</button>
+                <button disabled={disableButton} className="greenoutline--button greenoutline--button--mb" onClick={sendAnswers}>{resultMode ? t('Checked') : t('Check')}</button>
             </div>
         </section>
     );

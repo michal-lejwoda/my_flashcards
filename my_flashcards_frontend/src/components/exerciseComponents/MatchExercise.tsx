@@ -4,6 +4,7 @@ import {handleSendMatchExerciseAnswers} from "../../api.tsx";
 import AuthContext from "../../context/AuthContext.tsx";
 import '../../sass/exercises/match_exercise.css';
 import {useExerciseContext} from "../ExerciseContext.tsx";
+import {useTranslation} from "react-i18next";
 
 const MatchExercise = ({playSound,  exercise, id, slug, onScore}: MatchExerciseProps) => {
 
@@ -23,6 +24,7 @@ const MatchExercise = ({playSound,  exercise, id, slug, onScore}: MatchExerciseP
     const [resultMode, setResultMode] = useState<boolean>(false)
     const {token} = useContext(AuthContext);
     const { shouldCheckAll, resetCheckAll } = useExerciseContext();
+    const {t} = useTranslation();
 
     useEffect(() => {
         if (shouldCheckAll && !resultMode && !disableButton) {
@@ -179,7 +181,7 @@ const MatchExercise = ({playSound,  exercise, id, slug, onScore}: MatchExerciseP
 </div>
             </div>
             <button disabled={disableButton} className="matchexercise__buttons greenoutline--button greenoutline--button--mb" onClick={sendAnswers}>
-                 Send
+                 {resultMode ? t('Checked') : t('Check')}
             </button>
 
         </div>

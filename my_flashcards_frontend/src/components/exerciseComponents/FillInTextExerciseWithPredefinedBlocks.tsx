@@ -7,6 +7,7 @@ import AuthContext from "../../context/AuthContext.tsx";
 import {handleSendFillInTextExerciseWithPredefinedBlocks} from "../../api.tsx";
 import "../../sass/exercises/fill_in_text_exercise_with_predefined_blocks.css"
 import {useExerciseContext} from "../ExerciseContext.tsx";
+import {useTranslation} from "react-i18next";
 
 const FillInTextExerciseWithPredefinedBlocks = ({playSound, exercise, id, slug, onScore}: FillInTextExerciseWithPredefinedBlocksProps) => {
     const [formData, setFormData] = useState<FillInTextExerciseWithPredefinedBlocksDataBlocks[]>([]);
@@ -15,7 +16,7 @@ const FillInTextExerciseWithPredefinedBlocks = ({playSound, exercise, id, slug, 
     const [disableButton, setDisableButton] = useState<boolean>(false)
     const [resultMode, setResultMode] = useState<boolean>(false)
     const { shouldCheckAll, resetCheckAll } = useExerciseContext();
-
+    const {t} = useTranslation();
     useEffect(() => {
         if (shouldCheckAll && !resultMode && !disableButton) {
             sendAnswers();
@@ -141,9 +142,8 @@ const FillInTextExerciseWithPredefinedBlocks = ({playSound, exercise, id, slug, 
                     </div>
                 </div>
             </div>
-            {/*<pre>{JSON.stringify(formData, null, 2)}</pre>*/}
             <div className="fitewc__buttons">
-                <button disabled={disableButton} className="greenoutline--button greenoutline--button--mb" onClick={sendAnswers}>Send</button>
+                <button disabled={disableButton} className="greenoutline--button greenoutline--button--mb" onClick={sendAnswers}>{resultMode ? t('Checked') : t('Check')}</button>
             </div>
         </section>
     );

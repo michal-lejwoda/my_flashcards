@@ -6,6 +6,7 @@ import "../../sass/exercises/fill_in_text_exercise_with_choices.css"
 import Select, {SingleValue} from "react-select";
 import {customStyleforFillTextWithChoices} from "../../customFunctions.tsx";
 import {useExerciseContext} from "../ExerciseContext.tsx";
+import {useTranslation} from "react-i18next";
 
 const FillInTextExerciseWithChoices = ({playSound, exercise, id, slug, onScore}: FillInTextExerciseWithChoicesProps) => {
     type Answer = { blank_id: number; answer: string };
@@ -20,6 +21,7 @@ const FillInTextExerciseWithChoices = ({playSound, exercise, id, slug, onScore}:
     const [results, setResults] = useState<ResultDataWithBlankId | undefined>()
     const [resultMode, setResultMode] = useState<boolean>(false)
     const { shouldCheckAll, resetCheckAll } = useExerciseContext();
+    const {t} = useTranslation();
 
     useEffect(() => {
         if (shouldCheckAll && !resultMode && !disableButton) {
@@ -131,7 +133,7 @@ const FillInTextExerciseWithChoices = ({playSound, exercise, id, slug, onScore}:
                     />
                     {resultMode && isCorrect === false && correctAnswer && (
                         <span className="fitewc__corrected-answer">
-                            (Poprawna odpowiedź: {correctAnswer})
+                            ({t("Correct Answer")}: {correctAnswer})
                         </span>
                     )}
                 </React.Fragment>

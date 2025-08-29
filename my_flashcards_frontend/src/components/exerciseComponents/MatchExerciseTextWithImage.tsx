@@ -9,6 +9,7 @@ import AuthContext from "../../context/AuthContext.tsx";
 import {handleSendMatchExerciseWithImageAnswers} from "../../api.tsx";
 import "../../sass/exercises/match_exercise_text_with_image.css"
 import {useExerciseContext} from "../ExerciseContext.tsx";
+import {useTranslation} from "react-i18next";
 
 
 const MatchExerciseTextWithImage = ({playSound, exercise, id, slug, onScore}: MatchExerciseTextWithImageProps) => {
@@ -24,6 +25,7 @@ const MatchExerciseTextWithImage = ({playSound, exercise, id, slug, onScore}: Ma
     const [results, setResults] = useState<MatcheExerciseTextWithImageResponse | undefined>()
     const [resultMode, setResultMode] = useState<boolean>(false)
     const { shouldCheckAll, resetCheckAll } = useExerciseContext();
+    const {t} = useTranslation();
 
     useEffect(() => {
         if (shouldCheckAll && !resultMode && !disableButton) {
@@ -172,7 +174,7 @@ const MatchExerciseTextWithImage = ({playSound, exercise, id, slug, onScore}: Ma
             </div>
 
             <button disabled={disableButton} className="matchexercise__buttons greenoutline--button greenoutline--button--mb" onClick={sendAnswers}>
-                 Send
+                 {resultMode ? t('Checked') : t('Check')}
             </button>
 
         </div>

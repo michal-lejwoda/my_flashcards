@@ -6,6 +6,7 @@ import "../../sass/exercises/fill_in_text_exercise_with_choices_with_image_decor
 import Select, {SingleValue} from "react-select";
 import {customStyleforFillTextWithChoices} from "../../customFunctions.tsx";
 import {useExerciseContext} from "../ExerciseContext.tsx";
+import {useTranslation} from "react-i18next";
 
 
 const FillInTextExerciseWithChoicesWithImageDecoration = ({
@@ -27,6 +28,7 @@ const FillInTextExerciseWithChoicesWithImageDecoration = ({
     const [resultMode, setResultMode] = useState<boolean>(false)
     const textParts = exercise.text_with_blanks.split(/({{\d+}})/g);
     const { shouldCheckAll, resetCheckAll } = useExerciseContext();
+    const {t} = useTranslation();
 
     useEffect(() => {
         if (shouldCheckAll && !resultMode && !disableButton) {
@@ -174,7 +176,7 @@ const FillInTextExerciseWithChoicesWithImageDecoration = ({
                 </div>
             </div>
             <div className="fitewc__buttons">
-                <button disabled={disableButton} className="greenoutline--button greenoutline--button--mb" onClick={sendAnswers}>Send</button>
+                <button disabled={disableButton} className="greenoutline--button greenoutline--button--mb" onClick={sendAnswers}>{resultMode ? t('Checked') : t('Check')}</button>
             </div>
         </section>
     );

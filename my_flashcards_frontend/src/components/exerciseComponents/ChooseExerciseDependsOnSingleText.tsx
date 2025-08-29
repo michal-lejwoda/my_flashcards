@@ -8,6 +8,7 @@ import {handleSendChooseExerciseDependsOnSingleTextAnswers} from "../../api.tsx"
 import AuthContext from "../../context/AuthContext.tsx";
 import "../../sass/exercises/choose_exercise_depends_on_single_text.css"
 import {useExerciseContext} from "../ExerciseContext.tsx";
+import {useTranslation} from "react-i18next";
 
 
 const ChooseExerciseDependsOnSingleText = ({playSound, exercise, id, slug, onScore}: ChooseExerciseDependsOnSingleTextProps) => {
@@ -16,6 +17,7 @@ const ChooseExerciseDependsOnSingleText = ({playSound, exercise, id, slug, onSco
     const [results, setResults] = useState<ResultData | undefined>()
     const [resultMode, setResultMode] = useState<boolean>(false)
     const { shouldCheckAll, resetCheckAll } = useExerciseContext();
+    const {t} = useTranslation();
 
     const {token} = useContext(AuthContext);
     const sendAnswers = async () => {
@@ -115,7 +117,7 @@ const ChooseExerciseDependsOnSingleText = ({playSound, exercise, id, slug, onSco
                     })}
                 </div>
                 <div className="cdost__buttons">
-                    <button disabled={disableButton} className="greenoutline--button greenoutline--button--mb" onClick={sendAnswers}>{resultMode ? 'Sprawdzone' : 'Send'}</button>
+                    <button disabled={disableButton} className="greenoutline--button greenoutline--button--mb" onClick={sendAnswers}>{resultMode ? t('Checked') : t('Check')}</button>
                 </div>
             </div>
         </section>
