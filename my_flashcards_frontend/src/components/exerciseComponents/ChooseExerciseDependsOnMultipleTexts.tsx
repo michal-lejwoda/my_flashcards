@@ -8,6 +8,7 @@ import {handleSendChooseExerciseDependsOnSingleTextAnswers} from "../../api.tsx"
 import AuthContext from "../../context/AuthContext.tsx";
 import { useExerciseContext } from '../ExerciseContext.tsx';
 import "../../sass/exercises/choose_exercise_depends_on_multiple_texts.css"
+import {useTranslation} from "react-i18next";
 
 const ChooseExerciseDependsOnMultipleTexts = ({
                                                     playSound,
@@ -22,6 +23,7 @@ const ChooseExerciseDependsOnMultipleTexts = ({
     const [results, setResults] = useState<ResultData | undefined>()
     const [resultMode, setResultMode] = useState<boolean>(false)
     const { shouldCheckAll, resetCheckAll } = useExerciseContext();
+    const {t} = useTranslation();
 
     const sendAnswers = async () => {
         if (disableButton || resultMode) return;
@@ -123,17 +125,9 @@ const ChooseExerciseDependsOnMultipleTexts = ({
                     className="greenoutline--button greenoutline--button--mb"
                     onClick={sendAnswers}
                 >
-                    {resultMode ? 'Sprawdzone' : 'Send'}
+                    {resultMode ? t('Checked') : t('Check')}
                 </button>
             </div>
-
-            {/*/!* ← OPCJONALNIE: Pokaż status dla debugowania *!/*/}
-            {/*{process.env.NODE_ENV === 'development' && (*/}
-            {/*    <div style={{fontSize: '12px', color: '#666', marginTop: '10px'}}>*/}
-            {/*        Status: {resultMode ? 'Sprawdzone' : 'Do sprawdzenia'} | */}
-            {/*        Odpowiedzi: {selectedOptions.length}/{exercise.exercises.length}*/}
-            {/*    </div>*/}
-            {/*)}*/}
         </section>
     );
 };
