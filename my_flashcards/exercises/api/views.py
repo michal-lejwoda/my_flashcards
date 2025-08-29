@@ -172,7 +172,6 @@ class ExerciseViewSet(RetrieveModelMixin, CreateModelMixin, GenericViewSet):
             answers = request.data.get('exercises')
         else:
             answers = request.data.get('answers')
-        print("answerasddsas", answers)
         try:
             result = page.check_answer(request.user, answers)
             return Response(result, status=status.HTTP_200_OK)

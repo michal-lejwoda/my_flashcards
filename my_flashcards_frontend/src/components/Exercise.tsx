@@ -109,6 +109,17 @@ const ExerciseContent = () => {
         setAllChecked(false);
     }, [exercise]);
 
+    useEffect(()=>{
+        if (allChecked){
+        if (results.length === numberOfExercises){
+            if (userScore == maxScore){
+                playSound('/RightAnswer.mp3')
+            }else{
+                playSound('/WrongAnswer.mp3')
+            }
+        }}
+    },[results])
+
     const renderContent = () => {
         if (!exercise) return null;
 
