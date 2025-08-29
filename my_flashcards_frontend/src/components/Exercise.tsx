@@ -172,20 +172,24 @@ const ExerciseContent = () => {
     return (
         <div className="exercise__content">
             {renderContent()}
-            {isMultipleExercise && (
+            <div className="multiple-exercises__hr"></div>
+
+            <div className="exercise__results">
+                {isMultipleExercise && (
                 <button
                     onClick={checkAllExercises}
                     disabled={allChecked}
-                    className={`check-all-button ${allChecked ? 'checking' : ''}`}
+                    className={`greenoutline--button greenoutline--button--mb check-all-button ${allChecked ? 'checking' : ''}`}
                 >
                     {allChecked ? 'Checking...' : 'Check all'}
                 </button>
             )}
-            <div className="exercise__results">
+                <div className="exercise__allresults">
                 Zrobione zadania {results.length} z {numberOfExercises}.
                 Liczba punktów {userScore} z {maxScore}
+                    </div>
                 {results.length === numberOfExercises && numberOfExercises > 0 && (
-                    <span className="completion-status"> ✅ Wszystkie ukończone!</span>
+                    <span className="exercise__completion-status"> ✅ Wszystkie ukończone!</span>
                 )}
             </div>
         </div>
