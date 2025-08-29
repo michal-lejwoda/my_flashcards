@@ -101,5 +101,13 @@
   "browse": "Przeglądaj",
   "reverse_and_browse": "Odwróć i przeglądaj",
   "close": "Zamknij",
-  "exercises": "Ćwiczenia"
+  "exercises": "Ćwiczenia",
+  "Checked" : "Sprawdzone",
+  "Check" : "Sprawdź",
+  "Correct Answer" : "Poprawna odpowiedź",
+  "Created pairs" : "Utworzone pary",
+  "Completed tasks" : "Zrobione zadania",
+  "out of" : "z",
+  "Number of points scored" : "Liczba zdobytych punktów",
+  "All tasks completed" : "Wszystkie zadania ukończone"
 }

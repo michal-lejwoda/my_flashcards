@@ -89,10 +89,10 @@ const ChooseExerciseDependsOnSingleText = ({playSound, exercise, id, slug, onSco
     return (
         <section className="cdost">
             <div className="cdost__content">
+                <div className="fitewc__description">{exercise.description}</div>
                 <div className="cdost__text">
                     {exercise.text}
                 </div>
-                <div className="cdost__description">{exercise.description}</div>
 
                 <div className="cdost__choose-container">
                     {exercise.exercises.map((element) => {

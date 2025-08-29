@@ -137,7 +137,7 @@ const MatchExerciseTextWithImage = ({playSound, exercise, id, slug, onScore}: Ma
                     </div>
                 </div>
                 <div className="matchexercise__selectedcontainer">
-                    <h1>Selected Container</h1>
+                    <h3>{t("Created pairs")}</h3>
                     <div className="matchexercise__selectedcontainer__items">
                         {selectedElements.map((element, key) => {
                             const isCorrect = resultMode && results?.result_answers?.some(result =>

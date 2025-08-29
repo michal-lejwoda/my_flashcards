@@ -30,6 +30,7 @@ import MatchExerciseTextWithImage from "./exerciseComponents/MatchExerciseTextWi
 import MultipleExercises from "./exerciseComponents/MultipleExercises.tsx";
 import { ExerciseProvider, useExerciseContext } from './ExerciseContext.tsx';
 import "../../src/sass/exercises/exercise.css"
+import {useTranslation} from "react-i18next";
 
 const ExerciseContent = () => {
     type ExerciseScore = {
@@ -46,6 +47,8 @@ const ExerciseContent = () => {
     const [isMultipleExercise, setIsMultipleExercise] = useState(false);
     const [allChecked, setAllChecked] = useState(false);
     const { triggerCheckAll } = useExerciseContext();
+    const {t} = useTranslation();
+
     useEffect(() => {
         if (exercise && exercise.exercises && exercise.exercises.length > 0){
             setIsMultipleExercise(true)
@@ -196,11 +199,12 @@ const ExerciseContent = () => {
                 </button>
             )}
                 <div className="exercise__allresults">
-                Zrobione zadania {results.length} z {numberOfExercises}.
-                Liczba punktów {userScore} z {maxScore}
+                    {t("Completed tasks")} {results.length} {t("out of")} {numberOfExercises}.
+                    <br />
+                    {t("Number of points scored")} {userScore} {t("out of")} {maxScore}
                     </div>
                 {results.length === numberOfExercises && numberOfExercises > 0 && (
-                    <span className="exercise__completion-status"> ✅ Wszystkie ukończone!</span>
+                    <span className="exercise__completion-status"> ✅ {t("All tasks completed")}!</span>
                 )}
             </div>
         </div>

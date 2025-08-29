@@ -36,7 +36,8 @@
     padding: 1rem;
     background-color: variables.$button-bg !important;
     font-size: 1.2rem;
-    border-radius: 15px;
+    border-bottom-left-radius: 15px;
+    border-bottom-right-radius: 15px;
     margin-bottom: 2rem;
   }
   &__options{

@@ -139,7 +139,7 @@ const MatchExercise = ({playSound,  exercise, id, slug, onScore}: MatchExerciseP
 </div>
                 </div>
                 <div className="matchexercise__selectedcontainer">
-    <h3>Created pairs</h3>
+    <h3>{t("Created pairs")}</h3>
     {selectedElements.map((element, key) => {
         const isCorrect = resultMode && results?.result_answers?.some(result =>
             result.left_item === element.left_item &&

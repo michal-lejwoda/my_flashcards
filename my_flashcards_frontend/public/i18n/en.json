@@ -101,5 +101,13 @@
   "browse": "Browse",
   "reverse_and_browse": "Reverse and Browse",
   "close": "Close",
-  "exercises": "Exercises"
+  "exercises": "Exercises",
+  "Checked" : "Checked",
+  "Check" : "Check",
+  "Correct Answer" : "Correct Answer",
+  "Created pairs" : "Created pairs",
+  "Completed tasks" : "Completed tasks",
+  "out of" : "out of",
+  "Number of points scored" : "Number of points scored",
+  "All tasks completed" : "All tasks completed"
 }

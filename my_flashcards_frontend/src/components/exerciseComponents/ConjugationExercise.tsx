@@ -84,6 +84,7 @@ const ConjugationExercise = ({playSound, exercise, id, slug, onScore}: Conjugati
     return (
         <section className="conjugation-exercise">
             <div className="conjugation-exercise__container">
+                <div className="fitewc__description">{exercise.description}</div>
                 <div className="conjugation-exercise__rowscontainer">
                     <div className="conjugation-exercise__name">{exercise.instruction}</div>
                     <div className="conjugation-exercise__rowcenter">
