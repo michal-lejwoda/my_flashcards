@@ -93,7 +93,7 @@ const ChooseExerciseDependsOnMultipleTexts = ({
     return (
         <section className="cdomt">
             <div className="cdomt__choose-container">
-                <div className="fitewc__description">{t("exercise.description")}</div>
+                <div className="fitewc__description">{t(exercise.description)}</div>
                 {exercise.exercises.map((element) => {
                     return (
                         <div className="cdomt__questions" key={element.question_id}>

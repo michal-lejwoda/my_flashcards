@@ -89,7 +89,7 @@ const ChooseExerciseDependsOnSingleText = ({playSound, exercise, id, slug, onSco
     return (
         <section className="cdost">
             <div className="cdost__content">
-                <div className="fitewc__description">{t("exercise.description")}</div>
+                <div className="fitewc__description">{t(exercise.description)}</div>
                 <div className="cdost__text">
                     {exercise.text}
                 </div>
