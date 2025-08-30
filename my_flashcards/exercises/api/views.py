@@ -151,7 +151,6 @@ class ExerciseViewSet(RetrieveModelMixin, CreateModelMixin, GenericViewSet):
 
         try:
             page = Page.objects.live().specific().get(id=pk, slug=slug)
-            print("pag123e", page)
         except Page.DoesNotExist:
             raise NotFound("No page found matching both id and slug.")
 
