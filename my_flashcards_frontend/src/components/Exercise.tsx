@@ -29,7 +29,7 @@ import ListenWithManyOptionsToChooseToSingleExercise
 import MatchExerciseTextWithImage from "./exerciseComponents/MatchExerciseTextWithImage.tsx";
 import MultipleExercises from "./exerciseComponents/MultipleExercises.tsx";
 import { ExerciseProvider, useExerciseContext } from './ExerciseContext.tsx';
-import "../../src/sass/exercises/exercise.css"
+import "../sass/exercises/exercise.css"
 import {useTranslation} from "react-i18next";
 
 const ExerciseContent = () => {
