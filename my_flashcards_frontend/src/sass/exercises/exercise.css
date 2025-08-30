@@ -1,0 +1,19 @@
+.exercise__results {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.4rem;
+  font-weight: 600;
+}
+.exercise__completion-status {
+  display: flex;
+  justify-content: center;
+  font-size: 1.4rem;
+  font-weight: 600;
+}
+.exercise__allresults {
+  text-align: center;
+}
+
+/*# sourceMappingURL=exercise.css.map */
