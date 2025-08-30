@@ -446,7 +446,7 @@ class ChooseExerciseDependsOnSingleText(ExerciseBase, AutoNumberedQuestionsMixin
         return result
 
 
-# TODO WORK WITH IT
+
 class FlexibleExercisePage(ExerciseBase, LayoutMixin):
     layout_config = StreamField([
         ('header_image', HeaderImageBlock()),

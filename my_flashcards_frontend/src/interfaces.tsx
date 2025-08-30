@@ -631,17 +631,6 @@ export interface FillInTextExerciseWithPredefinedBlocksData {
     after_layout_config: [];
 }
 
-export interface FlexibleExercisePageData {
-    id: number;
-    slug: string
-    type: "FlexibleExercisePage";
-    description: string;
-    left_items: [string];
-    right_items: [string];
-    before_layout_config: [];
-    after_layout_config: [];
-}
-
 export interface ListenExerciseWithOptionsToChooseData {
     id: number;
     slug: string
@@ -719,7 +708,6 @@ export type Exercises =
     | FillInTextExerciseWithChoicesWithImageDecorationData
     |
     FillInTextExerciseWithPredefinedBlocksData
-    | FlexibleExercisePageData
     | ListenWithManyOptionsToChooseToSingleExerciseData
     |
     MatchExerciseTextWithImageData
@@ -769,9 +757,7 @@ export const isFillInTextExerciseWithChoicesWithImageDecoration = (exercise: Exe
 export const isFillInTextExerciseWithPredefinedBlocks = (exercise: Exercises): exercise is FillInTextExerciseWithPredefinedBlocksData => {
     return exercise.type === "FillInTextExerciseWithPredefinedBlocks"
 }
-export const isFlexibleExercisePage = (exercise: Exercises): exercise is FlexibleExercisePageData => {
-    return exercise.type === "FlexibleExercisePage"
-}
+
 export const isListenWithManyOptionsToChooseToSingleExercise = (exercise: Exercises): exercise is ListenWithManyOptionsToChooseToSingleExerciseData => {
     return exercise.type === "ListenWithManyOptionsToChooseToSingleExercise"
 }
@@ -859,9 +845,6 @@ export interface FillInTextExerciseWithPredefinedBlocksProps {
     onScore: (exerciseId: string, score: number, max_score: number) => void;
 }
 
-export interface FlexibleExercisePageProps {
-    exercise: FlexibleExercisePageData
-}
 
 export interface ListenWithManyOptionsToChooseToSingleExerciseProps {
     playSound: (src: string) => void;
