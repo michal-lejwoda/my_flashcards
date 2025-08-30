@@ -2,6 +2,19 @@
 @import '../../main.scss';
 
 .lewotc{
+  &__description{
+    width:80%;
+    text-align: start;
+    font-weight: 600;
+    padding: 0.8rem;
+    border-radius: 10px;
+    font-size: 1.3rem;
+    background-color: variables.$button-bg !important;
+    margin-bottom: 2rem;
+    @include breakpoint("desktop") {
+      width: 60%;
+    }
+  }
   &--soundbutton{
     cursor: pointer;
   }

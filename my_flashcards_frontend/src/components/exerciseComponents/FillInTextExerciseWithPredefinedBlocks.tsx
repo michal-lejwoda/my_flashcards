@@ -134,7 +134,7 @@ const FillInTextExerciseWithPredefinedBlocks = ({playSound, exercise, id, slug, 
         <section className="fitewc">
             <div className="fitewc__content">
                 <div className="fitewc__container">
-                    <div className="fitewc__description">{exercise.description}</div>
+                    <div className="fitewc__description">{t("exercise.description")}</div>
                     <div className="fitewc__text">
                         <div className="fitewc__text--content">
                             {renderedText}

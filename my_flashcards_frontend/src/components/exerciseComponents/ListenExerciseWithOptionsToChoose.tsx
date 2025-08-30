@@ -92,6 +92,9 @@ const ListenExerciseWithOptionsToChoose = ({playSound, exercise, id, slug, onSco
     return (
         <section className="lewotc">
             <div className="lewotc__allexercises">
+                <div className="lewotc__description">
+                     {t("exercise.description")}
+                    </div>
                 {exercise.exercises.map(element => {
                     return (
                         <div className="lewotc__singleexercise">

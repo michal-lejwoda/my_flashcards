@@ -111,7 +111,7 @@ const MatchExerciseTextWithImage = ({playSound, exercise, id, slug, onScore}: Ma
     return (
         <div className="matchexercise">
             <div className="matchexercise__selectcontainer">
-                <div className="matchexercise__description">{exercise.description}</div>
+                <div className="matchexercise__description">{t("exercise.description")}</div>
                 <div className="matchexercise__sides">
                     <div className="matchexercise__leftside">
                         {rightItems.map((element, key) => {

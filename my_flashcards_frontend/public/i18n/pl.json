@@ -109,5 +109,7 @@
   "Completed tasks" : "Zrobione zadania",
   "out of" : "z",
   "Number of points scored" : "Liczba zdobytych punktów",
-  "All tasks completed" : "Wszystkie zadania ukończone"
+  "All tasks completed" : "Wszystkie zadania ukończone",
+  "Checking...": "Sprawdzanie...",
+  "Check all": "Sprawdź wszystkie"
 }

@@ -113,7 +113,7 @@ const MatchExercise = ({playSound,  exercise, id, slug, onScore}: MatchExerciseP
     return (
         <div className="matchexercise">
             <div className="matchexercise__selectcontainer">
-                <div className="matchexercise__description">{exercise.description}</div>
+                <div className="matchexercise__description">{t("exercise.description")}</div>
                 <div className="matchexercise__sides">
                     <div className="matchexercise__leftside">
     {leftItems.map((element,key) => {

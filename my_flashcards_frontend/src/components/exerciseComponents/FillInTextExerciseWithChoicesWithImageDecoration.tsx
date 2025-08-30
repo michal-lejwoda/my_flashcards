@@ -140,7 +140,7 @@ const FillInTextExerciseWithChoicesWithImageDecoration = ({
                     />
                     {resultMode && isCorrect === false && correctAnswer && (
                         <span className="fitewc__corrected-answer">
-                            (Poprawna odpowiedź: {correctAnswer})
+                            ({t("Poprawna odpowiedź")}: {correctAnswer})
                         </span>
                     )}
                 </React.Fragment>
@@ -164,7 +164,7 @@ const FillInTextExerciseWithChoicesWithImageDecoration = ({
         <section className="fitewc">
             <div className="fitewc__content">
                 <div className="fitewc__container">
-                    <div className="fitewc__description">{exercise.description}</div>
+                    <div className="fitewc__description">{t("exercise.description")}</div>
                     <div className="fitewc__text">
                         <div className="fitewc__image">
                             <img src={`${import.meta.env.VITE_API_URL}${exercise.image}`} alt={exercise.image}/>

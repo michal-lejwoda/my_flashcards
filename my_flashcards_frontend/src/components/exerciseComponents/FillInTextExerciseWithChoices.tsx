@@ -157,7 +157,7 @@ const FillInTextExerciseWithChoices = ({playSound, exercise, id, slug, onScore}:
         <section className="fitewc">
             <div className="fitewc__content">
                 <div className="fitewc__container">
-                    <div className="fitewc__description">{exercise.description}</div>
+                    <div className="fitewc__description">{t("exercise.description")}</div>
                     <div className="fitewc__text">
                         <div className="fitew__text--content">
                             {renderedText}

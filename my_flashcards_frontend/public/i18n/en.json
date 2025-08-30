@@ -109,5 +109,7 @@
   "Completed tasks" : "Completed tasks",
   "out of" : "out of",
   "Number of points scored" : "Number of points scored",
-  "All tasks completed" : "All tasks completed"
+  "All tasks completed" : "All tasks completed",
+  "Checking...": "",
+  "Check all": ""
 }

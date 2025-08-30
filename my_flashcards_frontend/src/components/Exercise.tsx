@@ -195,7 +195,7 @@ const ExerciseContent = () => {
                     disabled={allChecked}
                     className={`greenoutline--button greenoutline--button--mb check-all-button ${allChecked ? 'checking' : ''}`}
                 >
-                    {allChecked ? 'Checking...' : 'Check all'}
+                    {allChecked ? t('Checking...') : t('Check all')}
                 </button>
             )}
                 <div className="exercise__allresults">
