@@ -2,7 +2,6 @@ import React, {useContext, useEffect, useState} from "react";
 import {FillInTextExerciseWithChoicesWithImageDecorationProps, ResultDataWithBlankId} from "../../interfaces.tsx";
 import AuthContext from "../../context/AuthContext.tsx";
 import {handleSendFillInTextExerciseWithChoicesAnswers} from "../../api.tsx";
-import "../../sass/exercises/fill_in_text_exercise_with_choices_with_image_decoration.css";
 import Select, {SingleValue} from "react-select";
 import {customStyleforFillTextWithChoices} from "../../customFunctions.tsx";
 import {useExerciseContext} from "../ExerciseContext.tsx";

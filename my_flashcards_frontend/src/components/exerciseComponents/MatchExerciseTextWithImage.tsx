@@ -7,7 +7,6 @@ import {
 import {useContext, useEffect, useState} from "react";
 import AuthContext from "../../context/AuthContext.tsx";
 import {handleSendMatchExerciseWithImageAnswers} from "../../api.tsx";
-import "../../sass/exercises/match_exercise_text_with_image.css"
 import {useExerciseContext} from "../ExerciseContext.tsx";
 import {useTranslation} from "react-i18next";
 

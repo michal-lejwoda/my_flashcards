@@ -5,7 +5,6 @@ import {
 import React, {useContext, useEffect, useState} from "react";
 import AuthContext from "../../context/AuthContext.tsx";
 import {handleSendFillInTextExerciseWithPredefinedBlocks} from "../../api.tsx";
-import "../../sass/exercises/fill_in_text_exercise_with_predefined_blocks.css"
 import {useExerciseContext} from "../ExerciseContext.tsx";
 import {useTranslation} from "react-i18next";
 

@@ -6,7 +6,6 @@ import {
 import {useContext, useEffect, useState} from "react";
 import {handleSendListenWithManyOptionsToChooseToSingleExerciseAnswers} from "../../api.tsx";
 import AuthContext from "../../context/AuthContext.tsx";
-import "../../sass/exercises/listen_with_many_options_to_choose_to_single_exercise.css";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faVolumeUp} from "@fortawesome/free-solid-svg-icons";
 import {useExerciseContext} from "../ExerciseContext.tsx";
