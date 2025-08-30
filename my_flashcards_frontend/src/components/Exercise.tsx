@@ -50,7 +50,7 @@ const ExerciseContent = () => {
     const {t} = useTranslation();
 
     useEffect(() => {
-        if (exercise && exercise.exercises && exercise.exercises.length > 0){
+        if (exercise && 'exercises' in exercise && exercise.exercises.length > 0){
             setIsMultipleExercise(true)
         } else if (exercise && exercise.type) {
             setIsMultipleExercise(false)
