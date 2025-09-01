@@ -17,8 +17,6 @@ const BrowseFlashcardsWords = () => {
     const [wrongWordsToLearn, setWrongWordsToLearn] = useState<LearnObject[]>([])
 
     const handleGoNext = (result_type: boolean) => {
-        console.log("result_type")
-        console.log(result_type)
         if (currentWord) {
             if (!result_type) {
                 currentWord.is_correct = false
