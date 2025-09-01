@@ -654,6 +654,7 @@ export interface ListenWithManyOptionsToChooseToSingleExerciseData {
 }
 
 export interface ListenExerciseWithOptionsToChooseExercises {
+    audio: string;
     correct_answer: string
     options: [string]
     question: string

@@ -115,11 +115,12 @@ const ListenWithManyOptionsToChooseToSingleExercise = ({
                     {t(exercise.description)}
                     </div>
                 {exercise.exercises.map(element => {
+                    console.log("element", element)
                     return (
                         <div className="lewotc__singleexercise" key={element.question_id}>
                             <div className="lewotc__questioncontainer">
                                 <div className="lewotc__question">{element.question}</div>
-                                <div className="lewotc--soundbutton" onClick={() => playSound(exercise.audio)}>
+                                <div className="lewotc--soundbutton" onClick={() => playSound(element.audio)}>
                                     <FontAwesomeIcon
                                         size="lg" icon={faVolumeUp}/></div>
                             </div>
