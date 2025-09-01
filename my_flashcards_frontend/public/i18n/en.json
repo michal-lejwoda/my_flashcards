@@ -110,6 +110,14 @@
   "out of" : "out of",
   "Number of points scored" : "Number of points scored",
   "All tasks completed" : "All tasks completed",
-  "Checking...": "",
-  "Check all": ""
+  "Checking...": "Checking...",
+  "Check all": "Check all",
+  "Match word with image" : "Match word with image",
+  "Match words" : "Match words",
+  "Fill in text with choices" : "Fill in text with choices",
+  "Select correct form" : "Select correct form",
+  "Select correct Option. Many of them can be correct" : "Select correct Option. Many of them can be correct",
+  "Select correct answer." : "Select correct answer.",
+  "Fill in the blanks" : "Fill in the blanks",
+  "Fill in the blanks." : "Fill in the blanks."
 }
