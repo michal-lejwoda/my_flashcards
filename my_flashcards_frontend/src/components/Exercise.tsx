@@ -60,11 +60,14 @@ const ExerciseContent = () => {
     const currentAudioRef = useRef<HTMLAudioElement | null>(null);
 
     const playSound = (src: string) => {
+        console.log("src", src)
         if (currentAudioRef.current) {
             currentAudioRef.current.pause();
             currentAudioRef.current.currentTime = 0;
         }
         const newAudio = new Audio(src);
+        console.log("new audio play", src)
+        console.log("newAudio",newAudio)
         newAudio.play();
         currentAudioRef.current = newAudio;
     };
