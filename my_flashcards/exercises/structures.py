@@ -23,14 +23,14 @@ class BlankOptionBlock(blocks.StructBlock):
 class MultipleOptionToChoose(blocks.StructBlock):
     question_id = blocks.CharBlock(
         required=False,
-        help_text="Ukryte ID pytania"
+        help_text="Hided ID"
     )
     question = blocks.TextBlock(required=False, help_text="Optional question")
     options = blocks.ListBlock(
         blocks.CharBlock(), help_text="List of possible options"
     )
     correct_answers = blocks.ListBlock(
-        blocks.CharBlock(), help_text="Lista poprawnych odpowiedzi"
+        blocks.CharBlock(), help_text="List of correct answers"
     )
     #TODO FIX It
     def clean(self, value):
@@ -48,7 +48,7 @@ class ListenOptionToChoose(blocks.StructBlock):
     #Hidden using css
     question_id = blocks.CharBlock(
         required=False,
-        help_text="Ukryte ID pytania"
+        help_text="Hided Id"
     )
     question = blocks.TextBlock(required=False, help_text="Optional question")
     options = blocks.ListBlock(

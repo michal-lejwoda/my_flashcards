@@ -77,7 +77,12 @@ class MainGroupPageDetailSerializer(serializers.ModelSerializer):
 
     def get_children(self, obj):
         children = obj.get_children().live().specific()
-        return SubGroupListSerializer(children, many=True).data
+        filtered_children = [
+            child for child in children
+            if not (hasattr(child, 'is_displayed') and hasattr(child, 'is_multi'))
+               or (child.is_displayed and not child.is_multi)
+        ]
+        return SubGroupListSerializer(filtered_children, many=True).data
     class Meta:
         model = MainGroup
         fields = ['id', 'title', 'children']
@@ -101,14 +106,24 @@ class SubGroupPageDetailSerializer(serializers.ModelSerializer):
     children = SerializerMethodField()
 
     def get_children(self, obj):
-        children = obj.get_children().live().specific()
-        return SubGroupListSerializer(children, many=True).data
+        children = obj.get_children().live().specific().filter()
+        filtered_children = [
+            child for child in children
+            if not (hasattr(child, 'is_displayed') and hasattr(child, 'is_multi'))
+               or (child.is_displayed and not child.is_multi)
+        ]
+        return SubGroupListSerializer(filtered_children, many=True).data
 
 
 class SubGroupWithSubGroupsPageDetailSerializer(serializers.ModelSerializer):
     def get_children(self, obj):
-        children = obj.get_children().live()
-        return SubGroupListSerializer(children, many=True).data
+        children = obj.get_children().live().specific()
+        filtered_children = [
+            child for child in children
+            if not (hasattr(child, 'is_displayed') and hasattr(child, 'is_multi'))
+               or (child.is_displayed and not child.is_multi)
+        ]
+        return SubGroupListSerializer(filtered_children, many=True).data
 
 
 class GroupExerciseListSerializer(serializers.ModelSerializer):
@@ -116,7 +131,12 @@ class GroupExerciseListSerializer(serializers.ModelSerializer):
 
     def get_children(self, obj):
         children = obj.get_children().live().specific()
-        return ExerciseListSerializer(children, many=True).data
+        filtered_children = [
+            child for child in children
+            if not (hasattr(child, 'is_displayed') and hasattr(child, 'is_multi'))
+               or (child.is_displayed and not child.is_multi)
+        ]
+        return ExerciseListSerializer(filtered_children, many=True).data
 
     class Meta:
         model = GroupExercise
@@ -128,7 +148,12 @@ class MainGroupWithGroupExercisePageDetailSerializer(serializers.ModelSerializer
 
     def get_children(self, obj):
         children = obj.get_children().live().specific()
-        return GroupExerciseListSerializer(children, many=True).data
+        filtered_children = [
+            child for child in children
+            if not (hasattr(child, 'is_displayed') and hasattr(child, 'is_multi'))
+               or (child.is_displayed and not child.is_multi)
+        ]
+        return GroupExerciseListSerializer(filtered_children, many=True).data
 
 
 class MainGroupWithSubGroupsListSerializer(serializers.ModelSerializer):
@@ -136,7 +161,12 @@ class MainGroupWithSubGroupsListSerializer(serializers.ModelSerializer):
 
     def get_children(self, obj):
         children = obj.get_children().live().specific()
-        return SubGroupListSerializer(children, many=True).data
+        filtered_children = [
+            child for child in children
+            if not (hasattr(child, 'is_displayed') and hasattr(child, 'is_multi'))
+               or (child.is_displayed and not child.is_multi)
+        ]
+        return SubGroupListSerializer(filtered_children, many=True).data
 
     class Meta:
         model = MainGroupWithSubGroups
@@ -148,7 +178,12 @@ class SubGroupWithGroupExercisesListSerializer(serializers.ModelSerializer):
 
     def get_children(self, obj):
         children = obj.get_children().live().specific()
-        return GroupExerciseListSerializer(children, many=True).data
+        filtered_children = [
+            child for child in children
+            if not (hasattr(child, 'is_displayed') and hasattr(child, 'is_multi'))
+               or (child.is_displayed and not child.is_multi)
+        ]
+        return GroupExerciseListSerializer(filtered_children, many=True).data
 
     class Meta:
         model = SubGroupWithGroupExercises

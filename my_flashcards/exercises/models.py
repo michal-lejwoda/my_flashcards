@@ -57,7 +57,7 @@ class PageWithPathSlug(Page):
         blank=True,
         null=True,
         db_index=True,
-        help_text="Automatycznie generowana pełna ścieżka strony"
+        help_text="Automatically generated slug",
     )
 
     objects = PageWithPathSlugManager()
