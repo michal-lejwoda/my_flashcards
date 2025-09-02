@@ -21,38 +21,38 @@ An **interactive language learning platform** focused on **flashcards** and **cu
 
 ## 🚀 Features  
 
-- 🗂️ **Flashcards & Vocabulary Exercises** – interactive methods to boost retention  
-- ✏️ **Grammar Practice** – multiple exercise types for English & German  
-- 📝 **Exercise Creator** – design and publish new tasks via **Wagtail CMS**  
-- 📊 **Progress Tracking** – monitor learning history and improvements  
-- 🔄 **Asynchronous Tasks** – background jobs (email reminders, statistics, notifications) handled with **Celery + Redis + Flower**  
-- 🛡️ **Error Monitoring** – powered by **Sentry** to ensure reliability  
-- 🚀 **CI/CD Pipeline** – automated builds & deployments with **GitHub Actions**  
-- 🐳 **Dockerized Infrastructure** – scalable, portable deployment  
+- 🗂️ **Flashcards & Vocabulary Exercises** - interactive methods to boost retention  
+- ✏️ **Grammar Practice** - multiple exercise types for English & German  
+- 📝 **Exercise Creator** - design and publish new tasks via **Wagtail CMS**  
+- 📊 **Progress Tracking** - monitor learning history and improvements  
+- 🔄 **Asynchronous Tasks** - background jobs (email reminders, statistics, notifications) handled with **Celery + Redis + Flower**  
+- 🛡️ **Error Monitoring** - powered by **Sentry** to ensure reliability  
+- 🚀 **CI/CD Pipeline** - automated builds & deployments with **GitHub Actions**  
+- 🐳 **Dockerized Infrastructure** - scalable, portable deployment  
 
 ---
 
 ## 🛠️ Technology Stack  
 
 ### 🔙 Backend  
-- **Django** – core backend framework  
-- **Wagtail** – CMS for managing exercises and content  
-- **Celery + Redis + Flower** – asynchronous task management  
-- **Pytest** – testing framework  
+- **Django** - core backend framework  
+- **Wagtail** - CMS for managing exercises and content  
+- **Celery + Redis + Flower** - asynchronous task management  
+- **Pytest** - testing framework  
 
 ### 🎨 Frontend  
-- **React** – component-based UI  
-- **TypeScript** – type-safe development  
-- **Formik + Yup** – form handling and validation  
+- **React** - component-based UI  
+- **TypeScript** - type-safe development  
+- **Formik + Yup** - form handling and validation  
 
 ### 🗄️ Database  
 - **PostgreSQL**  
 
 ### ⚙️ DevOps & Monitoring  
-- **Docker** – containerization  
-- **Nginx** – serving static files & reverse proxy  
-- **GitHub Actions** – CI/CD automation  
-- **Sentry** – error monitoring & performance tracking  
+- **Docker** - containerization  
+- **Nginx** - serving static files & reverse proxy  
+- **GitHub Actions** - CI/CD automation  
+- **Sentry** - error monitoring & performance tracking  
 
 ---
 
