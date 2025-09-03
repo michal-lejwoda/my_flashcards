@@ -8,7 +8,8 @@ from wagtail.images.api.fields import ImageRenditionField
 from wagtail.models import Page
 
 from my_flashcards.exercises.models import (LanguageCategoryPage, MainGroup, SubGroup, GroupExercise, \
-                                            MainGroupWithSubGroups, SubGroupWithGroupExercises)
+                                            MainGroupWithSubGroups, SubGroupWithGroupExercises,
+                                            MainGroupWithGroupExercises, SubGroupWithSubGroups)
 from my_flashcards.exercises.exercises_models import (ExerciseBase,
                                             MatchExercise, MatchExerciseTextWithImage,
                                             FillInTextExerciseWithChoices, FillInTextExerciseWithPredefinedBlocks,
@@ -124,6 +125,9 @@ class SubGroupWithSubGroupsPageDetailSerializer(serializers.ModelSerializer):
                or (child.is_displayed and not child.is_multi)
         ]
         return SubGroupListSerializer(filtered_children, many=True).data
+    class Meta:
+        model = SubGroupWithSubGroups
+        fields = ['id', 'title', 'children']
 
 
 class GroupExerciseListSerializer(serializers.ModelSerializer):
@@ -154,6 +158,9 @@ class MainGroupWithGroupExercisePageDetailSerializer(serializers.ModelSerializer
                or (child.is_displayed and not child.is_multi)
         ]
         return GroupExerciseListSerializer(filtered_children, many=True).data
+    class Meta:
+        model = MainGroupWithGroupExercises
+        fields = ['id', 'title', 'children']
 
 
 class MainGroupWithSubGroupsListSerializer(serializers.ModelSerializer):
@@ -276,7 +283,7 @@ class MatchExerciseTextWithImageSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = MatchExerciseTextWithImage
-        fields = ['id', 'type','description', 'left_items', 'right_items', 'before_layout_config', 'after_layout_config']
+        fields = ['id', 'type','description', 'left_items', 'right_items', 'before_layout_config', 'after_layout_config', 'slug']
         read_only_fields = ['before_layout_config', 'after_layout_config']
 
 class FillInTextExerciseWithChoicesSerializer(serializers.ModelSerializer):
